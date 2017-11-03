@@ -29,4 +29,5 @@ public class ApplicationContextConfig {
         poolTaskExecutor.setQueueCapacity(200);//队列最大长度
         return poolTaskExecutor;
     }
+    
 }
