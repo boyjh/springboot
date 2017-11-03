@@ -1,0 +1,17 @@
+### IntelliJ IDEA ###
+.idea
+.mvn
+*.iml
+logs
+
+boot-service/target
+boot-service/*.iml
+boot-web/target
+boot-web/*.iml
+
+mvnw
+mvnw.cmd
+### eclipse ###
+sbdemo/.project
+sbdemo/.classpath
+sbdemo/.settings
