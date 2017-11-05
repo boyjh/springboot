@@ -2,11 +2,15 @@ package com.xwbing.constant;
 
 /**
  * 说明: 公共常量
- * 项目名称: sbdemo
+ * 项目名称: boot-module-demo
  * 创建时间: 2017/5/10 16:36
  * 作者:  xiangwb
  */
 public class CommonConstant {
+	/**
+	 * 验证码
+	 */
+	public static final String KEY_CAPTCHA = "captchaCode";
 	/**
 	 * 顶级
 	 */

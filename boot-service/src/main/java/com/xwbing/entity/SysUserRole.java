@@ -1,15 +1,14 @@
-package com.xwbing.domain;
+package com.xwbing.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
 /**
  * 说明: 用户角色关系
- * 项目名称: sbdemo
+ * 项目名称: boot-module-demo
  * 创建时间: 2017/5/10 16:36
  * 作者:  xiangwb
  */
@@ -22,13 +21,11 @@ public class SysUserRole extends BaseEntity {
     /**
      * 用户主键
      */
-    @NotBlank(message = "用户主键不能为空")
     @Column(name = "user_id")
 	private String userId;
     /**
      * 角色主键
      */
-    @NotBlank(message = "角色主键不能为空")
     @Column(name = "role_id")
 	private String roleId;
 }

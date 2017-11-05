@@ -15,7 +15,7 @@ import javax.mail.internet.MimeMessage;
 import java.io.File;
 
 /**
- * 项目名称: sb-demo
+ * 项目名称: boot-module-demo
  * 创建时间: 2017/9/18 11:31
  * 作者: xiangwb
  * 说明: mail服务层
@@ -43,7 +43,7 @@ public class MailService {
         message.setText(content);
         mailSender.send(message);
         restMessage.setSuccess(true);
-        restMessage.setMsg("纯文本邮件已经发送");
+        restMessage.setMessage("纯文本邮件已经发送");
         return restMessage;
     }
 
@@ -66,7 +66,7 @@ public class MailService {
             helper.setText(content, true);//启用html
             mailSender.send(message);
             restMessage.setSuccess(true);
-            restMessage.setMsg("html邮件已经发送!");
+            restMessage.setMessage("html邮件已经发送!");
             return restMessage;
         } catch (MessagingException e) {
             throw new BusinessException("发送html邮件时发生异常");
@@ -98,7 +98,7 @@ public class MailService {
             // 可以继续添加附件。。。。。
             mailSender.send(message);//发送邮件
             restMessage.setSuccess(true);
-            restMessage.setMsg("带附件的邮件已经发送!");
+            restMessage.setMessage("带附件的邮件已经发送!");
             return restMessage;
         } catch (MessagingException e) {
             throw new BusinessException("发送带附件的邮件时发生异常");
@@ -129,7 +129,7 @@ public class MailService {
             helper.addInline(rscId, res);
             mailSender.send(message);
             restMessage.setSuccess(true);
-            restMessage.setMsg("嵌入静态资源的邮件已经发送!");
+            restMessage.setMessage("嵌入静态资源的邮件已经发送!");
             return restMessage;
         } catch (MessagingException e) {
             throw new BusinessException("发送嵌入静态资源的邮件时发生异常！");

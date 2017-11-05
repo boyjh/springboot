@@ -15,7 +15,7 @@ import java.lang.reflect.Method;
 
 /**
  * 说明: web层日志记录切面
- * 项目名称: sbdemo
+ * 项目名称: boot-module-demo
  * 创建时间: 2017/5/10 16:34
  * 作者:  xiangwb
  */

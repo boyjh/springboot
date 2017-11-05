@@ -1,7 +1,7 @@
 package com.xwbing.util;
 
 
-import com.xwbing.domain.model.EmailModel;
+import com.xwbing.entity.model.EmailModel;
 import com.xwbing.exception.BusinessException;
 import org.apache.commons.lang3.StringUtils;
 

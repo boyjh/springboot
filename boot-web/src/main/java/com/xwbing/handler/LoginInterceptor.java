@@ -14,7 +14,7 @@ import java.util.Set;
 
 /**
  * 说明:  登录拦截器
- * 项目名称: sbdemo
+ * 项目名称: boot-module-demo
  * 创建时间: 2017/5/10 16:36
  * 作者:  xiangwb
  */
@@ -32,7 +32,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         if(!set.contains(servletPath) && !servletPath.contains("login")){
             HttpSession session = request.getSession();
             if (session.getAttribute(CommonConstant.SESSION_CURRENT_USER)!=null) {
-                // TODO: 2017/5/15
+                // TODO: 2017/10/3
                 return true;
             }else {
                 // TODO: 2017/10/3

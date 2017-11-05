@@ -1,6 +1,6 @@
 package com.xwbing.service;
 
-import com.xwbing.domain.SysConfig;
+import com.xwbing.entity.SysConfig;
 import com.xwbing.exception.BusinessException;
 import com.xwbing.repository.SysConfigRepository;
 import com.xwbing.util.PassWordUtil;
@@ -15,7 +15,7 @@ import java.util.Objects;
 
 /**
  * 说明:
- * 项目名称: sbdemo
+ * 项目名称: boot-module-demo
  * 创建时间: 2017/5/5 16:44
  * 作者:  xiangwb
  */
@@ -39,9 +39,9 @@ public class SysConfigService {
         SysConfig one = sysConfigRepository.save(sysConfig);
         if (Objects.nonNull(one)) {
             result.setSuccess(true);
-            result.setMsg("保存配置成功");
+            result.setMessage("保存配置成功");
         } else {
-            result.setMsg("保存配置失败");
+            result.setMessage("保存配置失败");
         }
         return result;
     }
@@ -55,7 +55,7 @@ public class SysConfigService {
         }
         sysConfigRepository.delete(old.getId());
         result.setSuccess(true);
-        result.setMsg("删除配置成功");
+        result.setMessage("删除配置成功");
         return result;
     }
 

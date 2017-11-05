@@ -1,4 +1,4 @@
-package com.xwbing.domain;
+package com.xwbing.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -9,11 +9,10 @@ import org.hibernate.validator.constraints.NotBlank;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.Pattern;
-import java.util.Date;
 
 /**
  * 说明: 用户
- * 项目名称: sbdemo
+ * 项目名称: boot-module-demo
  * 创建时间: 2017/5/10 16:36
  * 作者:  xiangwb
  */
@@ -45,6 +44,8 @@ public class SysUser extends BaseEntity {
     /**
      * 姓名
      */
+    @NotBlank(message = "姓名不能为空")
+    @Length(min = 1, max = 20, message = "长度为1-5")
     private String name;
     /**
      * 盐值
@@ -54,16 +55,6 @@ public class SysUser extends BaseEntity {
      * 密码
      */
     private String password;
-    /**
-     * 最后登录IP
-     */
-    @Column(name = "last_login_ip")
-    private String lastLoginIp;
-    /**
-     * 最后登录时间
-     */
-    @Column(name = "last_login_time")
-    private Date lastLoginTime;
     /**
      * 邮箱
      */
@@ -75,9 +66,4 @@ public class SysUser extends BaseEntity {
     @NotBlank
     @Pattern(regexp = "[01]", message = "性别格式为0|1,0代表女,1代表男")
     private String sex;
-    /**
-     * 是否管理员
-     */
-    @Column(name = "is_admin")
-    private String isAdmin;
 }

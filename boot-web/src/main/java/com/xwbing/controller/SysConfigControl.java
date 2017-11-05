@@ -1,7 +1,7 @@
 package com.xwbing.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.xwbing.domain.SysConfig;
+import com.xwbing.entity.SysConfig;
 import com.xwbing.service.SysConfigService;
 import com.xwbing.util.JSONObjResult;
 import com.xwbing.util.RestMessage;
@@ -20,7 +20,7 @@ import java.util.Objects;
 
 /**
  * 说明: 系统配置控制层
- * 项目名称: sbdemo
+ * 项目名称: boot-module-demo
  * 创建时间: 2017/5/10 16:36
  * 作者:  xiangwb
  */

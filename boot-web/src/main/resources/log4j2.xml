@@ -14,7 +14,7 @@
      %C : Java类名
      %L : 日志输出所在行数
      %M : 日志输出所在方法名
-     %msg:日志消息
+     %message:日志消息
      -5:从左显示5个字符宽度
 -->
 <Configuration status="off" monitorInterval="600">
@@ -29,7 +29,7 @@
             <!-- 控制台只输出level及以上级别的信息(onMatch),其他的直接拒绝(onMismatch) -->
             <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout>
-                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %L %-5p %class{36} %M : %msg%xEx%n</pattern>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %L %-5p %class{36} %M : %message%xEx%n</pattern>
             </PatternLayout>
         </Console>
         <!-- 自动追加日志信息到文件中，直至文件达到预定的大小，然后自动重新生成另外一个文件来记录之后的日志-->
@@ -39,7 +39,7 @@
                                  filePattern="${LOG_HOME}/error.%d{yyyy-MM-dd}.log.gz">
             <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout>
-                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %L %-5p %class{36} %M : %msg%xEx%n</pattern>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %L %-5p %class{36} %M : %message%xEx%n</pattern>
             </PatternLayout>
             <!-- 指定滚动日志的策略，就是什么时候进行新建日志文件输出日志.-->
             <Policies>
@@ -53,7 +53,7 @@
                                  filePattern="${LOG_HOME}/info.%d{yyyy-MM-dd}.log.gz">
             <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout>
-                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %L %-5p %class{36} %M : %msg%xEx%n</pattern>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %L %-5p %class{36} %M : %message%xEx%n</pattern>
             </PatternLayout>
             <Policies>
                 <TimeBasedTriggeringPolicy interval="1" modulate="true"/>

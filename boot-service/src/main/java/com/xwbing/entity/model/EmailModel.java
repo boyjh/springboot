@@ -1,10 +1,10 @@
-package com.xwbing.domain.model;
+package com.xwbing.entity.model;
 
 import java.util.Date;
 
 /**
  * 说明: 邮箱属性
- * 项目名称: sbdemo
+ * 项目名称: boot-module-demo
  * 创建时间: 2017/5/10 16:36
  * 作者:  xiangwb
  */

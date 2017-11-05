@@ -1,6 +1,7 @@
 package com.xwbing.configuration;
 
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+import com.xwbing.handler.LoginInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +20,7 @@ import java.util.List;
 
 /**
  * 说明: 程序配置
- * 项目名称: sbdemo
+ * 项目名称: boot-module-demo
  * 创建时间: 2017/5/10 16:36
  * 作者:  xiangwb
  */
@@ -37,7 +38,7 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
     public void addInterceptors(InterceptorRegistry registry) {
         logger.info("addInterceptors......");
         //拦截器1:登录判断
-//        registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**");
+        registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**");
 //        registry.addInterceptor(new LoginInterceptor())
 //                .addPathPatterns("/**").excludePathPatterns("/user/login", "/servlet/captchaCode", "/doc.html", "/swagger-ui.html");
         //拦截器2...

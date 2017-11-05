@@ -9,7 +9,7 @@ import java.util.Objects;
 
 /**
  * 说明:
- * 项目名称: sbdemo
+ * 项目名称: boot-module-demo
  * 创建时间: 2017/5/5 16:44
  * 作者:  xiangwb
  */
@@ -26,10 +26,10 @@ public class BaseService<T> {
         RestMessage result=new RestMessage();
         t=jpaRepository.save(t);
         if(Objects.isNull(t)){
-            result.setMsg("保存数据失败");
+            result.setMessage("保存数据失败");
         }else {
             result.setSuccess(true);
-            result.setMsg("保存数据成功");
+            result.setMessage("保存数据成功");
         }
         return result;
     }
@@ -43,7 +43,7 @@ public class BaseService<T> {
         RestMessage result=new RestMessage();
         jpaRepository.delete(id);
         result.setSuccess(true);
-        result.setMsg("删除数据成功");
+        result.setMessage("删除数据成功");
         return result;
     }
 

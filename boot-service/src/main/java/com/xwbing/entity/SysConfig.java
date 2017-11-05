@@ -1,4 +1,4 @@
-package com.xwbing.domain;
+package com.xwbing.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,7 +11,7 @@ import javax.validation.constraints.Pattern;
 
 /**
  * 说明: 系统配置
- * 项目名称: sbdemo
+ * 项目名称: boot-module-demo
  * 创建时间: 2017/5/10 16:36
  * 作者:  xiangwb
  */
@@ -36,7 +36,7 @@ public class SysConfig extends BaseEntity {
      * 是否启用
      */
     @NotBlank(message = "是否启用不能为空")
-    @Pattern(regexp = "Y|N",message = "是否启用格式为Y|N")
+    @Pattern(regexp = "[Y|N]",message = "是否启用格式为Y|N")
     @Column(name = "is_enable")
     private String isEnable;
     /**
@@ -45,5 +45,4 @@ public class SysConfig extends BaseEntity {
     @NotBlank(message = "配置项的name不能为空")
     @Length(min = 1, max = 10, message = "value长度为1-10")
     private String name;
-
 }

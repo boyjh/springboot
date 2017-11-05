@@ -41,7 +41,7 @@ public class JSONObjResult {
     public static JSONObject toJSONObj(RestMessage rest) {
         JSONObjResult jsonObjResult = new JSONObjResult();
         jsonObjResult.setSuccess(rest.isSuccess());
-        jsonObjResult.setMessage(rest.getMsg());
+        jsonObjResult.setMessage(rest.getMessage());
         jsonObjResult.setData(JSONUtil.beanToMap(rest.getData()));
         jsonObjResult.setId(rest.getId());
         return JSON.parseObject(JSON.toJSONString(jsonObjResult, SerializerFeature.WriteMapNullValue));

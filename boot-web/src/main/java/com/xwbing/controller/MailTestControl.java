@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 项目名称: sb-demo
+ * 项目名称: sb-boot-module-demo
  * 创建时间: 2017/9/18 13:42
  * 作者: xiangwb
  * 说明:邮件测试控制层

@@ -1,5 +1,7 @@
 package com.xwbing.util.captcah;
 
+import com.xwbing.constant.CommonConstant;
+
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -12,15 +14,10 @@ import java.io.OutputStream;
 /**
  * 说明: 创建验证码的servlet
  * 创建日期: 2016年8月29日 上午10:59:27
- * 作者: xiangwb
+ * 作者: xiangwbd
  */
 public class CaptchaServlet extends HttpServlet {
     private static final long serialVersionUID = -124247581620199710L;
-    /*
-     * 存放session中的值
-     */
-    public static final String KEY_CAPTCHA = "SE_KEY_MM_CODE";
-
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse res) {
         // 设置相应类型,告诉浏览器输出的内容为图片
@@ -34,8 +31,8 @@ public class CaptchaServlet extends HttpServlet {
             CaptchaUtil tool = new CaptchaUtil();
             StringBuffer code = new StringBuffer();
             BufferedImage image = tool.genRandomCodeImage(code);
-            session.removeAttribute(KEY_CAPTCHA);
-            session.setAttribute(KEY_CAPTCHA, code.toString());
+            session.removeAttribute(CommonConstant.KEY_CAPTCHA);
+            session.setAttribute(CommonConstant.KEY_CAPTCHA, code.toString());
             // 将内存中的图片通过流形式输出到客户端
             OutputStream out = res.getOutputStream();
             ImageIO.write(image, "JPEG", out);

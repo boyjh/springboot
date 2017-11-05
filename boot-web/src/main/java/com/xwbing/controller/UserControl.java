@@ -1,7 +1,7 @@
 package com.xwbing.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.xwbing.domain.SysUser;
+import com.xwbing.entity.SysUser;
 import com.xwbing.service.UserService;
 import com.xwbing.util.JSONObjResult;
 import com.xwbing.util.RestMessage;
@@ -11,13 +11,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
 
 /**
  * 说明: user
- * 项目名称: sbdemo
+ * 项目名称: boot-module-demo
  * 创建时间: 2017/5/10 16:36
  * 作者:  xiangwb
  */
@@ -53,7 +54,7 @@ public class UserControl {
     }
 
     @GetMapping("findById")
-    public JSONObject findById(String id) {
+    public JSONObject findById(@RequestParam String id) {
         if (StringUtils.isEmpty(id)) {
             return JSONObjResult.toJSONObj("主键不能为空");
         }
@@ -70,4 +71,25 @@ public class UserControl {
         return JSONObjResult.toJSONObj(list, true, "");
     }
 
+    @GetMapping("login")
+    public JSONObject login(HttpServletRequest req, @RequestParam String userName, @RequestParam String passWord, String ckeckCode) {
+        if (StringUtils.isEmpty(userName))
+            return JSONObjResult.toJSONObj("用户名不能为空");
+        if (StringUtils.isEmpty(passWord))
+            return JSONObjResult.toJSONObj("密码不能为空");
+        RestMessage login = userService.login(req, userName, passWord, ckeckCode);
+        return JSONObjResult.toJSONObj(login);
+    }
+
+    @GetMapping("updatePassWord")
+    public JSONObject updatePassWord(@RequestParam String newPassWord, @RequestParam String oldPassWord, @RequestParam String loginUserId) {
+        if (StringUtils.isEmpty(newPassWord))
+            return JSONObjResult.toJSONObj("新密码不能为空");
+        if (StringUtils.isEmpty(oldPassWord))
+            return JSONObjResult.toJSONObj("旧密码不能为空");
+        if (StringUtils.isEmpty(newPassWord))
+            return JSONObjResult.toJSONObj("用户id不能为空");
+        RestMessage restMessage = userService.updatePassWord(newPassWord, oldPassWord, loginUserId);
+        return JSONObjResult.toJSONObj(restMessage);
+    }
 }

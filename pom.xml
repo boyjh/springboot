@@ -18,17 +18,17 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <repositories>
-        <repository>
-            <id>nexus</id>
-            <name>drore Team nexus</name>
-            <url>http://192.168.11.110:8081/nexus/content/groups/public</url>
+        <repository><!-- 阿里云maven仓库-->
+            <id>nexus-aliyun</id>
+            <name>Nexus aliyun</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public</url>
         </repository>
     </repositories>
     <pluginRepositories>
         <pluginRepository>
-            <id>nexus</id>
-            <name>drore Team nexus</name>
-            <url>http://192.168.11.110:8081/nexus/content/groups/public</url>
+            <id>nexus-aliyun</id>
+            <name>Nexus aliyun</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public</url>
         </pluginRepository>
     </pluginRepositories>
     <properties>

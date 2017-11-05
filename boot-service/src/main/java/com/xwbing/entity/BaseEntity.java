@@ -1,4 +1,4 @@
-package com.xwbing.domain;
+package com.xwbing.entity;
 
 import lombok.Data;
 
@@ -10,7 +10,7 @@ import java.util.Date;
 
 /**
  * 说明: 基础类
- * 项目名称: sbdemo
+ * 项目名称: boot-module-demo
  * 创建时间: 2017/5/10 16:36
  * 作者:  xiangwb
  */
@@ -27,7 +27,4 @@ public class BaseEntity implements Serializable {
     private Date createTime;
     @Column(name = "modified_time")
     private Date modifiedTime;
-    @Column(name = "is_deleted")
-    private String isDeleted;
-    private Integer sort;
 }

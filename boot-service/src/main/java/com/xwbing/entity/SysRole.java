@@ -1,17 +1,14 @@
-package com.xwbing.domain;
+package com.xwbing.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.validation.constraints.Pattern;
 
 /**
  * 说明: 角色
- * 项目名称: sbdemo
+ * 项目名称: boot-module-demo
  * 创建时间: 2017/5/10 16:36
  * 作者:  xiangwb
  */
@@ -24,19 +21,14 @@ public class SysRole extends BaseEntity {
     /**
      * 角色名称
      */
-    @NotBlank(message = "角色名称不能为空")
     private String name;
     /**
      * 角色编码
      */
-    @NotBlank(message = "角色编码不能为空")
-    @Length(min = 6, max = 50, message = "长度为6-20")
     private String code;
     /**
      * 是否启用
      */
-    @NotBlank(message = "是否启用不能为空")
-    @Pattern(regexp = "Y|N",message = "是否启用格式应为Y|N")
     @Column(name = "is_enable")
     private String isEnable;
     /**
