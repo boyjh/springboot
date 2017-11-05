@@ -24,14 +24,20 @@ public class SysConfig extends BaseEntity {
     /**
      * 配置项的key
      */
-    @NotBlank(message = "配置项的code不能为空")
-    @Length(min = 1, max = 50, message = "code长度为1-50")
-    private String code;
+    @NotBlank(message = "配置项的key不能为空")
+    @Length(min = 1, max = 50, message = "key长度为1-50")
+    private String key;
     /**
      * 配置项的值
      */
     @NotBlank(message = "配置项的value不能为空")
     private String value;
+    /**
+     * 配置项的描述（名称）
+     */
+    @NotBlank(message = "配置项的name不能为空")
+    @Length(min = 1, max = 20, message = "value长度为1-20")
+    private String name;
     /**
      * 是否启用
      */
@@ -39,10 +45,5 @@ public class SysConfig extends BaseEntity {
     @Pattern(regexp = "[Y|N]",message = "是否启用格式为Y|N")
     @Column(name = "is_enable")
     private String isEnable;
-    /**
-     * 配置项的描述（名称）
-     */
-    @NotBlank(message = "配置项的name不能为空")
-    @Length(min = 1, max = 10, message = "value长度为1-10")
-    private String name;
+
 }

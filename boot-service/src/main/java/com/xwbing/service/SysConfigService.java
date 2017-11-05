@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.Objects;
 
 /**
  * 说明:
@@ -29,15 +28,15 @@ public class SysConfigService {
         RestMessage result = new RestMessage();
         sysConfig.setId(PassWordUtil.createId());
         sysConfig.setCreateTime(new Date());
-        if (Objects.isNull(sysConfig)) {
+        if (sysConfig==null) {
             throw new BusinessException("配置数据不能为空");
         }
-        SysConfig old = findByCode(sysConfig.getCode());
-        if (Objects.nonNull(old)) {
-            throw new BusinessException(sysConfig.getCode() + "已存在");
+        SysConfig old = findByKey(sysConfig.getKey());
+        if (old!=null) {
+            throw new BusinessException(sysConfig.getKey() + "已存在");
         }
         SysConfig one = sysConfigRepository.save(sysConfig);
-        if (Objects.nonNull(one)) {
+        if (one!=null) {
             result.setSuccess(true);
             result.setMessage("保存配置成功");
         } else {
@@ -49,8 +48,8 @@ public class SysConfigService {
     public RestMessage removeByCode(String code) {
         logger.info("删除配置信息");
         RestMessage result = new RestMessage();
-        SysConfig old = findByCode(code);
-        if (Objects.isNull(old)) {
+        SysConfig old = findByKey(code);
+        if (old==null) {
             throw new BusinessException("该配置项不存在");
         }
         sysConfigRepository.delete(old.getId());
@@ -59,7 +58,7 @@ public class SysConfigService {
         return result;
     }
 
-    public SysConfig findByCode(String code) {
-        return sysConfigRepository.findByCode(code);
+    public SysConfig findByKey(String key) {
+        return sysConfigRepository.findByKey(key);
     }
 }

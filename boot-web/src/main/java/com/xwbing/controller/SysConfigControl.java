@@ -34,7 +34,7 @@ public class SysConfigControl {
 
     @ApiOperation(value = "新增", notes = "新增系统配置信息")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "code", value = "配置项的key，长度为1-50", paramType = "query", required = true, dataType = "string"),
+            @ApiImplicitParam(name = "key", value = "配置项的key，长度为1-50", paramType = "query", required = true, dataType = "string"),
             @ApiImplicitParam(name = "value", value = "配置项的值", paramType = "query", required = true, dataType = "string"),
             @ApiImplicitParam(name = "isEnable", value = "是否启用，格式为Y|N", paramType = "query", required = true, dataType = "string"),
             @ApiImplicitParam(name = "name", value = "配置名称，长度为1-10", paramType = "query", required = true, dataType = "string")
@@ -48,11 +48,11 @@ public class SysConfigControl {
     }
 
     @ApiOperation(value = "删除", notes = "根据code删除系统配置信息")
-    @ApiImplicitParam(name = "code", value = "配置项的code", paramType = "query", required = true, dataType = "string")
+    @ApiImplicitParam(name = "key", value = "配置项的code", paramType = "query", required = true, dataType = "string")
     @PostMapping("removeByCode/{code}")
     public JSONObject removeByCode(@PathVariable String code) {
         String logMsg = "删除系统配置信息";
-        log.info(logMsg + " code:{}", code);
+        log.info(logMsg + " key:{}", code);
         if (StringUtils.isEmpty(code)) {
             return JSONObjResult.toJSONObj("code不能为空");
         }
@@ -61,15 +61,15 @@ public class SysConfigControl {
     }
 
     @ApiOperation(value = "查找", notes = "根据key查找系统配置信息")
-    @ApiImplicitParam(name = "code", value = "配置项的code", paramType = "query", required = true, dataType = "string")
+    @ApiImplicitParam(name = "key", value = "配置项的code", paramType = "query", required = true, dataType = "string")
     @PostMapping("findByCode")
     public JSONObject findByCode(@RequestParam String code) {
         String logMsg = "根据code查找系统配置信息";
-        log.info(logMsg + " code:{}", code);
+        log.info(logMsg + " key:{}", code);
         if (StringUtils.isEmpty(code)) {
             return JSONObjResult.toJSONObj("code不能为空");
         }
-        SysConfig one = sysConfigService.findByCode(code);
+        SysConfig one = sysConfigService.findByKey(code);
         if (Objects.isNull(one)) {
             return JSONObjResult.toJSONObj("该对象不存在");
         }

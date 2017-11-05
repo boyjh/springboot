@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * 说明:
@@ -53,12 +52,12 @@ public class UserService {
         if (one == null) {
             throw new BusinessException("新增用户失败");
         }
-        SysConfig sysConfig = sysConfigService.findByCode(CommonConstant.SYSCONFIG_EMAILCONFIGKEY);
-        if (Objects.isNull(sysConfig)) {
+        SysConfig sysConfig = sysConfigService.findByKey(CommonConstant.SYSCONFIG_EMAILCONFIGKEY);
+        if (sysConfig==null) {
             throw new BusinessException("没有查找到邮件配置项");
         }
         EmailModel emailModel = null;
-        if (StringUtils.isNotEmpty(sysConfig.getCode())) {
+        if (StringUtils.isNotEmpty(sysConfig.getKey())) {
             JSONObject jsonObject = JSONObject.parseObject(sysConfig.getValue());
             emailModel = JSONObject.toJavaObject(jsonObject, EmailModel.class);
         }
@@ -134,7 +133,7 @@ public class UserService {
      *
      * @return
      */
-    public List<SysUser> findList() {
+    public List<SysUser> listAll() {
         return userRepository.findAll();
     }
 
@@ -143,12 +142,13 @@ public class UserService {
      *
      * @param newPassWord
      * @param oldPassWord
-     * @param loginUserId
      * @return
      */
-    public RestMessage updatePassWord(String newPassWord, String oldPassWord, String loginUserId) {
+    public RestMessage updatePassWord(HttpServletRequest request,String newPassWord, String oldPassWord) {
         RestMessage result = new RestMessage();
-        SysUser sysUser = findOne(loginUserId);
+        HttpSession session = request.getSession();
+        String id = (String) session.getAttribute(CommonConstant.SESSION_CURRENT_USER_ID);
+        SysUser sysUser = findOne(id);
         if (sysUser == null)
             throw new BusinessException("该用户不存在");
         boolean flag = checkPassWord(oldPassWord, sysUser.getPassword(), sysUser.getSalt());
@@ -158,7 +158,7 @@ public class UserService {
         sysUser.setSalt(str[1]);
         sysUser.setPassword(str[2]);
         SysUser one = userRepository.save(sysUser);
-        if (Objects.nonNull(one)) {
+        if (one!=null) {
             result.setMessage("更新密码成功");
             result.setSuccess(true);
         } else {
@@ -170,18 +170,18 @@ public class UserService {
     /**
      * 登录
      *
-     * @param req
+     * @param request
      * @param userName
      * @param passWord
-     * @param ckeckCode
+     * @param checkCode
      * @return
      */
-    public RestMessage login(HttpServletRequest req, String userName, String passWord, String ckeckCode) {
+    public RestMessage login(HttpServletRequest request, String userName, String passWord, String checkCode) {
         RestMessage restMessage = new RestMessage();
-        HttpSession session = req.getSession();
+        HttpSession session = request.getSession();
         String imgCode = (String) session.getAttribute(CommonConstant.KEY_CAPTCHA);
         //验证验证码
-        if (!ckeckCode.equalsIgnoreCase(imgCode) || StringUtils.isEmpty(ckeckCode)) {
+        if (!checkCode.equalsIgnoreCase(imgCode) ) {
             throw new BusinessException("验证码错误");
         }
         //验证账号,密码
@@ -192,6 +192,7 @@ public class UserService {
         if (!flag)
             throw new BusinessException("密码错误");
         session.setAttribute(CommonConstant.SESSION_CURRENT_USER, userName);
+        session.setAttribute(CommonConstant.SESSION_CURRENT_USER_ID, user.getId());
         restMessage.setSuccess(true);
         restMessage.setMessage("登录成功");
         return restMessage;
@@ -216,16 +217,13 @@ public class UserService {
      * @return
      */
     private boolean checkPassWord(String passWord, String realPassWord, String salt) {
-        boolean flag;
         // 根据密码盐值， 解码
         byte[] saltByte = EncodeUtils.hexDecode(salt);
         byte[] hashPassword = Digests.sha1(passWord.getBytes(), saltByte,
-                SysUser.HASH_INTERATIONS);
+                PassWordUtil.HASH_INTERATIONS);
         // 密码 数据库中密码
         String validatePassWord = EncodeUtils.hexEncode(hashPassword);
         //判断密码是否相同
-        flag = realPassWord.equals(validatePassWord);
-        return flag;
+        return realPassWord.equals(validatePassWord);
     }
-
 }

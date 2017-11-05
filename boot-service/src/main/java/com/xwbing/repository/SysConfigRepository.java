@@ -10,5 +10,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * 作者:  xiangwb
  */
 public interface SysConfigRepository extends JpaRepository<SysConfig,String> {
-    SysConfig findByCode(String code);
+    SysConfig findByKey(String code);
 }

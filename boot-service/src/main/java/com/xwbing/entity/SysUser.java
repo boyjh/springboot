@@ -23,18 +23,6 @@ public class SysUser extends BaseEntity {
     private static final long serialVersionUID = -2447528751353457021L;
     public static String table = "sys_user_info";
     /**
-     * 密码盐长度
-     */
-    public static final int SALT_SIZE = 10;
-    /**
-     * 初始默认密码长度
-     */
-    public static final int PWD_LENGTH = 8;
-    /**
-     * hash
-     */
-    public static int HASH_INTERATIONS = 1024;
-    /**
      * 用户名
      */
     @NotBlank(message = "用户名不能为空")

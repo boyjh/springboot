@@ -67,29 +67,27 @@ public class UserControl {
 
     @GetMapping("findList")
     public JSONObject findList() {
-        List<SysUser> list = userService.findList();
+        List<SysUser> list = userService.listAll();
         return JSONObjResult.toJSONObj(list, true, "");
     }
 
     @GetMapping("login")
-    public JSONObject login(HttpServletRequest req, @RequestParam String userName, @RequestParam String passWord, String ckeckCode) {
-        if (StringUtils.isEmpty(userName))
-            return JSONObjResult.toJSONObj("用户名不能为空");
-        if (StringUtils.isEmpty(passWord))
-            return JSONObjResult.toJSONObj("密码不能为空");
-        RestMessage login = userService.login(req, userName, passWord, ckeckCode);
+    public JSONObject login(HttpServletRequest req, @RequestParam String userName, @RequestParam String passWord,@RequestParam String checkCode) {
+        if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(passWord))
+            return JSONObjResult.toJSONObj("用户名或密码不能为空");
+        if (StringUtils.isEmpty(checkCode) )
+            return JSONObjResult.toJSONObj("请输入验证码");
+        RestMessage login = userService.login(req, userName, passWord, checkCode);
         return JSONObjResult.toJSONObj(login);
     }
 
     @GetMapping("updatePassWord")
-    public JSONObject updatePassWord(@RequestParam String newPassWord, @RequestParam String oldPassWord, @RequestParam String loginUserId) {
+    public JSONObject updatePassWord(HttpServletRequest request, @RequestParam String newPassWord, @RequestParam String oldPassWord) {
         if (StringUtils.isEmpty(newPassWord))
             return JSONObjResult.toJSONObj("新密码不能为空");
         if (StringUtils.isEmpty(oldPassWord))
             return JSONObjResult.toJSONObj("旧密码不能为空");
-        if (StringUtils.isEmpty(newPassWord))
-            return JSONObjResult.toJSONObj("用户id不能为空");
-        RestMessage restMessage = userService.updatePassWord(newPassWord, oldPassWord, loginUserId);
+        RestMessage restMessage = userService.updatePassWord(request, newPassWord, oldPassWord);
         return JSONObjResult.toJSONObj(restMessage);
     }
 }
