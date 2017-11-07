@@ -1,6 +1,6 @@
 #server
 server:
-  port: 8088
+  port: 8080
   session:
     timeout: 60
   context-path: /

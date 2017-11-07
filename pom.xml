@@ -39,7 +39,7 @@
         <lombok.version>1.16.16</lombok.version>
         <!-- 打包跳过单元测试 -->
         <skipTests>true</skipTests>
-        <swagger2.version>2.2.2</swagger2.version>
+        <swagger2.version>2.4.0</swagger2.version>
     </properties>
     <dependencies>
         <dependency>

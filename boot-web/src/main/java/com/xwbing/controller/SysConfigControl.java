@@ -24,7 +24,7 @@ import java.util.List;
  * 创建时间: 2017/5/10 16:36
  * 作者:  xiangwb
  */
-@Api("系统配置")
+@Api(tags = "configApi", description = "系统配置")
 @RestController
 @RequestMapping("/config/")
 public class SysConfigControl {

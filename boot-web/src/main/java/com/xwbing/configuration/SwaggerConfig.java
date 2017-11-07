@@ -6,6 +6,7 @@ import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -21,22 +22,22 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfig {
     @Bean
-    public Docket createRestApi() {
+    public Docket buildDocket(){
         return new Docket(DocumentationType.SWAGGER_2)
-                .apiInfo(apiInfo())
+                .apiInfo(buildApiInf())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.xwbing.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.xwbing.controller"))//controller路径
                 .paths(PathSelectors.any())
                 .build();
     }
 
-    private ApiInfo apiInfo() {
+    private ApiInfo buildApiInf(){
         return new ApiInfoBuilder()
-                .title("管理系统RESTful APIs")
-                .description("管理系统api接口,包含登录、注册.......")
+                .title("Document RESTful APIs")
+                .description("API接口文档")
                 .termsOfServiceUrl("http://localhost:8080/swagger-ui.html")
-                .contact("xiangwb")
-                .version("1.0")
+                .contact(new Contact("xiangwb", "http://localhost:8080/swagger-ui.html", "xiangwbs@163.com"))
+                .version("1.0.0")
                 .build();
     }
 
