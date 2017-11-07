@@ -9,5 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * 创建时间: 2017/5/5 16:44
  * 作者:  xiangwb
  */
-public interface AuthorityRepository extends JpaRepository<SysAuthority,String> {
+public interface SysAuthorityRepository extends JpaRepository<SysAuthority,String> {
 }

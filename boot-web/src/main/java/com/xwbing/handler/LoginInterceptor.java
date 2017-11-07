@@ -1,14 +1,17 @@
 package com.xwbing.handler;
 
+import com.alibaba.fastjson.JSON;
 import com.xwbing.configuration.DispatcherServletConfig;
 import com.xwbing.constant.CommonConstant;
 import com.xwbing.util.CommonDataUtil;
+import com.xwbing.util.RestMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.OutputStream;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -39,10 +42,14 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 //                return false;
 //            }
             if (CommonDataUtil.getToken(CommonConstant.CURRENT_USER) != null) {
-                // TODO: 2017/10/3
                 return true;
             } else {
-                // TODO: 2017/10/3
+                logger.info("用户未登录");
+                OutputStream outputStream = response.getOutputStream();
+                RestMessage restMessage = new RestMessage();
+                restMessage.setMessage("请登录");
+                outputStream.write(JSON.toJSONString(restMessage).getBytes("utf-8"));
+                outputStream.close();
                 return false;
             }
         }

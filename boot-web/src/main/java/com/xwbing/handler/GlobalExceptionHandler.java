@@ -102,8 +102,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
-    public JSONObject handlerException(HttpServletRequest request,
-                                       Exception ex) {
+    public JSONObject handlerException(HttpServletRequest request, Exception ex) {
         logger.error(ex.getMessage());
         return JSONObjResult.toJSONObj("系统异常，请联系管理员");
     }

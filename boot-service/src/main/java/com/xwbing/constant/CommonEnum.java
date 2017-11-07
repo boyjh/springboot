@@ -54,6 +54,26 @@ public class CommonEnum {
         }
     }
 
+    public enum LoginInOutEnum {
+        IN("登录", 1), OUT("登出", 2);
+        // 成员变量
+        private String name;
+        private int value;
+
+        private LoginInOutEnum(String name, int value) {
+            this.value = value;
+            this.name = name;
+        }
+
+        public int getValue() {
+            return value;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
+
     public static void main(String[] args) {
         String code = "Y";
 //        for (YesOrNoEnum yesOrNoEnum : YesOrNoEnum.values()) {

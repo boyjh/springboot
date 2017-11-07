@@ -1,5 +1,6 @@
 package com.xwbing.entity.model;
 
+import lombok.Data;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
@@ -18,7 +19,7 @@ import java.util.Date;
  * 创建时间: 2017/5/17 16:13
  * 作者: xiangwb
  */
-
+@Data
 public class ValidateModel {
     @NotBlank(message = "name不能为空")
     @Length(max = 50, message = "name长度为1-50")
@@ -45,60 +46,4 @@ public class ValidateModel {
     @NotBlank(message = "sex不能为空")
     @Pattern(regexp = "[01]", message = "sex格式为0|1,0代表女,1代表男")
     private String sex;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public double getMoney() {
-        return money;
-    }
-
-    public void setMoney(double money) {
-        this.money = money;
-    }
-
-    public Date getBirthDay() {
-        return birthDay;
-    }
-
-    public void setBirthDay(Date birthDay) {
-        this.birthDay = birthDay;
-    }
-
-    public String getHappyTime() {
-        return happyTime;
-    }
-
-    public void setHappyTime(String happyTime) {
-        this.happyTime = happyTime;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getSex() {
-        return sex;
-    }
-
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
 }

@@ -5,15 +5,16 @@ import com.xwbing.constant.CommonConstant;
 import com.xwbing.constant.CommonEnum;
 import com.xwbing.entity.SysConfig;
 import com.xwbing.entity.SysUser;
-import com.xwbing.util.CommonDataUtil;
+import com.xwbing.entity.SysUserLoginInOut;
 import com.xwbing.entity.model.EmailModel;
 import com.xwbing.exception.BusinessException;
-import com.xwbing.repository.UserRepository;
+import com.xwbing.repository.SysUserRepository;
 import com.xwbing.util.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -25,11 +26,13 @@ import java.util.List;
  * 作者:  xiangwb
  */
 @Service
-public class UserService {
+public class SysUserService {
     @Resource
-    private UserRepository userRepository;
+    private SysUserRepository sysUserRepository;
     @Resource
     private SysConfigService sysConfigService;
+    @Resource
+    private SysUserLoginInOutService loginInOutService;
 
     /**
      * 增
@@ -51,7 +54,7 @@ public class UserService {
         sysUser.setPassword(res[2]);
         // 设置否管理员
         sysUser.setAdmin(CommonEnum.YesOrNoEnum.NO.getCode());
-        SysUser one = userRepository.save(sysUser);
+        SysUser one = sysUserRepository.save(sysUser);
         if (one == null) {
             throw new BusinessException("新增用户失败");
         }
@@ -83,7 +86,7 @@ public class UserService {
         if (CommonEnum.YesOrNoEnum.YES.getCode().equals(old.getAdmin())) {
             throw new BusinessException("不能对管理员进行删除操作");
         }
-        userRepository.delete(id);
+        sysUserRepository.delete(id);
         result.setMessage("删除成功");
         result.setSuccess(true);
         return result;
@@ -114,7 +117,7 @@ public class UserService {
         old.setSex(sysUser.getSex());
         old.setModifiedTime(new Date());
 //        old.setUserName(sysUser.getUserName());//用户名不能修改
-        SysUser one = userRepository.save(old);
+        SysUser one = sysUserRepository.save(old);
         if (one != null) {
             result.setMessage("更新成功");
             result.setSuccess(true);
@@ -131,7 +134,7 @@ public class UserService {
      * @return
      */
     public SysUser findOne(String id) {
-        return userRepository.findOne(id);
+        return sysUserRepository.findOne(id);
     }
 
     /**
@@ -140,7 +143,7 @@ public class UserService {
      * @return
      */
     public List<SysUser> listAll() {
-        List<SysUser> all = userRepository.findAll();
+        List<SysUser> all = sysUserRepository.findAll();
         if (CollectionUtils.isNotEmpty(all)) {
             all.forEach(sysUser -> {
                 CommonEnum.SexEnum sexEnum = Arrays.stream(CommonEnum.SexEnum.values()).filter(obj -> obj.getCode().equals(sysUser.getSex())).findFirst().get();
@@ -174,7 +177,7 @@ public class UserService {
         old.setSalt(str[1]);
         old.setPassword(str[2]);
         old.setModifiedTime(new Date());
-        SysUser save = userRepository.save(old);
+        SysUser save = sysUserRepository.save(old);
         if (save == null)
             throw new BusinessException("重置密码失败");
         boolean send = sendEmail(old, str[0]);
@@ -204,7 +207,7 @@ public class UserService {
         sysUser.setSalt(str[1]);
         sysUser.setPassword(str[2]);
         sysUser.setModifiedTime(new Date());
-        SysUser save = userRepository.save(sysUser);
+        SysUser save = sysUserRepository.save(sysUser);
         if (save != null) {
             result.setMessage("修改密码成功");
             result.setSuccess(true);
@@ -222,7 +225,7 @@ public class UserService {
      * @param checkCode
      * @return
      */
-    public RestMessage login(String userName, String passWord, String checkCode) {
+    public RestMessage login(HttpServletRequest request, String userName, String passWord, String checkCode) {
         RestMessage restMessage = new RestMessage();
         String imgCode = (String) CommonDataUtil.getToken(CommonConstant.KEY_CAPTCHA);
         //验证验证码
@@ -238,8 +241,46 @@ public class UserService {
             throw new BusinessException("密码错误");
         CommonDataUtil.setToken(CommonConstant.CURRENT_USER, userName);
         CommonDataUtil.setToken(CommonConstant.CURRENT_USER_ID, user.getId());
+        //保存登录信息
+        SysUserLoginInOut loginInOut = new SysUserLoginInOut();
+        loginInOut.setCreateTime(new Date());
+        loginInOut.setUserId(user.getId());
+        loginInOut.setInoutType(CommonEnum.LoginInOutEnum.IN.getValue());
+        loginInOut.setIp(IpUtil.getIpAddr(request));
+        RestMessage save = loginInOutService.save(loginInOut);
+        if (!save.isSuccess())
+            throw new BusinessException("保存用户登录日志失败");
         restMessage.setSuccess(true);
         restMessage.setMessage("登录成功");
+        return restMessage;
+    }
+
+    /**
+     * 登出
+     *
+     * @param request
+     * @return
+     */
+    public RestMessage logout(HttpServletRequest request) {
+        RestMessage restMessage = new RestMessage();
+        String userId = (String) CommonDataUtil.getToken(CommonConstant.CURRENT_USER_ID);
+        SysUser user = findOne(userId);
+        if (user != null) {
+            CommonDataUtil.clearMap();
+            SysUserLoginInOut loginInOut = new SysUserLoginInOut();
+            loginInOut.setCreateTime(new Date());
+            loginInOut.setUserId(user.getId());
+            loginInOut.setInoutType(CommonEnum.LoginInOutEnum.OUT.getValue());
+            loginInOut.setIp(IpUtil.getIpAddr(request));
+            restMessage = loginInOutService.save(loginInOut);
+            if (restMessage.isSuccess()) {
+                restMessage.setMessage("登出成功");
+            } else {
+                restMessage.setMessage("保存用户登出信息失败");
+            }
+        } else {
+            restMessage.setMessage("没有获取到用户登录信息,请重新登录");
+        }
         return restMessage;
     }
 
@@ -250,7 +291,7 @@ public class UserService {
      * @return
      */
     private SysUser findByUserName(String userName) {
-        return userRepository.findByUserName(userName);
+        return sysUserRepository.findByUserName(userName);
     }
 
     /**
