@@ -26,9 +26,14 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     private static final Set<String> set = new HashSet<>();//拦截器白名单
 
     static {
-        set.add("/v2/api-docs");
+        //验证码
         set.add("/servlet/captchaCode");
-        set.add("/swagger-ui.html");
+        //swagger
+        set.add("/v2/api-docs");
+        set.add("/swagger-resources");
+        set.add("/configuration/ui");
+        set.add("/configuration/security");
+        //
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.xwbing.configuration;
 
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+import com.xwbing.handler.LoginInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -9,7 +10,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import javax.servlet.Filter;
 import java.util.ArrayList;
@@ -35,25 +39,29 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
     public void addInterceptors(InterceptorRegistry registry) {
         logger.info("addInterceptors......");
         //拦截器1:登录判断
-//        registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**");
+        registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**");
 //        registry.addInterceptor(new LoginInterceptor())
-//                .addPathPatterns("/**").excludePathPatterns("/user/login", "/servlet/captchaCode", "/doc.html", "/swagger-ui.html");
+//                .addPathPatterns("/**").excludePathPatterns("/user/login", "/servlet/captchaCode", "/swagger-ui.html");
         //拦截器2...
         super.addInterceptors(registry);
     }
 
-    //    /**
-//     * 配置静态访问资源
-//     * @param registry
-//     */
-//    @Override
-//    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-//        registry.addResourceHandler("swagger-ui.html")
-//                .addResourceLocations("classpath:/META-INF/resources/");
-//        registry.addResourceHandler("/webjars/**")
-//                .addResourceLocations("classpath:/META-INF/resources/webjars/");
-//        super.addResourceHandlers(registry);
-//    }
+    /**
+     * 配置静态访问资源
+     * 默认:
+     * classpath:/static
+     * classpath:/public
+     * classpath:/resources
+     * classpath:/META-INF/resources
+     *
+     * @param registry
+     */
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
+        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+        super.addResourceHandlers(registry);
+    }
 
     /**
      * 扩展消息转换器，增加fastjson

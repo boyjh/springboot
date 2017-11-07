@@ -22,7 +22,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfig {
     @Bean
-    public Docket buildDocket(){
+    public Docket buildDocket() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(buildApiInf())
                 .select()
@@ -31,7 +31,7 @@ public class SwaggerConfig {
                 .build();
     }
 
-    private ApiInfo buildApiInf(){
+    private ApiInfo buildApiInf() {
         return new ApiInfoBuilder()
                 .title("Document RESTful APIs")
                 .description("API接口文档")
@@ -40,5 +40,4 @@ public class SwaggerConfig {
                 .version("1.0.0")
                 .build();
     }
-
 }
