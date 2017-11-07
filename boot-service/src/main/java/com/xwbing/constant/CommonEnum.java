@@ -60,7 +60,7 @@ public class CommonEnum {
         private String name;
         private int value;
 
-        private LoginInOutEnum(String name, int value) {
+        LoginInOutEnum(String name, int value) {
             this.value = value;
             this.name = name;
         }

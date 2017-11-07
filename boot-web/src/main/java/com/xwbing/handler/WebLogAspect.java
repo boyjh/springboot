@@ -23,7 +23,7 @@ import java.lang.reflect.Method;
 @Component
 public class WebLogAspect {
     private final Logger logger = LoggerFactory.getLogger(WebLogAspect.class);
-    ThreadLocal<Long> startTime = new ThreadLocal<>();
+    private ThreadLocal<Long> startTime = new ThreadLocal<>();
 
     @Pointcut("within(com.xwbing.controller..*) && @annotation(logInfo)")
     public void pointCutWithMsg(LogInfo logInfo) {

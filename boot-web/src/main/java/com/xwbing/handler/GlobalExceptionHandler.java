@@ -42,8 +42,7 @@ public class GlobalExceptionHandler {
     // 返回给页面200状态码
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
-    public JSONObject handlerGuideException(HttpServletRequest request,
-                                            Exception ex) {
+    public JSONObject handlerGuideException(HttpServletRequest request, Exception ex) {
         logger.error(ex.getMessage());
         return JSONObjResult.toJSONObj(ex.getMessage());
     }
