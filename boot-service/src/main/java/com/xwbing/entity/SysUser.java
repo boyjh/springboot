@@ -26,15 +26,27 @@ public class SysUser extends BaseEntity {
      * 用户名
      */
     @NotBlank(message = "用户名不能为空")
-    @Length(min = 1, max = 20, message = "长度为1-20")
+    @Length(min = 1, max = 20, message = "用户名长度为1-20")
     @Column(name = "user_name")
     private String userName;
     /**
      * 姓名
      */
     @NotBlank(message = "姓名不能为空")
-    @Length(min = 1, max = 20, message = "长度为1-5")
+    @Length(min = 1, max = 20, message = "姓名长度为1-5")
     private String name;
+    /**
+     * 邮箱
+     */
+    @NotBlank(message = "邮箱不能为空")
+    @Email(message = "邮箱格式有误")
+    private String mail;
+    /**
+     * 性别
+     */
+    @NotBlank(message = "性别不能为空")
+    @Pattern(regexp = "[01]", message = "性别格式为0|1,0代表女,1代表男")
+    private String sex;
     /**
      * 盐值
      */
@@ -44,14 +56,11 @@ public class SysUser extends BaseEntity {
      */
     private String password;
     /**
-     * 邮箱
+     * 是否为管理员
      */
-    @Email
-    private String mail;
-    /**
-     * 性别
-     */
-    @NotBlank
-    @Pattern(regexp = "[01]", message = "性别格式为0|1,0代表女,1代表男")
-    private String sex;
+    private String admin;
+    //临时字段
+    private transient String create;
+    private transient String modified;
+    private transient String sexName;
 }

@@ -2,18 +2,19 @@ package com.xwbing.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.constant.CommonConstant;
+import com.xwbing.constant.CommonEnum;
 import com.xwbing.entity.SysConfig;
 import com.xwbing.entity.SysUser;
+import com.xwbing.util.CommonDataUtil;
 import com.xwbing.entity.model.EmailModel;
 import com.xwbing.exception.BusinessException;
 import com.xwbing.repository.UserRepository;
 import com.xwbing.util.*;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -25,9 +26,9 @@ import java.util.List;
  */
 @Service
 public class UserService {
-    @Autowired
+    @Resource
     private UserRepository userRepository;
-    @Autowired
+    @Resource
     private SysConfigService sysConfigService;
 
     /**
@@ -48,25 +49,16 @@ public class UserService {
         String[] res = PassWordUtil.getUserSecret(null, null);
         sysUser.setSalt(res[1]);
         sysUser.setPassword(res[2]);
+        // 设置否管理员
+        sysUser.setAdmin(CommonEnum.YesOrNoEnum.NO.getCode());
         SysUser one = userRepository.save(sysUser);
         if (one == null) {
             throw new BusinessException("新增用户失败");
         }
-        SysConfig sysConfig = sysConfigService.findByKey(CommonConstant.SYSCONFIG_EMAILCONFIGKEY);
-        if (sysConfig==null) {
-            throw new BusinessException("没有查找到邮件配置项");
-        }
-        EmailModel emailModel = null;
-        if (StringUtils.isNotEmpty(sysConfig.getKey())) {
-            JSONObject jsonObject = JSONObject.parseObject(sysConfig.getValue());
-            emailModel = JSONObject.toJavaObject(jsonObject, EmailModel.class);
-        }
-        emailModel.setToEmail(sysUser.getMail());
-        emailModel.setSubject(emailModel.getSubject());
-        emailModel.setCentent(emailModel.getCentent() + " 你的用户名是：" + sysUser.getUserName() + "密码是：" + res[0]);
+        //发送邮件
+        boolean send = sendEmail(sysUser, res[0]);
         // 发送邮件结束
-        boolean sucess = EmailUtil.sendTextEmail(emailModel);
-        if (!sucess) {
+        if (!send) {
             throw new BusinessException("发送密码邮件错误");
         }
         result.setSuccess(true);
@@ -85,7 +77,14 @@ public class UserService {
         if (old == null) {
             throw new BusinessException("该对象不存在");
         }
+        if (id.equals(CommonDataUtil.getToken(CommonConstant.CURRENT_USER_ID))) {
+            throw new BusinessException("不能删除当前登录用户");
+        }
+        if (CommonEnum.YesOrNoEnum.YES.getCode().equals(old.getAdmin())) {
+            throw new BusinessException("不能对管理员进行删除操作");
+        }
         userRepository.delete(id);
+        result.setMessage("删除成功");
         result.setSuccess(true);
         return result;
 
@@ -103,17 +102,24 @@ public class UserService {
         if (old == null) {
             throw new BusinessException("该对象不存在");
         }
+        if (old.getId().equals(CommonDataUtil.getToken(CommonConstant.CURRENT_USER_ID))) {
+            throw new BusinessException("不能修改当前登录用户");
+        }
+        if (CommonEnum.YesOrNoEnum.YES.getCode().equals(old.getAdmin())) {
+            throw new BusinessException("不能对管理员进行修改操作");
+        }
         // 根据实际情况补充
         old.setName(sysUser.getName());
         old.setMail(sysUser.getMail());
         old.setSex(sysUser.getSex());
-        old.setUserName(sysUser.getUserName());
+        old.setModifiedTime(new Date());
+//        old.setUserName(sysUser.getUserName());//用户名不能修改
         SysUser one = userRepository.save(old);
-        if (one == null) {
-            result.setMessage("更新用户成功");
+        if (one != null) {
+            result.setMessage("更新成功");
             result.setSuccess(true);
         } else {
-            result.setMessage("更新用户失败");
+            result.setMessage("更新失败");
         }
         return result;
     }
@@ -134,7 +140,49 @@ public class UserService {
      * @return
      */
     public List<SysUser> listAll() {
-        return userRepository.findAll();
+        List<SysUser> all = userRepository.findAll();
+        if (CollectionUtils.isNotEmpty(all)) {
+            all.forEach(sysUser -> {
+                CommonEnum.SexEnum sexEnum = Arrays.stream(CommonEnum.SexEnum.values()).filter(obj -> obj.getCode().equals(sysUser.getSex())).findFirst().get();
+                sysUser.setSexName(sexEnum.getName());
+                sysUser.setCreate(DateUtil2.dateToStr(sysUser.getCreateTime(), DateUtil2.YYYY_MM_DD_HH_MM_SS));
+                Date modifiedTime = sysUser.getModifiedTime();
+                if (modifiedTime != null)
+                    sysUser.setModified(DateUtil2.dateToStr(sysUser.getModifiedTime(), DateUtil2.YYYY_MM_DD_HH_MM_SS));
+            });
+        }
+        return all;
+    }
+
+    /**
+     * 重置密码
+     *
+     * @param id
+     * @return
+     */
+    public RestMessage resetPassWord(String id) {
+        RestMessage result = new RestMessage();
+        SysUser old = findOne(id);
+        if (old == null)
+            throw new BusinessException("未查询到用户信息");
+        if (CommonDataUtil.getToken(CommonConstant.CURRENT_USER_ID).equals(id))
+            throw new BusinessException("不能重置当前登录用户");
+        if (CommonEnum.YesOrNoEnum.YES.getCode().equals(old.getAdmin())) {
+            throw new BusinessException("管理员密码不能重置");
+        }
+        String[] str = PassWordUtil.getUserSecret(null, null);
+        old.setSalt(str[1]);
+        old.setPassword(str[2]);
+        old.setModifiedTime(new Date());
+        SysUser save = userRepository.save(old);
+        if (save == null)
+            throw new BusinessException("重置密码失败");
+        boolean send = sendEmail(old, str[0]);
+        if (!send)
+            throw new BusinessException("发送密码邮件错误");
+        result.setSuccess(true);
+        result.setMessage("重置密码成功");
+        return result;
     }
 
     /**
@@ -144,25 +192,24 @@ public class UserService {
      * @param oldPassWord
      * @return
      */
-    public RestMessage updatePassWord(HttpServletRequest request,String newPassWord, String oldPassWord) {
+    public RestMessage updatePassWord(String newPassWord, String oldPassWord, String id) {
         RestMessage result = new RestMessage();
-        HttpSession session = request.getSession();
-        String id = (String) session.getAttribute(CommonConstant.SESSION_CURRENT_USER_ID);
         SysUser sysUser = findOne(id);
         if (sysUser == null)
             throw new BusinessException("该用户不存在");
         boolean flag = checkPassWord(oldPassWord, sysUser.getPassword(), sysUser.getSalt());
         if (!flag)
-            throw new BusinessException("原密码错误，请重新输入");
+            throw new BusinessException("原密码错误,请重新输入");
         String[] str = PassWordUtil.getUserSecret(newPassWord, null);
         sysUser.setSalt(str[1]);
         sysUser.setPassword(str[2]);
-        SysUser one = userRepository.save(sysUser);
-        if (one!=null) {
-            result.setMessage("更新密码成功");
+        sysUser.setModifiedTime(new Date());
+        SysUser save = userRepository.save(sysUser);
+        if (save != null) {
+            result.setMessage("修改密码成功");
             result.setSuccess(true);
         } else {
-            result.setMessage("更新密码失败");
+            result.setMessage("修改密码失败");
         }
         return result;
     }
@@ -170,18 +217,16 @@ public class UserService {
     /**
      * 登录
      *
-     * @param request
      * @param userName
      * @param passWord
      * @param checkCode
      * @return
      */
-    public RestMessage login(HttpServletRequest request, String userName, String passWord, String checkCode) {
+    public RestMessage login(String userName, String passWord, String checkCode) {
         RestMessage restMessage = new RestMessage();
-        HttpSession session = request.getSession();
-        String imgCode = (String) session.getAttribute(CommonConstant.KEY_CAPTCHA);
+        String imgCode = (String) CommonDataUtil.getToken(CommonConstant.KEY_CAPTCHA);
         //验证验证码
-        if (!checkCode.equalsIgnoreCase(imgCode) ) {
+        if (!checkCode.equalsIgnoreCase(imgCode)) {
             throw new BusinessException("验证码错误");
         }
         //验证账号,密码
@@ -191,8 +236,8 @@ public class UserService {
         boolean flag = checkPassWord(passWord, user.getPassword(), user.getSalt());
         if (!flag)
             throw new BusinessException("密码错误");
-        session.setAttribute(CommonConstant.SESSION_CURRENT_USER, userName);
-        session.setAttribute(CommonConstant.SESSION_CURRENT_USER_ID, user.getId());
+        CommonDataUtil.setToken(CommonConstant.CURRENT_USER, userName);
+        CommonDataUtil.setToken(CommonConstant.CURRENT_USER_ID, user.getId());
         restMessage.setSuccess(true);
         restMessage.setMessage("登录成功");
         return restMessage;
@@ -225,5 +270,25 @@ public class UserService {
         String validatePassWord = EncodeUtils.hexEncode(hashPassword);
         //判断密码是否相同
         return realPassWord.equals(validatePassWord);
+    }
+
+    /**
+     * 发送邮件
+     *
+     * @param sysUser
+     * @param passWord
+     * @return
+     */
+    private boolean sendEmail(SysUser sysUser, String passWord) {
+        SysConfig sysConfig = sysConfigService.findByCode(CommonConstant.EMAIL_KEY);
+        if (sysConfig == null) {
+            throw new BusinessException("没有查找到邮件配置项");
+        }
+        JSONObject jsonObject = JSONObject.parseObject(sysConfig.getValue());
+        EmailModel emailModel = JSONObject.toJavaObject(jsonObject, EmailModel.class);
+        emailModel.setToEmail(sysUser.getMail());
+        emailModel.setSubject(emailModel.getSubject());
+        emailModel.setCentent(emailModel.getCentent() + " 你的用户名是:" + sysUser.getUserName() + ",密码是:" + passWord);
+        return EmailUtil.sendTextEmail(emailModel);
     }
 }

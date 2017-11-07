@@ -1,7 +1,10 @@
 package com.xwbing.constant;
 
+import com.alibaba.fastjson.JSONObject;
+
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.stream.Collectors;
+import java.util.List;
 
 /**
  * 说明: 公共枚举
@@ -10,12 +13,15 @@ import java.util.stream.Collectors;
  * 作者: xiangwb
  */
 public class CommonEnum {
-    public enum YesOrNo {
+    private CommonEnum() {
+    }
+
+    public enum YesOrNoEnum {
         YES("是", "Y"), NO("否", "N");
         private String name;
         private String code;
 
-        YesOrNo(String name, String code) {
+        YesOrNoEnum(String name, String code) {
             this.name = name;
             this.code = code;
         }
@@ -29,21 +35,18 @@ public class CommonEnum {
         }
     }
 
-    /**
-     * 登录登出标记
-     */
-    public enum LoginInOut {
-        IN("登录", 1), OUT("登出", 2);
+    public enum SexEnum {
+        MAN("男", "1"), WOMAN("女", "0");
         private String name;
-        private int value;
+        private String code;
 
-        LoginInOut(String name, int value) {
+        SexEnum(String name, String code) {
             this.name = name;
-            this.value = value;
+            this.code = code;
         }
 
-        public int getValue() {
-            return value;
+        public String getCode() {
+            return code;
         }
 
         public String getName() {
@@ -51,34 +54,25 @@ public class CommonEnum {
         }
     }
 
-    public enum ValidateResultEnum {
-        SUCCESS("校验通过", 1), FAILED("校验失败", 0);
-        private String msg;
-        private int errorCode;
-
-        ValidateResultEnum(String msg, int errorCode) {
-            this.msg = msg;
-            this.errorCode = errorCode;
-        }
-
-        public String getMsg() {
-            return this.msg;
-        }
-
-        public int getErrorCode() {
-            return this.errorCode;
-        }
-    }
-
     public static void main(String[] args) {
         String code = "Y";
-        for (YesOrNo yesOrNo : YesOrNo.values()) {
-            if (yesOrNo.getCode().equals(code)) {
-                System.out.println(yesOrNo.getName());
-                break;
-            }
+//        for (YesOrNoEnum yesOrNoEnum : YesOrNoEnum.values()) {
+//            if (yesOrNoEnum.getCode().equals(code)) {
+//                System.out.println(yesOrNoEnum.getName());
+//                break;
+//            }
+//        }
+        YesOrNoEnum yesOrNoEnum = Arrays.stream(YesOrNoEnum.values()).filter(obj -> obj.getCode().equals(code)).findFirst().get();
+        System.out.println(yesOrNoEnum.getName());
+
+        List<JSONObject> resultVos = new ArrayList<>();
+        JSONObject jsonObject;
+        for (YesOrNoEnum status : YesOrNoEnum.values()) {
+            jsonObject = new JSONObject();
+            jsonObject.put("code", status.getCode());
+            jsonObject.put("name", status.getName());
+            resultVos.add(jsonObject);
         }
-        YesOrNo yesOrNo = Arrays.stream(YesOrNo.values()).filter(obj -> obj.getCode().equals(code)).collect(Collectors.toList()).get(0);
-        System.out.println(yesOrNo.getName());
+//        return resultVos;
     }
 }

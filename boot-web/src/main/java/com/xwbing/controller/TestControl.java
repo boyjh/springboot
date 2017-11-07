@@ -4,10 +4,11 @@ import com.xwbing.annotation.LogInfo;
 import com.xwbing.redis.RedisService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
 
 /**
  * 说明:
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/test/")
 public class TestControl {
-    @Autowired
+    @Resource
     private RedisService redisService;
     private final Logger logger = LoggerFactory.getLogger(TestControl.class);
 

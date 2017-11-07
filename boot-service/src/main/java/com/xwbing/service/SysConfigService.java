@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 说明:
@@ -22,21 +23,22 @@ import java.util.Date;
 public class SysConfigService {
     @Autowired
     private SysConfigRepository sysConfigRepository;
-    private  static Logger logger= LoggerFactory.getLogger(SysConfigService.class);
+    private static Logger logger = LoggerFactory.getLogger(SysConfigService.class);
+
     public RestMessage save(SysConfig sysConfig) {
         logger.info("保存配置信息");
         RestMessage result = new RestMessage();
-        sysConfig.setId(PassWordUtil.createId());
-        sysConfig.setCreateTime(new Date());
-        if (sysConfig==null) {
+        if (sysConfig == null) {
             throw new BusinessException("配置数据不能为空");
         }
-        SysConfig old = findByKey(sysConfig.getKey());
-        if (old!=null) {
-            throw new BusinessException(sysConfig.getKey() + "已存在");
+        SysConfig old = findByCode(sysConfig.getCode());
+        if (old != null) {
+            throw new BusinessException(sysConfig.getCode() + "已存在");
         }
+        sysConfig.setId(PassWordUtil.createId());
+        sysConfig.setCreateTime(new Date());
         SysConfig one = sysConfigRepository.save(sysConfig);
-        if (one!=null) {
+        if (one != null) {
             result.setSuccess(true);
             result.setMessage("保存配置成功");
         } else {
@@ -48,8 +50,8 @@ public class SysConfigService {
     public RestMessage removeByCode(String code) {
         logger.info("删除配置信息");
         RestMessage result = new RestMessage();
-        SysConfig old = findByKey(code);
-        if (old==null) {
+        SysConfig old = findByCode(code);
+        if (old == null) {
             throw new BusinessException("该配置项不存在");
         }
         sysConfigRepository.delete(old.getId());
@@ -58,7 +60,30 @@ public class SysConfigService {
         return result;
     }
 
-    public SysConfig findByKey(String key) {
-        return sysConfigRepository.findByKey(key);
+    public RestMessage update(SysConfig sysConfig) {
+        RestMessage result = new RestMessage();
+        SysConfig old = findByCode(sysConfig.getCode());
+        if (old == null) {
+            throw new BusinessException("该配置项不存在");
+        }
+        old.setValue(sysConfig.getValue());
+        old.setEnable(sysConfig.getEnable());
+        old.setModifiedTime(new Date());
+        SysConfig save = sysConfigRepository.save(old);
+        if (save != null) {
+            result.setMessage("更新成功");
+            result.setSuccess(true);
+        } else {
+            result.setMessage("更新失败");
+        }
+        return result;
+    }
+
+    public SysConfig findByCode(String code) {
+        return sysConfigRepository.findByCode(code);
+    }
+
+    public List<SysConfig> findByEnable(String enable) {
+        return sysConfigRepository.findByEnable(enable);
     }
 }

@@ -7,7 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -56,11 +58,9 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = BindException.class)
     @ResponseBody
-    public JSONObject handlerBindException(HttpServletRequest request,
-                                           HttpServletResponse response, BindException ex) {
-
+    public JSONObject handlerBindException(HttpServletRequest request, HttpServletResponse response, BindException ex) {
         List<ObjectError> list = ex.getAllErrors();
-        StringBuffer stringBuffer = new StringBuffer();
+        StringBuilder stringBuffer = new StringBuilder();
         for (ObjectError objectError : list) {
             if (stringBuffer.length() > 0)
                 stringBuffer.append(" && ");
@@ -68,6 +68,29 @@ public class GlobalExceptionHandler {
         }
         logger.error(stringBuffer.toString());
         response.setStatus(HttpStatus.OK.value());
+        return JSONObjResult.toJSONObj(stringBuffer.toString());
+    }
+
+    /**
+     * 表单检验(validator) 异常 (@RequestBody)
+     *
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
+    public JSONObject handlerMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+
+        BindingResult bindingResult = ex.getBindingResult();
+        List<ObjectError> allErrors = bindingResult.getAllErrors();
+        StringBuilder stringBuffer = new StringBuilder();
+        for (ObjectError objectError : allErrors) {
+            if (stringBuffer.length() > 0)
+                stringBuffer.append(" && ");
+            stringBuffer.append(objectError.getDefaultMessage());
+        }
+        logger.error(stringBuffer.toString());
         return JSONObjResult.toJSONObj(stringBuffer.toString());
     }
 

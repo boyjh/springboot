@@ -1,12 +1,12 @@
 package com.xwbing.util.captcah;
 
 import com.xwbing.constant.CommonConstant;
+import com.xwbing.util.CommonDataUtil;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -18,6 +18,7 @@ import java.io.OutputStream;
  */
 public class CaptchaServlet extends HttpServlet {
     private static final long serialVersionUID = -124247581620199710L;
+
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse res) {
         // 设置相应类型,告诉浏览器输出的内容为图片
@@ -27,12 +28,13 @@ public class CaptchaServlet extends HttpServlet {
         res.setHeader("Cache-Control", "no-cache");
         res.setDateHeader("Expire", 0);
         try {
-            HttpSession session = req.getSession();
             CaptchaUtil tool = new CaptchaUtil();
             StringBuffer code = new StringBuffer();
             BufferedImage image = tool.genRandomCodeImage(code);
-            session.removeAttribute(CommonConstant.KEY_CAPTCHA);
-            session.setAttribute(CommonConstant.KEY_CAPTCHA, code.toString());
+//            HttpSession session = req.getSession();
+//            session.removeAttribute(CommonConstant.KEY_CAPTCHA);
+//            session.setAttribute(CommonConstant.KEY_CAPTCHA, code.toString());
+            CommonDataUtil.setToken(CommonConstant.KEY_CAPTCHA, code.toString());
             // 将内存中的图片通过流形式输出到客户端
             OutputStream out = res.getOutputStream();
             ImageIO.write(image, "JPEG", out);

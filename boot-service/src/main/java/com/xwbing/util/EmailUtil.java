@@ -127,6 +127,7 @@ public class EmailUtil {
     }
 
     public static void main(String[] args) {
+        String email = "{'serverHost':'smtp.163.com','serverPort':25,'serverHost':'smtp.163.com','protocol':'smtp','auth':true,'fromEmail':'xwbing2009@163.com','password':'xwbing900417','subject':'注册成功','centent':'注册成功'}";
         EmailModel emailModel = new EmailModel();
         emailModel.setServerHost("smtp.163.com");
         emailModel.setServerPort(25);

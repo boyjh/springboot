@@ -102,11 +102,11 @@ public class CaptchaUtil {
 		CaptchaUtil tool = new CaptchaUtil();
 		StringBuffer code = new StringBuffer();
 		BufferedImage image = tool.genRandomCodeImage(code);
-		System.out.println("&gt;&gt;&gt; random key =: " + code);
+		System.out.println("&gt;&gt;&gt; random code =: " + code);
 		try {
 			// 将内存中的图片通过流动形式输出到客户端
 			ImageIO.write(image, "JPEG", new FileOutputStream(new File(
-					"random-key.jpg")));
+					"random-code.jpg")));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

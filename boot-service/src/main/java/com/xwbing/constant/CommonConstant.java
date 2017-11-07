@@ -27,14 +27,14 @@ public class CommonConstant {
     /**
      * 邮件服务器配置项
      */
-    public static final String SYSCONFIG_EMAILCONFIGKEY = "email_config";
+    public static final String EMAIL_KEY = "email_config";
     /**
      *
      * 当前登录用户
      */
-    public static final String SESSION_CURRENT_USER = "current_user";
+    public static final String CURRENT_USER = "current_user";
     /**
      * 当前登录用户id
      */
-    public static final String SESSION_CURRENT_USER_ID = "current_id";
+    public static final String CURRENT_USER_ID = "current_id";
 }

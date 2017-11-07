@@ -4,10 +4,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.xwbing.service.MailService;
 import com.xwbing.util.JSONObjResult;
 import com.xwbing.util.RestMessage;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
 
 /**
  * 项目名称: sb-boot-module-demo
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/mail/")
 public class MailTestControl {
-    @Autowired
+    @Resource
     private MailService mailService;
 
     /**
