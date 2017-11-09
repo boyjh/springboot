@@ -7,9 +7,9 @@ import com.xwbing.util.PassWordUtil;
 import com.xwbing.util.RestMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 
@@ -21,7 +21,7 @@ import java.util.List;
  */
 @Service
 public class SysConfigService {
-    @Autowired
+    @Resource
     private SysConfigRepository sysConfigRepository;
     private static Logger logger = LoggerFactory.getLogger(SysConfigService.class);
 

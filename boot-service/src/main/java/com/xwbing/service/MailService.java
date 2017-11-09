@@ -10,6 +10,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
@@ -22,7 +23,7 @@ import java.io.File;
  */
 @Service
 public class MailService {
-    @Autowired
+    @Resource
     private JavaMailSender mailSender;
     @Value("${spring.mail.username}")
     private String from;

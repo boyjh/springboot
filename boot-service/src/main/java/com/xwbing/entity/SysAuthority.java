@@ -3,6 +3,7 @@ package com.xwbing.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 /**
@@ -28,7 +29,7 @@ public class SysAuthority extends BaseEntity {
     /**
      * 是否启用
      */
-    private String isEnable;
+    private String enable;
     /**
      * url地址
      */
@@ -36,6 +37,7 @@ public class SysAuthority extends BaseEntity {
     /**
      * 父ID
      */
+    @Column(name = "parent_id")
     private String parentId;
     /**
      * 类型  2按钮 1菜单

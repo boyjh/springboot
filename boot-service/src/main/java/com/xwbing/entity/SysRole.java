@@ -3,7 +3,6 @@ package com.xwbing.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 
 /**
@@ -29,8 +28,7 @@ public class SysRole extends BaseEntity {
     /**
      * 是否启用
      */
-    @Column(name = "is_enable")
-    private String isEnable;
+    private String enable;
     /**
      * 描述
      */
