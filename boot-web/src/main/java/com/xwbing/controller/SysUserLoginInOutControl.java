@@ -17,7 +17,7 @@ import java.util.List;
  * 项目名称: boot-module-demo
  * 创建时间: 2017/11/7 11:16
  * 作者: xiangwb
- * 说明:
+ * 说明: 用户登录登出控制层
  */
 @RestController
 @RequestMapping("/inout/")

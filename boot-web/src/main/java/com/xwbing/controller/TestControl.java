@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.Resource;
 
 /**
- * 说明:
+ * 说明: 测试控制层
  * 项目名称: boot-module-demo
  * 创建时间: 2017/5/5 9:21
  * 作者:  xiangwb
