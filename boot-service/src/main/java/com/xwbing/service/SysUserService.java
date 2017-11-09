@@ -42,7 +42,7 @@ public class SysUserService {
      */
     public RestMessage save(SysUser sysUser) {
         RestMessage result = new RestMessage();
-        SysUser old = findByUserName(sysUser.getUserName());
+        SysUser old = getByUserName(sysUser.getUserName());
         if (old != null) {
             throw new BusinessException("已经存在此用户名");
         }
@@ -76,7 +76,7 @@ public class SysUserService {
      */
     public RestMessage removeById(String id) {
         RestMessage result = new RestMessage();
-        SysUser old = findOne(id);
+        SysUser old = getOne(id);
         if (old == null) {
             throw new BusinessException("该对象不存在");
         }
@@ -101,7 +101,7 @@ public class SysUserService {
      */
     public RestMessage update(SysUser sysUser) {
         RestMessage result = new RestMessage();
-        SysUser old = findOne(sysUser.getId());
+        SysUser old = getOne(sysUser.getId());
         if (old == null) {
             throw new BusinessException("该对象不存在");
         }
@@ -133,7 +133,7 @@ public class SysUserService {
      * @param id
      * @return
      */
-    public SysUser findOne(String id) {
+    public SysUser getOne(String id) {
         return sysUserRepository.findOne(id);
     }
 
@@ -165,7 +165,7 @@ public class SysUserService {
      */
     public RestMessage resetPassWord(String id) {
         RestMessage result = new RestMessage();
-        SysUser old = findOne(id);
+        SysUser old = getOne(id);
         if (old == null)
             throw new BusinessException("未查询到用户信息");
         if (CommonDataUtil.getToken(CommonConstant.CURRENT_USER_ID).equals(id))
@@ -197,7 +197,7 @@ public class SysUserService {
      */
     public RestMessage updatePassWord(String newPassWord, String oldPassWord, String id) {
         RestMessage result = new RestMessage();
-        SysUser sysUser = findOne(id);
+        SysUser sysUser = getOne(id);
         if (sysUser == null)
             throw new BusinessException("该用户不存在");
         boolean flag = checkPassWord(oldPassWord, sysUser.getPassword(), sysUser.getSalt());
@@ -233,7 +233,7 @@ public class SysUserService {
             throw new BusinessException("验证码错误");
         }
         //验证账号,密码
-        SysUser user = findByUserName(userName);
+        SysUser user = getByUserName(userName);
         if (user == null)
             throw new BusinessException("账号错误");
         boolean flag = checkPassWord(passWord, user.getPassword(), user.getSalt());
@@ -264,7 +264,7 @@ public class SysUserService {
     public RestMessage logout(HttpServletRequest request) {
         RestMessage restMessage = new RestMessage();
         String userId = (String) CommonDataUtil.getToken(CommonConstant.CURRENT_USER_ID);
-        SysUser user = findOne(userId);
+        SysUser user = getOne(userId);
         if (user != null) {
             CommonDataUtil.clearMap();
             SysUserLoginInOut loginInOut = new SysUserLoginInOut();
@@ -290,8 +290,8 @@ public class SysUserService {
      * @param userName
      * @return
      */
-    private SysUser findByUserName(String userName) {
-        return sysUserRepository.findByUserName(userName);
+    private SysUser getByUserName(String userName) {
+        return sysUserRepository.getByUserName(userName);
     }
 
     /**
@@ -321,7 +321,7 @@ public class SysUserService {
      * @return
      */
     private boolean sendEmail(SysUser sysUser, String passWord) {
-        SysConfig sysConfig = sysConfigService.findByCode(CommonConstant.EMAIL_KEY);
+        SysConfig sysConfig = sysConfigService.getByCode(CommonConstant.EMAIL_KEY);
         if (sysConfig == null) {
             throw new BusinessException("没有查找到邮件配置项");
         }

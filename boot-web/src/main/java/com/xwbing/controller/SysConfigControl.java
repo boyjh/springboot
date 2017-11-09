@@ -33,12 +33,12 @@ public class SysConfigControl {
     private SysConfigService sysConfigService;
 
     @ApiOperation(value = "新增", notes = "新增系统配置信息")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "code", value = "配置项的key，长度为1-50", paramType = "query", required = true, dataType = "string"),
-            @ApiImplicitParam(name = "value", value = "配置项的值", paramType = "query", required = true, dataType = "string"),
-            @ApiImplicitParam(name = "enable", value = "是否启用，格式为Y|N", paramType = "query", required = true, dataType = "string"),
-            @ApiImplicitParam(name = "name", value = "配置名称，长度为1-10", paramType = "query", required = true, dataType = "string")
-    })
+//    @ApiImplicitParams({
+//            @ApiImplicitParam(name = "code", value = "配置项的key，长度为1-50", paramType = "query", required = true, dataType = "string"),
+//            @ApiImplicitParam(name = "value", value = "配置项的值", paramType = "query", required = true, dataType = "string"),
+//            @ApiImplicitParam(name = "enable", value = "是否启用，格式为Y|N", paramType = "query", required = true, dataType = "string"),
+//            @ApiImplicitParam(name = "name", value = "配置名称，长度为1-10", paramType = "query", required = true, dataType = "string")
+//    })
     @PostMapping("save")
     public JSONObject save(@RequestBody @Valid SysConfig sysConfig) {
         String logMsg = "新增系统配置信息";
@@ -78,14 +78,14 @@ public class SysConfigControl {
 
     @ApiOperation(value = "查找", notes = "根据key查找系统配置信息")
     @ApiImplicitParam(name = "code", value = "配置项的code", paramType = "query", required = true, dataType = "string")
-    @GetMapping("findByCode")
-    public JSONObject findByCode(@RequestParam String code) {
+    @GetMapping("getByCode")
+    public JSONObject getByCode(@RequestParam String code) {
         String logMsg = "根据code查找系统配置信息";
         logger.info(logMsg + " code:{}", code);
         if (StringUtils.isEmpty(code)) {
             return JSONObjResult.toJSONObj("code不能为空");
         }
-        SysConfig one = sysConfigService.findByCode(code);
+        SysConfig one = sysConfigService.getByCode(code);
         if (one == null) {
             return JSONObjResult.toJSONObj("该配置不存在");
         }
@@ -95,13 +95,13 @@ public class SysConfigControl {
     @ApiOperation(value = "查找列表", notes = "根据是否启用查找配置列表")
     @ApiImplicitParam(name = "enable", value = "是否启用，格式为Y|N", paramType = "query", required = true, dataType = "string")
     @GetMapping("listByEnable")
-    public JSONObject findByEnable(@RequestParam String enable) {
+    public JSONObject listByEnable(@RequestParam String enable) {
         String logMsg = "根据是否启用查找配置列表";
         logger.info(logMsg + " enable:{}", enable);
         if (StringUtils.isEmpty(enable)) {
             return JSONObjResult.toJSONObj("是否启用不能为空");
         }
-        List<SysConfig> byEnable = sysConfigService.findByEnable(enable);
+        List<SysConfig> byEnable = sysConfigService.listByEnable(enable);
         return JSONObjResult.toJSONObj(byEnable, true, "");
     }
 }

@@ -12,7 +12,7 @@ import java.util.List;
  * 作者:  xiangwb
  */
 public interface SysConfigRepository extends JpaRepository<SysConfig, String> {
-    SysConfig findByCode(String code);
+    SysConfig getByCode(String code);
 
-    List<SysConfig> findByEnable(String enable);
+    List<SysConfig> getByEnable(String enable);
 }

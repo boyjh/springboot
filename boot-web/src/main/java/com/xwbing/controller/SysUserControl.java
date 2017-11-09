@@ -57,12 +57,12 @@ public class SysUserControl {
     }
 
     @LogInfo("获取用户详情")
-    @GetMapping("findById")
-    public JSONObject findById(@RequestParam String id) {
+    @GetMapping("getById")
+    public JSONObject getById(@RequestParam String id) {
         if (StringUtils.isEmpty(id)) {
             return JSONObjResult.toJSONObj("主键不能为空");
         }
-        SysUser sysUser = sysUserService.findOne(id);
+        SysUser sysUser = sysUserService.getOne(id);
         if (sysUser == null) {
             return JSONObjResult.toJSONObj("未查到该对象");
         }
@@ -70,8 +70,8 @@ public class SysUserControl {
     }
 
     @LogInfo("列表查询所有用户")
-    @GetMapping("findList")
-    public JSONObject findList() {
+    @GetMapping("listAll")
+    public JSONObject listAll() {
         List<SysUser> list = sysUserService.listAll();
         return JSONObjResult.toJSONObj(list, true, "");
     }

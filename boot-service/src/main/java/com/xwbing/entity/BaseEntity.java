@@ -1,5 +1,7 @@
 package com.xwbing.entity;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -16,15 +18,21 @@ import java.util.Date;
  */
 @Data
 @MappedSuperclass
+@ApiModel
 public class BaseEntity implements Serializable {
     private static final long serialVersionUID = 8901948362657956187L;
     @Id
     @Column(length = 50)
+    @ApiModelProperty(value = "主键")
     private String id;
+    @ApiModelProperty(value = "创建者")
     private String creator;
+    @ApiModelProperty(value = "修改者")
     private String modifier;
+    @ApiModelProperty(value = "创建时间")
     @Column(name = "create_time")
     private Date createTime;
+    @ApiModelProperty(value = "修改时间")
     @Column(name = "modified_time")
     private Date modifiedTime;
 }

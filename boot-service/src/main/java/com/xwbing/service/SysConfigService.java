@@ -31,7 +31,7 @@ public class SysConfigService {
         if (sysConfig == null) {
             throw new BusinessException("配置数据不能为空");
         }
-        SysConfig old = findByCode(sysConfig.getCode());
+        SysConfig old = getByCode(sysConfig.getCode());
         if (old != null) {
             throw new BusinessException(sysConfig.getCode() + "已存在");
         }
@@ -50,7 +50,7 @@ public class SysConfigService {
     public RestMessage removeByCode(String code) {
         logger.info("删除配置信息");
         RestMessage result = new RestMessage();
-        SysConfig old = findByCode(code);
+        SysConfig old = getByCode(code);
         if (old == null) {
             throw new BusinessException("该配置项不存在");
         }
@@ -62,7 +62,7 @@ public class SysConfigService {
 
     public RestMessage update(SysConfig sysConfig) {
         RestMessage result = new RestMessage();
-        SysConfig old = findByCode(sysConfig.getCode());
+        SysConfig old = getByCode(sysConfig.getCode());
         if (old == null) {
             throw new BusinessException("该配置项不存在");
         }
@@ -79,11 +79,11 @@ public class SysConfigService {
         return result;
     }
 
-    public SysConfig findByCode(String code) {
-        return sysConfigRepository.findByCode(code);
+    public SysConfig getByCode(String code) {
+        return sysConfigRepository.getByCode(code);
     }
 
-    public List<SysConfig> findByEnable(String enable) {
-        return sysConfigRepository.findByEnable(enable);
+    public List<SysConfig> listByEnable(String enable) {
+        return sysConfigRepository.getByEnable(enable);
     }
 }

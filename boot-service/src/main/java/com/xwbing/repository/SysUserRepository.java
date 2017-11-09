@@ -9,5 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * 作者:  xiangwb
  */
 public interface SysUserRepository extends JpaRepository<SysUser, String> {
-    SysUser findByUserName(String name);
+    SysUser getByUserName(String name);
 }
