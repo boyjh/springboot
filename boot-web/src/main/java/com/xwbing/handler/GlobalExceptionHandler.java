@@ -33,7 +33,6 @@ public class GlobalExceptionHandler {
     /**
      * 自定义业务异常
      *
-     * @param request
      * @param ex
      * @return
      */
@@ -42,7 +41,7 @@ public class GlobalExceptionHandler {
     // 返回给页面200状态码
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
-    public JSONObject handlerGuideException(HttpServletRequest request, Exception ex) {
+    public JSONObject handlerGuideException(Exception ex) {
         logger.error(ex.getMessage());
         return JSONObjResult.toJSONObj(ex.getMessage());
     }

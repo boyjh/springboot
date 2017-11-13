@@ -8,6 +8,8 @@ import com.xwbing.service.SysUserService;
 import com.xwbing.util.JSONObjResult;
 import com.xwbing.util.RestMessage;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -28,6 +30,7 @@ public class SysUserControl {
     private SysUserService sysUserService;
     @Resource
     private SysUserLoginInOutService loginInOutService;
+    private final Logger logger = LoggerFactory.getLogger(SysUserControl.class);
 
     @LogInfo("添加用户")
     @PostMapping("save")

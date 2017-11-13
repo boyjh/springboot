@@ -49,8 +49,8 @@ public class SysConfigControl {
 
     @ApiOperation(value = "删除", notes = "根据code删除系统配置信息")
     @ApiImplicitParam(name = "code", value = "配置项的code", paramType = "query", required = true, dataType = "string")
-    @GetMapping("removeByCode/{code}")
-    public JSONObject removeByCode(@PathVariable String code) {
+    @GetMapping("removeByCode")
+    public JSONObject removeByCode(@RequestParam String code) {
         String logMsg = "删除系统配置信息";
         logger.info(logMsg + " code:{}", code);
         if (StringUtils.isEmpty(code)) {
@@ -67,7 +67,7 @@ public class SysConfigControl {
             @ApiImplicitParam(name = "enable", value = "是否启用，格式为Y|N", paramType = "query", required = true, dataType = "string"),
     })
     @PostMapping("update")
-    public JSONObject update(@RequestBody SysConfig sysConfig) {
+    public JSONObject update(SysConfig sysConfig) {
         String logMsg = "修改系统配置信息";
         logger.info(logMsg);
         if (StringUtils.isEmpty(sysConfig.getCode()))
