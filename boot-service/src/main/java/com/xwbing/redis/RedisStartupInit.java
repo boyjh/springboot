@@ -28,7 +28,7 @@ public class RedisStartupInit implements InitializingBean {
 
     public void afterPropertiesSet() throws Exception {
         logger.info("redis has been start");
-        System.out.println("---------启动执行方法---刷新缓存----------------");
+        System.out.println("启动执行方法======刷新缓存==================");
         redisService.set("xwb", "测试数据");
         System.out.printf(redisService.get("xwb"));
         redisService.del("xwb");
