@@ -3,10 +3,10 @@ package com.xwbing.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.annotation.LogInfo;
 import com.xwbing.entity.SysUser;
-import com.xwbing.service.SysUserLoginInOutService;
 import com.xwbing.service.SysUserService;
 import com.xwbing.util.JSONObjResult;
 import com.xwbing.util.RestMessage;
+import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,13 +23,12 @@ import java.util.List;
  * 创建时间: 2017/5/10 16:36
  * 作者:  xiangwb
  */
+@Api(tags = "userApi", description = "用户相关接口")
 @RestController
 @RequestMapping("/user/")
 public class SysUserControl {
     @Resource
     private SysUserService sysUserService;
-    @Resource
-    private SysUserLoginInOutService loginInOutService;
     private final Logger logger = LoggerFactory.getLogger(SysUserControl.class);
 
     @LogInfo("添加用户")
@@ -80,7 +79,7 @@ public class SysUserControl {
     }
 
     @LogInfo("登录")
-    @GetMapping("login")
+    @PostMapping("login")
     public JSONObject login(HttpServletRequest request, @RequestParam String userName, @RequestParam String passWord, @RequestParam String checkCode) {
         if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(passWord))
             return JSONObjResult.toJSONObj("用户名或密码不能为空");
@@ -98,7 +97,7 @@ public class SysUserControl {
     }
 
     @LogInfo("修改密码")
-    @GetMapping("updatePassWord")
+    @PostMapping("updatePassWord")
     public JSONObject updatePassWord(@RequestParam String newPassWord, @RequestParam String oldPassWord, @RequestParam String id) {
         if (StringUtils.isEmpty(newPassWord) || StringUtils.isEmpty(oldPassWord))
             return JSONObjResult.toJSONObj("原密码或新密码不能为空");

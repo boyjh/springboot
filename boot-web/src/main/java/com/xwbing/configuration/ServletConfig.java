@@ -1,6 +1,8 @@
 package com.xwbing.configuration;
 
 import com.xwbing.util.captcah.CaptchaServlet;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +15,8 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class ServletConfig {
+    private final Logger logger = LoggerFactory.getLogger(ServletConfig.class);
+
     @Bean
     public CaptchaServlet captchaServlet() {
         return new CaptchaServlet();
@@ -20,6 +24,7 @@ public class ServletConfig {
 
     @Bean
     public ServletRegistrationBean captchaServletRegistrationBean(CaptchaServlet captchaServlet) {
+        logger.info("注册验证码servlet ======================= ");
         ServletRegistrationBean registration = new ServletRegistrationBean(captchaServlet);
         registration.setEnabled(true);
         registration.addUrlMappings("/servlet/captchaCode");

@@ -37,7 +37,6 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        logger.info("addInterceptors......");
         //拦截器1:登录判断
         registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**");
 //        registry.addInterceptor(new LoginInterceptor())

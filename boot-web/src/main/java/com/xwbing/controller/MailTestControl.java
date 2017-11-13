@@ -1,9 +1,11 @@
 package com.xwbing.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.xwbing.annotation.LogInfo;
 import com.xwbing.service.MailService;
 import com.xwbing.util.JSONObjResult;
 import com.xwbing.util.RestMessage;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,28 +18,21 @@ import javax.annotation.Resource;
  * 作者: xiangwb
  * 说明:邮件测试控制层
  */
+@Api(tags = "mailApi", description = "邮件测试相关接口")
 @RestController
 @RequestMapping("/mail/")
 public class MailTestControl {
     @Resource
     private MailService mailService;
 
-    /**
-     * 发送纯文本邮件
-     *
-     * @return
-     */
+    @LogInfo("发送纯文本邮件")
     @GetMapping("sendSimpleMail")
     public JSONObject sendSimpleMail() {
         RestMessage restMessage = mailService.sendSimpleMail("786461501@qq.com", "测试邮件", "收到一个纯文本邮件");
         return JSONObjResult.toJSONObj(restMessage);
     }
 
-    /**
-     * 发送html格式邮件
-     *
-     * @return
-     */
+    @LogInfo("发送html格式邮件")
     @GetMapping("sendHtmlMail")
     public JSONObject sendHtmlMail() {
         String content = "<html>" +
@@ -49,11 +44,7 @@ public class MailTestControl {
         return JSONObjResult.toJSONObj(restMessage);
     }
 
-    /**
-     * 发送带附件邮件
-     *
-     * @return
-     */
+    @LogInfo("发送带附件邮件")
     @GetMapping("sendAttachmentsMail")
     public JSONObject sendAttachmentsMail() {
         String path = "C:\\Users\\admin\\Desktop\\qq.txt";
@@ -61,11 +52,7 @@ public class MailTestControl {
         return JSONObjResult.toJSONObj(restMessage);
     }
 
-    /**
-     * 发送文本内嵌图片邮件
-     *
-     * @return
-     */
+    @LogInfo("发送文本内嵌图片邮件")
     @GetMapping("sendInlineResourceMail")
     public JSONObject sendInlineResourceMail() {
         String rscId = "pic";

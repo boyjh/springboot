@@ -2,6 +2,7 @@ package com.xwbing.controller;
 
 import com.xwbing.annotation.LogInfo;
 import com.xwbing.redis.RedisService;
+import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,7 @@ import javax.annotation.Resource;
  * 创建时间: 2017/5/5 9:21
  * 作者:  xiangwb
  */
+@Api(tags = "testApi", description = "测试相关接口")
 @RestController
 @RequestMapping("/test/")
 public class TestControl {
@@ -35,7 +37,7 @@ public class TestControl {
     @LogInfo("log")
     @GetMapping("log")
     public void log() {
-        logger.info("info");
-        logger.error("error");
+        logger.info("info test");
+        logger.error("error test");
     }
 }

@@ -19,7 +19,7 @@ public class SchedulingConfig {
 
     @Scheduled(cron = "0 */30 * * * ?") // 每半小时执行一次
     public void scheduler() {
-        logger.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> scheduled ... ");
+        logger.info("scheduled ==================");
         //TODO
     }
 

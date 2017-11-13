@@ -36,7 +36,7 @@ public class SwaggerConfig {
                 .title("Document RESTful APIs")
                 .description("API接口文档")
                 .termsOfServiceUrl("http://localhost:8080/swagger-ui.html")
-                .contact(new Contact("xiangwb", "http://localhost:8080/swagger-ui.html", "xiangwbs@163.com"))
+                .contact(new Contact("项伟兵", "https://github.com/xiangwbs/boot-module-demo.git", "xiangwbs@163.com"))
                 .version("1.0.0")
                 .build();
     }

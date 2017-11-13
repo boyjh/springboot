@@ -5,6 +5,7 @@ import com.xwbing.annotation.LogInfo;
 import com.xwbing.entity.SysUserLoginInOut;
 import com.xwbing.service.SysUserLoginInOutService;
 import com.xwbing.util.JSONObjResult;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +20,7 @@ import java.util.List;
  * 作者: xiangwb
  * 说明: 用户登录登出控制层
  */
+@Api(tags = "inoutApi", description = "登陆登出相关接口")
 @RestController
 @RequestMapping("/inout/")
 public class SysUserLoginInOutControl {
