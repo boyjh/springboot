@@ -25,16 +25,15 @@ public class TestControl {
     private RedisService redisService;
     private final Logger logger = LoggerFactory.getLogger(TestControl.class);
 
-    @LogInfo("redisLog")
+    @LogInfo("redis功能测试")
     @GetMapping("redis")
     public void redis() {
         redisService.set("redis", "xwbing");
         String s = redisService.get("redis");
-        System.out.println(s);
-        logger.info("获取的数据为:" + s);
+        logger.info("redis获取的数据为:" + s);
     }
 
-    @LogInfo("log")
+    @LogInfo("log功能测试")
     @GetMapping("log")
     public void log() {
         logger.info("info test");
