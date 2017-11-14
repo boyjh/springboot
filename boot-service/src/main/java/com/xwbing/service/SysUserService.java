@@ -266,7 +266,9 @@ public class SysUserService {
         String userId = (String) CommonDataUtil.getToken(CommonConstant.CURRENT_USER_ID);
         SysUser user = getOne(userId);
         if (user != null) {
+            //清空公共数据
             CommonDataUtil.clearMap();
+            //保存登出信息
             SysUserLoginInOut loginInOut = new SysUserLoginInOut();
             loginInOut.setCreateTime(new Date());
             loginInOut.setUserId(user.getId());
