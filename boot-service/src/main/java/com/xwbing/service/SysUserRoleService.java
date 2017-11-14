@@ -40,7 +40,7 @@ public class SysUserRoleService {
         //用户新增角色
         list.forEach(sysUserRole -> {
             sysUserRole.setId(PassWordUtil.createId());
-            sysUserRole.setModifiedTime(new Date());
+            sysUserRole.setCreateTime(new Date());
         });
         List<SysUserRole> save = sysUserRoleRepository.save(list);
         if (CollectionUtils.isNotEmpty(save)) {

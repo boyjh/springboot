@@ -136,8 +136,6 @@ public class SysUserControl {
         SysUser sysUser = sysUserService.getOne((String) CommonDataUtil.getToken(CommonConstant.CURRENT_USER_ID));
         if (sysUser == null)
             return JSONObjResult.toJSONObj("未获取到当前登录用户信息");
-        SysUser result = new SysUser();
-        result.setUserName(sysUser.getUserName());
         List<SysAuthority> other = new ArrayList<>();
         List<SysAuthority> menu = new ArrayList<>();
         List<SysAuthority> list;
@@ -153,13 +151,13 @@ public class SysUserControl {
                     other.add(sysAuthority);
             }
         }
-        result.setMenuArray(menu);
-        result.setOtherArray(other);
-        return JSONObjResult.toJSONObj(result, true, "");
+        sysUser.setMenuArray(menu);
+        sysUser.setOtherArray(other);
+        return JSONObjResult.toJSONObj(sysUser, true, "");
     }
 
     @LogInfo("保存用户角色")
-    @GetMapping("saveRole")
+    @PostMapping("saveRole")
     public JSONObject saveRole(@RequestParam String roleIds, @RequestParam String userId) {
         if (StringUtils.isEmpty(roleIds))
             return JSONObjResult.toJSONObj("角色主键不能为空");
@@ -185,8 +183,8 @@ public class SysUserControl {
     }
 
     @LogInfo("根据用户主键查找所拥有的角色")
-    @GetMapping("queryRole")
-    public JSONObject queryRole(@RequestParam String userId, @RequestParam String enable) {
+    @PostMapping("listRoles")
+    public JSONObject listRoles(@RequestParam String userId, @RequestParam String enable) {
         if (StringUtils.isEmpty(userId))
             return JSONObjResult.toJSONObj("用户主键不能为空");
         if (StringUtils.isEmpty(enable))
@@ -196,7 +194,7 @@ public class SysUserControl {
     }
 
     @LogInfo("根据用户主键查找所拥有的权限")
-    @GetMapping("queryAuthority")
+    @PostMapping("queryAuthority")
     public JSONObject queryAuthority(@RequestParam String userId, @RequestParam String enable) {
         if (StringUtils.isEmpty(userId))
             return JSONObjResult.toJSONObj("用户主键不能为空");
