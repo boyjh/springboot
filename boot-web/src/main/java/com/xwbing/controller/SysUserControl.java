@@ -2,19 +2,28 @@ package com.xwbing.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.annotation.LogInfo;
+import com.xwbing.constant.CommonConstant;
+import com.xwbing.constant.CommonEnum;
+import com.xwbing.entity.SysAuthority;
+import com.xwbing.entity.SysRole;
 import com.xwbing.entity.SysUser;
+import com.xwbing.entity.SysUserRole;
+import com.xwbing.service.SysAuthorityService;
+import com.xwbing.service.SysRoleService;
+import com.xwbing.service.SysUserRoleService;
 import com.xwbing.service.SysUserService;
+import com.xwbing.util.CommonDataUtil;
 import com.xwbing.util.JSONObjResult;
 import com.xwbing.util.RestMessage;
 import io.swagger.annotations.Api;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,7 +38,12 @@ import java.util.List;
 public class SysUserControl {
     @Resource
     private SysUserService sysUserService;
-    private final Logger logger = LoggerFactory.getLogger(SysUserControl.class);
+    @Resource
+    private SysUserRoleService sysUserRoleService;
+    @Resource
+    private SysRoleService sysRoleService;
+    @Resource
+    private SysAuthorityService sysAuthorityService;
 
     @LogInfo("添加用户")
     @PostMapping("save")
@@ -114,5 +128,80 @@ public class SysUserControl {
             return JSONObjResult.toJSONObj("主键不能为空");
         RestMessage restMessage = sysUserService.resetPassWord(id);
         return JSONObjResult.toJSONObj(restMessage);
+    }
+
+    @LogInfo("获取当前登录用户信息")
+    @GetMapping("getLoginUserInfo")
+    public JSONObject getLoginUserInfo() {
+        SysUser sysUser = sysUserService.getOne((String) CommonDataUtil.getToken(CommonConstant.CURRENT_USER_ID));
+        if (sysUser == null)
+            return JSONObjResult.toJSONObj("未获取到当前登录用户信息");
+        SysUser result = new SysUser();
+        result.setUserName(sysUser.getUserName());
+        List<SysAuthority> other = new ArrayList<>();
+        List<SysAuthority> menu = new ArrayList<>();
+        List<SysAuthority> list;
+        if (CommonEnum.YesOrNoEnum.YES.getCode().equalsIgnoreCase(sysUser.getAdmin()))
+            list = sysAuthorityService.listByEnable(CommonEnum.YesOrNoEnum.YES.getCode());
+        else
+            list = sysUserService.queryAuthority(sysUser.getId(), CommonEnum.YesOrNoEnum.YES.getCode());
+        if (CollectionUtils.isNotEmpty(list)) {
+            for (SysAuthority sysAuthority : list) {
+                if (sysAuthority.getType() == CommonEnum.MenuOrButtonEnum.MENU.getCode())
+                    menu.add(sysAuthority);
+                else
+                    other.add(sysAuthority);
+            }
+        }
+        result.setMenuArray(menu);
+        result.setOtherArray(other);
+        return JSONObjResult.toJSONObj(result, true, "");
+    }
+
+    @LogInfo("保存用户角色")
+    @GetMapping("saveRole")
+    public JSONObject saveRole(@RequestParam String roleIds, @RequestParam String userId) {
+        if (StringUtils.isEmpty(roleIds))
+            return JSONObjResult.toJSONObj("角色主键不能为空");
+        if (StringUtils.isEmpty(userId))
+            return JSONObjResult.toJSONObj("用户主键不能为空");
+        SysUser old = sysUserService.getOne(userId);
+        if (old == null) {
+            return JSONObjResult.toJSONObj("该用户不存在");
+        }
+        if (CommonEnum.YesOrNoEnum.YES.getCode().equalsIgnoreCase(old.getAdmin())) {
+            return JSONObjResult.toJSONObj("不能对管理员进行操作");
+        }
+        String ids[] = roleIds.split(",");
+        List<SysUserRole> list = new ArrayList<>();
+        for (String id : ids) {
+            SysUserRole userRole = new SysUserRole();
+            userRole.setRoleId(id);
+            userRole.setUserId(userId);
+            list.add(userRole);
+        }
+        RestMessage restMessage = sysUserRoleService.saveBatch(list, userId);
+        return JSONObjResult.toJSONObj(restMessage);
+    }
+
+    @LogInfo("根据用户主键查找所拥有的角色")
+    @GetMapping("queryRole")
+    public JSONObject queryRole(@RequestParam String userId, @RequestParam String enable) {
+        if (StringUtils.isEmpty(userId))
+            return JSONObjResult.toJSONObj("用户主键不能为空");
+        if (StringUtils.isEmpty(enable))
+            return JSONObjResult.toJSONObj("是否启用不能为空");
+        List<SysRole> list = sysRoleService.listByUserIdEnable(userId, enable);
+        return JSONObjResult.toJSONObj(list, true, "");
+    }
+
+    @LogInfo("根据用户主键查找所拥有的权限")
+    @GetMapping("queryAuthority")
+    public JSONObject queryAuthority(@RequestParam String userId, @RequestParam String enable) {
+        if (StringUtils.isEmpty(userId))
+            return JSONObjResult.toJSONObj("用户主键不能为空");
+        List<SysAuthority> list = sysUserService.queryAuthority(userId,
+                enable);
+        return JSONObjResult.toJSONObj(list, true, "");
     }
 }

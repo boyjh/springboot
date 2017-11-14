@@ -9,6 +9,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.validation.constraints.Pattern;
+import java.util.List;
 
 /**
  * 说明: 用户
@@ -63,4 +64,6 @@ public class SysUser extends BaseEntity {
     private transient String create;
     private transient String modified;
     private transient String sexName;
+    private transient List<SysAuthority> menuArray;
+    private transient List<SysAuthority> otherArray;
 }

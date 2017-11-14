@@ -3,9 +3,7 @@ package com.xwbing.service;
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.constant.CommonConstant;
 import com.xwbing.constant.CommonEnum;
-import com.xwbing.entity.SysConfig;
-import com.xwbing.entity.SysUser;
-import com.xwbing.entity.SysUserLoginInOut;
+import com.xwbing.entity.*;
 import com.xwbing.entity.model.EmailModel;
 import com.xwbing.exception.BusinessException;
 import com.xwbing.repository.SysUserRepository;
@@ -15,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -33,6 +32,10 @@ public class SysUserService {
     private SysConfigService sysConfigService;
     @Resource
     private SysUserLoginInOutService loginInOutService;
+    @Resource
+    private SysRoleService sysRoleService;
+    @Resource
+    private SysAuthorityService sysAuthorityService;
 
     /**
      * 增
@@ -284,6 +287,34 @@ public class SysUserService {
             restMessage.setMessage("没有获取到用户登录信息,请重新登录");
         }
         return restMessage;
+    }
+
+    /**
+     * 根据用户主键，是否有效，查找所拥有的权限
+     *
+     * @param userId
+     * @param enable
+     * @return
+     */
+    public List<SysAuthority> queryAuthority(String userId, String enable) {
+        List<SysAuthority> list = new ArrayList<>();
+        //根据用戶id和是否启用获取获取角色
+        List<SysRole> sysRoles = sysRoleService.listByUserIdEnable(userId, enable);
+        if (CollectionUtils.isEmpty(sysRoles))
+            return list;
+        List<SysAuthority> temp;
+        //遍获取每个角色拥有的权限，并去重
+        for (SysRole sysRole : sysRoles) {
+            temp = sysAuthorityService.listByRoleIdEnable(sysRole.getId(), enable);
+            if (CollectionUtils.isNotEmpty(temp)) {
+                for (SysAuthority auth : temp) {
+                    if (list.contains(auth))
+                        continue;// 如果存在，那么去除
+                    list.add(auth);
+                }
+            }
+        }
+        return list;
     }
 
     /**

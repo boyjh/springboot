@@ -1,18 +1,22 @@
 package com.xwbing.service;
 
 import com.xwbing.entity.SysRole;
+import com.xwbing.entity.SysUserRole;
 import com.xwbing.exception.BusinessException;
 import com.xwbing.repository.SysRoleRepository;
 import com.xwbing.util.PassWordUtil;
 import com.xwbing.util.RestMessage;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 项目名称: boot-module-demo
@@ -24,6 +28,8 @@ import java.util.List;
 public class SysRoleService {
     @Resource
     private SysRoleRepository sysRoleRepository;
+    @Resource
+    private SysUserRoleService sysUserRoleService;
     private final Logger logger = LoggerFactory.getLogger(SysRoleService.class);
 
     /**
@@ -118,6 +124,24 @@ public class SysRoleService {
      */
     public List<SysRole> listAllByEnable(String enable) {
         return sysRoleRepository.getByEnable(enable);
+    }
+
+    /**
+     * 根据用户主键，是否启用状态查询角色列表
+     *
+     * @param userId
+     * @param enable
+     * @return
+     */
+    public List<SysRole> listByUserIdEnable(String userId, String enable) {
+        List<SysRole> list = new ArrayList<>();
+        List<SysUserRole> sysUserRoles = sysUserRoleService.listByUserId(userId);
+        if (sysUserRoles == null)
+            return list;
+        List<String> roleIds = sysUserRoles.stream().map(SysUserRole::getRoleId).collect(Collectors.toList());
+        if (CollectionUtils.isNotEmpty(roleIds))
+            list = sysRoleRepository.getByEnableAndIdIn(enable, roleIds);
+        return list;
     }
 
     /**

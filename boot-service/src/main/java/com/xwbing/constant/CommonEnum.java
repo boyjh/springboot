@@ -74,6 +74,25 @@ public class CommonEnum {
         }
     }
 
+    public enum MenuOrButtonEnum {
+        MENU("菜单", 1), BUTTON("按钮", 2);
+        private int code;
+        private String name;
+
+        MenuOrButtonEnum(String name, int code) {
+            this.code = code;
+            this.name = name;
+        }
+
+        public int getCode() {
+            return code;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
+
     public static void main(String[] args) {
         String code = "Y";
 //        for (YesOrNoEnum yesOrNoEnum : YesOrNoEnum.values()) {
