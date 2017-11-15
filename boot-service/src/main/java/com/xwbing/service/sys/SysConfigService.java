@@ -1,8 +1,8 @@
-package com.xwbing.service;
+package com.xwbing.service.sys;
 
 import com.xwbing.entity.SysConfig;
 import com.xwbing.exception.BusinessException;
-import com.xwbing.repository.SysConfigRepository;
+import com.xwbing.repository.sys.SysConfigRepository;
 import com.xwbing.util.PassWordUtil;
 import com.xwbing.util.RestMessage;
 import org.slf4j.Logger;

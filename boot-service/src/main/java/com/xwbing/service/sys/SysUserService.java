@@ -1,4 +1,4 @@
-package com.xwbing.service;
+package com.xwbing.service.sys;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.constant.CommonConstant;
@@ -6,7 +6,7 @@ import com.xwbing.constant.CommonEnum;
 import com.xwbing.entity.*;
 import com.xwbing.entity.model.EmailModel;
 import com.xwbing.exception.BusinessException;
-import com.xwbing.repository.SysUserRepository;
+import com.xwbing.repository.sys.SysUserRepository;
 import com.xwbing.util.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;

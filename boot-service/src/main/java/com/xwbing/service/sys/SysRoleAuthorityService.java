@@ -1,7 +1,7 @@
-package com.xwbing.service;
+package com.xwbing.service.sys;
 
 import com.xwbing.entity.SysRoleAuthority;
-import com.xwbing.repository.SysRoleAuthorityRepository;
+import com.xwbing.repository.sys.SysRoleAuthorityRepository;
 import com.xwbing.util.PassWordUtil;
 import com.xwbing.util.RestMessage;
 import org.apache.commons.collections.CollectionUtils;

@@ -6,6 +6,7 @@ import com.xwbing.service.MailService;
 import com.xwbing.util.JSONObjResult;
 import com.xwbing.util.RestMessage;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -27,6 +28,7 @@ public class MailTestControl {
 
     @LogInfo("发送纯文本邮件")
     @GetMapping("sendSimpleMail")
+    @ApiOperation(value = "发送纯文本邮件")
     public JSONObject sendSimpleMail() {
         RestMessage restMessage = mailService.sendSimpleMail("786461501@qq.com", "测试邮件", "收到一个纯文本邮件");
         return JSONObjResult.toJSONObj(restMessage);
@@ -34,6 +36,7 @@ public class MailTestControl {
 
     @LogInfo("发送html格式邮件")
     @GetMapping("sendHtmlMail")
+    @ApiOperation(value = "发送html格式邮件")
     public JSONObject sendHtmlMail() {
         String content = "<html>" +
                 "<body>" +
@@ -46,6 +49,7 @@ public class MailTestControl {
 
     @LogInfo("发送带附件邮件")
     @GetMapping("sendAttachmentsMail")
+    @ApiOperation(value = "发送带附件邮件")
     public JSONObject sendAttachmentsMail() {
         String path = "C:\\Users\\admin\\Desktop\\qq.txt";
         RestMessage restMessage = mailService.sendAttachmentsMail("786461501@qq.com", "附件测试邮件", "收到一个带附件邮件", path);
@@ -54,6 +58,7 @@ public class MailTestControl {
 
     @LogInfo("发送文本内嵌图片邮件")
     @GetMapping("sendInlineResourceMail")
+    @ApiOperation(value = "发送文本内嵌图片邮件")
     public JSONObject sendInlineResourceMail() {
         String rscId = "pic";
         String content = "<html><body>这是有图片的邮件：<img src=\'cid:" + rscId + "\'></body></html>";
