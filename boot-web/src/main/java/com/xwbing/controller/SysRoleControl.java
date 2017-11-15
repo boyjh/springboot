@@ -72,9 +72,17 @@ public class SysRoleControl {
         return JSONObjResult.toJSONObj(sysRole, true, "");
     }
 
+    @LogInfo("根据是否启用查询所有角色")
+    @GetMapping("listByEnable")
+    @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query", dataType = "string")
+    public JSONObject listByEnable(String enable) {
+        List<SysRole> sysRoles = sysRoleService.listAllByEnable(enable);
+        return JSONObjResult.toJSONObj(sysRoles, true, "");
+    }
+
     @LogInfo("根据角色主键查找权限")
     @PostMapping("listAuthorityByRoleId")
-    @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query",dataType = "string")
+    @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query", dataType = "string")
     public JSONObject listAuthorityByRoleId(@RequestParam String roleId, String enable) {
         if (StringUtils.isEmpty(roleId))
             return JSONObjResult.toJSONObj("角色主键不能为空");
@@ -105,13 +113,5 @@ public class SysRoleControl {
         }
         RestMessage restMessage = sysRoleAuthorityService.saveBatch(list, roleId);
         return JSONObjResult.toJSONObj(restMessage);
-    }
-
-    @LogInfo("根据是否启用查询所有角色")
-    @GetMapping("listByEnable")
-    @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query",dataType = "string")
-    public JSONObject listByEnable(String enable) {
-        List<SysRole> sysRoles = sysRoleService.listAllByEnable(enable);
-        return JSONObjResult.toJSONObj(sysRoles, true, "");
     }
 }

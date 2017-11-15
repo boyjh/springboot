@@ -56,9 +56,8 @@ public class SysUserControl {
     @LogInfo("删除用户")
     @GetMapping("removeById")
     public JSONObject removeById(@RequestParam String id) {
-        if (StringUtils.isEmpty(id)) {
+        if (StringUtils.isEmpty(id))
             return JSONObjResult.toJSONObj("主键不能为空");
-        }
         RestMessage result = sysUserService.removeById(id);
         return JSONObjResult.toJSONObj(result);
     }
@@ -66,9 +65,8 @@ public class SysUserControl {
     @LogInfo("修改用户信息")
     @PostMapping("update")
     public JSONObject update(@RequestBody @Valid SysUser sysUser) {
-        if (StringUtils.isEmpty(sysUser.getId())) {
+        if (StringUtils.isEmpty(sysUser.getId()))
             return JSONObjResult.toJSONObj("主键不能为空");
-        }
         RestMessage result = sysUserService.update(sysUser);
         return JSONObjResult.toJSONObj(result);
     }
@@ -76,13 +74,11 @@ public class SysUserControl {
     @LogInfo("获取用户详情")
     @GetMapping("getById")
     public JSONObject getById(@RequestParam String id) {
-        if (StringUtils.isEmpty(id)) {
+        if (StringUtils.isEmpty(id))
             return JSONObjResult.toJSONObj("主键不能为空");
-        }
         SysUser sysUser = sysUserService.getOne(id);
-        if (sysUser == null) {
+        if (sysUser == null)
             return JSONObjResult.toJSONObj("未查到该对象");
-        }
         return JSONObjResult.toJSONObj(sysUser, true, "");
     }
 
@@ -114,10 +110,10 @@ public class SysUserControl {
     @LogInfo("修改密码")
     @PostMapping("updatePassWord")
     public JSONObject updatePassWord(@RequestParam String newPassWord, @RequestParam String oldPassWord, @RequestParam String id) {
-        if (StringUtils.isEmpty(newPassWord) || StringUtils.isEmpty(oldPassWord))
-            return JSONObjResult.toJSONObj("原密码或新密码不能为空");
         if (StringUtils.isEmpty(id))
             return JSONObjResult.toJSONObj("主键不能为空");
+        if (StringUtils.isEmpty(newPassWord) || StringUtils.isEmpty(oldPassWord))
+            return JSONObjResult.toJSONObj("原密码或新密码不能为空");
         RestMessage restMessage = sysUserService.updatePassWord(newPassWord, oldPassWord, id);
         return JSONObjResult.toJSONObj(restMessage);
     }
@@ -165,12 +161,10 @@ public class SysUserControl {
         if (StringUtils.isEmpty(userId))
             return JSONObjResult.toJSONObj("用户主键不能为空");
         SysUser old = sysUserService.getOne(userId);
-        if (old == null) {
+        if (old == null)
             return JSONObjResult.toJSONObj("该用户不存在");
-        }
-        if (CommonEnum.YesOrNoEnum.YES.getCode().equalsIgnoreCase(old.getAdmin())) {
+        if (CommonEnum.YesOrNoEnum.YES.getCode().equalsIgnoreCase(old.getAdmin()))
             return JSONObjResult.toJSONObj("不能对管理员进行操作");
-        }
         String ids[] = roleIds.split(",");
         List<SysUserRole> list = new ArrayList<>();
         for (String id : ids) {
@@ -185,7 +179,7 @@ public class SysUserControl {
 
     @LogInfo("根据用户主键查找所拥有的角色")
     @PostMapping("listRoleByUserId")
-    @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query",dataType = "string")
+    @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query", dataType = "string")
     public JSONObject listRoleByUserId(@RequestParam String userId, String enable) {
         if (StringUtils.isEmpty(userId))
             return JSONObjResult.toJSONObj("用户主键不能为空");
@@ -195,8 +189,8 @@ public class SysUserControl {
 
     @LogInfo("根据用户主键查找所拥有的权限")
     @PostMapping("listAuthorityByUserId")
-    @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query",dataType = "string")
-    public JSONObject listAuthorityByUserId(@RequestParam String userId,String enable) {
+    @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query", dataType = "string")
+    public JSONObject listAuthorityByUserId(@RequestParam String userId, String enable) {
         if (StringUtils.isEmpty(userId))
             return JSONObjResult.toJSONObj("用户主键不能为空");
         List<SysAuthority> list = sysUserService.queryAuthority(userId, enable);

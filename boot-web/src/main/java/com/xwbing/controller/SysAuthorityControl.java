@@ -70,7 +70,15 @@ public class SysAuthorityControl {
         return JSONObjResult.toJSONObj(result);
     }
 
-    @LogInfo("根据父节点查询子节点(非递归)")
+    @LogInfo("根据是否启用查询所有权限")
+    @GetMapping("listByEnable")
+    @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query", dataType = "string")
+    public JSONObject listByEnable(String enable) {
+        List<SysAuthority> authoritys = sysAuthorityService.listByEnable(enable);
+        return JSONObjResult.toJSONObj(authoritys, true, "");
+    }
+
+    @LogInfo("根据父节点查询子节点")
     @GetMapping("listByParentId")
     @ApiImplicitParam(name = "parentId", value = "父id,可为空", paramType = "query", dataType = "string")
     public JSONObject listByParentId(String parentId) {
@@ -82,19 +90,11 @@ public class SysAuthorityControl {
         return JSONObjResult.toJSONObj(queryByParentId, true, "");
     }
 
-    @LogInfo("根据是否启用查询所有权限")
-    @GetMapping("listByEnable")
-    @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query", dataType = "string")
-    public JSONObject listByEnable(String enable) {
-        List<SysAuthority> authoritys = sysAuthorityService.listByEnable(enable);
-        return JSONObjResult.toJSONObj(authoritys, true, "");
-    }
-
     @LogInfo("递归查询所有权限")
-    @GetMapping("queryTree")
+    @GetMapping("listTree")
     @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query", dataType = "string")
-    public JSONObject queryTree(String enable) {
-        List<SysAuthVo> authoritys = sysAuthorityService.queryAllChildren(CommonConstant.ROOT, enable);
+    public JSONObject listTree(String enable) {
+        List<SysAuthVo> authoritys = sysAuthorityService.listChildren(CommonConstant.ROOT, enable);
         return JSONObjResult.toJSONObj(authoritys, true, "");
     }
 }

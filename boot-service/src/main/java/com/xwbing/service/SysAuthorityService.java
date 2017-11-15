@@ -69,7 +69,12 @@ public class SysAuthorityService {
         SysAuthority one = getById(id);
         if (one == null)
             throw new BusinessException("该权限不存在");
+        //删除自身
         sysAuthorityRepository.delete(id);
+        //如果有子节点,递归删除子节点
+        List<SysAuthority> list = listChildrenForRemove(id);
+        if (CollectionUtils.isNotEmpty(list))
+            sysAuthorityRepository.deleteInBatch(list);
         result.setMessage("删除成功");
         result.setSuccess(true);
         return result;
@@ -172,7 +177,7 @@ public class SysAuthorityService {
      * @return
      */
     public boolean disableChildrenByParentId(String parentId) {
-        List<SysAuthority> sysAuthorities = queryAllChildren(parentId);
+        List<SysAuthority> sysAuthorities = listChildren(parentId);
         if (CollectionUtils.isNotEmpty(sysAuthorities)) {
             List<SysAuthority> save = sysAuthorityRepository.save(sysAuthorities);
             return CollectionUtils.isNotEmpty(save);
@@ -187,7 +192,7 @@ public class SysAuthorityService {
      * @param enable
      * @return
      */
-    public List<SysAuthVo> queryAllChildren(String parentId, String enable) {
+    public List<SysAuthVo> listChildren(String parentId, String enable) {
         List<SysAuthVo> list = new ArrayList<>();
         List<SysAuthority> authoritys;
         if (StringUtils.isNotEmpty(enable))
@@ -199,7 +204,7 @@ public class SysAuthorityService {
         SysAuthVo vo;
         for (SysAuthority authority : authoritys) {
             vo = new SysAuthVo(authority);
-            vo.setChildren(queryAllChildren(vo.getId(), enable));
+            vo.setChildren(listChildren(vo.getId(), enable));
             list.add(vo);
         }
         return list;
@@ -211,7 +216,7 @@ public class SysAuthorityService {
      * @param parentId
      * @return
      */
-    private List<SysAuthority> queryAllChildren(String parentId) {
+    private List<SysAuthority> listChildren(String parentId) {
         //获取结果
         List<SysAuthority> sysAuthoritys = listByParentEnable(parentId, CommonConstant.ISENABLE);
         //遍历子集
@@ -221,7 +226,27 @@ public class SysAuthorityService {
                 sysAuthority.setEnable(CommonConstant.ISNOTENABLE);
                 sysAuthority.setModifiedTime(new Date());
                 list.add(sysAuthority);
-                list.addAll(queryAllChildren(sysAuthority.getId()));
+                list.addAll(listChildren(sysAuthority.getId()));
+            }
+        }
+        return list;
+    }
+
+    /**
+     * 刪除时递归获取所有子节点
+     *
+     * @param parentId
+     * @return
+     */
+    private List<SysAuthority> listChildrenForRemove(String parentId) {
+        //获取结果
+        List<SysAuthority> sysAuthoritys = listByParentEnable(parentId, null);
+        //遍历子集
+        List<SysAuthority> list = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty(sysAuthoritys)) {
+            for (SysAuthority sysAuthority : sysAuthoritys) {
+                list.add(sysAuthority);
+                list.addAll(listChildren(sysAuthority.getId()));
             }
         }
         return list;

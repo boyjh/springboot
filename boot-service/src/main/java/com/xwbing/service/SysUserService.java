@@ -51,7 +51,7 @@ public class SysUserService {
         if (old != null) {
             throw new BusinessException("已经存在此用户名");
         }
-        String id=PassWordUtil.createId();
+        String id = PassWordUtil.createId();
         sysUser.setId(id);
         sysUser.setCreateTime(new Date());
         // 获取初始密码
@@ -85,7 +85,7 @@ public class SysUserService {
         RestMessage result = new RestMessage();
         SysUser old = getOne(id);
         if (old == null) {
-            throw new BusinessException("该对象不存在");
+            throw new BusinessException("该用户不存在");
         }
         if (id.equals(CommonDataUtil.getToken(CommonConstant.CURRENT_USER_ID))) {
             throw new BusinessException("不能删除当前登录用户");
@@ -116,7 +116,7 @@ public class SysUserService {
         RestMessage result = new RestMessage();
         SysUser old = getOne(sysUser.getId());
         if (old == null) {
-            throw new BusinessException("该对象不存在");
+            throw new BusinessException("该用户不存在");
         }
         if (old.getId().equals(CommonDataUtil.getToken(CommonConstant.CURRENT_USER_ID))) {
             throw new BusinessException("不能修改当前登录用户");
