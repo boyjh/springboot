@@ -84,8 +84,8 @@ public class SysRoleControl {
     }
 
     @LogInfo("保存角色权限")
-    @PostMapping("saveAuthoritys")
-    public JSONObject saveAuthoritys(@RequestParam String authorityIds, @RequestParam String roleId) {
+    @PostMapping("saveAuthority")
+    public JSONObject saveAuthority(@RequestParam String authorityIds, @RequestParam String roleId) {
         if (StringUtils.isEmpty(authorityIds))
             return JSONObjResult.toJSONObj("权限主键集合不能为空");
         if (StringUtils.isEmpty(roleId))
@@ -107,9 +107,9 @@ public class SysRoleControl {
 
     @LogInfo("根据是否启用查询所有角色")
     @GetMapping("listAllByEnable")
-    public JSONObject listAllByEnable(@RequestParam String enable) {
-        if (StringUtils.isEmpty(enable))
-            return JSONObjResult.toJSONObj("是否启用不能为空");
+    public JSONObject listAllByEnable(String enable) {
+//        if (StringUtils.isEmpty(enable))
+//            return JSONObjResult.toJSONObj("是否启用不能为空");
         List<SysRole> sysRoles = sysRoleService.listAllByEnable(enable);
         return JSONObjResult.toJSONObj(sysRoles, true, "");
     }

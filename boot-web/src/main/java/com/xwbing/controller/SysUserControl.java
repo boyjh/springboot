@@ -183,23 +183,22 @@ public class SysUserControl {
     }
 
     @LogInfo("根据用户主键查找所拥有的角色")
-    @PostMapping("listRoles")
-    public JSONObject listRoles(@RequestParam String userId, @RequestParam String enable) {
+    @PostMapping("listRoleByUserId")
+    public JSONObject listRoleByUserId(@RequestParam String userId,String enable) {
         if (StringUtils.isEmpty(userId))
             return JSONObjResult.toJSONObj("用户主键不能为空");
-        if (StringUtils.isEmpty(enable))
-            return JSONObjResult.toJSONObj("是否启用不能为空");
+//        if (StringUtils.isEmpty(enable))
+//            return JSONObjResult.toJSONObj("是否启用不能为空");
         List<SysRole> list = sysRoleService.listByUserIdEnable(userId, enable);
         return JSONObjResult.toJSONObj(list, true, "");
     }
 
     @LogInfo("根据用户主键查找所拥有的权限")
-    @PostMapping("queryAuthority")
-    public JSONObject queryAuthority(@RequestParam String userId, @RequestParam String enable) {
+    @PostMapping("listAuthorityByUserId")
+    public JSONObject listAuthorityByUserId(@RequestParam String userId,String enable) {
         if (StringUtils.isEmpty(userId))
             return JSONObjResult.toJSONObj("用户主键不能为空");
-        List<SysAuthority> list = sysUserService.queryAuthority(userId,
-                enable);
+        List<SysAuthority> list = sysUserService.queryAuthority(userId, enable);
         return JSONObjResult.toJSONObj(list, true, "");
     }
 }

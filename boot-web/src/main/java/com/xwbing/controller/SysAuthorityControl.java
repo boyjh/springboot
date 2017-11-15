@@ -70,7 +70,7 @@ public class SysAuthorityControl {
     }
 
     @LogInfo("根据父节点查询子节点(非递归)")
-    @PostMapping("listByParentId")
+    @GetMapping("listByParentId")
     public JSONObject listByParentId(String parentId) {
         if (StringUtils.isEmpty(parentId))
             parentId = CommonConstant.ROOT;
@@ -81,16 +81,16 @@ public class SysAuthorityControl {
     }
 
     @LogInfo("根据是否启用查询所有权限")
-    @PostMapping("listAuthorityByEnable")
-    public JSONObject listAuthorityByEnable(@RequestParam String enable) {
-        if (StringUtils.isEmpty(enable))
-            return JSONObjResult.toJSONObj("是否启用不能为空");
+    @GetMapping("listAuthorityByEnable")
+    public JSONObject listAuthorityByEnable(String enable) {
+//        if (StringUtils.isEmpty(enable))
+//            return JSONObjResult.toJSONObj("是否启用不能为空");
         List<SysAuthority> authoritys = sysAuthorityService.listByEnable(enable);
         return JSONObjResult.toJSONObj(authoritys, true, "");
     }
 
     @LogInfo("递归查询所有权限")
-    @PostMapping("queryTree")
+    @GetMapping("queryTree")
     public JSONObject queryTree(String enable) {
         List<SysAuthVo> authoritys = sysAuthorityService.queryAllChildren(CommonConstant.ROOT, enable);
         return JSONObjResult.toJSONObj(authoritys, true, "");

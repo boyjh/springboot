@@ -16,5 +16,7 @@ public interface SysRoleRepository extends JpaRepository<SysRole, String> {
 
     SysRole getByCode(String code);
 
-    List<SysRole> getByEnableAndIdIn(String enable,List<String> ids);
+    List<SysRole> getByEnableAndIdIn(String enable, List<String> ids);
+
+    List<SysRole> getByIdIn(List<String> ids);
 }

@@ -9,8 +9,6 @@ import com.xwbing.util.PassWordUtil;
 import com.xwbing.util.RestMessage;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -33,7 +31,6 @@ public class SysRoleService {
     private SysUserRoleService sysUserRoleService;
     @Resource
     private SysRoleAuthorityService sysRoleAuthorityService;
-    private final Logger logger = LoggerFactory.getLogger(SysRoleService.class);
 
     /**
      * 保存角色
@@ -43,7 +40,7 @@ public class SysRoleService {
      */
     public RestMessage save(SysRole sysRole) {
         RestMessage result = new RestMessage();
-        boolean b = uniqueCode(sysRole.getCode(), "");
+        boolean b = uniqueCode(sysRole.getCode(), null);
         if (!b)
             throw new BusinessException("该编码已存在");
         String id = PassWordUtil.createId();
@@ -92,9 +89,8 @@ public class SysRoleService {
         RestMessage result = new RestMessage();
         String id = sysRole.getId();
         SysRole old = getById(id);
-        if (old == null) {
+        if (old == null)
             throw new BusinessException("该角色不存在");
-        }
         boolean b = uniqueCode(sysRole.getCode(), id);
         if (!b)
             throw new BusinessException("该编码已存在");
@@ -131,7 +127,10 @@ public class SysRoleService {
      * @return
      */
     public List<SysRole> listAllByEnable(String enable) {
-        return sysRoleRepository.getByEnable(enable);
+        if (StringUtils.isNotEmpty(enable))
+            return sysRoleRepository.getByEnable(enable);
+        else
+            return sysRoleRepository.findAll();
     }
 
     /**
@@ -148,7 +147,10 @@ public class SysRoleService {
             return list;
         List<String> roleIds = sysUserRoles.stream().map(SysUserRole::getRoleId).collect(Collectors.toList());
         if (CollectionUtils.isNotEmpty(roleIds))
-            list = sysRoleRepository.getByEnableAndIdIn(enable, roleIds);
+            if (StringUtils.isNotEmpty(enable))
+                list = sysRoleRepository.getByEnableAndIdIn(enable, roleIds);
+            else
+                list = sysRoleRepository.getByIdIn(roleIds);
         return list;
     }
 

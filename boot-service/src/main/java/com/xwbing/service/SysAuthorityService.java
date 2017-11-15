@@ -39,7 +39,7 @@ public class SysAuthorityService {
      */
     public RestMessage save(SysAuthority sysAuthority) {
         RestMessage result = new RestMessage();
-        boolean b = uniqueCode(sysAuthority.getCode(), "");
+        boolean b = uniqueCode(sysAuthority.getCode(), null);
         if (!b)
             throw new BusinessException("该编码已存在");
         String id = PassWordUtil.createId();
@@ -123,7 +123,10 @@ public class SysAuthorityService {
      * @return
      */
     public List<SysAuthority> listByEnable(String enable) {
-        return sysAuthorityRepository.getByEnable(enable);
+        if (StringUtils.isNotEmpty(enable))
+            return sysAuthorityRepository.getByEnable(enable);
+        else
+            return sysAuthorityRepository.findAll();
     }
 
     /**
@@ -156,7 +159,10 @@ public class SysAuthorityService {
             return list;
         List<String> authorityIds = roleAuthorities.stream().map(SysRoleAuthority::getAuthorityId).collect(Collectors.toList());
         if (CollectionUtils.isNotEmpty(authorityIds))
-            list = sysAuthorityRepository.getByEnableAndIdIn(enable, authorityIds);
+            if (StringUtils.isNotEmpty(enable))
+                list = sysAuthorityRepository.getByEnableAndIdIn(enable, authorityIds);
+            else
+                list = sysAuthorityRepository.getByIdIn(authorityIds);
         return list;
     }
 
