@@ -16,6 +16,7 @@ import com.xwbing.util.CommonDataUtil;
 import com.xwbing.util.JSONObjResult;
 import com.xwbing.util.RestMessage;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -136,7 +137,7 @@ public class SysUserControl {
         SysUser sysUser = sysUserService.getOne((String) CommonDataUtil.getToken(CommonConstant.CURRENT_USER_ID));
         if (sysUser == null)
             return JSONObjResult.toJSONObj("未获取到当前登录用户信息");
-        List<SysAuthority> other = new ArrayList<>();
+        List<SysAuthority> button = new ArrayList<>();
         List<SysAuthority> menu = new ArrayList<>();
         List<SysAuthority> list;
         if (CommonEnum.YesOrNoEnum.YES.getCode().equalsIgnoreCase(sysUser.getAdmin()))
@@ -148,11 +149,11 @@ public class SysUserControl {
                 if (sysAuthority.getType() == CommonEnum.MenuOrButtonEnum.MENU.getCode())
                     menu.add(sysAuthority);
                 else
-                    other.add(sysAuthority);
+                    button.add(sysAuthority);
             }
         }
         sysUser.setMenuArray(menu);
-        sysUser.setOtherArray(other);
+        sysUser.setButtonArray(button);
         return JSONObjResult.toJSONObj(sysUser, true, "");
     }
 
@@ -184,17 +185,17 @@ public class SysUserControl {
 
     @LogInfo("根据用户主键查找所拥有的角色")
     @PostMapping("listRoleByUserId")
-    public JSONObject listRoleByUserId(@RequestParam String userId,String enable) {
+    @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query",dataType = "string")
+    public JSONObject listRoleByUserId(@RequestParam String userId, String enable) {
         if (StringUtils.isEmpty(userId))
             return JSONObjResult.toJSONObj("用户主键不能为空");
-//        if (StringUtils.isEmpty(enable))
-//            return JSONObjResult.toJSONObj("是否启用不能为空");
         List<SysRole> list = sysRoleService.listByUserIdEnable(userId, enable);
         return JSONObjResult.toJSONObj(list, true, "");
     }
 
     @LogInfo("根据用户主键查找所拥有的权限")
     @PostMapping("listAuthorityByUserId")
+    @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query",dataType = "string")
     public JSONObject listAuthorityByUserId(@RequestParam String userId,String enable) {
         if (StringUtils.isEmpty(userId))
             return JSONObjResult.toJSONObj("用户主键不能为空");

@@ -51,7 +51,8 @@ public class SysUserService {
         if (old != null) {
             throw new BusinessException("已经存在此用户名");
         }
-        sysUser.setId(PassWordUtil.createId());
+        String id=PassWordUtil.createId();
+        sysUser.setId(id);
         sysUser.setCreateTime(new Date());
         // 获取初始密码
         String[] res = PassWordUtil.getUserSecret(null, null);
@@ -70,6 +71,7 @@ public class SysUserService {
             throw new BusinessException("发送密码邮件错误");
         }
         result.setSuccess(true);
+        result.setId(id);
         return result;
     }
 
@@ -131,6 +133,7 @@ public class SysUserService {
         SysUser one = sysUserRepository.save(old);
         if (one != null) {
             result.setMessage("更新成功");
+            result.setId(sysUser.getId());
             result.setSuccess(true);
         } else {
             result.setMessage("更新失败");

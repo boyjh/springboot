@@ -65,5 +65,5 @@ public class SysUser extends BaseEntity {
     private transient String modified;
     private transient String sexName;
     private transient List<SysAuthority> menuArray;
-    private transient List<SysAuthority> otherArray;
+    private transient List<SysAuthority> buttonArray;
 }

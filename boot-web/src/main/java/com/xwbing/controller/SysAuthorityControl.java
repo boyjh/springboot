@@ -10,6 +10,7 @@ import com.xwbing.service.SysAuthorityService;
 import com.xwbing.util.JSONObjResult;
 import com.xwbing.util.RestMessage;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -71,6 +72,7 @@ public class SysAuthorityControl {
 
     @LogInfo("根据父节点查询子节点(非递归)")
     @GetMapping("listByParentId")
+    @ApiImplicitParam(name = "parentId", value = "父id,可为空", paramType = "query", dataType = "string")
     public JSONObject listByParentId(String parentId) {
         if (StringUtils.isEmpty(parentId))
             parentId = CommonConstant.ROOT;
@@ -81,16 +83,16 @@ public class SysAuthorityControl {
     }
 
     @LogInfo("根据是否启用查询所有权限")
-    @GetMapping("listAuthorityByEnable")
-    public JSONObject listAuthorityByEnable(String enable) {
-//        if (StringUtils.isEmpty(enable))
-//            return JSONObjResult.toJSONObj("是否启用不能为空");
+    @GetMapping("listByEnable")
+    @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query", dataType = "string")
+    public JSONObject listByEnable(String enable) {
         List<SysAuthority> authoritys = sysAuthorityService.listByEnable(enable);
         return JSONObjResult.toJSONObj(authoritys, true, "");
     }
 
     @LogInfo("递归查询所有权限")
     @GetMapping("queryTree")
+    @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query", dataType = "string")
     public JSONObject queryTree(String enable) {
         List<SysAuthVo> authoritys = sysAuthorityService.queryAllChildren(CommonConstant.ROOT, enable);
         return JSONObjResult.toJSONObj(authoritys, true, "");

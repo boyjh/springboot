@@ -11,6 +11,7 @@ import com.xwbing.service.SysRoleService;
 import com.xwbing.util.JSONObjResult;
 import com.xwbing.util.RestMessage;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -73,6 +74,7 @@ public class SysRoleControl {
 
     @LogInfo("根据角色主键查找权限")
     @PostMapping("listAuthorityByRoleId")
+    @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query",dataType = "string")
     public JSONObject listAuthorityByRoleId(@RequestParam String roleId, String enable) {
         if (StringUtils.isEmpty(roleId))
             return JSONObjResult.toJSONObj("角色主键不能为空");
@@ -106,10 +108,9 @@ public class SysRoleControl {
     }
 
     @LogInfo("根据是否启用查询所有角色")
-    @GetMapping("listAllByEnable")
-    public JSONObject listAllByEnable(String enable) {
-//        if (StringUtils.isEmpty(enable))
-//            return JSONObjResult.toJSONObj("是否启用不能为空");
+    @GetMapping("listByEnable")
+    @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query",dataType = "string")
+    public JSONObject listByEnable(String enable) {
         List<SysRole> sysRoles = sysRoleService.listAllByEnable(enable);
         return JSONObjResult.toJSONObj(sysRoles, true, "");
     }

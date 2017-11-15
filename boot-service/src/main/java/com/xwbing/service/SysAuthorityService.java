@@ -137,8 +137,6 @@ public class SysAuthorityService {
      * @return
      */
     public List<SysAuthority> listByParentEnable(String parentId, String enable) {
-        if (StringUtils.isEmpty(parentId))
-            parentId = CommonConstant.ROOT;
         if (StringUtils.isNotEmpty(enable))
             return sysAuthorityRepository.getByParentIdAndEnable(parentId, enable);
         else
@@ -155,7 +153,7 @@ public class SysAuthorityService {
     public List<SysAuthority> listByRoleIdEnable(String roleId, String enable) {
         List<SysAuthority> list = new ArrayList<>();
         List<SysRoleAuthority> roleAuthorities = sysRoleAuthorityService.listByRoleId(roleId);
-        if (CollectionUtils.isNotEmpty(roleAuthorities))
+        if (CollectionUtils.isEmpty(roleAuthorities))
             return list;
         List<String> authorityIds = roleAuthorities.stream().map(SysRoleAuthority::getAuthorityId).collect(Collectors.toList());
         if (CollectionUtils.isNotEmpty(authorityIds))
