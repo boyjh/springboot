@@ -61,4 +61,18 @@ public class SysUserRoleService {
     public List<SysUserRole> listByUserId(String userId) {
         return sysUserRoleRepository.getByUserId(userId);
     }
+
+    /**
+     * 批量删除
+     *
+     * @param userRoles
+     * @return
+     */
+    public RestMessage removeBatch(List<SysUserRole> userRoles) {
+        RestMessage result = new RestMessage();
+        sysUserRoleRepository.deleteInBatch(userRoles);
+        result.setSuccess(true);
+        result.setMessage("批量删除成功");
+        return result;
+    }
 }

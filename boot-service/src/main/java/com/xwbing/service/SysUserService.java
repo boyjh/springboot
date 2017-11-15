@@ -36,6 +36,8 @@ public class SysUserService {
     private SysRoleService sysRoleService;
     @Resource
     private SysAuthorityService sysAuthorityService;
+    @Resource
+    private SysUserRoleService sysUserRoleService;
 
     /**
      * 增
@@ -89,7 +91,13 @@ public class SysUserService {
         if (CommonEnum.YesOrNoEnum.YES.getCode().equals(old.getAdmin())) {
             throw new BusinessException("不能对管理员进行删除操作");
         }
+        //删除用户
         sysUserRepository.delete(id);
+        //删除用户角色
+        List<SysUserRole> sysUserRoles = sysUserRoleService.listByUserId(id);
+        if (CollectionUtils.isNotEmpty(sysUserRoles)) {
+            sysUserRoleService.removeBatch(sysUserRoles);
+        }
         result.setMessage("删除成功");
         result.setSuccess(true);
         return result;
@@ -302,8 +310,8 @@ public class SysUserService {
         List<SysRole> sysRoles = sysRoleService.listByUserIdEnable(userId, enable);
         if (CollectionUtils.isEmpty(sysRoles))
             return list;
-        List<SysAuthority> temp;
         //遍获取每个角色拥有的权限，并去重
+        List<SysAuthority> temp;
         for (SysRole sysRole : sysRoles) {
             temp = sysAuthorityService.listByRoleIdEnable(sysRole.getId(), enable);
             if (CollectionUtils.isNotEmpty(temp)) {

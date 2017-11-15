@@ -56,7 +56,6 @@ public class SysAuthorityService {
             result.setMessage("保存权限失败");
         }
         return result;
-
     }
 
     /**
@@ -128,7 +127,7 @@ public class SysAuthorityService {
     }
 
     /**
-     * 查询所有子节点
+     * 根据状态查询所有子节点
      *
      * @param parentId
      * @param enable
@@ -137,7 +136,10 @@ public class SysAuthorityService {
     public List<SysAuthority> listByParentEnable(String parentId, String enable) {
         if (StringUtils.isEmpty(parentId))
             parentId = CommonConstant.ROOT;
-        return sysAuthorityRepository.getByParentIdAndEnable(parentId, enable);
+        if (StringUtils.isNotEmpty(enable))
+            return sysAuthorityRepository.getByParentIdAndEnable(parentId, enable);
+        else
+            return sysAuthorityRepository.getByParentId(parentId);
     }
 
     /**
@@ -158,27 +160,6 @@ public class SysAuthorityService {
         return list;
     }
 
-    /**
-     * 递归查询父节点下所有权限的id集合,并将状态设置为禁用(禁用权限时用)
-     *
-     * @param parentId
-     * @return
-     */
-    public List<SysAuthority> queryAllChildren(String parentId) {
-        //获取结果
-        List<SysAuthority> sysAuthoritys = listByParentEnable(parentId, CommonConstant.ISENABLE);
-        //遍历子集
-        List<SysAuthority> list = new ArrayList<>();
-        if (CollectionUtils.isNotEmpty(sysAuthoritys)) {
-            for (SysAuthority sysAuthority : sysAuthoritys) {
-                sysAuthority.setEnable(CommonConstant.ISNOTENABLE);
-                sysAuthority.setModifiedTime(new Date());
-                list.add(sysAuthority);
-                list.addAll(queryAllChildren(sysAuthority.getId()));
-            }
-        }
-        return list;
-    }
 
     /**
      * 根据父节点禁用所有子节点
@@ -204,7 +185,11 @@ public class SysAuthorityService {
      */
     public List<SysAuthVo> queryAllChildren(String parentId, String enable) {
         List<SysAuthVo> list = new ArrayList<>();
-        List<SysAuthority> authoritys = sysAuthorityRepository.getByParentIdAndEnable(parentId, enable);
+        List<SysAuthority> authoritys;
+        if (StringUtils.isNotEmpty(enable))
+            authoritys = sysAuthorityRepository.getByParentIdAndEnable(parentId, enable);
+        else
+            authoritys = sysAuthorityRepository.getByParentId(parentId);
         if (CollectionUtils.isEmpty(authoritys))
             return list;
         SysAuthVo vo;
@@ -212,6 +197,28 @@ public class SysAuthorityService {
             vo = new SysAuthVo(authority);
             vo.setChildren(queryAllChildren(vo.getId(), enable));
             list.add(vo);
+        }
+        return list;
+    }
+
+    /**
+     * 递归查询父节点下所有权限的id集合,并将状态设置为禁用(禁用权限时用)
+     *
+     * @param parentId
+     * @return
+     */
+    private List<SysAuthority> queryAllChildren(String parentId) {
+        //获取结果
+        List<SysAuthority> sysAuthoritys = listByParentEnable(parentId, CommonConstant.ISENABLE);
+        //遍历子集
+        List<SysAuthority> list = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty(sysAuthoritys)) {
+            for (SysAuthority sysAuthority : sysAuthoritys) {
+                sysAuthority.setEnable(CommonConstant.ISNOTENABLE);
+                sysAuthority.setModifiedTime(new Date());
+                list.add(sysAuthority);
+                list.addAll(queryAllChildren(sysAuthority.getId()));
+            }
         }
         return list;
     }

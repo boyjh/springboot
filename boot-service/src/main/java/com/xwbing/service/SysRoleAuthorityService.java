@@ -62,4 +62,18 @@ public class SysRoleAuthorityService {
     public List<SysRoleAuthority> listByRoleId(String roleId) {
         return sysRoleAuthorityRepository.getByRoleId(roleId);
     }
+
+    /**
+     * 批量删除
+     *
+     * @param roleAuthorities
+     * @return
+     */
+    public RestMessage removeBatch(List<SysRoleAuthority> roleAuthorities) {
+        RestMessage result = new RestMessage();
+        sysRoleAuthorityRepository.deleteInBatch(roleAuthorities);
+        result.setSuccess(true);
+        result.setMessage("批量删除成功");
+        return result;
+    }
 }

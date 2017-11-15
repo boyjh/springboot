@@ -1,6 +1,7 @@
 package com.xwbing.service;
 
 import com.xwbing.entity.SysRole;
+import com.xwbing.entity.SysRoleAuthority;
 import com.xwbing.entity.SysUserRole;
 import com.xwbing.exception.BusinessException;
 import com.xwbing.repository.SysRoleRepository;
@@ -30,6 +31,8 @@ public class SysRoleService {
     private SysRoleRepository sysRoleRepository;
     @Resource
     private SysUserRoleService sysUserRoleService;
+    @Resource
+    private SysRoleAuthorityService sysRoleAuthorityService;
     private final Logger logger = LoggerFactory.getLogger(SysRoleService.class);
 
     /**
@@ -68,7 +71,12 @@ public class SysRoleService {
         SysRole one = getById(id);
         if (one == null)
             throw new BusinessException("该角色不存在");
+        //删除角色
         sysRoleRepository.delete(id);
+        //删除角色权限
+        List<SysRoleAuthority> roleAuthorities = sysRoleAuthorityService.listByRoleId(id);
+        if (CollectionUtils.isNotEmpty(roleAuthorities))
+            sysRoleAuthorityService.removeBatch(roleAuthorities);
         result.setMessage("删除成功");
         result.setSuccess(true);
         return result;
