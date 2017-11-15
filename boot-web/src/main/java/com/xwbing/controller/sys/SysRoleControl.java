@@ -24,7 +24,7 @@ import java.util.List;
  * 项目名称: boot-module-demo
  * 创建时间: 2017/11/14 10:41
  * 作者: xiangwb
- * 说明:
+ * 说明: 角色控制层
  */
 @Api(tags = "sysRoleApi", description = "角色相关接口")
 @RestController
