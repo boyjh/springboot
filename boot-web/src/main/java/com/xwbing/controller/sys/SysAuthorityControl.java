@@ -112,7 +112,7 @@ public class SysAuthorityControl {
     @ApiOperation(value = "递归查询所有权限")
     @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query", dataType = "string")
     public JSONObject listTree(String enable) {
-        List<SysAuthVo> authoritys = null;
+        List<SysAuthVo> authoritys;
         //先去缓存里拿
         boolean exists = redisService.exists(CommonConstant.AUTHORITY_THREE);
         if (exists) {
