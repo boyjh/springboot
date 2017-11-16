@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  * 项目名称: boot-module-demo
  * 创建时间: 2017/11/14 9:24
  * 作者: xiangwb
- * 说明:
+ * 说明: 角色服务层
  */
 @Service
 public class SysRoleService {

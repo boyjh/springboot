@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  * 项目名称: boot-module-demo
  * 创建时间: 2017/11/14 13:20
  * 作者: xiangwb
- * 说明:
+ * 说明: 权限服务层
  */
 @Service
 public class SysAuthorityService {
@@ -142,6 +142,8 @@ public class SysAuthorityService {
      * @return
      */
     public List<SysAuthority> listByParentEnable(String parentId, String enable) {
+        if(StringUtils.isEmpty(parentId))
+            parentId=CommonConstant.ROOT;
         if (StringUtils.isNotEmpty(enable))
             return sysAuthorityRepository.getByParentIdAndEnable(parentId, enable);
         else
@@ -177,7 +179,7 @@ public class SysAuthorityService {
      * @return
      */
     public boolean disableChildrenByParentId(String parentId) {
-        List<SysAuthority> sysAuthorities = listChildren(parentId);
+        List<SysAuthority> sysAuthorities = disableChildren(parentId);
         if (CollectionUtils.isNotEmpty(sysAuthorities)) {
             List<SysAuthority> save = sysAuthorityRepository.save(sysAuthorities);
             return CollectionUtils.isNotEmpty(save);
@@ -186,7 +188,7 @@ public class SysAuthorityService {
     }
 
     /**
-     * 递归查询所有节点（包括禁用）
+     * 根据状态递归查询所有节点
      *
      * @param parentId
      * @param enable
@@ -216,7 +218,7 @@ public class SysAuthorityService {
      * @param parentId
      * @return
      */
-    private List<SysAuthority> listChildren(String parentId) {
+    private List<SysAuthority> disableChildren(String parentId) {
         //获取结果
         List<SysAuthority> sysAuthoritys = listByParentEnable(parentId, CommonConstant.ISENABLE);
         //遍历子集
@@ -226,7 +228,7 @@ public class SysAuthorityService {
                 sysAuthority.setEnable(CommonConstant.ISNOTENABLE);
                 sysAuthority.setModifiedTime(new Date());
                 list.add(sysAuthority);
-                list.addAll(listChildren(sysAuthority.getId()));
+                list.addAll(disableChildren(sysAuthority.getId()));
             }
         }
         return list;
@@ -246,7 +248,7 @@ public class SysAuthorityService {
         if (CollectionUtils.isNotEmpty(sysAuthoritys)) {
             for (SysAuthority sysAuthority : sysAuthoritys) {
                 list.add(sysAuthority);
-                list.addAll(listChildren(sysAuthority.getId()));
+                list.addAll(listChildrenForRemove(sysAuthority.getId()));
             }
         }
         return list;

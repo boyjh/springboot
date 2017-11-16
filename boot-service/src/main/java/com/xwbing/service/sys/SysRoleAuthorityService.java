@@ -15,7 +15,7 @@ import java.util.List;
  * 项目名称: boot-module-demo
  * 创建时间: 2017/11/14 15:15
  * 作者: xiangwb
- * 说明:
+ * 说明: 角色权限服务层
  */
 @Service
 public class SysRoleAuthorityService {
@@ -37,7 +37,7 @@ public class SysRoleAuthorityService {
         if (CollectionUtils.isNotEmpty(roleAuthorities)) {
             sysRoleAuthorityRepository.deleteInBatch(roleAuthorities);
         }
-        //角色新增权限
+        //新增角色权限
         list.forEach(roleAuthority -> {
             roleAuthority.setId(PassWordUtil.createId());
             roleAuthority.setModifiedTime(new Date());

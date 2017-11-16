@@ -179,8 +179,9 @@ public class SysUserControl {
             return JSONObjResult.toJSONObj("不能对管理员进行操作");
         String ids[] = roleIds.split(",");
         List<SysUserRole> list = new ArrayList<>();
+        SysUserRole userRole;
         for (String id : ids) {
-            SysUserRole userRole = new SysUserRole();
+            userRole = new SysUserRole();
             userRole.setRoleId(id);
             userRole.setUserId(userId);
             list.add(userRole);

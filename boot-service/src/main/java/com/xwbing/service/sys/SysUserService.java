@@ -347,7 +347,7 @@ public class SysUserService {
      * @return
      */
     private boolean checkPassWord(String passWord, String realPassWord, String salt) {
-        // 根据密码盐值， 解码
+        // 根据密码盐值 解码
         byte[] saltByte = EncodeUtils.hexDecode(salt);
         byte[] hashPassword = Digests.sha1(passWord.getBytes(), saltByte,
                 PassWordUtil.HASH_INTERATIONS);

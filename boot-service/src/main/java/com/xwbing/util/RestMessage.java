@@ -15,5 +15,4 @@ public class RestMessage implements Serializable {
     private String message;//  成功、错误返回提示信息
     private Object data;// 返回的数据
     private String id;// 新增、修改主鍵返回id
-    private Integer code;//错误码
 }

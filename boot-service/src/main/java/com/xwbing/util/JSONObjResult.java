@@ -24,7 +24,7 @@ public class JSONObjResult {
     /**
      * 消息体
      */
-    private String message = "未知异常";
+    private String message = "";
     /**
      * 返回数据
      */

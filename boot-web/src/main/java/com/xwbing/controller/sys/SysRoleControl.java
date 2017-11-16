@@ -113,8 +113,9 @@ public class SysRoleControl {
             return JSONObjResult.toJSONObj("该角色不存在");
         String ids[] = authorityIds.split(",");
         List<SysRoleAuthority> list = new ArrayList<>();
+        SysRoleAuthority roleAuthority;
         for (String id : ids) {
-            SysRoleAuthority roleAuthority = new SysRoleAuthority();
+            roleAuthority = new SysRoleAuthority();
             roleAuthority.setRoleId(roleId);
             roleAuthority.setAuthorityId(id);
             list.add(roleAuthority);
