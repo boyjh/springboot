@@ -1,11 +1,13 @@
 package com.xwbing.controller.sys;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.annotation.LogInfo;
 import com.xwbing.constant.CommonConstant;
 import com.xwbing.constant.CommonEnum;
 import com.xwbing.entity.SysAuthority;
 import com.xwbing.entity.vo.SysAuthVo;
+import com.xwbing.redis.RedisService;
 import com.xwbing.service.sys.SysAuthorityService;
 import com.xwbing.util.JSONObjResult;
 import com.xwbing.util.RestMessage;
@@ -30,12 +32,17 @@ import java.util.List;
 public class SysAuthorityControl {
     @Resource
     private SysAuthorityService sysAuthorityService;
+    @Resource
+    private RedisService redisService;
 
     @LogInfo("添加权限")
     @PostMapping("save")
     @ApiOperation(value = "添加权限")
     public JSONObject save(@RequestBody SysAuthority sysAuthority) {
         RestMessage save = sysAuthorityService.save(sysAuthority);
+        //删除缓存
+        if (save.isSuccess())
+            redisService.del(CommonConstant.AUTHORITY_THREE);
         return JSONObjResult.toJSONObj(save);
     }
 
@@ -46,6 +53,9 @@ public class SysAuthorityControl {
         if (StringUtils.isEmpty(id))
             return JSONObjResult.toJSONObj("主键不能为空");
         RestMessage result = sysAuthorityService.removeById(id);
+        //删除缓存
+        if (result.isSuccess())
+            redisService.del(CommonConstant.AUTHORITY_THREE);
         return JSONObjResult.toJSONObj(result);
     }
 
@@ -71,6 +81,9 @@ public class SysAuthorityControl {
             }
         }
         RestMessage result = sysAuthorityService.update(sysAuthority);
+        //删除缓存
+        if (result.isSuccess())
+            redisService.del(CommonConstant.AUTHORITY_THREE);
         return JSONObjResult.toJSONObj(result);
     }
 
@@ -99,7 +112,17 @@ public class SysAuthorityControl {
     @ApiOperation(value = "递归查询所有权限")
     @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query", dataType = "string")
     public JSONObject listTree(String enable) {
-        List<SysAuthVo> authoritys = sysAuthorityService.listChildren(CommonConstant.ROOT, enable);
+        List<SysAuthVo> authoritys = null;
+        //先去缓存里拿
+        boolean exists = redisService.exists(CommonConstant.AUTHORITY_THREE);
+        if (exists) {
+            String result = redisService.get(CommonConstant.AUTHORITY_THREE);
+            authoritys = JSONArray.parseArray(result, SysAuthVo.class);
+        } else {
+            authoritys = sysAuthorityService.listChildren(CommonConstant.ROOT, enable);
+            // 设置缓存
+            redisService.set(CommonConstant.AUTHORITY_THREE, JSONArray.toJSONString(authoritys));
+        }
         return JSONObjResult.toJSONObj(authoritys, true, "");
     }
 }

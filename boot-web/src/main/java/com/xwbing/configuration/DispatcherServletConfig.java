@@ -8,19 +8,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.web.filter.CharacterEncodingFilter;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import javax.servlet.Filter;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 说明: 程序配置
+ * 说明: servlet配置
  * 项目名称: boot-module-demo
  * 创建时间: 2017/5/10 16:36
  * 作者:  xiangwb
@@ -29,7 +26,7 @@ import java.util.List;
 @EnableWebMvc
 //@ComponentScan(basePackages = {"com.xwbing.controller"}, includeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION, value = RestController.class)})
 public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
-    private static final Logger logger = LoggerFactory.getLogger(DispatcherServletConfig.class);
+    private final Logger logger = LoggerFactory.getLogger(DispatcherServletConfig.class);
 
     /***
      * 添加拦截器
@@ -57,8 +54,10 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        //swagger
         registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
         registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+        //
         super.addResourceHandlers(registry);
     }
 
@@ -88,31 +87,5 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
         mediaTypes.add(MediaType.APPLICATION_OCTET_STREAM);
         httpMessageConverter.setSupportedMediaTypes(mediaTypes);
         return httpMessageConverter;
-    }
-
-    /**
-     * 文件上传解析器
-     *
-     * @return
-     */
-    @Bean
-    public CommonsMultipartResolver getCommonsMultipartResolver() {
-        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-        multipartResolver.setMaxUploadSize(104857600);
-        multipartResolver.setDefaultEncoding("UTF-8");
-        return multipartResolver;
-    }
-
-    /**
-     * encoding编码问题
-     *
-     * @return
-     */
-    @Bean
-    public Filter characterEncodingFilter() {
-        CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
-        characterEncodingFilter.setEncoding("UTF-8");
-        characterEncodingFilter.setForceEncoding(true);
-        return characterEncodingFilter;
     }
 }

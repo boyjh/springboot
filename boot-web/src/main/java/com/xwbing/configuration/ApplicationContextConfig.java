@@ -1,8 +1,13 @@
 package com.xwbing.configuration;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.web.filter.CharacterEncodingFilter;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+
+import javax.servlet.Filter;
 
 /**
  * 说明: 程序上下文配置
@@ -16,7 +21,34 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 //@ImportResource("classpath:applicationContext.xml")//用来加载其他xml配置文件
 public class ApplicationContextConfig {
     /**
-     * 线程池
+     * 文件上传解析器
+     *
+     * @return
+     */
+    @Bean
+    public CommonsMultipartResolver getCommonsMultipartResolver() {
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+        multipartResolver.setMaxUploadSize(104857600);
+        multipartResolver.setDefaultEncoding("UTF-8");
+        return multipartResolver;
+    }
+
+    /**
+     * encoding编码问题
+     *
+     * @return
+     */
+    @Bean
+    @ConditionalOnMissingBean(CharacterEncodingFilter.class)
+    public Filter characterEncodingFilter() {
+        CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
+        characterEncodingFilter.setEncoding("UTF-8");
+        characterEncodingFilter.setForceEncoding(true);
+        return characterEncodingFilter;
+    }
+
+    /**
+     * 任务线程池
      *
      * @return
      */

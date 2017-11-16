@@ -16,7 +16,7 @@ spring:
   #jpa
   jpa:
     database: mysql
-    show-sql: true
+    show-sql: false
     hibernate:
       ddl-auto: update
     properties:
@@ -40,6 +40,12 @@ spring:
           starttls:
             enable: true
             required: true
+  #b编码
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
 #redis
 redis:
   host: 192.168.11.202

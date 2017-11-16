@@ -29,7 +29,6 @@ public class CommonConstant {
      */
     public static final String EMAIL_KEY = "email_config";
     /**
-     *
      * 当前登录用户
      */
     public static final String CURRENT_USER = "current_user";
@@ -37,4 +36,8 @@ public class CommonConstant {
      * 当前登录用户id
      */
     public static final String CURRENT_USER_ID = "current_id";
+    /**
+     * 权限树
+     */
+    public static final String AUTHORITY_THREE = "authority_three";
 }
