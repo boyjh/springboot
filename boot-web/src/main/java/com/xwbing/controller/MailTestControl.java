@@ -60,7 +60,7 @@ public class MailTestControl {
     @GetMapping("sendInlineResourceMail")
     @ApiOperation(value = "发送文本内嵌图片邮件")
     public JSONObject sendInlineResourceMail() {
-        String rscId = "pic";
+        String rscId = "file";
         String content = "<html><body>这是有图片的邮件：<img src=\'cid:" + rscId + "\'></body></html>";
         String imgPath = "C:\\Users\\admin\\Desktop\\0000001.png";
         RestMessage restMessage = mailService.sendInlineResourceMail("786461501@qq.com", "内嵌图片测试邮件", content, imgPath, rscId);

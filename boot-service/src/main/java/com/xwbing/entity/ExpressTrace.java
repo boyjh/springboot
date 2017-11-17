@@ -9,7 +9,7 @@ import lombok.Data;
  * 说明: 快递追踪信息
  */
 @Data
-public class Trace {
+public class ExpressTrace {
     private String AcceptTime;
     private String AcceptStation;
 }

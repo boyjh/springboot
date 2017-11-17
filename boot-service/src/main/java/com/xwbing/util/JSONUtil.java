@@ -24,6 +24,8 @@ public class JSONUtil {
     public static Object beanToMap(Object obj) {
         if (obj == null)
             return null;
+        if (obj instanceof String)
+            return obj;
         if (obj instanceof List) {
             List<?> list = (List<?>) obj;
             ArrayList<JSONObject> result = new ArrayList<>();

@@ -6,7 +6,9 @@ import com.xwbing.entity.ExpressInfo;
 import com.xwbing.entity.vo.ExpressInfoVo;
 import com.xwbing.redis.RedisService;
 import com.xwbing.service.ExpressDeliveryService;
+import com.xwbing.service.QRcodeZipService;
 import com.xwbing.util.JSONObjResult;
+import com.xwbing.util.RestMessage;
 import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -14,6 +16,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.util.List;
 
 /**
@@ -30,6 +34,8 @@ public class TestControl {
     private RedisService redisService;
     @Resource
     private ExpressDeliveryService expressDeliveryService;
+    @Resource
+    private QRcodeZipService QRcodeZipService;
     private final Logger logger = LoggerFactory.getLogger(TestControl.class);
 
     @LogInfo("redis功能测试")
@@ -54,7 +60,6 @@ public class TestControl {
         return JSONObjResult.toJSONObj(list, true, "");
     }
 
-
     @LogInfo("快递查询")
     @PostMapping("expressInfo")
     public JSONObject getExpressInfo(@RequestBody ExpressInfo info) {
@@ -62,5 +67,31 @@ public class TestControl {
             return JSONObjResult.toJSONObj("快递公司或物流单号不能为空");
         ExpressInfoVo infoVo = expressDeliveryService.queryOrderTraces(info);
         return JSONObjResult.toJSONObj(infoVo, true, "查询快递信息成功");
+    }
+
+    @LogInfo("生成二维码")//为什么内置tomcat会重启
+    @PostMapping("createQRCode")
+    public JSONObject createQRCode(@RequestParam String name, @RequestParam String text) {
+        RestMessage qrCode = QRcodeZipService.createQRCode(name, text);
+        return JSONObjResult.toJSONObj(qrCode);
+    }
+
+    @LogInfo("解析二维码")
+    @GetMapping("decode")
+    public JSONObject decode(@RequestParam String path) {
+        if (StringUtils.isEmpty(path))
+            return JSONObjResult.toJSONObj("二维码图片路径不能为空");
+        File file = new File(path);
+        RestMessage decode = QRcodeZipService.decode(file);
+        return JSONObjResult.toJSONObj(decode);
+    }
+
+    @LogInfo("导出zip")
+    @GetMapping("batchGetImage")
+    public JSONObject batchGetImage(HttpServletResponse response, @RequestParam String[] names, @RequestParam String fileName) {
+        if (StringUtils.isEmpty(fileName))
+            return JSONObjResult.toJSONObj("zip名称不能为空");
+        RestMessage restMessage = QRcodeZipService.batchGetImage(response, names, fileName);
+        return JSONObjResult.toJSONObj(restMessage);
     }
 }

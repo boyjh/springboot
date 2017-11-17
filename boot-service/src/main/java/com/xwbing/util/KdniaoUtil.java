@@ -28,8 +28,7 @@ public class KdniaoUtil {
         StringBuilder result = new StringBuilder();
         try {
             URL realUrl = new URL(url);
-            HttpURLConnection conn = (HttpURLConnection) realUrl
-                    .openConnection();
+            HttpURLConnection conn = (HttpURLConnection) realUrl.openConnection();
             // 发送POST请求必须设置如下两行
             conn.setDoOutput(true);
             conn.setDoInput(true);
@@ -38,10 +37,8 @@ public class KdniaoUtil {
             // 设置通用的请求属性
             conn.setRequestProperty("accept", "*/*");
             conn.setRequestProperty("connection", "Keep-Alive");
-            conn.setRequestProperty("user-agent",
-                    "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
-            conn.setRequestProperty("Content-Type",
-                    "application/x-www-form-urlencoded");
+            conn.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             conn.connect();
             // 获取URLConnection对象对应的输出流
             out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
@@ -63,8 +60,7 @@ public class KdniaoUtil {
             // flush输出流的缓冲
             out.flush();
             // 定义BufferedReader输入流来读取URL的响应
-            in = new BufferedReader(new InputStreamReader(
-                    conn.getInputStream(), "UTF-8"));
+            in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
             String line;
             while ((line = in.readLine()) != null) {
                 result.append(line);

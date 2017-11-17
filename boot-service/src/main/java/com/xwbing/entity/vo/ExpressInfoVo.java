@@ -1,6 +1,6 @@
 package com.xwbing.entity.vo;
 
-import com.xwbing.entity.Trace;
+import com.xwbing.entity.ExpressTrace;
 import lombok.Data;
 
 import java.util.List;
@@ -29,7 +29,7 @@ public class ExpressInfoVo {
     /**
      * 物流信息
      */
-    private List<Trace> traces;
+    private List<ExpressTrace> expressTraces;
     /**
      * 描述
      */

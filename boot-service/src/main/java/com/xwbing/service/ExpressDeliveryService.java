@@ -70,7 +70,7 @@ public class ExpressDeliveryService {
         String requestData = "{'ShipperCode':'" + info.getShipperCode() + "','LogisticCode':'" + info.getLogisticCode() + "'}";
         Map<String, String> params = new HashMap<>();
         try {
-            params.put("RequestData", urlEncoder(requestData, "UTF-8"));
+            params.put("RequestData", KdniaoUtil.urlEncoder(requestData, "UTF-8"));
             params.put("EBusinessID", EBusinessID);
             params.put("RequestType", "1002");
             String dataSign = KdniaoUtil.encrypt(requestData, appKey, "UTF-8");
@@ -79,6 +79,7 @@ public class ExpressDeliveryService {
         } catch (Exception e) {
             logger.error("快递查询出错:{}", e.getMessage());
             throw new BusinessException("快递查询出错");
+
         }
         // 返回物流信息
         // status: 0|null 无信息 1已取件 2在途中 3已签收 4问题件 5待取件 6待派件 8已发货 9未发货
@@ -93,7 +94,7 @@ public class ExpressDeliveryService {
             int statusValue = Integer.valueOf(status);
             CommonEnum.ExpressStatusEnum expressStatus = Arrays.stream(CommonEnum.ExpressStatusEnum.values()).filter(obj -> obj.getValue() == statusValue).findFirst().get();
             infoVo.setDescribe(expressStatus.getName());
-            // TODO: 2017/11/17 根据公司业务处理返回的信息......
+            // TODO: 2017/11/16 根据公司业务处理返回的信息......
         }
         return infoVo;
     }
