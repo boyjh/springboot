@@ -23,8 +23,8 @@ import java.util.List;
  * 说明:
  */
 @Service
-public class QRcodeZipService {
-    private final Logger logger = LoggerFactory.getLogger(QRcodeZipService.class);
+public class QRCodeZipService {
+    private final Logger logger = LoggerFactory.getLogger(QRCodeZipService.class);
 
     /**
      * 生成默认长度的二维码

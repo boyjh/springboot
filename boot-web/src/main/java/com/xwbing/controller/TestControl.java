@@ -6,7 +6,7 @@ import com.xwbing.entity.ExpressInfo;
 import com.xwbing.entity.vo.ExpressInfoVo;
 import com.xwbing.redis.RedisService;
 import com.xwbing.service.ExpressDeliveryService;
-import com.xwbing.service.QRcodeZipService;
+import com.xwbing.service.QRCodeZipService;
 import com.xwbing.util.JSONObjResult;
 import com.xwbing.util.RestMessage;
 import io.swagger.annotations.Api;
@@ -35,7 +35,7 @@ public class TestControl {
     @Resource
     private ExpressDeliveryService expressDeliveryService;
     @Resource
-    private QRcodeZipService QRcodeZipService;
+    private QRCodeZipService QRCodeZipService;
     private final Logger logger = LoggerFactory.getLogger(TestControl.class);
 
     @LogInfo("redis功能测试")
@@ -72,7 +72,7 @@ public class TestControl {
     @LogInfo("生成二维码")//为什么内置tomcat会重启
     @PostMapping("createQRCode")
     public JSONObject createQRCode(@RequestParam String name, @RequestParam String text) {
-        RestMessage qrCode = QRcodeZipService.createQRCode(name, text);
+        RestMessage qrCode = QRCodeZipService.createQRCode(name, text);
         return JSONObjResult.toJSONObj(qrCode);
     }
 
@@ -82,7 +82,7 @@ public class TestControl {
         if (StringUtils.isEmpty(path))
             return JSONObjResult.toJSONObj("二维码图片路径不能为空");
         File file = new File(path);
-        RestMessage decode = QRcodeZipService.decode(file);
+        RestMessage decode = QRCodeZipService.decode(file);
         return JSONObjResult.toJSONObj(decode);
     }
 
@@ -91,7 +91,7 @@ public class TestControl {
     public JSONObject batchGetImage(HttpServletResponse response, @RequestParam String[] names, @RequestParam String fileName) {
         if (StringUtils.isEmpty(fileName))
             return JSONObjResult.toJSONObj("zip名称不能为空");
-        RestMessage restMessage = QRcodeZipService.batchGetImage(response, names, fileName);
+        RestMessage restMessage = QRCodeZipService.batchGetImage(response, names, fileName);
         return JSONObjResult.toJSONObj(restMessage);
     }
 }
