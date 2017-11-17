@@ -1,6 +1,6 @@
 package com.xwbing.service.sys;
 
-import com.xwbing.entity.SysConfig;
+import com.xwbing.entity.sys.SysConfig;
 import com.xwbing.exception.BusinessException;
 import com.xwbing.repository.sys.SysConfigRepository;
 import com.xwbing.util.PassWordUtil;

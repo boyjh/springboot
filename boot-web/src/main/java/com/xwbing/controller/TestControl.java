@@ -1,15 +1,20 @@
 package com.xwbing.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.xwbing.annotation.LogInfo;
+import com.xwbing.entity.ExpressInfo;
+import com.xwbing.entity.vo.ExpressInfoVo;
 import com.xwbing.redis.RedisService;
+import com.xwbing.service.ExpressDeliveryService;
+import com.xwbing.util.JSONObjResult;
 import io.swagger.annotations.Api;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * 说明: 测试控制层
@@ -23,6 +28,8 @@ import javax.annotation.Resource;
 public class TestControl {
     @Resource
     private RedisService redisService;
+    @Resource
+    private ExpressDeliveryService expressDeliveryService;
     private final Logger logger = LoggerFactory.getLogger(TestControl.class);
 
     @LogInfo("redis功能测试")
@@ -38,5 +45,22 @@ public class TestControl {
     public void log() {
         logger.info("info test");
         logger.error("error test");
+    }
+
+    @LogInfo("获取快递列表")
+    @GetMapping("listShipperCode")
+    public JSONObject listShipperCode() {
+        List<JSONObject> list = expressDeliveryService.listShipperCode();
+        return JSONObjResult.toJSONObj(list, true, "");
+    }
+
+
+    @LogInfo("快递查询")
+    @PostMapping("expressInfo")
+    public JSONObject getExpressInfo(@RequestBody ExpressInfo info) {
+        if (StringUtils.isEmpty(info.getLogisticCode()) || StringUtils.isEmpty(info.getShipperCode()))
+            return JSONObjResult.toJSONObj("快递公司或物流单号不能为空");
+        ExpressInfoVo infoVo = expressDeliveryService.queryOrderTraces(info);
+        return JSONObjResult.toJSONObj(infoVo, true, "查询快递信息成功");
     }
 }

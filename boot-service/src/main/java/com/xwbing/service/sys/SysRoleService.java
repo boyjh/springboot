@@ -1,8 +1,8 @@
 package com.xwbing.service.sys;
 
-import com.xwbing.entity.SysRole;
-import com.xwbing.entity.SysRoleAuthority;
-import com.xwbing.entity.SysUserRole;
+import com.xwbing.entity.sys.SysRole;
+import com.xwbing.entity.sys.SysRoleAuthority;
+import com.xwbing.entity.sys.SysUserRole;
 import com.xwbing.exception.BusinessException;
 import com.xwbing.repository.sys.SysRoleRepository;
 import com.xwbing.util.PassWordUtil;

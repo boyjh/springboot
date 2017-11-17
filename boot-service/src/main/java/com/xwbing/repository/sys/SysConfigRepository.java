@@ -1,6 +1,6 @@
 package com.xwbing.repository.sys;
 
-import com.xwbing.entity.SysConfig;
+import com.xwbing.entity.sys.SysConfig;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

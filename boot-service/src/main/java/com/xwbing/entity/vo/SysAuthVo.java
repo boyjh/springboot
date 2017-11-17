@@ -1,6 +1,6 @@
 package com.xwbing.entity.vo;
 
-import com.xwbing.entity.SysAuthority;
+import com.xwbing.entity.sys.SysAuthority;
 import lombok.Data;
 import org.apache.commons.beanutils.BeanUtils;
 
@@ -10,7 +10,7 @@ import java.util.List;
  * 项目名称: boot-module-demo
  * 创建时间: 2017/11/14 15:43
  * 作者: xiangwb
- * 说明:
+ * 说明: 权限树信息
  */
 @Data
 public class SysAuthVo extends SysAuthority {

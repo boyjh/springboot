@@ -1,0 +1,128 @@
+package com.xwbing.service;
+
+import com.alibaba.fastjson.JSONObject;
+import com.xwbing.constant.CommonEnum;
+import com.xwbing.entity.ExpressInfo;
+import com.xwbing.entity.vo.ExpressInfoVo;
+import com.xwbing.exception.BusinessException;
+import com.xwbing.util.KdniaoUtil;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Service;
+
+import java.util.*;
+
+import static com.xwbing.util.KdniaoUtil.urlEncoder;
+
+/**
+ * 项目名称: boot-module-demo
+ * 创建时间: 2017/11/17 9:14
+ * 作者: xiangwb
+ * 说明: 快递查询服务层
+ */
+@Service
+@PropertySource("classpath:kdniao.properties")
+public class ExpressDeliveryService {
+    private final Logger logger = LoggerFactory.getLogger(ExpressDeliveryService.class);
+    /**
+     * 电商用户ID
+     */
+    @Value("${EBusinessID}")
+    private String EBusinessID;
+    /**
+     * 电商加密私钥
+     */
+    @Value("${appKey}")
+    private String appKey;
+    /**
+     * 正式请求url
+     */
+    @Value("${reqURL}")
+    private String reqURL;
+
+    /**
+     * 快递公司列表
+     *
+     * @return
+     */
+    public List<JSONObject> listShipperCode() {
+        List<JSONObject> resultVos = new ArrayList<>();
+        JSONObject jsonObject;
+        for (CommonEnum.ShipperCodeEnum shipperCode : CommonEnum.ShipperCodeEnum.values()) {
+            jsonObject = new JSONObject();
+            jsonObject.put("code", shipperCode.getCode());
+            jsonObject.put("name", shipperCode.getName());
+            resultVos.add(jsonObject);
+        }
+        return resultVos;
+    }
+
+    /**
+     * 快递信息查询
+     *
+     * @param info
+     * @return
+     */
+    public ExpressInfoVo queryOrderTraces(ExpressInfo info) {
+        String requestData = "{'ShipperCode':'" + info.getShipperCode() + "','LogisticCode':'" + info.getLogisticCode() + "'}";
+        Map<String, String> params = new HashMap<>();
+        try {
+            params.put("RequestData", urlEncoder(requestData, "UTF-8"));
+            params.put("EBusinessID", EBusinessID);
+            params.put("RequestType", "1002");
+            String dataSign = KdniaoUtil.encrypt(requestData, appKey, "UTF-8");
+            params.put("DataSign", urlEncoder(dataSign, "UTF-8"));
+            params.put("DataType", "2");
+        } catch (Exception e) {
+            logger.error("快递查询出错:{}", e.getMessage());
+            throw new BusinessException("快递查询出错");
+        }
+        // 返回物流信息
+        // status: 0|null 无信息 1已取件 2在途中 3已签收 4问题件 5待取件 6待派件 8已发货 9未发货
+        String result = KdniaoUtil.sendPost(reqURL, params);
+        ExpressInfoVo infoVo = JSONObject.parseObject(result, ExpressInfoVo.class);
+        if (infoVo != null) {
+            logger.info("查询快递信息:{}", infoVo.getSuccess());
+            String status = infoVo.getState();
+            if (StringUtils.isEmpty(status)) {
+                status = String.valueOf(0);
+            }
+            int statusValue = Integer.valueOf(status);
+            CommonEnum.ExpressStatusEnum expressStatus = Arrays.stream(CommonEnum.ExpressStatusEnum.values()).filter(obj -> obj.getValue() == statusValue).findFirst().get();
+            infoVo.setDescribe(expressStatus.getName());
+            // TODO: 2017/11/17 根据公司业务处理返回的信息......
+        }
+        return infoVo;
+    }
+
+    // DEMO
+    public static void main(String[] args) {
+        ExpressDeliveryService api = new ExpressDeliveryService();
+        ExpressInfo info = new ExpressInfo();
+        info.setShipperCode("HTKY");
+        info.setLogisticCode("211386517825");
+        try {
+            ExpressInfoVo result = api.queryOrderTraces(info);
+            String status = result.getState();
+            if (StringUtils.isEmpty(status)) {
+                status = String.valueOf(0);
+            }
+            String describe = null;
+            //更新订单物流状态
+            for (CommonEnum.ExpressStatusEnum statusEnum : CommonEnum.ExpressStatusEnum.values()) {
+                int value = statusEnum.getValue();
+                if (Integer.valueOf(status) == value) {
+                    describe = statusEnum.getName();
+                    break;
+                }
+            }
+            // TODO: 2017/11/17
+            System.out.print(describe);
+        } catch (Exception e) {
+            throw new BusinessException(e.getMessage());
+        }
+    }
+}

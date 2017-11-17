@@ -1,6 +1,6 @@
 package com.xwbing.service.sys;
 
-import com.xwbing.entity.SysUserRole;
+import com.xwbing.entity.sys.SysUserRole;
 import com.xwbing.repository.sys.SysUserRoleRepository;
 import com.xwbing.util.PassWordUtil;
 import com.xwbing.util.RestMessage;

@@ -1,8 +1,8 @@
 package com.xwbing.service.sys;
 
 import com.xwbing.constant.CommonConstant;
-import com.xwbing.entity.SysAuthority;
-import com.xwbing.entity.SysRoleAuthority;
+import com.xwbing.entity.sys.SysAuthority;
+import com.xwbing.entity.sys.SysRoleAuthority;
 import com.xwbing.entity.vo.SysAuthVo;
 import com.xwbing.exception.BusinessException;
 import com.xwbing.repository.sys.SysAuthorityRepository;

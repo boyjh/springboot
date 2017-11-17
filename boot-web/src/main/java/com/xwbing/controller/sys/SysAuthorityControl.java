@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.xwbing.annotation.LogInfo;
 import com.xwbing.constant.CommonConstant;
 import com.xwbing.constant.CommonEnum;
-import com.xwbing.entity.SysAuthority;
+import com.xwbing.entity.sys.SysAuthority;
 import com.xwbing.entity.vo.SysAuthVo;
 import com.xwbing.redis.RedisService;
 import com.xwbing.service.sys.SysAuthorityService;

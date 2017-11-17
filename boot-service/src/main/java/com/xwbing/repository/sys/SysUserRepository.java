@@ -1,6 +1,6 @@
 package com.xwbing.repository.sys;
 
-import com.xwbing.entity.SysUser;
+import com.xwbing.entity.sys.SysUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 /**
  * 说明:
