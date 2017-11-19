@@ -38,7 +38,6 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-
         String servletPath = request.getServletPath();
         if (!set.contains(servletPath) && !servletPath.contains("login")) {
 //            HttpSession session = request.getSession();
@@ -56,6 +55,8 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
                 restMessage.setMessage("请先登录");
                 outputStream.write(JSON.toJSONString(restMessage).getBytes("utf-8"));
                 outputStream.close();
+                //未登录，重定向到登录页面
+//                response.sendRedirect("/login.html");
                 return false;
             }
         }
