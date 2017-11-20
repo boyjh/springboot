@@ -4,10 +4,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.xwbing.annotation.LogInfo;
 import com.xwbing.domain.entity.ExpressInfo;
 import com.xwbing.domain.entity.vo.ExpressInfoVo;
+import com.xwbing.exception.BusinessException;
 import com.xwbing.redis.RedisService;
 import com.xwbing.service.ExpressDeliveryService;
 import com.xwbing.service.QRCodeZipService;
 import com.xwbing.util.JSONObjResult;
+import com.xwbing.util.RSAUtil;
 import com.xwbing.util.RestMessage;
 import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
@@ -93,5 +95,17 @@ public class TestControl {
             return JSONObjResult.toJSONObj("zip名称不能为空");
         RestMessage restMessage = qrCodeZipService.batchGetImage(response, names, fileName);
         return JSONObjResult.toJSONObj(restMessage);
+    }
+
+    @LogInfo("rsa")
+    @GetMapping("rsa")
+    public void rsa() {
+        try {
+            String en = RSAUtil.encrypt("123456");
+            String de = RSAUtil.decrypt(en);
+            System.out.println(de);
+        } catch (Exception ex) {
+            throw new BusinessException(ex.getMessage());
+        }
     }
 }
