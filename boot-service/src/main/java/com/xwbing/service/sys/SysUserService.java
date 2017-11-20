@@ -3,16 +3,21 @@ package com.xwbing.service.sys;
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.constant.CommonConstant;
 import com.xwbing.constant.CommonEnum;
+import com.xwbing.domain.entity.dto.UserDto;
 import com.xwbing.domain.entity.model.EmailModel;
 import com.xwbing.domain.entity.sys.*;
-import com.xwbing.exception.BusinessException;
 import com.xwbing.domain.repository.sys.SysUserRepository;
+import com.xwbing.exception.BusinessException;
 import com.xwbing.util.*;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -326,6 +331,59 @@ public class SysUserService {
             }
         }
         return list;
+    }
+
+    /**
+     * 导出excel
+     */
+    public void exportReport(HttpServletResponse response) {
+        String fileName = CommonConstant.USER_REPORT_FILE_NAME;//文件名
+        try {
+            ServletOutputStream outputStream = response.getOutputStream();
+            BufferedOutputStream bufferedOutPut = new BufferedOutputStream(outputStream);
+            fileName = new String(fileName.getBytes("GBK"), "ISO8859-1");
+            response.reset();
+            response.setHeader("Content-Disposition", "attachment;filename=" + fileName);// 指定下载的文件名
+            response.setContentType("application/vnd.ms-excel");
+            response.setHeader("Pragma", "no-cache");
+            response.setHeader("Cache-Control", "no-cache");
+            response.setDateHeader("Expires", 0);
+            List<UserDto> listDto = getReportList();//内容list
+            if (CollectionUtils.isEmpty(listDto)) {
+                return;
+            }
+            List<String[]> list = ExcelUtil.convert2List(listDto);
+            String title = CommonConstant.USER_REPORT_FILE_NAME;
+            String[] columns = CommonConstant.USER_REPORT_COLUMNS;
+            bufferedOutPut.flush();
+            HSSFWorkbook wb = ExcelUtil.Export(title, columns, list);
+            wb.write(bufferedOutPut);
+            bufferedOutPut.close();
+        } catch (Exception e) {
+            throw new BusinessException("导出excel错误");
+        }
+    }
+
+    /**
+     * 获取excel导出列表所需数据
+     *
+     * @return
+     */
+    private List<UserDto> getReportList() {
+        List<UserDto> listDto = new ArrayList<>();
+        List<SysUser> list = sysUserRepository.findAll();
+        if (CollectionUtils.isNotEmpty(list)) {
+            for (SysUser info : list) {
+                UserDto temp = new UserDto();
+                temp.setIsAdmin(CommonEnum.YesOrNoEnum.YES.getCode().equals(info.getAdmin()) ? "是" : "否");
+                temp.setMail(info.getMail());
+                temp.setName(info.getName());
+                temp.setSex(Integer.valueOf(info.getSex()) == 1 ? "男" : "女");
+                temp.setUserName(info.getUserName());
+                listDto.add(temp);
+            }
+        }
+        return listDto;
     }
 
     /**

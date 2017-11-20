@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -210,5 +211,12 @@ public class SysUserControl {
             return JSONObjResult.toJSONObj("用户主键不能为空");
         List<SysAuthority> list = sysUserService.queryAuthority(userId, enable);
         return JSONObjResult.toJSONObj(list, true, "");
+    }
+
+    @LogInfo("导出用户excel表")
+    @GetMapping("exportReport")
+    @ApiOperation(value = "导出用户excel表")
+    public void exportReport(HttpServletResponse response) {
+        sysUserService.exportReport(response);
     }
 }

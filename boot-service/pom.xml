@@ -72,6 +72,19 @@
             <artifactId>bcprov-jdk16</artifactId>
             <version>1.45</version>
         </dependency>
+        <!-- 引入excel解析jar包 start -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>3.14</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>3.14</version>
+        </dependency>
+        <!-- 引入excel解析jar包 end -->
+
         <!-- servlet -->
         <dependency>
             <groupId>javax.servlet</groupId>
