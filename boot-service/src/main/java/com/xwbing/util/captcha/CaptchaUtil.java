@@ -1,4 +1,4 @@
-package com.xwbing.util.captcah;
+package com.xwbing.util.captcha;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

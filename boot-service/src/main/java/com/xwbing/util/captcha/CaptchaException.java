@@ -1,4 +1,4 @@
-package com.xwbing.util.captcah;
+package com.xwbing.util.captcha;
 
 /**
  * 说明:创建验证码异常类

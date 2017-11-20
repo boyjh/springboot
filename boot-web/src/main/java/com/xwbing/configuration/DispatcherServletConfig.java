@@ -44,11 +44,11 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 
     /**
      * 配置静态访问资源
-     * 默认:
+     * 默认:优先级
+     * classpath:/META-INF/resources
+     * classpath:/resources
      * classpath:/static
      * classpath:/public
-     * classpath:/resources
-     * classpath:/META-INF/resources
      *
      * @param registry
      */

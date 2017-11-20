@@ -1,4 +1,4 @@
-package com.xwbing.util.captcah;
+package com.xwbing.util.captcha;
 
 import com.xwbing.constant.CommonConstant;
 import com.xwbing.util.CommonDataUtil;

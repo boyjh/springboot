@@ -313,7 +313,7 @@ public class SysUserService {
         List<SysRole> sysRoles = sysRoleService.listByUserIdEnable(userId, enable);
         if (CollectionUtils.isEmpty(sysRoles))
             return list;
-        //遍获取每个角色拥有的权限，并去重
+        //遍历获取每个角色拥有的权限，并去重
         List<SysAuthority> temp;
         for (SysRole sysRole : sysRoles) {
             temp = sysAuthorityService.listByRoleIdEnable(sysRole.getId(), enable);
