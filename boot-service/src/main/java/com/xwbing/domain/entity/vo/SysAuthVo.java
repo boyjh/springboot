@@ -1,6 +1,6 @@
-package com.xwbing.entity.vo;
+package com.xwbing.domain.entity.vo;
 
-import com.xwbing.entity.sys.SysAuthority;
+import com.xwbing.domain.entity.sys.SysAuthority;
 import lombok.Data;
 import org.apache.commons.beanutils.BeanUtils;
 

@@ -2,8 +2,8 @@ package com.xwbing.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.annotation.LogInfo;
-import com.xwbing.entity.ExpressInfo;
-import com.xwbing.entity.vo.ExpressInfoVo;
+import com.xwbing.domain.entity.ExpressInfo;
+import com.xwbing.domain.entity.vo.ExpressInfoVo;
 import com.xwbing.redis.RedisService;
 import com.xwbing.service.ExpressDeliveryService;
 import com.xwbing.service.QRCodeZipService;

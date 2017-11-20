@@ -1,4 +1,4 @@
-package com.xwbing.entity;
+package com.xwbing.domain.entity;
 
 import lombok.Data;
 

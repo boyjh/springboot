@@ -1,10 +1,10 @@
 package com.xwbing.service.sys;
 
-import com.xwbing.entity.sys.SysRole;
-import com.xwbing.entity.sys.SysRoleAuthority;
-import com.xwbing.entity.sys.SysUserRole;
+import com.xwbing.domain.entity.sys.SysRole;
+import com.xwbing.domain.entity.sys.SysRoleAuthority;
+import com.xwbing.domain.entity.sys.SysUserRole;
 import com.xwbing.exception.BusinessException;
-import com.xwbing.repository.sys.SysRoleRepository;
+import com.xwbing.domain.repository.sys.SysRoleRepository;
 import com.xwbing.util.PassWordUtil;
 import com.xwbing.util.RestMessage;
 import org.apache.commons.collections.CollectionUtils;

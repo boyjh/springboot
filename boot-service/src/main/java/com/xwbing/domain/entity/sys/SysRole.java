@@ -1,4 +1,4 @@
-package com.xwbing.entity.sys;
+package com.xwbing.domain.entity.sys;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

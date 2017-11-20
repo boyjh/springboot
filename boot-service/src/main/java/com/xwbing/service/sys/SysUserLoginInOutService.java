@@ -1,9 +1,9 @@
 package com.xwbing.service.sys;
 
 import com.xwbing.constant.CommonEnum;
-import com.xwbing.entity.sys.SysUser;
-import com.xwbing.entity.sys.SysUserLoginInOut;
-import com.xwbing.repository.sys.SysUserLoginInOutRepository;
+import com.xwbing.domain.entity.sys.SysUser;
+import com.xwbing.domain.entity.sys.SysUserLoginInOut;
+import com.xwbing.domain.repository.sys.SysUserLoginInOutRepository;
 import com.xwbing.util.DateUtil2;
 import com.xwbing.util.PassWordUtil;
 import com.xwbing.util.RestMessage;

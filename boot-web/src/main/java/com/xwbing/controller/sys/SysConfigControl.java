@@ -1,7 +1,7 @@
 package com.xwbing.controller.sys;
 
 import com.alibaba.fastjson.JSONObject;
-import com.xwbing.entity.sys.SysConfig;
+import com.xwbing.domain.entity.sys.SysConfig;
 import com.xwbing.service.sys.SysConfigService;
 import com.xwbing.util.JSONObjResult;
 import com.xwbing.util.RestMessage;

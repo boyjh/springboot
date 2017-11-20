@@ -1,4 +1,4 @@
-package com.xwbing.entity.model;
+package com.xwbing.domain.entity.model;
 
 import java.util.Date;
 

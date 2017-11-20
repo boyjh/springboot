@@ -2,9 +2,9 @@ package com.xwbing.controller.sys;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.annotation.LogInfo;
-import com.xwbing.entity.sys.SysAuthority;
-import com.xwbing.entity.sys.SysRole;
-import com.xwbing.entity.sys.SysRoleAuthority;
+import com.xwbing.domain.entity.sys.SysAuthority;
+import com.xwbing.domain.entity.sys.SysRole;
+import com.xwbing.domain.entity.sys.SysRoleAuthority;
 import com.xwbing.service.sys.SysAuthorityService;
 import com.xwbing.service.sys.SysRoleAuthorityService;
 import com.xwbing.service.sys.SysRoleService;

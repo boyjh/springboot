@@ -1,6 +1,6 @@
-package com.xwbing.repository.sys;
+package com.xwbing.domain.repository.sys;
 
-import com.xwbing.entity.sys.SysUserLoginInOut;
+import com.xwbing.domain.entity.sys.SysUserLoginInOut;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

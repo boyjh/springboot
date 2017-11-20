@@ -1,4 +1,4 @@
-package com.xwbing.entity.model;
+package com.xwbing.domain.entity.model;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Email;

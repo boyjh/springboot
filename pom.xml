@@ -38,6 +38,7 @@
         <fileUpLoad.version>1.3.1</fileUpLoad.version>
         <lombok.version>1.16.16</lombok.version>
         <zxing.version>3.2.1</zxing.version>
+        <fastjson.veersion>1.2.20</fastjson.veersion>
         <!-- 打包跳过单元测试 -->
         <skipTests>true</skipTests>
         <swagger2.version>2.4.0</swagger2.version>
@@ -67,7 +68,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.20</version>
+            <version>${fastjson.veersion}</version>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>

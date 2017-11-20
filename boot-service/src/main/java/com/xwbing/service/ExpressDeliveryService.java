@@ -2,8 +2,8 @@ package com.xwbing.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.constant.CommonEnum;
-import com.xwbing.entity.ExpressInfo;
-import com.xwbing.entity.vo.ExpressInfoVo;
+import com.xwbing.domain.entity.ExpressInfo;
+import com.xwbing.domain.entity.vo.ExpressInfoVo;
 import com.xwbing.exception.BusinessException;
 import com.xwbing.util.KdniaoUtil;
 import org.apache.commons.lang3.StringUtils;
