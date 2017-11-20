@@ -1,6 +1,5 @@
 package com.xwbing.util;
 
-
 import com.xwbing.exception.BusinessException;
 
 import java.text.DecimalFormat;
@@ -17,8 +16,8 @@ import java.util.*;
  * 说明: 日期处理类
  */
 public class DateUtil2 {
-    public static DecimalFormat df = new DecimalFormat("######0.00");
     public static final long SECOND = 1000;
+    public static DecimalFormat df = new DecimalFormat("#");
     public static final long MINUTE = SECOND * 60;
     public static final long HOUR = MINUTE * 60;
     public static final long DAY = HOUR * 24;
@@ -41,7 +40,7 @@ public class DateUtil2 {
      * @param pattern
      * @return
      */
-    private static DateTimeFormatter getDateFormat(String pattern) {
+    public static DateTimeFormatter getDateFormat(String pattern) {
         return DateTimeFormatter.ofPattern(pattern);
     }
 
@@ -137,7 +136,8 @@ public class DateUtil2 {
     /////////////////////////////获取数据////////////获取数据/////////////////////////////////////////////////////////////
 
     /**
-     *获取周几
+     * 获取周几
+     *
      * @param day 0代表当天 负数代表前几天 正数代表后几天
      * @return
      */
@@ -198,11 +198,10 @@ public class DateUtil2 {
      * @return
      */
     public static String dateAddMinusDays(String date, int day) {
-        LocalDate localDate = LocalDate.parse(date, getDateFormat(YYYY_MM_DD));
+        LocalDate localDate = LocalDate.parse(date);
         LocalDate newDate = day >= 0 ? localDate.plusDays(day) : localDate.minusDays(Math.abs(day));
         return newDate.toString();
     }
-
 
     /**
      * 获取当月的第一天
@@ -212,7 +211,7 @@ public class DateUtil2 {
     public static String firstDayOfMonth() {
         LocalDate localDate = LocalDate.now();
         LocalDate date = localDate.with(TemporalAdjusters.firstDayOfMonth());
-        return date.format(getDateFormat(YYYY_MM_DD));
+        return date.toString();
     }
 
     /**
@@ -223,7 +222,7 @@ public class DateUtil2 {
     public static String firstDayOfLastMonth() {
         LocalDate localDate = LocalDate.now();
         LocalDate date = localDate.minusMonths(1).with(TemporalAdjusters.firstDayOfMonth());
-        return date.format(getDateFormat(YYYY_MM_DD));
+        return date.toString();
     }
 
     /**
@@ -234,7 +233,7 @@ public class DateUtil2 {
     public static String firstDayOfNextMonth() {
         LocalDate localDate = LocalDate.now();
         LocalDate date = localDate.plusMonths(1).with(TemporalAdjusters.firstDayOfMonth());
-        return date.format(getDateFormat(YYYY_MM_DD));
+        return date.toString();
     }
 
     /**
@@ -245,7 +244,7 @@ public class DateUtil2 {
      */
     public static String getMonthFirstDay(int month) {
         LocalDate localDate = LocalDate.now().withMonth(month).with(TemporalAdjusters.firstDayOfMonth());
-        return localDate.format(getDateFormat(YYYY_MM_DD));
+        return localDate.toString();
     }
 
     /**
@@ -256,7 +255,7 @@ public class DateUtil2 {
     public static String firstDayOfYear() {
         LocalDate localDate = LocalDate.now();
         LocalDate date = localDate.with(TemporalAdjusters.firstDayOfYear());
-        return date.format(getDateFormat(YYYY_MM_DD));
+        return date.toString();
     }
 
     /**
@@ -268,7 +267,7 @@ public class DateUtil2 {
     public static String getYearFirstDay(int year) {
         LocalDate localDate = LocalDate.now();
         LocalDate date = localDate.withYear(year).with(TemporalAdjusters.firstDayOfYear());
-        return date.format(getDateFormat(YYYY_MM_DD));
+        return date.toString();
     }
 
     /**
@@ -352,8 +351,8 @@ public class DateUtil2 {
      * @return
      */
     public static String hoursBetween2(String startDateTime, String endDateTime) {
-        LocalDateTime sDateTime = LocalDateTime.parse(startDateTime);
-        LocalDateTime eDateTime = LocalDateTime.parse(endDateTime);
+        LocalDateTime sDateTime = LocalDateTime.parse(startDateTime, getDateFormat(YYYY_MM_DD_HH_MM));
+        LocalDateTime eDateTime = LocalDateTime.parse(endDateTime, getDateFormat(YYYY_MM_DD_HH_MM));
         Duration duration = Duration.between(sDateTime, eDateTime);
         long m = duration.toMinutes();
         return df.format(m / 60.0);

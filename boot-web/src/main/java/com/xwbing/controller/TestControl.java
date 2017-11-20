@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -95,16 +94,4 @@ public class TestControl {
         RestMessage restMessage = qrCodeZipService.batchGetImage(response, names, fileName);
         return JSONObjResult.toJSONObj(restMessage);
     }
-
-    @GetMapping("test")
-    public JSONObject test() throws IOException {
-        RestMessage restMessage = new RestMessage();
-        String path = qrCodeZipService.getPath();
-        File file = new File(path + File.separator + "demo.txt");//创建文件对象，并不创建文件
-        if (!file.exists()) {
-            file.createNewFile(); //创建文件
-        }
-        return JSONObjResult.toJSONObj(restMessage);
-    }
-
 }

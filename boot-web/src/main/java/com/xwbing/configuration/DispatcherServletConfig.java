@@ -2,8 +2,6 @@ package com.xwbing.configuration;
 
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.xwbing.handler.LoginInterceptor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -22,12 +20,9 @@ import java.util.List;
  * 创建时间: 2017/5/10 16:36
  * 作者:  xiangwb
  */
-@Configuration
 @EnableWebMvc
-//@ComponentScan(basePackages = {"com.xwbing.controller"}, includeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION, value = RestController.class)})
+@Configuration
 public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
-    private final Logger logger = LoggerFactory.getLogger(DispatcherServletConfig.class);
-
     /***
      * 添加拦截器
      * @param registry
@@ -44,7 +39,9 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 
     /**
      * 配置静态访问资源
+     * 访问时不需要前缀
      * 默认:优先级
+     * /**映射到
      * classpath:/META-INF/resources
      * classpath:/resources
      * classpath:/static

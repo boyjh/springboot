@@ -16,7 +16,6 @@ import javax.servlet.Filter;
  * 作者:  xiangwb
  */
 @Configuration//相当于.xml文件中的<beans></beans>
-//@ComponentScan(value = {"com.xwbing"}, excludeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION, value = EnableWebMvc.class)})
 //@Import(xxx.class)//用来导入其他配置类
 //@ImportResource("classpath:applicationContext.xml")//用来加载其他xml配置文件
 public class ApplicationContextConfig {
