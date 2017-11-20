@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -35,7 +36,7 @@ public class TestControl {
     @Resource
     private ExpressDeliveryService expressDeliveryService;
     @Resource
-    private QRCodeZipService QRCodeZipService;
+    private QRCodeZipService qrCodeZipService;
     private final Logger logger = LoggerFactory.getLogger(TestControl.class);
 
     @LogInfo("redis功能测试")
@@ -72,7 +73,7 @@ public class TestControl {
     @LogInfo("生成二维码")//为什么内置tomcat会重启
     @PostMapping("createQRCode")
     public JSONObject createQRCode(@RequestParam String name, @RequestParam String text) {
-        RestMessage qrCode = QRCodeZipService.createQRCode(name, text);
+        RestMessage qrCode = qrCodeZipService.createQRCode(name, text);
         return JSONObjResult.toJSONObj(qrCode);
     }
 
@@ -82,7 +83,7 @@ public class TestControl {
         if (StringUtils.isEmpty(path))
             return JSONObjResult.toJSONObj("二维码图片路径不能为空");
         File file = new File(path);
-        RestMessage decode = QRCodeZipService.decode(file);
+        RestMessage decode = qrCodeZipService.decode(file);
         return JSONObjResult.toJSONObj(decode);
     }
 
@@ -91,7 +92,19 @@ public class TestControl {
     public JSONObject batchGetImage(HttpServletResponse response, @RequestParam String[] names, @RequestParam String fileName) {
         if (StringUtils.isEmpty(fileName))
             return JSONObjResult.toJSONObj("zip名称不能为空");
-        RestMessage restMessage = QRCodeZipService.batchGetImage(response, names, fileName);
+        RestMessage restMessage = qrCodeZipService.batchGetImage(response, names, fileName);
         return JSONObjResult.toJSONObj(restMessage);
     }
+
+    @GetMapping("test")
+    public JSONObject test() throws IOException {
+        RestMessage restMessage = new RestMessage();
+        String path = qrCodeZipService.getPath();
+        File file = new File(path + File.separator + "demo.txt");//创建文件对象，并不创建文件
+        if (!file.exists()) {
+            file.createNewFile(); //创建文件
+        }
+        return JSONObjResult.toJSONObj(restMessage);
+    }
+
 }
