@@ -18,11 +18,11 @@ public class CommonConstant {
     /**
      * 启用
      */
-    public static final String ISENABLE = "Y";
+    public static final String IS_ENABLE = "Y";
     /**
      * 禁用
      */
-    public static final String ISNOTENABLE = "N";
+    public static final String IS_NOT_ENABLE = "N";
 
     /**
      * 邮件服务器配置项

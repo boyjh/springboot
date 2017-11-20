@@ -220,12 +220,12 @@ public class SysAuthorityService {
      */
     private List<SysAuthority> disableChildren(String parentId) {
         //获取结果
-        List<SysAuthority> sysAuthoritys = listByParentEnable(parentId, CommonConstant.ISENABLE);
+        List<SysAuthority> sysAuthoritys = listByParentEnable(parentId, CommonConstant.IS_ENABLE);
         //遍历子集
         List<SysAuthority> list = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(sysAuthoritys)) {
             for (SysAuthority sysAuthority : sysAuthoritys) {
-                sysAuthority.setEnable(CommonConstant.ISNOTENABLE);
+                sysAuthority.setEnable(CommonConstant.IS_NOT_ENABLE);
                 sysAuthority.setModifiedTime(new Date());
                 list.add(sysAuthority);
                 list.addAll(disableChildren(sysAuthority.getId()));

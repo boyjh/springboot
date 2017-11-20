@@ -67,7 +67,7 @@ public class SysAuthorityControl {
             return JSONObjResult.toJSONObj("主键不能为空");
         String enable = sysAuthority.getEnable();
         // 如果禁用，查询是否有子节点，如果有，子节点也要被禁用
-        if (CommonConstant.ISNOTENABLE.equals(enable)) {
+        if (CommonConstant.IS_NOT_ENABLE.equals(enable)) {
             // 子节点的权限都禁用
             if (!sysAuthorityService.disableChildrenByParentId(sysAuthority.getId())) {
                 return JSONObjResult.toJSONObj("禁用子节点权限失败");
