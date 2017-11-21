@@ -1,5 +1,7 @@
 package com.xwbing.domain.entity.sys;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.validator.constraints.Email;
@@ -20,6 +22,7 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity(name = "sys_user_info")
+@ApiModel
 public class SysUser extends BaseEntity {
     private static final long serialVersionUID = -2447528751353457021L;
     public static String table = "sys_user_info";
@@ -48,22 +51,21 @@ public class SysUser extends BaseEntity {
     @NotBlank(message = "性别不能为空")
     @Pattern(regexp = "[01]", message = "性别格式为0|1,0代表女,1代表男")
     private String sex;
-    /**
-     * 盐值
-     */
+    @ApiModelProperty(value = "盐值",hidden = true)
     private String salt;
-    /**
-     * 密码
-     */
+    @ApiModelProperty(value = "密码",hidden = true)
     private String password;
-    /**
-     * 是否为管理员
-     */
+    @ApiModelProperty(value = "是否为管理员",hidden = true)
     private String admin;
     //临时字段
+    @ApiModelProperty(hidden = true)
     private transient String create;
+    @ApiModelProperty(hidden = true)
     private transient String modified;
+    @ApiModelProperty(hidden = true)
     private transient String sexName;
+    @ApiModelProperty(hidden = true)
     private transient List<SysAuthority> menuArray;
+    @ApiModelProperty(hidden = true)
     private transient List<SysAuthority> buttonArray;
 }

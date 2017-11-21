@@ -10,6 +10,7 @@ import com.xwbing.service.ExpressDeliveryService;
 import com.xwbing.service.QRCodeZipService;
 import com.xwbing.util.JSONObjResult;
 import com.xwbing.util.RSAUtil;
+import com.xwbing.util.RestClientUtil;
 import com.xwbing.util.RestMessage;
 import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
@@ -107,5 +108,14 @@ public class TestControl {
         } catch (Exception ex) {
             throw new BusinessException(ex.getMessage());
         }
+    }
+
+    @LogInfo("httpClient")
+    @PostMapping("httpClient")
+    public JSONObject httpClient(@RequestBody JSONObject param) {
+//        String url = "http://localhost:8080/user/listAll";
+//        return RestClientUtil.get(url);
+        String url="http://localhost:8080/user/save";
+        return RestClientUtil.postByJson(url, param);
     }
 }

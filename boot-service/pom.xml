@@ -83,8 +83,12 @@
             <artifactId>poi-ooxml</artifactId>
             <version>3.14</version>
         </dependency>
-        <!-- 引入excel解析jar包 end -->
-
+        <!--httpclient -->
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.1</version>
+        </dependency>
         <!-- servlet -->
         <dependency>
             <groupId>javax.servlet</groupId>
