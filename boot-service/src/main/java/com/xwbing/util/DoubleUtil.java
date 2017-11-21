@@ -80,7 +80,7 @@ public class DoubleUtil {
     }
 
     /**
-     * 格式化double 四舍五入
+     * 格式化double 四舍五入 保留n位小数
      *
      * @param v1
      * @param scale 小数位
@@ -98,7 +98,7 @@ public class DoubleUtil {
      * @param d
      * @return
      */
-    public static double decimalND(Double d,int scale) { // 不四舍五入
+    public static double decimalND(Double d,int scale) {
         BigDecimal bg = new BigDecimal(d);
         return bg.setScale(scale, BigDecimal.ROUND_DOWN).doubleValue();
     }
