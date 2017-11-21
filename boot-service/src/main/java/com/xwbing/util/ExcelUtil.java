@@ -60,10 +60,16 @@ public class ExcelUtil {
         HSSFRow row = sheet.createRow(0);
         // 样式字体居中
         style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        //设置字体
+//        HSSFFont font = wb.createFont();
+//        font.setFontName("仿宋_GB2312");
+//        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);//粗体显示
+//        font.setFontHeightInPoints((short) 12);
+//        style.setFont(font);//选择需要用到的字体格式
         // 给表头第一行一次创建单元格
         if (null != columns && columns.length > 0) {
             for (int i = 0; i < columns.length; i++) {
-                HSSFCell cell = row.createCell((int) i);
+                HSSFCell cell = row.createCell(i);
                 cell.setCellValue(columns[i]);
                 cell.setCellStyle(style);
             }
@@ -75,6 +81,7 @@ public class ExcelUtil {
                 assert columns != null;
                 for (int j = 0; j < columns.length; j++) {
                     row.createCell(j).setCellValue(list.get(i)[j]);
+                    row.setRowStyle(style);//没有效果。。。。
                 }
             }
         }
