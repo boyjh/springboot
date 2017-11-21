@@ -28,6 +28,8 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     static {
         //映射到登录页面，不拦截
         set.add("/");
+        //映射swagger文档
+        set.add("/doc");
         //验证码
         set.add("/servlet/captcha");
         //swagger

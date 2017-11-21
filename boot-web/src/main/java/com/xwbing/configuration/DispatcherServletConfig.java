@@ -66,6 +66,7 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("login.html");
+        registry.addRedirectViewController("doc","swagger-ui.html");
         //添加更多
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
         super.addViewControllers(registry);
