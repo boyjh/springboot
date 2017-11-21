@@ -41,7 +41,7 @@ public class EmailUtil {
             props.setProperty("mail.smtp.auth", emailModel.isAuth() + "");// 需要经过授权，也就是有户名和密码的校验，这样才能通过验证（一定要有这一条）
             // 2. 根据配置创建会话对象, 用于和邮件服务器交互
             Session session = Session.getDefaultInstance(props);// 用刚刚设置好的props对象构建一个session
-            session.setDebug(true);// 有了这句便可以在发送邮件的过程中在console处显示过程信息，供调试使
+            session.setDebug(false);// 有了这句便可以在发送邮件的过程中在console处显示过程信息，供调试使
             // 3. 创建一封邮件,真正要发送时, 邮箱必须是真实有效的邮箱。
             MimeMessage message = new MimeMessage(session);// 用session为参数 创建邮件对象
             // From: 发件人
