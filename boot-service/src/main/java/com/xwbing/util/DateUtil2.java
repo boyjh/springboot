@@ -1,9 +1,9 @@
 package com.xwbing.util;
 
-import com.xwbing.exception.BusinessException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -27,6 +27,7 @@ public class DateUtil2 {
     public static final String YYYY = "yyyy";
     public static final String HH_MM_SS = "HH:mm:ss";
     public static final String HH_MM = "HH:mm";
+    private static final Logger logger= LoggerFactory.getLogger(DateUtil2.class);
     /*
      * ChronoUnit:各种时间单位 | TemporalAdjusters:时态对象 可以获取第一天,最后一天等
      * 获取时间分量:Duration要求是localDateTime/localTime类型 | Period要求是localDate类型
@@ -69,7 +70,8 @@ public class DateUtil2 {
         LocalDateTime localDateTime;
         Instant instant;
         if (dateStr.length() < 10) {
-            throw new BusinessException("时间格式错误:" + dateStr);
+            logger.error("时间格式错误:" + dateStr);
+            throw new RuntimeException("时间格式错误:" + dateStr);
         }
         if (dateStr.length() == 10) {
             dateStr += " 00:00:00";
@@ -275,7 +277,6 @@ public class DateUtil2 {
      * @param startMoth YYYY-MM
      * @param endMonth  YYYY-MM
      * @return
-     * @throws ParseException
      */
     public static List<String> listYearMonth(String startMoth, String endMonth) {
         LocalDate start = LocalDate.parse(startMoth + "-01");
@@ -299,7 +300,6 @@ public class DateUtil2 {
      * @param startDate
      * @param endDate
      * @return
-     * @throws Exception
      */
     public static List<String> listDate(String startDate, String endDate) {
         List<String> dateList = new ArrayList<>();

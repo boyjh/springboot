@@ -2,6 +2,8 @@ package com.xwbing.util.captcha;
 
 import com.xwbing.constant.CommonConstant;
 import com.xwbing.util.CommonDataUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServlet;
@@ -17,7 +19,8 @@ import java.io.OutputStream;
  * 作者: xiangwbd
  */
 public class CaptchaServlet extends HttpServlet {
-    private static final long serialVersionUID = -124247581620199710L;
+    private static final long serialVersionUID = -8687266469702749102L;
+    private final Logger logger = LoggerFactory.getLogger(CaptchaServlet.class);
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse res) {
@@ -39,7 +42,8 @@ public class CaptchaServlet extends HttpServlet {
             OutputStream out = res.getOutputStream();
             ImageIO.write(image, "JPEG", out);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e.getMessage());
+            throw new RuntimeException("获取验证码错误");
         }
     }
 }

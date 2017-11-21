@@ -1,7 +1,9 @@
 
 package com.xwbing.util;
 
-import java.io.IOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
@@ -13,11 +15,10 @@ import java.security.SecureRandom;
  * 作者: xiangwb
  */
 public class Digests {
-
     private static final String SHA1 = "SHA-1";
     private static final String MD5 = "MD5";
-
     private static SecureRandom random = new SecureRandom();
+    private static final Logger LOGGER = LoggerFactory.getLogger(Digests.class);
 
     /**
      * 对输入字符串进行sha1散列.
@@ -50,7 +51,8 @@ public class Digests {
             }
             return result;
         } catch (GeneralSecurityException e) {
-            throw new RuntimeException(e);
+            LOGGER.error(e.getMessage());
+            throw new RuntimeException("加密失败");
         }
     }
 
@@ -71,18 +73,18 @@ public class Digests {
     /**
      * 对文件进行md5散列.
      */
-    public static byte[] md5(InputStream input) throws IOException {
+    public static byte[] md5(InputStream input) {
         return digest(input, MD5);
     }
 
     /**
      * 对文件进行sha1散列.
      */
-    public static byte[] sha1(InputStream input) throws IOException {
+    public static byte[] sha1(InputStream input) {
         return digest(input, SHA1);
     }
 
-    private static byte[] digest(InputStream input, String algorithm) throws IOException {
+    private static byte[] digest(InputStream input, String algorithm) {
         try {
             MessageDigest messageDigest = MessageDigest.getInstance(algorithm);
             int bufferLength = 8 * 1024;
@@ -93,7 +95,8 @@ public class Digests {
                 read = input.read(buffer, 0, bufferLength);
             }
             return messageDigest.digest();
-        } catch (GeneralSecurityException e) {
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }

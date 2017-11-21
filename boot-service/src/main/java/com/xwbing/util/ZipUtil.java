@@ -1,6 +1,7 @@
 package com.xwbing.util;
 
-import com.xwbing.exception.BusinessException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -15,6 +16,8 @@ import java.util.zip.ZipOutputStream;
  * 说明:
  */
 public class ZipUtil {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ZipUtil.class);
+
     /**
      * @param response 响应
      * @param files    所有文件
@@ -61,7 +64,8 @@ public class ZipUtil {
             out.close();
             zipFile.delete();
         } catch (Exception e) {
-            throw new BusinessException("文件压缩错误");
+            LOGGER.error(e.getMessage());
+            throw new RuntimeException("文件压缩错误");
         }
     }
 
@@ -86,7 +90,8 @@ public class ZipUtil {
                 fis.close();
                 bos.close();
             } catch (IOException e) {
-                throw new BusinessException("文件转化错误");
+                LOGGER.error(e.getMessage());
+                throw new RuntimeException("文件转化错误");
             }
             return bytes;
         }

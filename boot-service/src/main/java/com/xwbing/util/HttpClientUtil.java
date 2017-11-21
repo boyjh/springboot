@@ -1,7 +1,6 @@
 package com.xwbing.util;
 
 import com.alibaba.fastjson.JSONObject;
-import com.xwbing.exception.BusinessException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.*;
 import org.apache.http.client.HttpRequestRetryHandler;
@@ -131,7 +130,7 @@ public class HttpClientUtil {
             post.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             logger.error(e.getMessage());
-            throw new BusinessException("postByForm数据转换错误");
+            throw new RuntimeException("postByForm数据转换错误");
         }
         return getResult(post);
     }
@@ -215,7 +214,7 @@ public class HttpClientUtil {
             // result.setSuccess(false);
             // result.setMsg(e.getMessage());
             logger.error(e.getMessage());
-            throw new BusinessException("请求网络接口错误");
+            throw new RuntimeException("请求网络接口错误");
         } finally {
             poolingHttpClientConnectionManager.closeExpiredConnections();
             poolingHttpClientConnectionManager.closeIdleConnections(120, TimeUnit.MILLISECONDS);

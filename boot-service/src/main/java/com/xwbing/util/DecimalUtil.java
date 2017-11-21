@@ -1,5 +1,8 @@
 package com.xwbing.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.math.BigDecimal;
 
 /**
@@ -10,6 +13,7 @@ import java.math.BigDecimal;
  */
 public class DecimalUtil {
     private static final int DEF_DIV_SCALE = 10;
+    private static final Logger LOGGER = LoggerFactory.getLogger(DecimalUtil.class);
 
     /**
      * 两个Double数相加
@@ -72,8 +76,10 @@ public class DecimalUtil {
      * @return Double
      */
     public static Double div(Double v1, Double v2, int scale) {
-        if (scale < 0)
+        if (scale < 0){
+            LOGGER.error("小数位数不能为负数");
             throw new IllegalArgumentException("小数位数不能为负数");
+        }
         BigDecimal b1 = new BigDecimal(v1.toString());
         BigDecimal b2 = new BigDecimal(v2.toString());
         return b1.divide(b2, scale, BigDecimal.ROUND_HALF_UP).doubleValue();
@@ -98,7 +104,7 @@ public class DecimalUtil {
      * @param d
      * @return
      */
-    public static double decimalND(Double d,int scale) {
+    public static double decimalND(Double d, int scale) {
         BigDecimal bg = new BigDecimal(d);
         return bg.setScale(scale, BigDecimal.ROUND_DOWN).doubleValue();
     }
@@ -118,11 +124,11 @@ public class DecimalUtil {
     public static void main(String[] args) {
         Double div = div((double) 9, (double) 8, 2);
         System.out.println(div);
-        div=formate(div,1);
+        div = formate(div, 1);
         System.out.println(div);
         Double formate = formate(6.2, 1);
         System.out.println(formate);
-        Double d=1.11;
+        Double d = 1.11;
         int i = d.intValue();
         System.out.println(i);
     }
