@@ -8,7 +8,7 @@ import java.math.BigDecimal;
  * 作者: xiangwb
  * 说明: 数字工具类
  */
-public class DoubleUtil {
+public class DecimalUtil {
     private static final int DEF_DIV_SCALE = 10;
 
     /**
