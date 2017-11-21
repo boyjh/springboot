@@ -10,7 +10,7 @@ import com.xwbing.service.ExpressDeliveryService;
 import com.xwbing.service.QRCodeZipService;
 import com.xwbing.util.JSONObjResult;
 import com.xwbing.util.RSAUtil;
-import com.xwbing.util.RestClientUtil;
+import com.xwbing.util.HttpClientUtil;
 import com.xwbing.util.RestMessage;
 import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
@@ -72,7 +72,7 @@ public class TestControl {
         return JSONObjResult.toJSONObj(infoVo, true, "查询快递信息成功");
     }
 
-    @LogInfo("生成二维码")//为什么内置tomcat会重启
+    @LogInfo("生成二维码")
     @PostMapping("createQRCode")
     public JSONObject createQRCode(@RequestParam String name, @RequestParam String text) {
         RestMessage qrCode = qrCodeZipService.createQRCode(name, text);
@@ -114,8 +114,8 @@ public class TestControl {
     @PostMapping("httpClient")
     public JSONObject httpClient(@RequestBody JSONObject param) {
 //        String url = "http://localhost:8080/user/listAll";
-//        return RestClientUtil.get(url);
+//        return HttpClientUtil.get(url);
         String url="http://localhost:8080/user/save";
-        return RestClientUtil.postByJson(url, param);
+        return HttpClientUtil.postByJson(url, param);
     }
 }

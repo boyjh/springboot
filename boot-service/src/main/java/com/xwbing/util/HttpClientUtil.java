@@ -1,6 +1,7 @@
 package com.xwbing.util;
 
 import com.alibaba.fastjson.JSONObject;
+import com.xwbing.exception.BusinessException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.*;
 import org.apache.http.client.HttpRequestRetryHandler;
@@ -32,14 +33,22 @@ import java.util.concurrent.TimeUnit;
  * 项目名称: boot-module-demo
  * 创建时间: 2017/11/21 10:36
  * 作者: xiangwb
- * 说明: RestClientUtil
+ * 说明: HttpClientUtil
  */
-public class RestClientUtil {
-    private static Logger logger = LoggerFactory.getLogger(RestClientUtil.class);
+public class HttpClientUtil {
+    private static Logger logger = LoggerFactory.getLogger(HttpClientUtil.class);
     private static PoolingHttpClientConnectionManager poolingHttpClientConnectionManager;
     private static final String APPLICATION_JSON = "application/json";
     private static final String URL_ERROR = "Request Url can not be empty";
     private static final String PARAM_ERROR = "Request Params is null";
+
+    static {
+        poolingHttpClientConnectionManager = new PoolingHttpClientConnectionManager();
+        // 将最大连接数增加到100
+        poolingHttpClientConnectionManager.setMaxTotal(100);
+        // 将每个路由基础的连接数增加到20
+        poolingHttpClientConnectionManager.setDefaultMaxPerRoute(20);
+    }
 
     /***
      * 默认连接配置参数
@@ -68,14 +77,6 @@ public class RestClientUtil {
         return !(request instanceof HttpEntityEnclosingRequest);
     };
 
-    static {
-        poolingHttpClientConnectionManager = new PoolingHttpClientConnectionManager();
-        // 将最大连接数增加到100
-        poolingHttpClientConnectionManager.setMaxTotal(100);
-        // 将每个路由基础的连接数增加到20
-        poolingHttpClientConnectionManager.setDefaultMaxPerRoute(20);
-    }
-
     private static CloseableHttpClient getHttpClient() {
         return HttpClients.custom()
                 .setConnectionManager(poolingHttpClientConnectionManager)
@@ -98,7 +99,7 @@ public class RestClientUtil {
         if (param == null) {
             throw new IllegalArgumentException(PARAM_ERROR);
         }
-        logger.info("postByJson request URL:{}==================" ,url);
+        logger.info("postByJson request URL:{}==================", url);
         HttpPost post = new HttpPost(url);// 创建HttpPost的实例
         post.setEntity(new StringEntity(param.toString(), "UTF-8"));// 设置参数到请求对象中
         post.addHeader("Content-Type", APPLICATION_JSON);// 发送json数据需要设置contentType
@@ -119,7 +120,7 @@ public class RestClientUtil {
         if (param == null || param.size() == 0) {
             throw new IllegalArgumentException(PARAM_ERROR);
         }
-        logger.info("postByForm request URL:{}================" ,url);
+        logger.info("postByForm request URL:{}================", url);
         HttpPost post = new HttpPost(url);
         // 创建参数队列
         List<NameValuePair> params = new ArrayList<>();
@@ -130,6 +131,7 @@ public class RestClientUtil {
             post.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             logger.error(e.getMessage());
+            throw new BusinessException("postByForm数据转换错误");
         }
         return getResult(post);
     }
@@ -144,7 +146,7 @@ public class RestClientUtil {
         if (StringUtils.isEmpty(url)) {
             throw new IllegalArgumentException(URL_ERROR);
         }
-        logger.info("GET request URL:{}======================" ,url);
+        logger.info("GET request URL:{}======================", url);
         HttpGet httpGet = new HttpGet(url);
         return getResult(httpGet);
     }
@@ -163,7 +165,7 @@ public class RestClientUtil {
         if (param == null || param.size() == 0) {
             throw new IllegalArgumentException(PARAM_ERROR);
         }
-        logger.info("PUT request URL:{}====================",url);
+        logger.info("PUT request URL:{}====================", url);
         HttpPut put = new HttpPut(url);
         put.setEntity(new StringEntity(param.toString(), "UTF-8"));
         put.addHeader("Content-type", APPLICATION_JSON);
@@ -180,7 +182,7 @@ public class RestClientUtil {
         if (StringUtils.isBlank(url)) {
             throw new IllegalArgumentException(URL_ERROR);
         }
-        logger.info("delete request URL:{}=====================" ,url);
+        logger.info("delete request URL:{}=====================", url);
         HttpDelete delete = new HttpDelete(url);
         return getResult(delete);
     }
@@ -198,8 +200,8 @@ public class RestClientUtil {
             long start = System.currentTimeMillis();
             CloseableHttpResponse response = client.execute(request);
             long end = System.currentTimeMillis();
-            long ms=end-start;
-            logger.info("网络接口请求时间为{} ms=======================",ms);
+            long ms = end - start;
+            logger.info("网络接口请求时间为{} ms=======================", ms);
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {// 判断网络连接状态码是否正常(0-200都数正常)
                 HttpEntity entity = response.getEntity();// 获取结果实体
                 if (entity != null) {
@@ -208,15 +210,16 @@ public class RestClientUtil {
                 }
             }
             response.close();
+            return jsonResult;
         } catch (IOException e) {
             // result.setSuccess(false);
             // result.setMsg(e.getMessage());
             logger.error(e.getMessage());
+            throw new BusinessException("请求网络接口错误");
         } finally {
             poolingHttpClientConnectionManager.closeExpiredConnections();
             poolingHttpClientConnectionManager.closeIdleConnections(120, TimeUnit.MILLISECONDS);
         }
-        return jsonResult;
     }
 
     public static void main(String[] args) {
