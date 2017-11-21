@@ -2,7 +2,7 @@ package com.xwbing.util;
 
 import com.xwbing.exception.BusinessException;
 
-import java.text.DecimalFormat;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
@@ -17,7 +17,6 @@ import java.util.*;
  */
 public class DateUtil2 {
     public static final long SECOND = 1000;
-    public static DecimalFormat df = new DecimalFormat("#");
     public static final long MINUTE = SECOND * 60;
     public static final long HOUR = MINUTE * 60;
     public static final long DAY = HOUR * 24;
@@ -335,12 +334,12 @@ public class DateUtil2 {
      * @param startTime 09:00
      * @param endTime   13:00
      */
-    public static String hoursBetween1(String startTime, String endTime) {
+    public static Double hoursBetween1(String startTime, String endTime) {
         LocalTime sTime = LocalTime.parse(startTime);
         LocalTime eTime = LocalTime.parse(endTime);
         Duration duration = Duration.between(sTime, eTime);
         long m = duration.toMinutes();
-        return df.format(m / 60.0);
+        return formate((double)m/60.0,1);
     }
 
     /**
@@ -350,12 +349,12 @@ public class DateUtil2 {
      * @param endDateTime   2016-11-12 10:00
      * @return
      */
-    public static String hoursBetween2(String startDateTime, String endDateTime) {
+    public static Double hoursBetween2(String startDateTime, String endDateTime) {
         LocalDateTime sDateTime = LocalDateTime.parse(startDateTime, getDateFormat(YYYY_MM_DD_HH_MM));
         LocalDateTime eDateTime = LocalDateTime.parse(endDateTime, getDateFormat(YYYY_MM_DD_HH_MM));
         Duration duration = Duration.between(sDateTime, eDateTime);
         long m = duration.toMinutes();
-        return df.format(m / 60.0);
+        return formate((double)m/60.0,1);
     }
 
     /**
@@ -478,5 +477,17 @@ public class DateUtil2 {
                 && needETime.compareTo(compareETime) > 0)// 需要时间在比较时间前后，表示已经重复了
             return true;
         return false;
+    }
+
+    /**
+     * 四舍五入保留n位小数
+     *
+     * @param v1
+     * @param scale
+     * @return
+     */
+    private static Double formate(Double v1, int scale) {
+        BigDecimal bg = new BigDecimal(v1);
+        return bg.setScale(scale, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 }

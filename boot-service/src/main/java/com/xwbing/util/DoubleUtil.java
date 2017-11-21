@@ -120,6 +120,11 @@ public class DoubleUtil {
         System.out.println(div);
         div=formate(div,1);
         System.out.println(div);
+        Double formate = formate(6.2, 1);
+        System.out.println(formate);
+        Double d=1.11;
+        int i = d.intValue();
+        System.out.println(i);
     }
 }
 
