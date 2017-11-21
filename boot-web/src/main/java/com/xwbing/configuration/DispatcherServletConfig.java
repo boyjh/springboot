@@ -4,10 +4,12 @@ import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.xwbing.handler.LoginInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import java.util.ArrayList;
@@ -54,6 +56,19 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 //        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
         //
         super.addResourceHandlers(registry);
+    }
+
+    /**
+     * 视图配置
+     *
+     * @param registry
+     */
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/").setViewName("login.html");
+        //添加更多
+        registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
+        super.addViewControllers(registry);
     }
 
     /**

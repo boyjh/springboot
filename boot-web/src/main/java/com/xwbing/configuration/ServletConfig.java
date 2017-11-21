@@ -18,13 +18,9 @@ public class ServletConfig {
     private final Logger logger = LoggerFactory.getLogger(ServletConfig.class);
 
     @Bean
-    public CaptchaServlet captchaServlet() {
-        return new CaptchaServlet();
-    }
-
-    @Bean
-    public ServletRegistrationBean captchaServletRegistrationBean(CaptchaServlet captchaServlet) {
+    public ServletRegistrationBean captchaServletRegistrationBean() {
         logger.info("注册验证码servlet ======================= ");
+        CaptchaServlet captchaServlet = new CaptchaServlet();
         ServletRegistrationBean registration = new ServletRegistrationBean(captchaServlet);
         registration.setEnabled(true);
         registration.addUrlMappings("/servlet/captcha");

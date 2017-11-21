@@ -26,6 +26,8 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     private static final Set<String> set = new HashSet<>();//拦截器白名单
 
     static {
+        //映射到登录页面，不拦截
+        set.add("/");
         //验证码
         set.add("/servlet/captcha");
         //swagger
@@ -33,7 +35,6 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         set.add("/swagger-resources");
         set.add("/configuration/ui");
         set.add("/configuration/security");
-        //
     }
 
     @Override
