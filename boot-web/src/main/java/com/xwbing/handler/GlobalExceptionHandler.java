@@ -41,7 +41,7 @@ public class GlobalExceptionHandler {
     // 返回给页面200状态码
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
-    public JSONObject handlerGuideException(Exception ex) {
+    public JSONObject handlerGuideException(BusinessException ex) {
         logger.error(ex.getMessage());
         return JSONObjResult.toJSONObj(ex.getMessage());
     }
@@ -79,7 +79,6 @@ public class GlobalExceptionHandler {
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
     public JSONObject handlerMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-
         BindingResult bindingResult = ex.getBindingResult();
         List<ObjectError> allErrors = bindingResult.getAllErrors();
         StringBuilder stringBuffer = new StringBuilder();
@@ -93,14 +92,27 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * @param request
+     * 处理运行异常
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler(value = RuntimeException.class)
+    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseBody
+    public JSONObject handlerRuntimeException(RuntimeException ex) {
+        logger.error(ex.getMessage());
+        return JSONObjResult.toJSONObj(ex.getMessage());
+    }
+
+    /**
+     * 全部捕获
      * @param ex
      * @return
      */
     @ExceptionHandler(value = Exception.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
-    public JSONObject handlerException(HttpServletRequest request, Exception ex) {
+    public JSONObject handlerException(Exception ex) {
         logger.error(ex.getMessage());
         return JSONObjResult.toJSONObj("系统异常，请联系管理员");
     }
