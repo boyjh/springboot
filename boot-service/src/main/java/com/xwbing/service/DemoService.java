@@ -22,7 +22,7 @@ public class DemoService {
 
     private static Double formate(Double v1) {
         BigDecimal bg = new BigDecimal(v1);
-        return bg.setScale(0, BigDecimal.ROUND_HALF_UP).doubleValue();
+        return bg.setScale(1, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
     private Double hoursBetween(String startDateTime, String endDateTime) {
@@ -37,17 +37,24 @@ public class DemoService {
         return null;
     }
 
-    private Map<String, Object> hand(List<JSONObject> gpsList) {
+    private Map<String, Object> hand(List<JSONObject> gpsList, String endTime) {
         Map<String, Object> map = new HashMap<>();
         //存数据库
         JSONObject obj = gpsList.get(0);
         // TODO: 2017/11/22
         //获取下一个时间
-        String startTime = LocalDateTime.parse((String) obj.get("time"), dateTimeFormatter).plusHours(1).format(dateTimeFormatter);
-        //过滤
-        gpsList = gpsList.stream().filter(jsonObject -> ((String) jsonObject.get("time")).compareTo(startTime) < 0 ? true : false).collect(Collectors.toList());
-        map.put("startTime", startTime);
-        map.put("gpsList", gpsList);
+        String time = (String) obj.get("time");
+        String startTime = LocalDateTime.parse(time, dateTimeFormatter).plusHours(1).format(dateTimeFormatter);
+        //跟截止时间比较
+        if (hoursBetween(startTime, endTime) > 1) {
+            //过滤
+            gpsList = gpsList.stream().filter(jsonObject -> ((String) jsonObject.get("time")).compareTo(startTime) < 0 ? true : false).collect(Collectors.toList());
+            map.put("gpsList", gpsList);
+            map.put("startTime", startTime);
+        }else {
+            map.put("startTime",time);
+            map.put("startTime",gpsList);
+        }
         return map;
     }
 
@@ -70,7 +77,7 @@ public class DemoService {
             }
             while (hoursBetween(startTime, endTime) > 1) {
                 if (CollectionUtils.isNotEmpty(gpsList)) {
-                    Map<String, Object> hand = hand(gpsList);
+                    Map<String, Object> hand = hand(gpsList,endTime);
                     startTime = (String) hand.get("startTime");
                     gpsList = (List<JSONObject>) hand.get("hand");
                 } else {
@@ -80,7 +87,7 @@ public class DemoService {
                     if (CollectionUtils.isNotEmpty(gpsList)) {
                         //排序
                         //获取处理结果
-                        Map<String, Object> hand = hand(gpsList);
+                        Map<String, Object> hand = hand(gpsList,endTime);
                         startTime = (String) hand.get("startTime");
                         gpsList = (List<JSONObject>) hand.get("hand");
                     }
