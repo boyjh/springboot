@@ -349,6 +349,7 @@ public class DateUtil2 {
      * @param endDateTime   2016-11-12 10:00
      * @return
      */
+
     public static Double hoursBetween2(String startDateTime, String endDateTime) {
         LocalDateTime sDateTime = LocalDateTime.parse(startDateTime, getDateFormat(YYYY_MM_DD_HH_MM));
         LocalDateTime eDateTime = LocalDateTime.parse(endDateTime, getDateFormat(YYYY_MM_DD_HH_MM));
