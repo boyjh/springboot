@@ -1,5 +1,6 @@
 package com.xwbing.util;
 
+import com.xwbing.exception.UtilException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,7 +73,7 @@ public class KdniaoUtil {
             }
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException("快递鸟接口请求失败");
+            throw new UtilException("快递鸟接口请求失败");
         }
         // 使用finally块来关闭输出流、输入流
         finally {
@@ -100,7 +101,7 @@ public class KdniaoUtil {
             return URLEncoder.encode(str, charset);
         } catch (UnsupportedEncodingException e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException("urlEncoder失败");
+            throw new UtilException("urlEncoder失败");
         }
     }
 
@@ -121,7 +122,7 @@ public class KdniaoUtil {
             return base64(MD5(content, charset), charset);
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException("快递鸟签名出错");
+            throw new UtilException("快递鸟签名出错");
         }
     }
 
@@ -154,7 +155,7 @@ public class KdniaoUtil {
             return sb.toString().toLowerCase();
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException("快递鸟加密出错");
+            throw new UtilException("快递鸟加密出错");
         }
     }
 
@@ -169,7 +170,7 @@ public class KdniaoUtil {
             return base64Encode(str.getBytes(charset));
         } catch (UnsupportedEncodingException e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException("快递鸟编码出错");
+            throw new UtilException("快递鸟编码出错");
         }
     }
 

@@ -1,6 +1,7 @@
 
 package com.xwbing.util;
 
+import com.xwbing.exception.UtilException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,7 +53,7 @@ public class Digests {
             return result;
         } catch (GeneralSecurityException e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException("加密失败");
+            throw new UtilException("加密失败");
         }
     }
 
@@ -63,7 +64,7 @@ public class Digests {
      */
     public static byte[] generateSalt(int numBytes) {
         if (numBytes <= 0) {
-            throw new RuntimeException("numBytes argument must be a positive integer (1 or larger)");
+            throw new UtilException("numBytes argument must be a positive integer (1 or larger)");
         }
         byte[] bytes = new byte[numBytes];
         random.nextBytes(bytes);
@@ -97,7 +98,7 @@ public class Digests {
             return messageDigest.digest();
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException("加密失败");
+            throw new UtilException("加密失败");
         }
     }
 }

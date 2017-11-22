@@ -1,6 +1,7 @@
 package com.xwbing.util;
 
 
+import com.xwbing.exception.UtilException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +33,7 @@ public class PingUtil {
             return InetAddress.getByName(ipAddress).isReachable(timeOut);// 当返回值是true时，说明host是可用的，false则不可。
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException("无法连接该地址");
+            throw new UtilException("无法连接该地址");
         }
     }
 
@@ -52,7 +53,7 @@ public class PingUtil {
             return true;
         } catch (Exception ex) {
             LOGGER.error(ex.getMessage());
-            throw new RuntimeException("无法连接该地址");
+            throw new UtilException("无法连接该地址");
         }
     }
 
@@ -85,7 +86,7 @@ public class PingUtil {
             return connectedCount == pingTimes;
         } catch (Exception ex) {
             LOGGER.error(ex.getMessage());
-            throw new RuntimeException("无法连接该地址");
+            throw new UtilException("无法连接该地址");
         }
     }
 

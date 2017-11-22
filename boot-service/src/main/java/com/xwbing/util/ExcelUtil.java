@@ -1,5 +1,6 @@
 package com.xwbing.util;
 
+import com.xwbing.exception.UtilException;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.hssf.usermodel.*;
@@ -208,7 +209,7 @@ public class ExcelUtil {
             return resultList;
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException("excel文件生成类失败");
+            throw new UtilException("excel文件生成类失败");
         }
     }
 

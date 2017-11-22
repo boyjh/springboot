@@ -6,6 +6,7 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import com.xwbing.exception.UtilException;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,7 +60,7 @@ public class QRCodeUtils {
             internal.output(output, internal.createCode(text));
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException("生成自定义尺寸不带logo的二维码失败");
+            throw new UtilException("生成自定义尺寸不带logo的二维码失败");
         }
     }
 
@@ -94,7 +95,7 @@ public class QRCodeUtils {
             //internal.output(output, bitMatrix);
         } catch (WriterException e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException("生成自定义尺寸带logo的二维码失败");
+            throw new UtilException("生成自定义尺寸带logo的二维码失败");
         }
 
     }
@@ -121,7 +122,7 @@ public class QRCodeUtils {
             return result.getText();
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException("解析二维码图片失败");
+            throw new UtilException("解析二维码图片失败");
         }
     }
 

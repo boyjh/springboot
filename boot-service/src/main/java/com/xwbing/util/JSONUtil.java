@@ -1,6 +1,7 @@
 package com.xwbing.util;
 
 import com.alibaba.fastjson.JSONObject;
+import com.xwbing.exception.UtilException;
 import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +56,7 @@ public class JSONUtil {
                 }
             } catch (Exception e) {
                 LOGGER.error(e.getMessage());
-                throw new RuntimeException("不序列化对象转换错误");
+                throw new UtilException("不序列化对象转换错误");
             }
             return new JSONObject(params);
         }

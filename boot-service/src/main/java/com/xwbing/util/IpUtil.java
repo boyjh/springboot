@@ -1,5 +1,6 @@
 package com.xwbing.util;
 
+import com.xwbing.exception.UtilException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,7 +42,7 @@ public class IpUtil {
                     inet = InetAddress.getLocalHost();
                 } catch (UnknownHostException e) {
                     LOGGER.error(e.getMessage());
-                    throw new RuntimeException("ip地址异常");
+                    throw new UtilException("ip地址异常");
                 }
                 ip = inet.getHostAddress();
             }

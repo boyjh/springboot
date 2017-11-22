@@ -2,6 +2,7 @@ package com.xwbing.util;
 
 
 import com.xwbing.domain.entity.model.EmailModel;
+import com.xwbing.exception.UtilException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +31,7 @@ public class EmailUtil {
             Properties props = new Properties();// 用于连接邮件服务器的参数配置（发送邮件时才需要用到）
             String serverHost = emailModel.getServerHost();// 设置发送邮件的邮件服务器的属性（这里使用网易的smtp服务器）
             if (StringUtils.isEmpty(serverHost)) {
-                throw new RuntimeException("发送邮件主机不能为空");
+                throw new UtilException("发送邮件主机不能为空");
             }
             props.setProperty("mail.transport.protocol", emailModel.getProtocol());// 使用的协议（JavaMail规范要求）
             props.setProperty("mail.smtp.host", serverHost); // 发件人的邮箱的
@@ -47,12 +48,12 @@ public class EmailUtil {
             // From: 发件人
             String fromEmail = emailModel.getFromEmail();
             if (StringUtils.isEmpty(fromEmail)) {
-                throw new RuntimeException("发送邮箱不能为空");
+                throw new UtilException("发送邮箱不能为空");
             }
             message.setFrom(new InternetAddress(emailModel.getFromEmail()));
             // To: 收件人
             if (StringUtils.isEmpty(emailModel.getToEmail())) {
-                throw new RuntimeException("接收邮箱不能为空");
+                throw new UtilException("接收邮箱不能为空");
             }
             InternetAddress[] toEmailList = InternetAddress.parse(emailModel.getToEmail());// toEmail格式为"aaa,bbb,..."或"aaa"
             message.setRecipients(Message.RecipientType.TO, toEmailList);
@@ -66,7 +67,7 @@ public class EmailUtil {
 			 */
             // Subject: 邮件主题
             if (StringUtils.isEmpty(emailModel.getSubject())) {
-                throw new RuntimeException("邮件主题不能为空");
+                throw new UtilException("邮件主题不能为空");
             }
             message.setSubject(emailModel.getSubject());
             // 向multipart对象中添加邮件的各个部分内容，包括文本内容和附件
@@ -83,7 +84,7 @@ public class EmailUtil {
             Transport transport = session.getTransport("smtp");
             // 5. 使用 邮箱账号 和 密码 连接邮件服务器
             if (StringUtils.isEmpty(emailModel.getPassword())) {
-                throw new RuntimeException("发送邮箱密码不能为空");
+                throw new UtilException("发送邮箱密码不能为空");
             }
             transport.connect(serverHost, fromEmail, emailModel.getPassword());// 这里认证的邮箱必须与
             // message中的发件人邮箱一致，否则报错
@@ -95,7 +96,7 @@ public class EmailUtil {
             return true;
         } catch (MessagingException e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException("发送邮件失败");
+            throw new UtilException("发送邮件失败");
         }
     }
 

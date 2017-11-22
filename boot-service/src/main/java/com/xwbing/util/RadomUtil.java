@@ -1,5 +1,7 @@
 package com.xwbing.util;
 
+import com.xwbing.exception.UtilException;
+
 import java.util.Random;
 
 /**
@@ -13,7 +15,7 @@ public class RadomUtil {
 
     public static String buildRandom(int length) {
         if (length < 1)
-            throw new RuntimeException("参数异常!!!");
+            throw new UtilException("参数异常!!!");
         Random random = new Random();
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < length; i++) {

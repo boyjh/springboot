@@ -1,5 +1,6 @@
 package com.xwbing.util;
 
+import com.xwbing.exception.UtilException;
 import org.bouncycastle.asn1.ASN1Sequence;
 import org.bouncycastle.asn1.pkcs.RSAPrivateKeyStructure;
 import org.slf4j.Logger;
@@ -54,7 +55,7 @@ public class RSAUtil {
             return loadPublicKey(sb.toString());
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException("公钥数据流读取错误");
+            throw new UtilException("公钥数据流读取错误");
         }
     }
 
@@ -73,13 +74,13 @@ public class RSAUtil {
             return (RSAPublicKey) keyFactory.generatePublic(keySpec);
         } catch (NoSuchAlgorithmException e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException("无此算法");
+            throw new UtilException("无此算法");
         } catch (InvalidKeySpecException e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException("公钥非法");
+            throw new UtilException("公钥非法");
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException("公钥数据内容读取错误");
+            throw new UtilException("公钥数据内容读取错误");
         }
     }
 
@@ -106,7 +107,7 @@ public class RSAUtil {
             br.close();
             return loadPrivateKey(sb.toString());
         } catch (IOException e) {
-            throw new RuntimeException("私钥数据读取错误");
+            throw new UtilException("私钥数据读取错误");
         }
     }
 
@@ -132,13 +133,13 @@ public class RSAUtil {
             return (RSAPrivateKey) keyFactory.generatePrivate(rsaPrivKeySpec);
         } catch (NoSuchAlgorithmException e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException("无此算法");
+            throw new UtilException("无此算法");
         } catch (InvalidKeySpecException e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException("私钥非法");
+            throw new UtilException("私钥非法");
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException("私钥数据内容读取错误");
+            throw new UtilException("私钥数据内容读取错误");
         }
     }
 
@@ -151,7 +152,7 @@ public class RSAUtil {
      */
     public static String encrypt(RSAPublicKey publicKey, String data) {
         if (publicKey == null) {
-            throw new RuntimeException("加密公钥为空,请设置");
+            throw new UtilException("加密公钥为空,请设置");
         }
         byte[] plainTextData = data.getBytes();
         Cipher cipher;
@@ -163,16 +164,16 @@ public class RSAUtil {
             return base64Encoder.encode(output);// Base64编码成字符串
         } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException("无此加密算法");
+            throw new UtilException("无此加密算法");
         } catch (InvalidKeyException e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException("加密公钥非法,请检查");
+            throw new UtilException("加密公钥非法,请检查");
         } catch (IllegalBlockSizeException e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException("明文长度非法");
+            throw new UtilException("明文长度非法");
         } catch (BadPaddingException e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException("明文数据已损坏");
+            throw new UtilException("明文数据已损坏");
         }
     }
 
@@ -195,7 +196,7 @@ public class RSAUtil {
      */
     public static String decrypt(RSAPrivateKey privateKey, String data) {
         if (privateKey == null) {
-            throw new RuntimeException("解密私钥为空, 请设置");
+            throw new UtilException("解密私钥为空, 请设置");
         }
         BASE64Decoder base64Decoder = new BASE64Decoder();
         Cipher cipher;
@@ -207,19 +208,19 @@ public class RSAUtil {
             return new String(output);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException("无此解密算法");
+            throw new UtilException("无此解密算法");
         } catch (InvalidKeyException e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException("解密私钥非法,请检查");
+            throw new UtilException("解密私钥非法,请检查");
         } catch (IllegalBlockSizeException e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException("密文长度非法");
+            throw new UtilException("密文长度非法");
         } catch (BadPaddingException e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException("密文数据已损坏");
+            throw new UtilException("密文数据已损坏");
         } catch (IOException e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException("解密数据读取失败");
+            throw new UtilException("解密数据读取失败");
         }
     }
 
