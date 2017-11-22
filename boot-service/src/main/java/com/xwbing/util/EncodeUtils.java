@@ -4,6 +4,8 @@ import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -16,6 +18,7 @@ import java.net.URLEncoder;
  */
 public class EncodeUtils {
     private static final String DEFAULT_URL_ENCODING = "UTF-8";
+    private static final Logger LOGGER = LoggerFactory.getLogger(EncodeUtils.class);
 
     /**
      * Hex编码.
@@ -31,7 +34,8 @@ public class EncodeUtils {
         try {
             return Hex.decodeHex(input.toCharArray());
         } catch (DecoderException e) {
-            throw new IllegalStateException("Hex Decoder exception", e);
+            LOGGER.error(e.getMessage());
+            throw new IllegalStateException("Hex Decoder exception");
         }
     }
 
@@ -63,7 +67,7 @@ public class EncodeUtils {
      */
     public static byte[] base64Decode(String input) {
         return Base64.decodeBase64(input);
-		/*
+        /*
 		 * java8新特性
 		 */
 //		return java.util.Base64.getDecoder().decode(input);
@@ -76,7 +80,8 @@ public class EncodeUtils {
         try {
             return URLEncoder.encode(input, DEFAULT_URL_ENCODING);
         } catch (UnsupportedEncodingException e) {
-            throw new IllegalArgumentException("Unsupported Encoding Exception", e);
+            LOGGER.error(e.getMessage());
+            throw new IllegalArgumentException("Unsupported Encoding Exception");
         }
     }
 
@@ -87,7 +92,8 @@ public class EncodeUtils {
         try {
             return URLDecoder.decode(input, DEFAULT_URL_ENCODING);
         } catch (UnsupportedEncodingException e) {
-            throw new IllegalArgumentException("Unsupported Encoding Exception", e);
+            LOGGER.error(e.getMessage());
+            throw new IllegalArgumentException("Unsupported Encoding Exception");
         }
     }
 

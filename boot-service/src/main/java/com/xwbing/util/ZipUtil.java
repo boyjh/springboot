@@ -1,5 +1,6 @@
 package com.xwbing.util;
 
+import com.xwbing.exception.UtilException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,7 +66,7 @@ public class ZipUtil {
             zipFile.delete();
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException("文件压缩错误");
+            throw new UtilException("文件压缩错误");
         }
     }
 
@@ -91,7 +92,7 @@ public class ZipUtil {
                 bos.close();
             } catch (IOException e) {
                 LOGGER.error(e.getMessage());
-                throw new RuntimeException("文件转化错误");
+                throw new UtilException("文件转化错误");
             }
             return bytes;
         }

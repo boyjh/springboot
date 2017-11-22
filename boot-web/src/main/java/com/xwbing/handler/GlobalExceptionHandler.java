@@ -92,19 +92,6 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 处理运行异常
-     * @param ex
-     * @return
-     */
-    @ExceptionHandler(value = RuntimeException.class)
-    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-    @ResponseBody
-    public JSONObject handlerRuntimeException(RuntimeException ex) {
-        logger.error(ex.getMessage());
-        return JSONObjResult.toJSONObj(ex.getMessage());
-    }
-
-    /**
      * 全部捕获
      * @param ex
      * @return

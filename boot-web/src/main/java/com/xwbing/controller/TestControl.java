@@ -4,13 +4,12 @@ import com.alibaba.fastjson.JSONObject;
 import com.xwbing.annotation.LogInfo;
 import com.xwbing.domain.entity.ExpressInfo;
 import com.xwbing.domain.entity.vo.ExpressInfoVo;
-import com.xwbing.exception.BusinessException;
 import com.xwbing.redis.RedisService;
 import com.xwbing.service.ExpressDeliveryService;
 import com.xwbing.service.QRCodeZipService;
+import com.xwbing.util.HttpClientUtil;
 import com.xwbing.util.JSONObjResult;
 import com.xwbing.util.RSAUtil;
-import com.xwbing.util.HttpClientUtil;
 import com.xwbing.util.RestMessage;
 import io.swagger.annotations.Api;
 import org.apache.commons.lang3.StringUtils;
@@ -101,13 +100,9 @@ public class TestControl {
     @LogInfo("rsa")
     @GetMapping("rsa")
     public void rsa() {
-        try {
-            String en = RSAUtil.encrypt("123456");
-            String de = RSAUtil.decrypt(en);
-            System.out.println(de);
-        } catch (Exception ex) {
-            throw new BusinessException(ex.getMessage());
-        }
+        String en = RSAUtil.encrypt("123456");
+        String de = RSAUtil.decrypt(en);
+        System.out.println(de);
     }
 
     @LogInfo("httpClient")
@@ -115,7 +110,7 @@ public class TestControl {
     public JSONObject httpClient(@RequestBody JSONObject param) {
 //        String url = "http://localhost:8080/user/listAll";
 //        return HttpClientUtil.get(url);
-        String url="http://localhost:8080/user/save";
+        String url = "http://localhost:8080/user/save";
         return HttpClientUtil.postByJson(url, param);
     }
 }

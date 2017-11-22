@@ -1,5 +1,6 @@
 package com.xwbing.util;
 
+import com.xwbing.exception.UtilException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -77,8 +78,7 @@ public class DecimalUtil {
      */
     public static Double div(Double v1, Double v2, int scale) {
         if (scale < 0){
-            LOGGER.error("小数位数不能为负数");
-            throw new IllegalArgumentException("小数位数不能为负数");
+            throw new UtilException("小数位数不能为负数");
         }
         BigDecimal b1 = new BigDecimal(v1.toString());
         BigDecimal b2 = new BigDecimal(v2.toString());

@@ -1,5 +1,6 @@
 package com.xwbing.util;
 
+import com.xwbing.exception.UtilException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -70,8 +71,7 @@ public class DateUtil2 {
         LocalDateTime localDateTime;
         Instant instant;
         if (dateStr.length() < 10) {
-            logger.error("时间格式错误:" + dateStr);
-            throw new RuntimeException("时间格式错误:" + dateStr);
+            throw new UtilException("时间格式错误:" + dateStr);
         }
         if (dateStr.length() == 10) {
             dateStr += " 00:00:00";

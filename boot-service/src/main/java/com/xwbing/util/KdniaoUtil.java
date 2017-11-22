@@ -1,5 +1,9 @@
 package com.xwbing.util;
 
+import com.xwbing.exception.UtilException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -15,6 +19,8 @@ import java.util.Map;
  * 文档: http://www.kdniao.com/documents
  */
 public class KdniaoUtil {
+    private static final Logger LOGGER = LoggerFactory.getLogger(KdniaoUtil.class);
+
     /**
      * 向指定 URL 发送POST方法的请求
      *
@@ -66,7 +72,8 @@ public class KdniaoUtil {
                 result.append(line);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+            throw new UtilException("快递鸟接口请求失败");
         }
         // 使用finally块来关闭输出流、输入流
         finally {
@@ -88,10 +95,14 @@ public class KdniaoUtil {
      * @param str     内容
      * @param charset 编码方式
      * @return
-     * @throws UnsupportedEncodingException
      */
-    public static String urlEncoder(String str, String charset) throws UnsupportedEncodingException {
-        return URLEncoder.encode(str, charset);
+    public static String urlEncoder(String str, String charset) {
+        try {
+            return URLEncoder.encode(str, charset);
+        } catch (UnsupportedEncodingException e) {
+            LOGGER.error(e.getMessage());
+            throw new UtilException("urlEncoder失败");
+        }
     }
 
     /**
@@ -103,11 +114,16 @@ public class KdniaoUtil {
      * @return DataSign签名
      * @throws Exception
      */
-    public static String encrypt(String content, String keyValue, String charset) throws Exception {
-        if (keyValue != null) {
-            return base64(MD5(content + keyValue, charset), charset);
+    public static String encrypt(String content, String keyValue, String charset) {
+        try {
+            if (keyValue != null) {
+                return base64(MD5(content + keyValue, charset), charset);
+            }
+            return base64(MD5(content, charset), charset);
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            throw new UtilException("快递鸟签名出错");
         }
-        return base64(MD5(content, charset), charset);
     }
 
     private static char[] base64EncodeChars = new char[]{'A', 'B', 'C', 'D',
@@ -122,21 +138,25 @@ public class KdniaoUtil {
      *
      * @param str     内容
      * @param charset 编码方式
-     * @throws Exception
      */
-    private static String MD5(String str, String charset) throws Exception {
-        MessageDigest md = MessageDigest.getInstance("MD5");
-        md.update(str.getBytes(charset));
-        byte[] result = md.digest();
-        StringBuilder sb = new StringBuilder(32);
-        for (byte aResult : result) {
-            int val = aResult & 0xff;
-            if (val <= 0xf) {
-                sb.append("0");
+    private static String MD5(String str, String charset) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            md.update(str.getBytes(charset));
+            byte[] result = md.digest();
+            StringBuilder sb = new StringBuilder(32);
+            for (byte aResult : result) {
+                int val = aResult & 0xff;
+                if (val <= 0xf) {
+                    sb.append("0");
+                }
+                sb.append(Integer.toHexString(val));
             }
-            sb.append(Integer.toHexString(val));
+            return sb.toString().toLowerCase();
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            throw new UtilException("快递鸟加密出错");
         }
-        return sb.toString().toLowerCase();
     }
 
     /**
@@ -144,10 +164,14 @@ public class KdniaoUtil {
      *
      * @param str     内容
      * @param charset 编码方式
-     * @throws UnsupportedEncodingException
      */
-    private static String base64(String str, String charset) throws UnsupportedEncodingException {
-        return base64Encode(str.getBytes(charset));
+    private static String base64(String str, String charset) {
+        try {
+            return base64Encode(str.getBytes(charset));
+        } catch (UnsupportedEncodingException e) {
+            LOGGER.error(e.getMessage());
+            throw new UtilException("快递鸟编码出错");
+        }
     }
 
     private static String base64Encode(byte[] data) {

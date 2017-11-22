@@ -6,7 +6,10 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import com.xwbing.exception.UtilException;
 import org.apache.commons.io.output.ByteArrayOutputStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -29,6 +32,7 @@ import java.util.Map;
  */
 public class QRCodeUtils {
     private static QRCodeUtils.Internal internal = new QRCodeUtils.Internal();
+    private static final Logger LOGGER = LoggerFactory.getLogger(QRCodeUtils.class);
 
     /***
      * 生成默认尺寸不带logo的二维码
@@ -55,7 +59,8 @@ public class QRCodeUtils {
             internal._output = output;
             internal.output(output, internal.createCode(text));
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
+            throw new UtilException("生成自定义尺寸不带logo的二维码失败");
         }
     }
 
@@ -89,8 +94,8 @@ public class QRCodeUtils {
             return internal.addMaterial(bitMatrix);
             //internal.output(output, bitMatrix);
         } catch (WriterException e) {
-            e.printStackTrace();
-            return null;
+            LOGGER.error(e.getMessage());
+            throw new UtilException("生成自定义尺寸带logo的二维码失败");
         }
 
     }
@@ -102,19 +107,23 @@ public class QRCodeUtils {
      * @return
      * @throws Exception
      */
-    public static String decode(File file) throws Exception {
-        if (file == null) {
-            return null;
+    public static String decode(File file) {
+        try {
+            if (file == null) {
+                return null;
+            }
+            MultiFormatReader formatReader = new MultiFormatReader();
+            BufferedImage image = ImageIO.read(file);
+            BufferedImageLuminanceSource source = new BufferedImageLuminanceSource(image);
+            BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(source));
+            Hashtable<DecodeHintType, Object> hints = new Hashtable<>();
+            hints.put(DecodeHintType.CHARACTER_SET, "utf-8");
+            Result result = formatReader.decode(binaryBitmap, hints);
+            return result.getText();
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            throw new UtilException("解析二维码图片失败");
         }
-        MultiFormatReader formatReader = new MultiFormatReader();
-        BufferedImage image = ImageIO.read(file);
-        BufferedImageLuminanceSource source = new BufferedImageLuminanceSource(image);
-        BinaryBitmap binaryBitmap = new BinaryBitmap(new HybridBinarizer(source));
-        Hashtable<DecodeHintType, Object> hints = new Hashtable<>();
-        hints.put(DecodeHintType.CHARACTER_SET, "utf-8");
-        Result result = formatReader.decode(binaryBitmap, hints);
-        return result.getText();
-
     }
 
     private static class Internal {
@@ -273,7 +282,7 @@ public class QRCodeUtils {
         }
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args){
 //        String tomcatHome = System.getProperty("catalina.home");
 //        String name="QRcode";
 //        File output=new File(tomcatHome+File.separator+"file"+File.separator+name+".png");
