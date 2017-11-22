@@ -35,7 +35,7 @@ import java.util.concurrent.TimeUnit;
  * 说明: HttpClientUtil
  */
 public class HttpClientUtil {
-    private static Logger logger = LoggerFactory.getLogger(HttpClientUtil.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(HttpClientUtil.class);
     private static PoolingHttpClientConnectionManager poolingHttpClientConnectionManager;
     private static final String APPLICATION_JSON = "application/json";
     private static final String URL_ERROR = "Request Url can not be empty";
@@ -55,7 +55,7 @@ public class HttpClientUtil {
     private static final RequestConfig defaultRequestConfig = RequestConfig.custom().setSocketTimeout(600000).setConnectTimeout(600000).build();
     // Request retry handler
     private static HttpRequestRetryHandler retryHandler = (exception, executionCount, context) -> {
-        logger.info("retryRequest-->");
+        LOGGER.info("retryRequest-->");
         if (executionCount > 5) {
             return false;
         }
@@ -98,7 +98,7 @@ public class HttpClientUtil {
         if (param == null) {
             throw new IllegalArgumentException(PARAM_ERROR);
         }
-        logger.info("postByJson request URL:{}==================", url);
+        LOGGER.info("postByJson request URL:{}==================", url);
         HttpPost post = new HttpPost(url);// 创建HttpPost的实例
         post.setEntity(new StringEntity(param.toString(), "UTF-8"));// 设置参数到请求对象中
         post.addHeader("Content-Type", APPLICATION_JSON);// 发送json数据需要设置contentType
@@ -119,7 +119,7 @@ public class HttpClientUtil {
         if (param == null || param.size() == 0) {
             throw new IllegalArgumentException(PARAM_ERROR);
         }
-        logger.info("postByForm request URL:{}================", url);
+        LOGGER.info("postByForm request URL:{}================", url);
         HttpPost post = new HttpPost(url);
         // 创建参数队列
         List<NameValuePair> params = new ArrayList<>();
@@ -129,7 +129,7 @@ public class HttpClientUtil {
         try {
             post.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
         } catch (UnsupportedEncodingException e) {
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
             throw new RuntimeException("postByForm数据转换错误");
         }
         return getResult(post);
@@ -145,7 +145,7 @@ public class HttpClientUtil {
         if (StringUtils.isEmpty(url)) {
             throw new IllegalArgumentException(URL_ERROR);
         }
-        logger.info("GET request URL:{}======================", url);
+        LOGGER.info("GET request URL:{}======================", url);
         HttpGet httpGet = new HttpGet(url);
         return getResult(httpGet);
     }
@@ -164,7 +164,7 @@ public class HttpClientUtil {
         if (param == null || param.size() == 0) {
             throw new IllegalArgumentException(PARAM_ERROR);
         }
-        logger.info("PUT request URL:{}====================", url);
+        LOGGER.info("PUT request URL:{}====================", url);
         HttpPut put = new HttpPut(url);
         put.setEntity(new StringEntity(param.toString(), "UTF-8"));
         put.addHeader("Content-type", APPLICATION_JSON);
@@ -181,7 +181,7 @@ public class HttpClientUtil {
         if (StringUtils.isBlank(url)) {
             throw new IllegalArgumentException(URL_ERROR);
         }
-        logger.info("delete request URL:{}=====================", url);
+        LOGGER.info("delete request URL:{}=====================", url);
         HttpDelete delete = new HttpDelete(url);
         return getResult(delete);
     }
@@ -200,7 +200,7 @@ public class HttpClientUtil {
             CloseableHttpResponse response = client.execute(request);
             long end = System.currentTimeMillis();
             long ms = end - start;
-            logger.info("网络接口请求时间为{} ms=======================", ms);
+            LOGGER.info("网络接口请求时间为{} ms=======================", ms);
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {// 判断网络连接状态码是否正常(0-200都数正常)
                 HttpEntity entity = response.getEntity();// 获取结果实体
                 if (entity != null) {
@@ -213,7 +213,7 @@ public class HttpClientUtil {
         } catch (IOException e) {
             // result.setSuccess(false);
             // result.setMsg(e.getMessage());
-            logger.error(e.getMessage());
+            LOGGER.error(e.getMessage());
             throw new RuntimeException("请求网络接口错误");
         } finally {
             poolingHttpClientConnectionManager.closeExpiredConnections();

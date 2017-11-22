@@ -2,6 +2,8 @@ package com.xwbing.util;
 
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.beanutils.PropertyUtilsBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.beans.PropertyDescriptor;
 import java.util.ArrayList;
@@ -15,6 +17,8 @@ import java.util.Map;
  * 作者: xiangwb
  */
 public class JSONUtil {
+    private static final Logger LOGGER = LoggerFactory.getLogger(JSONUtil.class);
+
     /**
      * 实体对象不序列化转换成jsonobject
      *
@@ -50,7 +54,8 @@ public class JSONUtil {
                     }
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                LOGGER.error(e.getMessage());
+                throw new RuntimeException("不序列化对象转换错误");
             }
             return new JSONObject(params);
         }

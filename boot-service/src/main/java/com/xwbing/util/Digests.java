@@ -97,7 +97,7 @@ public class Digests {
             return messageDigest.digest();
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
-            throw new RuntimeException(e);
+            throw new RuntimeException("加密失败");
         }
     }
 }

@@ -1,6 +1,9 @@
 package com.xwbing.util;
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,6 +18,8 @@ import java.util.regex.Pattern;
  * 说明: PingUtil
  */
 public class PingUtil {
+    private static final Logger LOGGER = LoggerFactory.getLogger(PingUtil.class);
+
     /**
      * Jdk1.5的InetAddresss,代码简单
      *
@@ -26,6 +31,7 @@ public class PingUtil {
         try {
             return InetAddress.getByName(ipAddress).isReachable(timeOut);// 当返回值是true时，说明host是可用的，false则不可。
         } catch (IOException e) {
+            LOGGER.error(e.getMessage());
             throw new RuntimeException("无法连接该地址");
         }
     }
@@ -45,6 +51,7 @@ public class PingUtil {
                 System.out.println(line);
             return true;
         } catch (Exception ex) {
+            LOGGER.error(ex.getMessage());
             throw new RuntimeException("无法连接该地址");
         }
     }
@@ -77,6 +84,7 @@ public class PingUtil {
             br.close();
             return connectedCount == pingTimes;
         } catch (Exception ex) {
+            LOGGER.error(ex.getMessage());
             throw new RuntimeException("无法连接该地址");
         }
     }

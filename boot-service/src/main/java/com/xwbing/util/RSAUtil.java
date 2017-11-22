@@ -2,6 +2,8 @@ package com.xwbing.util;
 
 import org.bouncycastle.asn1.ASN1Sequence;
 import org.bouncycastle.asn1.pkcs.RSAPrivateKeyStructure;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
 
@@ -26,17 +28,16 @@ import java.security.spec.X509EncodedKeySpec;
  * 说明:
  */
 public class RSAUtil {
+    private static final Logger LOGGER = LoggerFactory.getLogger(RSAUtil.class);
 
     /**
      * 从文件中加载公钥 测试的时候使用
      *
      * @return
-     * @throws Exception
      */
-    public static RSAPublicKey loadPublicKey() throws Exception {
+    public static RSAPublicKey loadPublicKey() {
         try {
-            String filePath = RSAUtil.class.getClassLoader()
-                    .getResource("rsa_public_key.pem").getPath();
+            String filePath = RSAUtil.class.getClassLoader().getResource("rsa_public_key.pem").getPath();
             InputStream in = new FileInputStream(filePath);
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String readLine;
@@ -52,9 +53,8 @@ public class RSAUtil {
             br.close();
             return loadPublicKey(sb.toString());
         } catch (IOException e) {
-            throw new Exception("公钥数据流读取错误");
-        } catch (NullPointerException e) {
-            throw new Exception("公钥输入流为空");
+            LOGGER.error(e.getMessage());
+            throw new RuntimeException("公钥数据流读取错误");
         }
     }
 
@@ -64,8 +64,7 @@ public class RSAUtil {
      * @param publicKeyStr 公钥数据字符串
      * @throws Exception 加载公钥时产生的异常
      */
-    public static RSAPublicKey loadPublicKey(String publicKeyStr)
-            throws Exception {
+    public static RSAPublicKey loadPublicKey(String publicKeyStr) {
         try {
             BASE64Decoder base64Decoder = new BASE64Decoder();
             byte[] buffer = base64Decoder.decodeBuffer(publicKeyStr);
@@ -73,13 +72,14 @@ public class RSAUtil {
             X509EncodedKeySpec keySpec = new X509EncodedKeySpec(buffer);
             return (RSAPublicKey) keyFactory.generatePublic(keySpec);
         } catch (NoSuchAlgorithmException e) {
-            throw new Exception("无此算法");
+            LOGGER.error(e.getMessage());
+            throw new RuntimeException("无此算法");
         } catch (InvalidKeySpecException e) {
-            throw new Exception("公钥非法");
+            LOGGER.error(e.getMessage());
+            throw new RuntimeException("公钥非法");
         } catch (IOException e) {
-            throw new Exception("公钥数据内容读取错误");
-        } catch (NullPointerException e) {
-            throw new Exception("公钥数据为空");
+            LOGGER.error(e.getMessage());
+            throw new RuntimeException("公钥数据内容读取错误");
         }
     }
 
@@ -87,12 +87,10 @@ public class RSAUtil {
      * 从文件中加载私钥 测试的时候使用 私钥文件名
      *
      * @return 是否成功
-     * @throws Exception
      */
-    public static RSAPrivateKey loadPrivateKey() throws Exception {
+    public static RSAPrivateKey loadPrivateKey() {
         try {
-            String filePath = RSAUtil.class.getClassLoader()
-                    .getResource("rsa_private_key.pem").getPath();
+            String filePath = RSAUtil.class.getClassLoader().getResource("rsa_private_key.pem").getPath();
             InputStream in = new FileInputStream(filePath);
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String readLine;
@@ -108,9 +106,7 @@ public class RSAUtil {
             br.close();
             return loadPrivateKey(sb.toString());
         } catch (IOException e) {
-            throw new Exception("私钥数据读取错误");
-        } catch (NullPointerException e) {
-            throw new Exception("私钥输入流为空");
+            throw new RuntimeException("私钥数据读取错误");
         }
     }
 
@@ -121,8 +117,7 @@ public class RSAUtil {
      * @return
      * @throws Exception
      */
-    public static RSAPrivateKey loadPrivateKey(String privateKeyStr)
-            throws Exception {
+    public static RSAPrivateKey loadPrivateKey(String privateKeyStr) {
         try {
             BASE64Decoder base64Decoder = new BASE64Decoder();
             byte[] priKeyData = base64Decoder.decodeBuffer(privateKeyStr);
@@ -136,13 +131,14 @@ public class RSAUtil {
             KeyFactory keyFactory = KeyFactory.getInstance("RSA");
             return (RSAPrivateKey) keyFactory.generatePrivate(rsaPrivKeySpec);
         } catch (NoSuchAlgorithmException e) {
-            throw new Exception("无此算法");
+            LOGGER.error(e.getMessage());
+            throw new RuntimeException("无此算法");
         } catch (InvalidKeySpecException e) {
-            throw new Exception("私钥非法");
+            LOGGER.error(e.getMessage());
+            throw new RuntimeException("私钥非法");
         } catch (IOException e) {
-            throw new Exception("私钥数据内容读取错误");
-        } catch (NullPointerException e) {
-            throw new Exception("私钥数据为空");
+            LOGGER.error(e.getMessage());
+            throw new RuntimeException("私钥数据内容读取错误");
         }
     }
 
@@ -153,10 +149,9 @@ public class RSAUtil {
      * @return
      * @throws Exception 加密过程中的异常信息
      */
-    public static String encrypt(RSAPublicKey publicKey, String data)
-            throws Exception {
+    public static String encrypt(RSAPublicKey publicKey, String data) {
         if (publicKey == null) {
-            throw new Exception("加密公钥为空, 请设置");
+            throw new RuntimeException("加密公钥为空,请设置");
         }
         byte[] plainTextData = data.getBytes();
         Cipher cipher;
@@ -166,17 +161,18 @@ public class RSAUtil {
             byte[] output = cipher.doFinal(plainTextData);// 执行加密操作
             BASE64Encoder base64Encoder = new BASE64Encoder();
             return base64Encoder.encode(output);// Base64编码成字符串
-        } catch (NoSuchAlgorithmException e) {
-            throw new Exception("无此加密算法");
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-            return null;
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+            LOGGER.error(e.getMessage());
+            throw new RuntimeException("无此加密算法");
         } catch (InvalidKeyException e) {
-            throw new Exception("加密公钥非法,请检查");
+            LOGGER.error(e.getMessage());
+            throw new RuntimeException("加密公钥非法,请检查");
         } catch (IllegalBlockSizeException e) {
-            throw new Exception("明文长度非法");
+            LOGGER.error(e.getMessage());
+            throw new RuntimeException("明文长度非法");
         } catch (BadPaddingException e) {
-            throw new Exception("明文数据已损坏");
+            LOGGER.error(e.getMessage());
+            throw new RuntimeException("明文数据已损坏");
         }
     }
 
@@ -185,9 +181,8 @@ public class RSAUtil {
      *
      * @param data
      * @return
-     * @throws Exception
      */
-    public static String encrypt(String data) throws Exception {
+    public static String encrypt(String data) {
         return encrypt(loadPublicKey(), data);
     }
 
@@ -198,29 +193,33 @@ public class RSAUtil {
      * @return 明文
      * @throws Exception 解密过程中的异常信息
      */
-    public static String decrypt(RSAPrivateKey privateKey, String data) throws Exception {
+    public static String decrypt(RSAPrivateKey privateKey, String data) {
         if (privateKey == null) {
-            throw new Exception("解密私钥为空, 请设置");
+            throw new RuntimeException("解密私钥为空, 请设置");
         }
         BASE64Decoder base64Decoder = new BASE64Decoder();
-        byte[] cipherData = base64Decoder.decodeBuffer(data);
         Cipher cipher;
         try {
+            byte[] cipherData = base64Decoder.decodeBuffer(data);
             cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
             byte[] output = cipher.doFinal(cipherData);
             return new String(output);
-        } catch (NoSuchAlgorithmException e) {
-            throw new Exception("无此解密算法");
-        } catch (NoSuchPaddingException e) {
-            e.printStackTrace();
-            return null;
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+            LOGGER.error(e.getMessage());
+            throw new RuntimeException("无此解密算法");
         } catch (InvalidKeyException e) {
-            throw new Exception("解密私钥非法,请检查");
+            LOGGER.error(e.getMessage());
+            throw new RuntimeException("解密私钥非法,请检查");
         } catch (IllegalBlockSizeException e) {
-            throw new Exception("密文长度非法");
+            LOGGER.error(e.getMessage());
+            throw new RuntimeException("密文长度非法");
         } catch (BadPaddingException e) {
-            throw new Exception("密文数据已损坏");
+            LOGGER.error(e.getMessage());
+            throw new RuntimeException("密文数据已损坏");
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage());
+            throw new RuntimeException("解密数据读取失败");
         }
     }
 
@@ -229,25 +228,24 @@ public class RSAUtil {
      *
      * @param data
      * @return
-     * @throws Exception
      */
-    public static String decrypt(String data) throws Exception {
+    public static String decrypt(String data){
         return decrypt(loadPrivateKey(), data);
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         String en = testJiami();// 密文
         String de = testJiemi(en);// 明文
         System.out.println(de);
     }
 
-    private static String testJiami() throws Exception {
+    private static String testJiami(){
         String plainText = encrypt(loadPublicKey(), "123456");
         System.out.println("加密结果:" + plainText);
         return plainText;
     }
 
-    private static String testJiemi(String str) throws Exception {
+    private static String testJiemi(String str){
         String plainText = decrypt(loadPrivateKey(), str);
         System.out.println("解密结果:" + plainText);
         return plainText;
