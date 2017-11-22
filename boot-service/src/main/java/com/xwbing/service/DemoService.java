@@ -46,7 +46,7 @@ public class DemoService {
         String time = (String) obj.get("time");
         String startTime = LocalDateTime.parse(time, dateTimeFormatter).plusHours(1).format(dateTimeFormatter);
         //跟截止时间比较
-        if (hoursBetween(startTime, endTime) > 1) {
+        if (hoursBetween(time, endTime) > 1) {
             //过滤
             gpsList = gpsList.stream().filter(jsonObject -> ((String) jsonObject.get("time")).compareTo(startTime) < 0 ? true : false).collect(Collectors.toList());
             map.put("gpsList", gpsList);
