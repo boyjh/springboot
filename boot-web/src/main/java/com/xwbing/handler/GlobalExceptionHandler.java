@@ -5,6 +5,7 @@ import com.xwbing.exception.BusinessException;
 import com.xwbing.util.JSONObjResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 说明:  全局异常处理
@@ -58,15 +60,10 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public JSONObject handlerBindException(HttpServletRequest request, HttpServletResponse response, BindException ex) {
         List<ObjectError> list = ex.getAllErrors();
-        StringBuilder stringBuffer = new StringBuilder();
-        for (ObjectError objectError : list) {
-            if (stringBuffer.length() > 0)
-                stringBuffer.append(" && ");
-            stringBuffer.append(objectError.getDefaultMessage());
-        }
-        logger.error(stringBuffer.toString());
+        String errorMessages = list.stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.joining("&&"));
+        logger.error(errorMessages);
         response.setStatus(HttpStatus.OK.value());
-        return JSONObjResult.toJSONObj(stringBuffer.toString());
+        return JSONObjResult.toJSONObj(errorMessages);
     }
 
     /**
@@ -81,18 +78,14 @@ public class GlobalExceptionHandler {
     public JSONObject handlerMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         BindingResult bindingResult = ex.getBindingResult();
         List<ObjectError> allErrors = bindingResult.getAllErrors();
-        StringBuilder stringBuffer = new StringBuilder();
-        for (ObjectError objectError : allErrors) {
-            if (stringBuffer.length() > 0)
-                stringBuffer.append(" && ");
-            stringBuffer.append(objectError.getDefaultMessage());
-        }
-        logger.error(stringBuffer.toString());
-        return JSONObjResult.toJSONObj(stringBuffer.toString());
+        String errorMessages = allErrors.stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.joining("&&"));
+        logger.error(errorMessages);
+        return JSONObjResult.toJSONObj(errorMessages);
     }
 
     /**
      * 全部捕获
+     *
      * @param ex
      * @return
      */
