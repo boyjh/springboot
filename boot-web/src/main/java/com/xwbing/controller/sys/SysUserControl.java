@@ -49,16 +49,16 @@ public class SysUserControl {
     private SysAuthorityService sysAuthorityService;
 
     @LogInfo("添加用户")
-    @PostMapping("save")
     @ApiOperation(value = "添加用户")
+    @PostMapping("save")
     public JSONObject save(@RequestBody @Valid SysUser sysUser) {
         RestMessage result = sysUserService.save(sysUser);
         return JSONObjResult.toJSONObj(result);
     }
 
     @LogInfo("删除用户")
-    @GetMapping("removeById")
     @ApiOperation(value = "删除用户")
+    @GetMapping("removeById")
     public JSONObject removeById(@RequestParam String id) {
         if (StringUtils.isEmpty(id))
             return JSONObjResult.toJSONObj("主键不能为空");
@@ -67,8 +67,8 @@ public class SysUserControl {
     }
 
     @LogInfo("修改用户信息")
-    @PostMapping("update")
     @ApiOperation(value = "修改用户信息")
+    @PostMapping("update")
     public JSONObject update(@RequestBody @Valid SysUser sysUser) {
         if (StringUtils.isEmpty(sysUser.getId()))
             return JSONObjResult.toJSONObj("主键不能为空");
@@ -77,8 +77,8 @@ public class SysUserControl {
     }
 
     @LogInfo("获取用户详情")
-    @GetMapping("getById")
     @ApiOperation(value = "获取用户详情")
+    @GetMapping("getById")
     public JSONObject getById(@RequestParam String id) {
         if (StringUtils.isEmpty(id))
             return JSONObjResult.toJSONObj("主键不能为空");
@@ -89,16 +89,16 @@ public class SysUserControl {
     }
 
     @LogInfo("列表查询所有用户")
-    @GetMapping("listAll")
     @ApiOperation(value = "列表查询所有用户")
+    @GetMapping("listAll")
     public JSONObject listAll() {
         List<SysUser> list = sysUserService.listAll();
         return JSONObjResult.toJSONObj(list, true, "");
     }
 
     @LogInfo("登录")
-    @PostMapping("login")
     @ApiOperation(value = "登录")
+    @PostMapping("login")
     public JSONObject login(HttpServletRequest request, @RequestParam String userName, @RequestParam String passWord, @RequestParam String checkCode) {
         if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(passWord))
             return JSONObjResult.toJSONObj("用户名或密码不能为空");
@@ -109,16 +109,16 @@ public class SysUserControl {
     }
 
     @LogInfo("登出")
-    @GetMapping("logout")
     @ApiOperation(value = "登出")
+    @GetMapping("logout")
     public JSONObject logout(HttpServletRequest request) {
         RestMessage logout = sysUserService.logout(request);
         return JSONObjResult.toJSONObj(logout);
     }
 
     @LogInfo("修改密码")
-    @PostMapping("updatePassWord")
     @ApiOperation(value = "修改密码")
+    @PostMapping("updatePassWord")
     public JSONObject updatePassWord(@RequestParam String newPassWord, @RequestParam String oldPassWord, @RequestParam String id) {
         if (StringUtils.isEmpty(id))
             return JSONObjResult.toJSONObj("主键不能为空");
@@ -129,8 +129,8 @@ public class SysUserControl {
     }
 
     @LogInfo("重置密码")
-    @GetMapping("resetPassWord")
     @ApiOperation(value = "重置密码")
+    @GetMapping("resetPassWord")
     public JSONObject resetPassWord(@RequestParam String id) {
         if (StringUtils.isEmpty(id))
             return JSONObjResult.toJSONObj("主键不能为空");
@@ -139,8 +139,8 @@ public class SysUserControl {
     }
 
     @LogInfo("获取当前登录用户信息")
-    @GetMapping("getLoginUserInfo")
     @ApiOperation(value = "获取当前登录用户信息")
+    @GetMapping("resetPassWord")
     public JSONObject getLoginUserInfo() {
         SysUser sysUser = sysUserService.getOne((String) CommonDataUtil.getToken(CommonConstant.CURRENT_USER_ID));
         if (sysUser == null)
@@ -166,8 +166,8 @@ public class SysUserControl {
     }
 
     @LogInfo("保存用户角色")
-    @PostMapping("saveRole")
     @ApiOperation(value = "保存用户角色")
+    @PostMapping("saveRole")
     public JSONObject saveRole(@RequestParam String roleIds, @RequestParam String userId) {
         if (StringUtils.isEmpty(roleIds))
             return JSONObjResult.toJSONObj("角色主键不能为空");
@@ -192,9 +192,9 @@ public class SysUserControl {
     }
 
     @LogInfo("根据用户主键查找所拥有的角色")
-    @PostMapping("listRoleByUserId")
     @ApiOperation(value = "根据用户主键查找所拥有的角色")
     @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query", dataType = "string")
+    @PostMapping("listRoleByUserId")
     public JSONObject listRoleByUserId(@RequestParam String userId, String enable) {
         if (StringUtils.isEmpty(userId))
             return JSONObjResult.toJSONObj("用户主键不能为空");
@@ -203,9 +203,9 @@ public class SysUserControl {
     }
 
     @LogInfo("根据用户主键查找所拥有的权限")
-    @PostMapping("listAuthorityByUserId")
     @ApiOperation(value = "根据用户主键查找所拥有的权限")
     @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query", dataType = "string")
+    @PostMapping("listAuthorityByUserId")
     public JSONObject listAuthorityByUserId(@RequestParam String userId, String enable) {
         if (StringUtils.isEmpty(userId))
             return JSONObjResult.toJSONObj("用户主键不能为空");
@@ -214,8 +214,8 @@ public class SysUserControl {
     }
 
     @LogInfo("导出用户excel表")
-    @GetMapping("exportReport")
     @ApiOperation(value = "导出用户excel表")
+    @GetMapping("exportReport")
     public void exportReport(HttpServletResponse response) {
         sysUserService.exportReport(response);
     }

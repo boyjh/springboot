@@ -1,6 +1,7 @@
 package com.xwbing.controller.sys;
 
 import com.alibaba.fastjson.JSONObject;
+import com.xwbing.annotation.LogInfo;
 import com.xwbing.domain.entity.sys.SysConfig;
 import com.xwbing.service.sys.SysConfigService;
 import com.xwbing.util.JSONObjResult;
@@ -32,6 +33,7 @@ public class SysConfigControl {
     @Resource
     private SysConfigService sysConfigService;
 
+    @LogInfo("新增系统配置信息")
     @ApiOperation(value = "新增", notes = "新增系统配置信息")
 //    @ApiImplicitParams({
 //            @ApiImplicitParam(name = "code", value = "配置项的key，长度为1-50", paramType = "query", required = true, dataType = "string"),
@@ -47,6 +49,7 @@ public class SysConfigControl {
         return JSONObjResult.toJSONObj(result);
     }
 
+    @LogInfo("根据code删除系统配置信息")
     @ApiOperation(value = "删除", notes = "根据code删除系统配置信息")
     @ApiImplicitParam(name = "code", value = "配置项的code", paramType = "query", required = true, dataType = "string")
     @GetMapping("removeByCode")
@@ -60,6 +63,7 @@ public class SysConfigControl {
         return JSONObjResult.toJSONObj(result);
     }
 
+    @LogInfo("修改系统配置信息")
     @ApiOperation(value = "修改", notes = "修改系统配置信息")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "code", value = "配置项的key，长度为1-50", paramType = "query", required = true, dataType = "string"),
@@ -76,6 +80,7 @@ public class SysConfigControl {
         return JSONObjResult.toJSONObj(result);
     }
 
+    @LogInfo("根据key查找系统配置信息")
     @ApiOperation(value = "查找", notes = "根据key查找系统配置信息")
     @ApiImplicitParam(name = "code", value = "配置项的code", paramType = "query", required = true, dataType = "string")
     @GetMapping("getByCode")
@@ -92,6 +97,7 @@ public class SysConfigControl {
         return JSONObjResult.toJSONObj(one, true, "");
     }
 
+    @LogInfo("根据是否启用查找配置列表")
     @ApiOperation(value = "查找列表", notes = "根据是否启用查找配置列表")
     @ApiImplicitParam(name = "enable", value = "是否启用，格式为Y|N", paramType = "query", required = true, dataType = "string")
     @GetMapping("listByEnable")

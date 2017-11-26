@@ -29,8 +29,8 @@ public class SysUserLoginInOutControl {
     private SysUserLoginInOutService inOutService;
 
     @LogInfo("获取登录或登出信息")
-    @GetMapping("listByType")
     @ApiOperation(value = "获取登录或登出信息")
+    @GetMapping("listByType")
     public JSONObject listByType(@RequestParam int inout) {
         List<SysUserLoginInOut> sysUserLoginInOuts = inOutService.listByType(inout);
         return JSONObjResult.toJSONObj(sysUserLoginInOuts, true, "获取列表成功");

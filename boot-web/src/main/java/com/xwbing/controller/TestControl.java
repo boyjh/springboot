@@ -105,9 +105,9 @@ public class TestControl {
         System.out.println(de);
     }
 
-    @LogInfo("httpClient")
-    @PostMapping("httpClient")
-    public JSONObject httpClient(@RequestBody JSONObject param) {
+    @LogInfo("httpUtil")
+    @PostMapping("httpUtil")
+    public JSONObject httpUtil(@RequestBody JSONObject param) {
 //        String url = "http://localhost:8080/user/listAll";
 //        return HttpClientUtil.get(url);
         String url = "http://localhost:8080/user/save";
