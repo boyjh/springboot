@@ -23,7 +23,7 @@ import java.lang.reflect.Method;
 @Component
 public class WebLogAspect {
     private final Logger logger = LoggerFactory.getLogger(WebLogAspect.class);
-    private ThreadLocal<Long> startTime = new ThreadLocal<>();
+    private final ThreadLocal<Long> startTime = new ThreadLocal<>();
 
     @Pointcut("within(com.xwbing.controller..*) && @annotation(logInfo)")
     public void pointCutWithMsg(LogInfo logInfo) {
@@ -38,7 +38,7 @@ public class WebLogAspect {
      *
      * @param logInfo
      */
-    @Before("pointCutWithMsg(logInfo)")
+    @Before(value = "pointCutWithMsg(logInfo)", argNames = "joinPoint,logInfo")
     public void before(JoinPoint joinPoint, LogInfo logInfo) {
         startTime.set(System.currentTimeMillis());
         String info = logInfo.value();
@@ -52,7 +52,7 @@ public class WebLogAspect {
      *
      * @param logInfo
      */
-    @AfterReturning(pointcut = "pointCutWithMsg(logInfo)")
+    @AfterReturning(pointcut = "pointCutWithMsg(logInfo)", argNames = "joinPoint,logInfo")
     public void afterReturning(JoinPoint joinPoint, LogInfo logInfo) {
         long end = System.currentTimeMillis();
         long ms = end - startTime.get();
@@ -110,8 +110,8 @@ public class WebLogAspect {
         String description = "";
         for (Method method : methods) {
             if (method.getName().equals(methodName)) {
-                Class[] clazzs = method.getParameterTypes();
-                if (clazzs.length == arguments.length) {
+                Class[] classes = method.getParameterTypes();
+                if (classes.length == arguments.length) {
                     description = method.getAnnotation(LogInfo.class).value();
                     break;
                 }
