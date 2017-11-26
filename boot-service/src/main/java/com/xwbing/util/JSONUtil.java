@@ -21,7 +21,7 @@ public class JSONUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(JSONUtil.class);
 
     /**
-     * 实体对象不序列化转换成jsonobject
+     * 实体对象不序列化转换成jsonObject
      *
      * @param obj
      * @return
@@ -44,19 +44,19 @@ public class JSONUtil {
         } else if (obj instanceof Map) {
             return obj;
         } else {
-            Map<String, Object> params = new HashMap<>(0);
+            Map<String, Object> params = new HashMap<>(20);
             try {
                 PropertyUtilsBean propertyUtilsBean = new PropertyUtilsBean();
                 PropertyDescriptor[] descriptors = propertyUtilsBean.getPropertyDescriptors(obj);
-                for (int i = 0; i < descriptors.length; i++) {
-                    String name = descriptors[i].getName();
+                for (PropertyDescriptor descriptor : descriptors) {
+                    String name = descriptor.getName();
                     if (!"class".equals(name)) {
                         params.put(name, propertyUtilsBean.getNestedProperty(obj, name));
                     }
                 }
             } catch (Exception e) {
                 LOGGER.error(e.getMessage());
-                throw new UtilException("不序列化对象转换错误");
+                throw new UtilException("实体对象不序列化转换成object错误");
             }
             return new JSONObject(params);
         }
