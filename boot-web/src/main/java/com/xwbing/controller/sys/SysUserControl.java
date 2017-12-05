@@ -140,7 +140,7 @@ public class SysUserControl {
 
     @LogInfo("获取当前登录用户信息")
     @ApiOperation(value = "获取当前登录用户信息")
-    @GetMapping("resetPassWord")
+    @GetMapping("getLoginUserInfo")
     public JSONObject getLoginUserInfo() {
         SysUser sysUser = sysUserService.getOne((String) CommonDataUtil.getToken(CommonConstant.CURRENT_USER_ID));
         if (sysUser == null)
