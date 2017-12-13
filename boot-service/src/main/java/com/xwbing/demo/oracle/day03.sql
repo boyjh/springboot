@@ -54,6 +54,7 @@ desc：降序
 select ename ,sal from emp_xwbing order by sal;
 select ename ,sal,deptno from emp_xwbing order by deptno,sal desc;
 select ename from emp_xwbing order by ename;
+order by field(字段,'','');
 
 
 聚合函数又称多行函数：用来统计结果的

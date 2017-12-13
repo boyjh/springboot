@@ -152,13 +152,14 @@ NULL的运算
 null与字符串连接等于什么都没做
 null与数字运算结果还是null
 查看每个员工的收入？
-SELECT ENAME,SAL,COMM,SAL+COMM FROM EMP_XWBING;
+SELECT ENAME,SAL,COMM FROM EMP_XWBING;
 
 NVL(P1,P1) 若p1为null，函数返回p2. 若不为null，函数返回p1自身。所以该函数的作用是将null替代换为非null值
 查看每个员工的收入？
-SELECT ENAME,SAL,COMM,SAL+nvl(COMM,0) FROM EMP_XWBING;
+SELECT ENAME,SAL,nvl(COMM,0) FROM EMP_XWBING;
+SELECT ENAME,SAL,IFNULL(COMM,0) FROM EMP_XWBING;//MYSQL
 NVL2(P1,P2,P3) 若p1不为null值为p2，p1为null值为p3
 查看每个员工的奖金情况？
 SELECT ENAME,SAL,nvl2(COMM,'有奖金','无奖金') FROM EMP_XWBING;
-
+SELECT ENAME,SAL,IF(ISNULL(COMM),'无奖金','有奖金') FROM EMP_XWBING;//MYSQL isnull(字段) true返回1
 
