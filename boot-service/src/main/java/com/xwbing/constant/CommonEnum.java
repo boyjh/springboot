@@ -178,5 +178,6 @@ public class CommonEnum {
 //        }
         YesOrNoEnum yesOrNoEnum = Arrays.stream(YesOrNoEnum.values()).filter(obj -> obj.getCode().equals(code)).findFirst().get();
         System.out.println(yesOrNoEnum.getName());
+        System.out.println(listYesOrNo());
     }
 }
