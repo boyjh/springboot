@@ -1,5 +1,6 @@
 package com.xwbing.demo;
 
+import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.util.Scanner;
 
@@ -85,5 +86,9 @@ public class StringDemo {
          */
         System.out.println(String.format("xwbing %s", "项伟兵"));
         System.out.println(MessageFormat.format("xwbing {0}", "项伟兵"));
+        //努力拉到需要的位数
+        System.out.println(new DecimalFormat("#####.###").format(11.23));
+        //不够补0
+        System.out.println(new DecimalFormat("0000.000").format(11.23));
     }
 }
