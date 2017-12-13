@@ -35,6 +35,17 @@ public class CommonEnum {
         }
     }
 
+    public static List<JSONObject> listYesOrNo() {
+        List<JSONObject> resultVos = new ArrayList<>();
+        Arrays.stream(YesOrNoEnum.values()).forEach(yesOrNoEnum -> {
+            JSONObject object = new JSONObject();
+            object.put("code", yesOrNoEnum.getCode());
+            object.put("name", yesOrNoEnum.getName());
+            resultVos.add(object);
+        });
+        return resultVos;
+    }
+
     public enum SexEnum {
         MAN("男", "1"), WOMAN("女", "0");
         private String name;
@@ -167,15 +178,5 @@ public class CommonEnum {
 //        }
         YesOrNoEnum yesOrNoEnum = Arrays.stream(YesOrNoEnum.values()).filter(obj -> obj.getCode().equals(code)).findFirst().get();
         System.out.println(yesOrNoEnum.getName());
-
-        List<JSONObject> resultVos = new ArrayList<>();
-        JSONObject jsonObject;
-        for (YesOrNoEnum status : YesOrNoEnum.values()) {
-            jsonObject = new JSONObject();
-            jsonObject.put("code", status.getCode());
-            jsonObject.put("name", status.getName());
-            resultVos.add(jsonObject);
-        }
-//        return resultVos;
     }
 }
