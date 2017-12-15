@@ -22,7 +22,7 @@ DESC xwbing;
 RENAME employ_xwbing TO xwbing;
 DESC xwbing;
 修改表的
-向表中添加新的字段，只能在当前表的末尾追加，可以同时追加多个列，只需要使用逗号隔开即可，与创建声明列的时候语法一样
+向表中添加新的字段,只能在当前表的末尾追加,可以同时追加多个列,只需要使用逗号隔开即可,与创建声明列的时候语法一样
 ALTER TABLE XWBING ADD(
   HIREDATE DATE DEFAULT SYSDATE
 )
@@ -30,14 +30,14 @@ ALTER TABLE XWBING ADD(
 
 
 DML
-用于修改表中数据，分为：增 删 改
+用于修改表中数据,分为:增 删 改
 插入数据
 INSERT INTO XWBING (id,name,job,salary)
 VALUES(1,'JACK','CLERK',5000)
 COMMIT
-插入日期类型，建议使用TO-DATE函数
+插入日期类型,建议使用TO-DATE函数
 可以使用字符串 但是格式必须是'DD-MON-RR'
-由于有语言差异，不推荐
+由于有语言差异,不推荐
 INSERT INTO XWBING(id,name,job,birth)
 VALUES(2,'ROSE','CLERK',TO_DATE('1992-08-02','YYYY-MM-DD'))
 SELECT *FROM XWBING;
@@ -45,16 +45,16 @@ SELECT *FROM XWBING;
 ALTER TABLE XWBING DROP(HIREDATE)
 
 修改表中现有字段
-可以修改字段的类型，长度，默认值，非空
+可以修改字段的类型,长度,默认值,非空
 ALTER TABLE XWBING MODIFY(
   job VARCHAR2(40) DEFAULT 'CLERK'
 )
 
 修改表中现有数据
 将rose的工资改为5500
-UPDATE XWBING SET SALARY=50000 WHERE name='ROSE'   字符串里区分大小写，用''
+UPDATE XWBING SET SALARY=50000 WHERE name='ROSE'   字符串里区分大小写,用''
 
-修改表中的数据的时候，通常要使用WHERE下限定条件，这样只会将满足条件的记录进行修改，
+修改表中的数据的时候,通常要使用WHERE下限定条件,这样只会将满足条件的记录进行修改,
 若不在指定WHERE则是全表所有的数据都修改
 
 删除表中数据
