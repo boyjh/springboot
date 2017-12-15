@@ -36,7 +36,7 @@ LPAD,RPAD补位函数,若补位小于原长度,一律从左往右截
 要求显示指定内容指定位数,若不足则补充若干指定字符以达到要显示的长度
 SELECT ENAME,rPAD(SAL,5,'$') FROM EMP_XWBING;
 
-SUBSTR截取字符串
+SUBSTR 截取字符串
 截取给定字符串,从指定位置开始截取指定个字符,在数据库中,下标都是从1开始的!!!
 SELECT SUBSTR('think in java',5,3) FROM dual;
 SELECT SUBSTR('think in java',-4,3) FROM dual;
@@ -54,7 +54,7 @@ SELECT INSTR('think in java','in',2,2)FROM dual;
 
 SELECT ENAME,SAL,DEPTNO FROM emp_xwbing WHERE LOWER(ENAME)='smith';
 SELECT ename,sal FROM emp_xwbing WHERE LENGTH(ename)=5;
-SELECT ename,sal FROM emp_xwbing WHERE substr(ename,1,1)='A';
+SELECT ename,sal FROM emp_xwbing WHERE SUBSTR(ename,1,1)='A';
 
 
 数字函数
@@ -143,7 +143,7 @@ CREATE TABLE STUDENT_XWBING(ID NUMBER(4),NAME CHAR(20),GENDER CHAR(1));
 INSERT INTO STUDENT_XWBING VALUES(1000,'李莫愁','f');
 insert into student_xwbing values(1001,'林平之',NULL);
 insert into student_xwbing(id,name) values(1002,'张无忌');
-SELECT *FROM student_xwbing;
+SELECT * FROM student_xwbing;
 UPDATE student_xwbing SET gender='m' WHERE gender IS NULL;
 UPDATE student_xwbing SET gender=NULL WHERE gender='m';
 
@@ -157,9 +157,10 @@ SELECT ENAME,SAL,COMM FROM EMP_XWBING;
 NVL(P1,P1) 若p1为NULL,函数返回p2. 若不为NULL,函数返回p1自身.所以该函数的作用是将NULL替代换为非NULL值
 查看每个员工的收入?
 SELECT ENAME,SAL,SAL+nvl(BOUNS,0) FROM EMP_XWBING;
-SELECT ENAME,SAL,IFNULL(BOUNS,0) FROM EMP_XWBING;//MYSQL
+SELECT ENAME,SAL,SAL+IFNULL(BOUNS,0) FROM EMP_XWBING;//MYSQL
 NVL2(P1,P2,P3) 若p1不为NULL值为p2,p1为NULL值为p3
 查看每个员工的奖金情况?
-SELECT ENAME,SAL,nvl2(BOUNS,'有奖金','无奖金') FROM EMP_XWBING;
+SELECT ENAME,SAL,NVL2(BOUNS,'有奖金','无奖金') FROM EMP_XWBING;
+IF(ISNULL(p1),p2,p3) 若p1为null
 SELECT ENAME,SAL,IF(ISNULL(BOUNS),'无奖金','有奖金') FROM EMP_XWBING;//MYSQL ISNULL(字段) true返回1
 

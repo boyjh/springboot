@@ -1,6 +1,6 @@
 SELECT 子句中 可以对字段加别名,别名前加空格或as,若希望别名区分大小写或者包含空格,可以使用双引号将别名括起来
-SELECT ENAME,SAL*12  SAL FROM EMP_XWBING;
-SELECT ename,sal*12 AS "s al" FROM emp_xwbing;
+SELECT ENAME,SAL*12 SAL FROM EMP_XWBING;
+SELECT ename,sal*12 AS "S al" FROM emp_xwbing;
 
 查询条件:
 <>不等于
@@ -8,7 +8,7 @@ SELECT ename,sal FROM emp_xwbing WHERE sal<2000;
 SELECT * FROM emp_xwbing WHERE deptno<>10;
 SELECT * FROM emp_xwbing WHERE hiredate<to_date('1981-1-1','yyyy-mm-dd');
 
-AND OR 与和或 AND优先级高于or
+AND OR 与和或 AND 优先级高于 OR
 SELECT * FROM emp_xwbing WHERE sal>1000 AND job='CLERK';
 SELECT * FROM emp_xwbing WHERE sal>1000 OR job='CLERK';
 SELECT * FROM emp_xwbing WHERE sal>1000 AND (job='CLERK' OR JOB='SALESMAN');
@@ -24,16 +24,16 @@ IN(list), NOT IN(list)
 判断是否在列表中,常用在子查询中
 SELECT * FROM EMP_XWBING WHERE JOB IN('CLERK','SALESMAN');
 
-BETWEEN...AND...之间
+BETWEEN AND 之间
 SELECT sal FROM emp_xwbing WHERE sal BETWEEN 1500 AND 3000;
 
-IS NULL ,IS NOT NULL
-
-ANY,ALL  需要配合> >=  < <= 一个列表使用,常用于判断子查询的结果
-SELECT * FROM emp_xwbing WHERE sal>all(2800,3000,1800);
-
+IS NULL,IS NOT NULL
 SELECT * FROM emp_xwbing WHERE comm IS NOT NULL AND sal>1300;
-SELECT * FROM emp_xwbing WHERE hiredate>to_date('1981-1-1','yyyy-mm-dd') AND sal*12>30000;
+
+ANY,ALL  需要配合> >=  < <=  一个列表使用,常用于判断子查询的结果
+SELECT * FROM emp_xwbing WHERE sal>ALL(2800,3000,1800);
+
+
 
 DISTINCT 过滤重复,必须跟在SELECT后面.可以对多列去重,去重原则是这些列的组合没有重复
 SELECT DISTINCT job FROM emp_xwbing;
@@ -51,49 +51,47 @@ DESC:降序
 SELECT ename ,sal FROM emp_xwbing ORDER BY sal;
 SELECT ename ,sal,deptno FROM emp_xwbing ORDER BY deptno,sal DESC;
 SELECT ename FROM emp_xwbing ORDER BY ename;
-ORDER BY field(字段,'','');//mysql
+SELECT * FROM emp_xwbing ORDER BY field(字段,'','');//mysql
 
 
 
 
 聚合函数又称多行函数:用来统计结果的
-max,min 统计最大值,最小值
+MAX,MIN 统计最大值,最小值
 查看最高工资?
-SELECT max(sal),min(sal) FROM emp_xwbing;
+SELECT MAX(sal),MIN(sal) FROM emp_xwbing;
 
-avg,sum 统计平均值与总和
+AVG,SUM 统计平均值与总和
 查看平均工资和工资总和
-SELECT trunc(avg(sal)) avg,sum(sal) sum FROM emp_xwbing;
+SELECT trunc(AVG(sal)) avg,SUM(sal) sum FROM emp_xwbing;
 
-count 统计的是记录条数,而不关注具体该字段的取值,
+COUNT 统计的是记录条数,而不关注具体该字段的取值,
+统计表中记录数,常使用 COUNT(*)
 查看公司员工人数?
-SELECT count(ename) FROM emp_xwbing;
-统计表中记录数,常使用couont (*)
-SELECT count(*) FROM emp_xwbing;
+SELECT COUNT (*) FROM emp_xwbing;
 
 所有聚合函数忽略NULL值
-SELECT avg(nvl(comm,0)),sum(comm) FROM emp_xwbing;
+SELECT AVG(nvl(comm,0)),SUM(comm) FROM emp_xwbing;
 
 
 
 
 分组:
 GROUP BY 子句
-GROUP BY 子句允许将结果集按照给定的字段值相同的额记录看作一组,然后配合聚合函数对每组记录进行统计
+GROUP BY 子句允许将结果集按照给定的字段值相同的记录看作一组,然后配合聚合函数对每组记录进行统计
 查看每个部门的最高工资?
-SELECT deptno FROM emp_xwbing GROUP BY deptno;
-当SELECT中含有聚合函数时,凡不在聚合函数中的单独字段都必须出现在GROUP BY子句中
+SELECT MAX (sal),deptno FROM emp_xwbing GROUP BY deptno;
+当SELECT中含有聚合函数时,凡不在聚合函数中的单独字段都必须出现在 GROUP BY 子句中
 查看每个职位的平均工资和工资总和?
-SELECT avg(sal), sum(sal) FROM emp_xwbing GROUP BY job;
+SELECT AVG(sal), SUM(sal) FROM emp_xwbing GROUP BY job;
 查看每个部门各有多少人?
-SELECT count(ename),deptno FROM emp_xwbing GROUP BY deptno;
+SELECT COUNT(*),deptno FROM emp_xwbing GROUP BY deptno;
 
 
 查看每个部门的平均工资,前提是该部门平均工资高于2000?
-SELECT avg(sal),deptno FROM emp_xwbing WHERE avg(sal)>2000 GROUP BY deptno;
 WHERE中不允许使用聚合函数作为过滤条件,原因在于过滤时机不同.WHERE的过滤时机是在第一次从表中检索数据是添加过滤条件,用来确定那些数据可以被查出来,以确定结果集
-HAVING子句:having必须跟在 GROUP BY 子句之后,可以使用聚合函数作为过滤条件.使之可以对分组进行过滤,将满足条件的分组保留,不满足的去掉
-SELECT avg(sal),deptno FROM emp_xwbing GROUP BY deptno having avg(sal)>2000;
+HAVING子句:HAVING必须跟在 GROUP BY 子句之后,可以使用聚合函数作为过滤条件.使之可以对分组进行过滤,将满足条件的分组保留,不满足的去掉
+SELECT AVG(sal),deptno FROM emp_xwbing GROUP BY deptno HAVING AVG(sal)>2000;
 
 
 
@@ -114,7 +112,7 @@ SELECT e.ename,e.deptno,d.dname FROM emp_xwbing e,dept_xwbing d WHERE e.deptno=d
 
 SELECT e.ename,d.dname FROM emp_xwbing e,dept_xwbing d WHERE e.deptno=d.deptno AND d.loc='NEW YORK';
 查看平均工资高于2000的部门所在地?
-SELECT avg(e.sal), d.loc ,d.dname FROM emp_xwbing e,dept_xwbing d WHERE e.deptno=d.deptno GROUP BY d.dname,d.loc having avg(e.sal)>2000;
+SELECT AVG(e.sal), d.loc ,d.dname FROM emp_xwbing e,dept_xwbing d WHERE e.deptno=d.deptno GROUP BY d.dname,d.loc HAVING AVG(e.sal)>2000;
 
 内连接:关联查询的另一种写法
 查看sales部门员工信息?
@@ -136,7 +134,7 @@ SELECT  E.ENAME ,M.ENAME  BOSS FROM EMP_XWBING E,EMP_XWBING M WHERE E.MGR=M.EMPN
 JONES的手下?
 SELECT  E.ENAME FROM EMP_XWBING E,EMP_XWBING M WHERE E.MGR=M.EMPNO(+) AND m.ename='JONES';
 查看每个领导有几个手下?
-SELECT  count(e.mgr),m.ename FROM EMP_XWBING E,EMP_XWBING M WHERE E.MGR=M.EMPNO GROUP BY m.ename;
+SELECT  COUNT(e.mgr),m.ename FROM EMP_XWBING E,EMP_XWBING M WHERE E.MGR=M.EMPNO GROUP BY m.ename;
 查看JONES的上司在哪个城市?
 SELECT  d.loc  FROM EMP_XWBING E,EMP_XWBING M , dept_xwbing d WHERE E.MGR=M.EMPNO AND m.deptno=d.deptno AND e.ename='JONES' ;
 

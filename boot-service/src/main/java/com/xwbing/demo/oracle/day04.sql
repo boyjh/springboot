@@ -29,20 +29,20 @@ SELECT * FROM EMP_XWBING;
 多行单列:常用在WHERE中(配合 IN,ANY,ALL)
 多行多列:常用在WHERE中作为表看待
 
-查看比clerk和salesman部门工资都高的额员工?
+查看比clerk和salesman部门工资都高的员工?
 SELECT ename,sal FROM emp_xwbing WHERE sal>ALL(SELECT deptno FROM emp_xwbing WHERE job='SALESMAN' OR job='CLERK');
 查看和clerk相同部门的其他职位员工?
 SELECT ename FROM emp_xwbing WHERE deptno in (SELECT deptno FROM emp_xwbing WHERE JOB='CLERK');
 
 EXISTS 关键字
-用在WHERE中,其后要根一个子查询,作用是若子查询至少可以查询出一条记录,那么exisets表达式返回真,NOT EXISTS则起到相反的作用,查不到数据则返回真
+用在WHERE中,其后要根一个子查询,作用是若子查询至少可以查询出一条记录,那么exisets表达式返回真,NOT EXISTS 则起到相反的作用,查不到数据则返回真
 产看有员工的部门?
 SELECT d.deptno,d.dname,d.loc FROM dept_xwbing d WHERE EXISTS(SELECT *FROM EMP_XWBING  e WHERE e.deptno=d.deptno);
 没有下属的员工?
 SELECT n.ENAME FROM EMP_XWBING n WHERE NOT EXISTS(SELECT *FROM EMP_XWBING m WHERE N.EMPNO=M.MGR);
 
 查询列出最低薪水高于部门30的最低薪水的部门的最低薪水?
-SELECT min(sal),deptno FROM emp_xwbing GROUP BY deptno having min(sal)>(SELECT min(sal) FROM emp_xwbing WHERE deptno=30 );
+SELECT min(sal),deptno FROM emp_xwbing GROUP BY deptno having min(sal)>(SELECT min(sal) FROM emp_xwbing WHERE deptno=30);
 
 子查询在FROM部分:
 查看高于自己所在部门平均工资的员工信息?
