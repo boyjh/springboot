@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 说明: 公共枚举
@@ -176,8 +177,15 @@ public class CommonEnum {
 //                break;
 //            }
 //        }
+        //不确定,先判断再取值
+        Optional<YesOrNoEnum> optional = Arrays.stream(YesOrNoEnum.values()).filter(obj -> obj.getCode().equals(code)).findFirst();
+        if (optional.isPresent()) {
+            String code1 = optional.get().getCode();
+        }
+        //确定有值,直接取
         YesOrNoEnum yesOrNoEnum = Arrays.stream(YesOrNoEnum.values()).filter(obj -> obj.getCode().equals(code)).findFirst().get();
         System.out.println(yesOrNoEnum.getName());
+        //获取该枚举列表
         System.out.println(listYesOrNo());
     }
 }
