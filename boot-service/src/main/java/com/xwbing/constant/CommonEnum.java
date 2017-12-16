@@ -186,6 +186,6 @@ public class CommonEnum {
         YesOrNoEnum yesOrNoEnum = Arrays.stream(YesOrNoEnum.values()).filter(obj -> obj.getCode().equals(code)).findFirst().get();
         System.out.println(yesOrNoEnum.getName());
         //获取该枚举列表
-        System.out.println(listYesOrNo());
+        List<JSONObject> jsonObjects = listYesOrNo();
     }
 }
