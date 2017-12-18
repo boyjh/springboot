@@ -23,4 +23,6 @@ public interface SysAuthorityRepository extends JpaRepository<SysAuthority, Stri
     List<SysAuthority> getByEnableAndIdIn(String enable, List<String> ids);
 
     List<SysAuthority> getByIdIn(List<String> ids);
+
+    SysAuthority getBySort(int sort);
 }

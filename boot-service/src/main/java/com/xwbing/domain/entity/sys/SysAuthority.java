@@ -43,4 +43,8 @@ public class SysAuthority extends BaseEntity {
      * 类型  2按钮 1菜单
      */
     private Integer type;
+    /**
+     * 排序
+     */
+    private Integer sort;
 }

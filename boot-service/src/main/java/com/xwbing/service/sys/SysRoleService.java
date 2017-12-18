@@ -40,6 +40,7 @@ public class SysRoleService {
      */
     public RestMessage save(SysRole sysRole) {
         RestMessage result = new RestMessage();
+        //检查编码
         boolean b = uniqueCode(sysRole.getCode(), null);
         if (!b)
             throw new BusinessException("该编码已存在");
@@ -91,6 +92,7 @@ public class SysRoleService {
         SysRole old = getById(id);
         if (old == null)
             throw new BusinessException("该角色不存在");
+        //检查编码
         boolean b = uniqueCode(sysRole.getCode(), id);
         if (!b)
             throw new BusinessException("该编码已存在");

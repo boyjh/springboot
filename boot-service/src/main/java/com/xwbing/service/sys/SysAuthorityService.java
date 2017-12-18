@@ -10,6 +10,7 @@ import com.xwbing.util.PassWordUtil;
 import com.xwbing.util.RestMessage;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -39,9 +40,19 @@ public class SysAuthorityService {
      */
     public RestMessage save(SysAuthority sysAuthority) {
         RestMessage result = new RestMessage();
+        //检查编码
         boolean b = uniqueCode(sysAuthority.getCode(), null);
         if (!b)
             throw new BusinessException("该编码已存在");
+        //排序处理
+        if (sysAuthority.getSort() == null) {
+            int sort = getSort() + 1;
+            sysAuthority.setSort(sort);
+        } else {
+            boolean sorted = uniqueSort(sysAuthority.getSort(), null);
+            if (!sorted)
+                throw new BusinessException("该排序编号已存在");
+        }
         String id = PassWordUtil.createId();
         sysAuthority.setId(id);
         sysAuthority.setCreateTime(new Date());
@@ -92,11 +103,16 @@ public class SysAuthorityService {
         SysAuthority old = getById(id);
         if (old == null)
             throw new BusinessException("该权限不存在");
-        boolean b = uniqueCode(sysAuthority.getCode(), id);
-        if (!b)
-            throw new BusinessException("该编码已存在");
+//        boolean b = uniqueCode(sysAuthority.getCode(), id);
+//        if (!b)
+//            throw new BusinessException("该编码已存在");
+//        old.setCode(sysAuthority.getCode());
+        //检查排序
+        boolean sorted = uniqueSort(sysAuthority.getSort(), id);
+        if (!sorted)
+            throw new BusinessException("该排序编号已存在");
+        old.setSort(sysAuthority.getSort());
         old.setName(sysAuthority.getName());
-        old.setCode(sysAuthority.getCode());
         old.setEnable(sysAuthority.getEnable());
         old.setUrl(sysAuthority.getUrl());
         old.setType(sysAuthority.getType());
@@ -142,8 +158,8 @@ public class SysAuthorityService {
      * @return
      */
     public List<SysAuthority> listByParentEnable(String parentId, String enable) {
-        if(StringUtils.isEmpty(parentId))
-            parentId=CommonConstant.ROOT;
+        if (StringUtils.isEmpty(parentId))
+            parentId = CommonConstant.ROOT;
         if (StringUtils.isNotEmpty(enable))
             return sysAuthorityRepository.getByParentIdAndEnable(parentId, enable);
         else
@@ -213,6 +229,21 @@ public class SysAuthorityService {
     }
 
     /**
+     * 获取最大顺序
+     *
+     * @return
+     */
+    private int getSort() {
+        Sort sort = new Sort(Sort.Direction.DESC, "sort");
+        List<SysAuthority> all = sysAuthorityRepository.findAll(sort);
+        if (CollectionUtils.isNotEmpty(all)) {
+            return all.get(0).getSort();
+        } else {
+            return 0;
+        }
+    }
+
+    /**
      * 递归查询父节点下所有权限的id集合,并将状态设置为禁用(禁用权限时用)
      *
      * @param parentId
@@ -265,6 +296,24 @@ public class SysAuthorityService {
         if (StringUtils.isEmpty(code))
             throw new BusinessException("code不能为空");
         SysAuthority one = sysAuthorityRepository.getByCode(code);
+        if (one != null) {
+            return StringUtils.isNotEmpty(id) && id.equals(one.getId());
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * 检查排序是否存在
+     *
+     * @param sort
+     * @param id
+     * @return
+     */
+    private boolean uniqueSort(Integer sort, String id) {
+        if (sort == null)
+            throw new BusinessException("sort不能为空");
+        SysAuthority one = sysAuthorityRepository.getBySort(sort);
         if (one != null) {
             return StringUtils.isNotEmpty(id) && id.equals(one.getId());
         } else {
