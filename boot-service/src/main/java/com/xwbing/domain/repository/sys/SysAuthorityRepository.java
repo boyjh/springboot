@@ -14,15 +14,15 @@ import java.util.List;
 public interface SysAuthorityRepository extends JpaRepository<SysAuthority, String> {
     SysAuthority getByCode(String code);
 
-    List<SysAuthority> getByEnable(String enable);
+    List<SysAuthority> getByEnableOrderBySort(String enable);
 
-    List<SysAuthority> getByParentIdAndEnable(String parentId, String enable);
+    List<SysAuthority> getByParentIdAndEnableOrderBySort(String parentId, String enable);
 
-    List<SysAuthority> getByParentId(String parentId);
+    List<SysAuthority> getByParentIdOrderBySort(String parentId);
 
-    List<SysAuthority> getByEnableAndIdIn(String enable, List<String> ids);
+    List<SysAuthority> getByEnableAndIdInOrderBySort(String enable, List<String> ids);
 
-    List<SysAuthority> getByIdIn(List<String> ids);
+    List<SysAuthority> getByIdInOrderBySort(List<String> ids);
 
     SysAuthority getBySort(int sort);
 }

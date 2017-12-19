@@ -145,9 +145,9 @@ public class SysAuthorityService {
      */
     public List<SysAuthority> listByEnable(String enable) {
         if (StringUtils.isNotEmpty(enable))
-            return sysAuthorityRepository.getByEnable(enable);
+            return sysAuthorityRepository.getByEnableOrderBySort(enable);
         else
-            return sysAuthorityRepository.findAll();
+            return sysAuthorityRepository.findAll(new Sort(Sort.Direction.ASC, "sort"));
     }
 
     /**
@@ -158,12 +158,10 @@ public class SysAuthorityService {
      * @return
      */
     public List<SysAuthority> listByParentEnable(String parentId, String enable) {
-        if (StringUtils.isEmpty(parentId))
-            parentId = CommonConstant.ROOT;
         if (StringUtils.isNotEmpty(enable))
-            return sysAuthorityRepository.getByParentIdAndEnable(parentId, enable);
+            return sysAuthorityRepository.getByParentIdAndEnableOrderBySort(parentId, enable);
         else
-            return sysAuthorityRepository.getByParentId(parentId);
+            return sysAuthorityRepository.getByParentIdOrderBySort(parentId);
     }
 
     /**
@@ -181,9 +179,9 @@ public class SysAuthorityService {
         List<String> authorityIds = roleAuthorities.stream().map(SysRoleAuthority::getAuthorityId).collect(Collectors.toList());
         if (CollectionUtils.isNotEmpty(authorityIds))
             if (StringUtils.isNotEmpty(enable))
-                list = sysAuthorityRepository.getByEnableAndIdIn(enable, authorityIds);
+                list = sysAuthorityRepository.getByEnableAndIdInOrderBySort(enable, authorityIds);
             else
-                list = sysAuthorityRepository.getByIdIn(authorityIds);
+                list = sysAuthorityRepository.getByIdInOrderBySort(authorityIds);
         return list;
     }
 
@@ -214,9 +212,9 @@ public class SysAuthorityService {
         List<SysAuthVo> list = new ArrayList<>();
         List<SysAuthority> authoritys;
         if (StringUtils.isNotEmpty(enable))
-            authoritys = sysAuthorityRepository.getByParentIdAndEnable(parentId, enable);
+            authoritys = sysAuthorityRepository.getByParentIdAndEnableOrderBySort(parentId, enable);
         else
-            authoritys = sysAuthorityRepository.getByParentId(parentId);
+            authoritys = sysAuthorityRepository.getByParentIdOrderBySort(parentId);
         if (CollectionUtils.isEmpty(authoritys))
             return list;
         SysAuthVo vo;

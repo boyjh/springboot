@@ -101,6 +101,8 @@ public class SysAuthorityControl {
     @ApiOperation(value = "根据父节点查询子节点")
     @ApiImplicitParam(name = "parentId", value = "父id,可为空", paramType = "query", dataType = "string")
     public JSONObject listByParentId(String parentId) {
+        if(StringUtils.isEmpty(parentId))
+            parentId=CommonConstant.ROOT;
         if (!CommonConstant.ROOT.equals(parentId) && sysAuthorityService.getById(parentId) == null)
             return JSONObjResult.toJSONObj("父节点不存在");
         List<SysAuthority> queryByParentId = sysAuthorityService.listByParentEnable(parentId, null);
