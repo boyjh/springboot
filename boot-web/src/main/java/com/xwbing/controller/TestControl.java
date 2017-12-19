@@ -118,11 +118,13 @@ public class TestControl {
         return HttpClientUtil.postByJson(url, param);
     }
 
+    @LogInfo("session")
     @GetMapping("session")
     public JSONObject session(HttpServletRequest request) {
         return JSONObjResult.toJSONObj(cookieSessionService.session(request));
     }
 
+    @LogInfo("cookie")
     @GetMapping("cookie")
     public JSONObject cookie(HttpServletRequest request, HttpServletResponse response) {
         return JSONObjResult.toJSONObj(cookieSessionService.cookie(response, request));
