@@ -1,8 +1,8 @@
-package com.xwbing.controller;
+package com.xwbing.controller.other;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.annotation.LogInfo;
-import com.xwbing.service.MailService;
+import com.xwbing.service.other.MailService;
 import com.xwbing.util.JSONObjResult;
 import com.xwbing.util.RestMessage;
 import io.swagger.annotations.Api;

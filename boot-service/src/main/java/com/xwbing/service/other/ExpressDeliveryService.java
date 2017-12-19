@@ -1,4 +1,4 @@
-package com.xwbing.service;
+package com.xwbing.service.other;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.constant.CommonEnum;
