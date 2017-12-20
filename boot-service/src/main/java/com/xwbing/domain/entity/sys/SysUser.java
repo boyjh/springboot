@@ -57,7 +57,7 @@ public class SysUser extends BaseEntity {
     @ApiModelProperty(hidden = true)
     private transient String sexName;
     @ApiModelProperty(hidden = true)
-    private transient List<SysAuthority> menuArray;
+    private transient List<SysAuthority> menus;
     @ApiModelProperty(hidden = true)
-    private transient List<SysAuthority> buttonArray;
+    private transient List<SysAuthority> buttons;
 }

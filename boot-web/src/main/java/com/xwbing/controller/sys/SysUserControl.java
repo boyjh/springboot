@@ -160,8 +160,8 @@ public class SysUserControl {
                     button.add(sysAuthority);
             }
         }
-        sysUser.setMenuArray(menu);
-        sysUser.setButtonArray(button);
+        sysUser.setMenus(menu);
+        sysUser.setButtons(button);
         return JSONObjResult.toJSONObj(sysUser, true, "");
     }
 
