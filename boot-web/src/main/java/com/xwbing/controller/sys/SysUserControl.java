@@ -82,7 +82,7 @@ public class SysUserControl {
     public JSONObject getById(@RequestParam String id) {
         if (StringUtils.isEmpty(id))
             return JSONObjResult.toJSONObj("主键不能为空");
-        SysUser sysUser = sysUserService.getOne(id);
+        SysUser sysUser = sysUserService.getById(id);
         if (sysUser == null)
             return JSONObjResult.toJSONObj("未查到该对象");
         return JSONObjResult.toJSONObj(sysUser, true, "");
@@ -142,7 +142,7 @@ public class SysUserControl {
     @ApiOperation(value = "获取当前登录用户信息")
     @GetMapping("getLoginUserInfo")
     public JSONObject getLoginUserInfo() {
-        SysUser sysUser = sysUserService.getOne((String) CommonDataUtil.getToken(CommonConstant.CURRENT_USER_ID));
+        SysUser sysUser = sysUserService.getById((String) CommonDataUtil.getToken(CommonConstant.CURRENT_USER_ID));
         if (sysUser == null)
             return JSONObjResult.toJSONObj("未获取到当前登录用户信息");
         List<SysAuthority> button = new ArrayList<>();
@@ -151,7 +151,7 @@ public class SysUserControl {
         if (CommonEnum.YesOrNoEnum.YES.getCode().equalsIgnoreCase(sysUser.getAdmin()))
             list = sysAuthorityService.listByEnable(CommonEnum.YesOrNoEnum.YES.getCode());
         else
-            list = sysUserService.queryAuthority(sysUser.getId(), CommonEnum.YesOrNoEnum.YES.getCode());
+            list = sysUserService.listAuthorityByIdAndEnable(sysUser.getId(), CommonEnum.YesOrNoEnum.YES.getCode());
         if (CollectionUtils.isNotEmpty(list)) {
             for (SysAuthority sysAuthority : list) {
                 if (sysAuthority.getType() == CommonEnum.MenuOrButtonEnum.MENU.getCode())
@@ -173,7 +173,7 @@ public class SysUserControl {
             return JSONObjResult.toJSONObj("角色主键不能为空");
         if (StringUtils.isEmpty(userId))
             return JSONObjResult.toJSONObj("用户主键不能为空");
-        SysUser old = sysUserService.getOne(userId);
+        SysUser old = sysUserService.getById(userId);
         if (old == null)
             return JSONObjResult.toJSONObj("该用户不存在");
         if (CommonEnum.YesOrNoEnum.YES.getCode().equalsIgnoreCase(old.getAdmin()))
@@ -209,7 +209,7 @@ public class SysUserControl {
     public JSONObject listAuthorityByUserId(@RequestParam String userId, String enable) {
         if (StringUtils.isEmpty(userId))
             return JSONObjResult.toJSONObj("用户主键不能为空");
-        List<SysAuthority> list = sysUserService.queryAuthority(userId, enable);
+        List<SysAuthority> list = sysUserService.listAuthorityByIdAndEnable(userId, enable);
         return JSONObjResult.toJSONObj(list, true, "");
     }
 

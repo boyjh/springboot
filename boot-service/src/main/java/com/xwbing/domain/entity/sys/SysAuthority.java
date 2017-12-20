@@ -40,7 +40,7 @@ public class SysAuthority extends BaseEntity {
     @Column(name = "parent_id")
     private String parentId;
     /**
-     * 类型  2按钮 1菜单
+     * 类型 1菜单 2按钮
      */
     private Integer type;
     /**

@@ -88,7 +88,7 @@ public class SysUserService {
      */
     public RestMessage removeById(String id) {
         RestMessage result = new RestMessage();
-        SysUser old = getOne(id);
+        SysUser old = getById(id);
         if (old == null) {
             throw new BusinessException("该用户不存在");
         }
@@ -119,7 +119,7 @@ public class SysUserService {
      */
     public RestMessage update(SysUser sysUser) {
         RestMessage result = new RestMessage();
-        SysUser old = getOne(sysUser.getId());
+        SysUser old = getById(sysUser.getId());
         if (old == null) {
             throw new BusinessException("该用户不存在");
         }
@@ -152,7 +152,7 @@ public class SysUserService {
      * @param id
      * @return
      */
-    public SysUser getOne(String id) {
+    public SysUser getById(String id) {
         return sysUserRepository.findOne(id);
     }
 
@@ -184,7 +184,7 @@ public class SysUserService {
      */
     public RestMessage resetPassWord(String id) {
         RestMessage result = new RestMessage();
-        SysUser old = getOne(id);
+        SysUser old = getById(id);
         if (old == null)
             throw new BusinessException("未查询到用户信息");
         if (CommonDataUtil.getToken(CommonConstant.CURRENT_USER_ID).equals(id))
@@ -216,7 +216,7 @@ public class SysUserService {
      */
     public RestMessage updatePassWord(String newPassWord, String oldPassWord, String id) {
         RestMessage result = new RestMessage();
-        SysUser sysUser = getOne(id);
+        SysUser sysUser = getById(id);
         if (sysUser == null)
             throw new BusinessException("该用户不存在");
         boolean flag = checkPassWord(oldPassWord, sysUser.getPassword(), sysUser.getSalt());
@@ -283,7 +283,7 @@ public class SysUserService {
     public RestMessage logout(HttpServletRequest request) {
         RestMessage restMessage = new RestMessage();
         String userId = (String) CommonDataUtil.getToken(CommonConstant.CURRENT_USER_ID);
-        SysUser user = getOne(userId);
+        SysUser user = getById(userId);
         if (user != null) {
             //清空公共数据
             CommonDataUtil.clearMap();
@@ -312,7 +312,7 @@ public class SysUserService {
      * @param enable
      * @return
      */
-    public List<SysAuthority> queryAuthority(String userId, String enable) {
+    public List<SysAuthority> listAuthorityByIdAndEnable(String userId, String enable) {
         List<SysAuthority> list = new ArrayList<>();
         //根据用戶id和是否启用获取获取角色
         List<SysRole> sysRoles = sysRoleService.listByUserIdEnable(userId, enable);
@@ -348,7 +348,7 @@ public class SysUserService {
             response.setHeader("Pragma", "no-cache");
             response.setHeader("Cache-Control", "no-cache");
             response.setDateHeader("Expires", 0);
-            List<UserDto> listDto = getReportList();//内容list
+            List<UserDto> listDto = listReport();//内容list
             if (CollectionUtils.isEmpty(listDto)) {
                 return;
             }
@@ -369,7 +369,7 @@ public class SysUserService {
      *
      * @return
      */
-    private List<UserDto> getReportList() {
+    private List<UserDto> listReport() {
         List<UserDto> listDto = new ArrayList<>();
         List<SysUser> list = sysUserRepository.findAll();
         if (CollectionUtils.isNotEmpty(list)) {

@@ -167,10 +167,6 @@ public class SysRoleService {
         if (StringUtils.isEmpty(code))
             throw new BusinessException("code不能为空");
         SysRole one = sysRoleRepository.getByCode(code);
-        if (one != null) {
-            return StringUtils.isNotEmpty(id) && id.equals(one.getId());
-        } else {
-            return true;
-        }
+        return one == null || StringUtils.isNotEmpty(id) && id.equals(one.getId());
     }
 }

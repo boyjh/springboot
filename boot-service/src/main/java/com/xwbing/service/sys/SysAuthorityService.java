@@ -103,10 +103,6 @@ public class SysAuthorityService {
         SysAuthority old = getById(id);
         if (old == null)
             throw new BusinessException("该权限不存在");
-//        boolean b = uniqueCode(sysAuthority.getCode(), id);
-//        if (!b)
-//            throw new BusinessException("该编码已存在");
-//        old.setCode(sysAuthority.getCode());
         //检查排序
         boolean sorted = uniqueSort(sysAuthority.getSort(), id);
         if (!sorted)
@@ -294,11 +290,7 @@ public class SysAuthorityService {
         if (StringUtils.isEmpty(code))
             throw new BusinessException("code不能为空");
         SysAuthority one = sysAuthorityRepository.getByCode(code);
-        if (one != null) {
-            return StringUtils.isNotEmpty(id) && id.equals(one.getId());
-        } else {
-            return true;
-        }
+        return one == null || StringUtils.isNotEmpty(id) && id.equals(one.getId());
     }
 
     /**
@@ -312,10 +304,6 @@ public class SysAuthorityService {
         if (sort == null)
             throw new BusinessException("sort不能为空");
         SysAuthority one = sysAuthorityRepository.getBySort(sort);
-        if (one != null) {
-            return StringUtils.isNotEmpty(id) && id.equals(one.getId());
-        } else {
-            return true;
-        }
+        return one == null || StringUtils.isNotEmpty(id) && id.equals(one.getId());
     }
 }
