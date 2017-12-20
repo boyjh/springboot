@@ -22,9 +22,11 @@ public class CookieSessionService {
 
     public RestMessage session(HttpServletRequest request) {
         RestMessage restMessage = new RestMessage();
+//        WebUtils.setSessionAttribute(request, "session", "sessionValue");
+//        String sessionValue = (String) WebUtils.getSessionAttribute(request, "sessionValue");
         HttpSession session = request.getSession();
+        session.setAttribute("session", "sessionValue");
         String sessionId = session.getId();
-        session.setAttribute("session", "session");
         session.setMaxInactiveInterval(60 * 60);//单位为秒,-1永不过期
         String test = (String) session.getAttribute("session");
         restMessage.setData("sessionId:" + sessionId + ",value:" + test);
@@ -34,7 +36,7 @@ public class CookieSessionService {
 
     public RestMessage cookie(HttpServletResponse response, HttpServletRequest request) {
         RestMessage restMessage = new RestMessage();
-        Cookie cookie = new Cookie("cookie", "cookie");
+        Cookie cookie = new Cookie("cookie", "cookieValue");
         cookie.setMaxAge(60 * 60);//单位为秒
         //设置路径,这个路径即该工程下都可以访问该cookie 如果不设置路径,那么只有设置该cookie路径及其子路径可以访问
         cookie.setPath("/");
