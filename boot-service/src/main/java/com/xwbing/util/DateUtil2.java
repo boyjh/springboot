@@ -282,13 +282,8 @@ public class DateUtil2 {
         LocalDate start = LocalDate.parse(startMoth + "-01");
         LocalDate end = LocalDate.parse(endMonth + "-01");
         List<String> list = new ArrayList<>();
-        if (startMoth.equals(endMonth)) {
-            list.add(startMoth);
-            return list;
-        }
         long m = ChronoUnit.MONTHS.between(start, end);
-        list.add(start.toString());
-        for (long i = 1; i <= m; i++) {
+        for (long i = 0; i <= m; i++) {
             list.add(start.plusMonths(i).format(getDateFormat(YYYY_MM)));
         }
         return list;
@@ -306,8 +301,7 @@ public class DateUtil2 {
         LocalDate start = LocalDate.parse(startDate);
         LocalDate end = LocalDate.parse(endDate);
         long d = ChronoUnit.DAYS.between(start, end);
-        dateList.add(start.toString());
-        for (long i = 1; i <= d; i++) {
+        for (long i = 0; i <= d; i++) {
             dateList.add(start.plusDays(i).toString());
         }
         return dateList;
