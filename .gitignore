@@ -4,10 +4,9 @@
 *.iml
 logs
 
-boot-service/target
-boot-service/*.iml
-boot-web/target
-boot-web/*.iml
+*/target
+*/*.iml
+
 
 mvnw
 mvnw.cmd
