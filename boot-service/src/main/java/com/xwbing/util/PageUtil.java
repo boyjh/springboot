@@ -7,10 +7,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 项目名称: cloud-control-demonstration
  * 创建时间: 2017/10/18 8:55
  * 作者: xiangwb
- * 说明:
+ * 说明: 列表分页工具类
  */
 public class PageUtil {
     public static Map<String, Object> page(JSONArray array, int currentPage, int pageSize) {

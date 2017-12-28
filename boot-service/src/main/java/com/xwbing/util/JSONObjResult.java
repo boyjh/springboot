@@ -21,7 +21,6 @@ public class JSONObjResult {
      * 新增、修改主鍵返回id
      */
     private String id;
-
     /**
      * 消息体
      */
