@@ -28,7 +28,7 @@ public class DateUtil2 {
     public static final String YYYY = "yyyy";
     public static final String HH_MM_SS = "HH:mm:ss";
     public static final String HH_MM = "HH:mm";
-    private static final Logger logger= LoggerFactory.getLogger(DateUtil2.class);
+    private static final Logger logger = LoggerFactory.getLogger(DateUtil2.class);
     /*
      * ChronoUnit:各种时间单位 | TemporalAdjusters:时态对象 可以获取第一天,最后一天等
      * 获取时间分量:Duration要求是localDateTime/localTime类型 | Period要求是localDate类型
@@ -282,13 +282,8 @@ public class DateUtil2 {
         LocalDate start = LocalDate.parse(startMoth + "-01");
         LocalDate end = LocalDate.parse(endMonth + "-01");
         List<String> list = new ArrayList<>();
-        if (startMoth.equals(endMonth)) {
-            list.add(startMoth);
-            return list;
-        }
         long m = ChronoUnit.MONTHS.between(start, end);
-        list.add(start.toString());
-        for (long i = 1; i <= m; i++) {
+        for (long i = 0; i <= m; i++) {
             list.add(start.plusMonths(i).format(getDateFormat(YYYY_MM)));
         }
         return list;
@@ -306,8 +301,7 @@ public class DateUtil2 {
         LocalDate start = LocalDate.parse(startDate);
         LocalDate end = LocalDate.parse(endDate);
         long d = ChronoUnit.DAYS.between(start, end);
-        dateList.add(start.toString());
-        for (long i = 1; i <= d; i++) {
+        for (long i = 0; i <= d; i++) {
             dateList.add(start.plusDays(i).toString());
         }
         return dateList;
@@ -339,7 +333,7 @@ public class DateUtil2 {
         LocalTime eTime = LocalTime.parse(endTime);
         Duration duration = Duration.between(sTime, eTime);
         long m = duration.toMinutes();
-        return formate((double)m/60.0,1);
+        return formate((double) m / 60.0, 1);
     }
 
     /**
@@ -355,7 +349,7 @@ public class DateUtil2 {
         LocalDateTime eDateTime = LocalDateTime.parse(endDateTime, getDateFormat(YYYY_MM_DD_HH_MM));
         Duration duration = Duration.between(sDateTime, eDateTime);
         long m = duration.toMinutes();
-        return formate((double)m/60.0,1);
+        return formate((double) m / 60.0, 1);
     }
 
     /**
@@ -462,8 +456,7 @@ public class DateUtil2 {
      * @param needETime    需要的时间段 13:00
      * @return
      */
-    public static boolean compare(String compareSTime, String compareETime,
-                                  String needSTime, String needETime) {
+    public static boolean compareTime(String needSTime, String needETime, String compareSTime, String compareETime) {
         if (needSTime.compareTo(compareETime) == 0
                 || needETime.compareTo(compareSTime) == 0)// 表示开始时间等于结束时间,或者结束时间等于开始时间
             return false;
@@ -476,6 +469,32 @@ public class DateUtil2 {
         }
         if (needSTime.compareTo(compareSTime) < 0
                 && needETime.compareTo(compareETime) > 0)// 需要时间在比较时间前后，表示已经重复了
+            return true;
+        return false;
+    }
+
+    /**
+     * 判断两者时间是否重合 重合返回true
+     *
+     * @param compareSDate
+     * @param compareEDate
+     * @param needSDate
+     * @param needEDate
+     * @return
+     */
+    public static boolean compareDate(String needSDate, String needEDate, String compareSDate, String compareEDate) {
+        if (needSDate.compareTo(compareEDate) == 0
+                || needEDate.compareTo(compareSDate) == 0)// 表示开始时间等于结束时间,或者结束时间等于开始时间
+            return false;
+        if (needSDate.compareTo(compareSDate) >= 0
+                && needSDate.compareTo(compareEDate) < 0)// 需要时间开始时间在比较时间之间，表示已经重复了
+            return true;
+        if (needEDate.compareTo(compareSDate) > 0
+                && needEDate.compareTo(compareEDate) <= 0) {// 需要时间结束时间在比较时间之间，表示已经重复了
+            return true;
+        }
+        if (needSDate.compareTo(compareSDate) < 0
+                && needEDate.compareTo(compareEDate) > 0)// 需要时间在比较时间前后，表示已经重复了
             return true;
         return false;
     }
