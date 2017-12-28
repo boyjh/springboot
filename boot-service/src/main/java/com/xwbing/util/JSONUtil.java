@@ -14,7 +14,7 @@ import java.util.Map;
 
 /**
  * 说明: json格式转换
- * 创建日期: 2016年8月16日 下午8:06:01
+ * 创建日期: 2016年8月16日
  * 作者: xiangwb
  */
 public class JSONUtil {
@@ -31,7 +31,11 @@ public class JSONUtil {
             return null;
         if (obj instanceof String)
             return obj;
-        if (obj instanceof List) {
+        if (obj instanceof JSONObject) {
+            return obj;
+        } else if (obj instanceof Map) {
+            return obj;
+        } else if (obj instanceof List) {
             List<?> list = (List<?>) obj;
             ArrayList<JSONObject> result = new ArrayList<>();
             for (Object o : list) {
@@ -39,10 +43,6 @@ public class JSONUtil {
                 result.add(javaObject);
             }
             return result;
-        } else if (obj instanceof JSONObject) {
-            return obj;
-        } else if (obj instanceof Map) {
-            return obj;
         } else {
             Map<String, Object> params = new HashMap<>(20);
             try {
