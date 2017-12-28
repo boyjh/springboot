@@ -7,10 +7,9 @@ logs
 */target
 */*.iml
 
-
 mvnw
 mvnw.cmd
 ### eclipse ###
-sbdemo/.project
-sbdemo/.classpath
-sbdemo/.settings
+*/.project
+*/.classpath
+*/.settings
