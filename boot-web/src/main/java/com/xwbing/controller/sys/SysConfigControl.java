@@ -94,7 +94,7 @@ public class SysConfigControl {
         if (one == null) {
             return JSONObjResult.toJSONObj("该配置不存在");
         }
-        return JSONObjResult.toJSONObj(one, true, "");
+        return JSONObjResult.toJSONObj(one, "");
     }
 
     @LogInfo("根据是否启用查找配置列表")
@@ -108,6 +108,6 @@ public class SysConfigControl {
             return JSONObjResult.toJSONObj("是否启用不能为空");
         }
         List<SysConfig> byEnable = sysConfigService.listByEnable(enable);
-        return JSONObjResult.toJSONObj(byEnable, true, "");
+        return JSONObjResult.toJSONObj(byEnable, "");
     }
 }

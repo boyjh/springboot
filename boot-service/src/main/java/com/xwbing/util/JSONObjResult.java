@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 说明: 封装对象结果的json结果
@@ -24,16 +25,17 @@ public class JSONObjResult {
     /**
      * 消息体
      */
-    private String message = "";
+    private String message = "操作成功";
     /**
      * 返回数据
      */
     private Object data;
 
-    public static JSONObject toJSONObj(Object o, boolean success, String message) {
+    public static JSONObject toJSONObj(Object o, String message) {
         JSONObjResult jsonObjResult = new JSONObjResult();
-        jsonObjResult.setSuccess(success);
-        jsonObjResult.setMessage(message);
+        jsonObjResult.setSuccess(true);
+        if (StringUtils.isNotEmpty(message))
+            jsonObjResult.setMessage(message);
         jsonObjResult.setData(JSONUtil.beanToMap(o));
         return JSON.parseObject(JSON.toJSONString(jsonObjResult, SerializerFeature.WriteMapNullValue));
     }

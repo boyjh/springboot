@@ -74,7 +74,7 @@ public class SysRoleControl {
         SysRole sysRole = sysRoleService.getById(id);
         if (sysRole == null)
             return JSONObjResult.toJSONObj("该角色不存在");
-        return JSONObjResult.toJSONObj(sysRole, true, "");
+        return JSONObjResult.toJSONObj(sysRole, "");
     }
 
     @LogInfo("根据是否启用查询所有角色")
@@ -83,7 +83,7 @@ public class SysRoleControl {
     @GetMapping("listByEnable")
     public JSONObject listByEnable(String enable) {
         List<SysRole> sysRoles = sysRoleService.listAllByEnable(enable);
-        return JSONObjResult.toJSONObj(sysRoles, true, "");
+        return JSONObjResult.toJSONObj(sysRoles, "");
     }
 
     @LogInfo("根据角色主键查找权限")
@@ -97,7 +97,7 @@ public class SysRoleControl {
         if (sysRole == null)
             return JSONObjResult.toJSONObj("该角色不存在");
         List<SysAuthority> authoritys = sysAuthorityService.listByRoleIdEnable(roleId, enable);
-        return JSONObjResult.toJSONObj(authoritys, true, "");
+        return JSONObjResult.toJSONObj(authoritys, "");
     }
 
     @LogInfo("保存角色权限")

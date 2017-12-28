@@ -93,7 +93,7 @@ public class SysAuthorityControl {
     @GetMapping("listByEnable")
     public JSONObject listByEnable(String enable) {
         List<SysAuthority> authoritys = sysAuthorityService.listByEnable(enable);
-        return JSONObjResult.toJSONObj(authoritys, true, "");
+        return JSONObjResult.toJSONObj(authoritys, "");
     }
 
     @LogInfo("根据父节点查询子节点")
@@ -101,12 +101,12 @@ public class SysAuthorityControl {
     @ApiOperation(value = "根据父节点查询子节点")
     @ApiImplicitParam(name = "parentId", value = "父id,可为空", paramType = "query", dataType = "string")
     public JSONObject listByParentId(String parentId) {
-        if(StringUtils.isEmpty(parentId))
-            parentId=CommonConstant.ROOT;
+        if (StringUtils.isEmpty(parentId))
+            parentId = CommonConstant.ROOT;
         if (!CommonConstant.ROOT.equals(parentId) && sysAuthorityService.getById(parentId) == null)
             return JSONObjResult.toJSONObj("父节点不存在");
         List<SysAuthority> queryByParentId = sysAuthorityService.listByParentEnable(parentId, null);
-        return JSONObjResult.toJSONObj(queryByParentId, true, "");
+        return JSONObjResult.toJSONObj(queryByParentId, "");
     }
 
     @LogInfo("递归查询所有权限")
@@ -125,6 +125,6 @@ public class SysAuthorityControl {
             // 设置缓存
             redisService.set(CommonConstant.AUTHORITY_THREE, JSONArray.toJSONString(authoritys));
         }
-        return JSONObjResult.toJSONObj(authoritys, true, "");
+        return JSONObjResult.toJSONObj(authoritys, "");
     }
 }

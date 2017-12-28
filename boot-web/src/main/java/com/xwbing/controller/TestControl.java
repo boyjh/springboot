@@ -63,7 +63,7 @@ public class TestControl {
     @GetMapping("listShipperCode")
     public JSONObject listShipperCode() {
         List<JSONObject> list = expressDeliveryService.listShipperCode();
-        return JSONObjResult.toJSONObj(list, true, "");
+        return JSONObjResult.toJSONObj(list, "");
     }
 
     @LogInfo("快递查询")
@@ -72,7 +72,7 @@ public class TestControl {
         if (StringUtils.isEmpty(info.getLogisticCode()) || StringUtils.isEmpty(info.getShipperCode()))
             return JSONObjResult.toJSONObj("快递公司或物流单号不能为空");
         ExpressInfoVo infoVo = expressDeliveryService.queryOrderTraces(info);
-        return JSONObjResult.toJSONObj(infoVo, true, "查询快递信息成功");
+        return JSONObjResult.toJSONObj(infoVo, "查询快递信息成功");
     }
 
     @LogInfo("生成二维码")

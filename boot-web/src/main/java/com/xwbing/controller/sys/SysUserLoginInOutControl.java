@@ -33,6 +33,6 @@ public class SysUserLoginInOutControl {
     @GetMapping("listByType")
     public JSONObject listByType(@RequestParam int inout) {
         List<SysUserLoginInOut> sysUserLoginInOuts = inOutService.listByType(inout);
-        return JSONObjResult.toJSONObj(sysUserLoginInOuts, true, "获取列表成功");
+        return JSONObjResult.toJSONObj(sysUserLoginInOuts, "获取列表成功");
     }
 }

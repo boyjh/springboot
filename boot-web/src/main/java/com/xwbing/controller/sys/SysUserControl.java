@@ -85,7 +85,7 @@ public class SysUserControl {
         SysUser sysUser = sysUserService.getById(id);
         if (sysUser == null)
             return JSONObjResult.toJSONObj("未查到该对象");
-        return JSONObjResult.toJSONObj(sysUser, true, "");
+        return JSONObjResult.toJSONObj(sysUser, "");
     }
 
     @LogInfo("列表查询所有用户")
@@ -93,7 +93,7 @@ public class SysUserControl {
     @GetMapping("listAll")
     public JSONObject listAll() {
         List<SysUser> list = sysUserService.listAll();
-        return JSONObjResult.toJSONObj(list, true, "");
+        return JSONObjResult.toJSONObj(list, "");
     }
 
     @LogInfo("登录")
@@ -162,7 +162,7 @@ public class SysUserControl {
         }
         sysUser.setMenus(menu);
         sysUser.setButtons(button);
-        return JSONObjResult.toJSONObj(sysUser, true, "");
+        return JSONObjResult.toJSONObj(sysUser, "");
     }
 
     @LogInfo("保存用户角色")
@@ -199,7 +199,7 @@ public class SysUserControl {
         if (StringUtils.isEmpty(userId))
             return JSONObjResult.toJSONObj("用户主键不能为空");
         List<SysRole> list = sysRoleService.listByUserIdEnable(userId, enable);
-        return JSONObjResult.toJSONObj(list, true, "");
+        return JSONObjResult.toJSONObj(list, "");
     }
 
     @LogInfo("根据用户主键查找所拥有的权限")
@@ -210,7 +210,7 @@ public class SysUserControl {
         if (StringUtils.isEmpty(userId))
             return JSONObjResult.toJSONObj("用户主键不能为空");
         List<SysAuthority> list = sysUserService.listAuthorityByIdAndEnable(userId, enable);
-        return JSONObjResult.toJSONObj(list, true, "");
+        return JSONObjResult.toJSONObj(list, "");
     }
 
     @LogInfo("导出用户excel表")
