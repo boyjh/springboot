@@ -11,10 +11,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 /**
- * 项目名称: boot-module-demo
- * 创建时间: 2017/11/17 14:24
  * 作者: xiangwb
- * 说明:
+ * 说明: ZipUtil
  */
 public class ZipUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(ZipUtil.class);

@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 项目名称: boot-module-demo
- * 创建时间: 2017/11/6 10:00
  * 作者: xiangwb
  * 说明: 公共数据类
  */

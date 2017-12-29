@@ -23,10 +23,8 @@ import java.security.spec.RSAPrivateKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
 /**
- * 项目名称: boot-module-demo
- * 创建时间: 2017/11/20 16:26
  * 作者: xiangwb
- * 说明:
+ * 说明: RSAUtil
  */
 public class RSAUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(RSAUtil.class);
@@ -230,7 +228,7 @@ public class RSAUtil {
      * @param data
      * @return
      */
-    public static String decrypt(String data){
+    public static String decrypt(String data) {
         return decrypt(loadPrivateKey(), data);
     }
 
@@ -240,13 +238,13 @@ public class RSAUtil {
         System.out.println(de);
     }
 
-    private static String testJiami(){
+    private static String testJiami() {
         String plainText = encrypt(loadPublicKey(), "123456");
         System.out.println("加密结果:" + plainText);
         return plainText;
     }
 
-    private static String testJiemi(String str){
+    private static String testJiemi(String str) {
         String plainText = decrypt(loadPrivateKey(), str);
         System.out.println("解密结果:" + plainText);
         return plainText;

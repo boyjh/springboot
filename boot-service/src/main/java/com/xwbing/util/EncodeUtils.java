@@ -1,7 +1,6 @@
 package com.xwbing.util;
 
 import org.apache.commons.codec.DecoderException;
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.slf4j.Logger;
@@ -10,10 +9,10 @@ import org.slf4j.LoggerFactory;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.Base64;
 
 /**
  * 说明:编码解码工具类
- * 创建日期: 2016年11月29日 上午10:30:34
  * 作者: xiangwb
  */
 public class EncodeUtils {
@@ -43,11 +42,8 @@ public class EncodeUtils {
      * Base64编码.
      */
     public static String base64Encode(byte[] input) {
-        return new String(Base64.encodeBase64(input));
-        /*
-         * java8新特性
-		 */
-//		return java.util.Base64.getEncoder().encodeToString(input);//
+//        return new String(org.apache.commons.codec.binary.Base64.encodeBase64(input));
+        return Base64.getEncoder().encodeToString(input);
     }
 
 
@@ -55,22 +51,16 @@ public class EncodeUtils {
      * Base64编码, URL安全(将Base64中的URL非法字符如+,/=转为其他字符, 见RFC3548).
      */
     public static String base64UrlSafeEncode(byte[] input) {
-        return Base64.encodeBase64URLSafeString(input);
-        /**
-         * java8新特性
-         */
-//		return java.util.Base64.getUrlEncoder().encodeToString(input);
+//        return Base64.encodeBase64URLSafeString(input);
+        return java.util.Base64.getUrlEncoder().encodeToString(input);
     }
 
     /**
      * Base64解码.
      */
     public static byte[] base64Decode(String input) {
-        return Base64.decodeBase64(input);
-        /*
-		 * java8新特性
-		 */
-//		return java.util.Base64.getDecoder().decode(input);
+//        return Base64.decodeBase64(input);
+        return java.util.Base64.getDecoder().decode(input);
     }
 
     /**

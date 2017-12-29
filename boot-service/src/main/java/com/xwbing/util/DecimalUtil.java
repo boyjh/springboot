@@ -7,8 +7,6 @@ import org.slf4j.LoggerFactory;
 import java.math.BigDecimal;
 
 /**
- * 项目名称: boot-module-demo
- * 创建时间: 2017/11/21 10:36
  * 作者: xiangwb
  * 说明: 数字工具类
  */

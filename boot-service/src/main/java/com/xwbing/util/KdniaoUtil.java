@@ -12,8 +12,6 @@ import java.security.MessageDigest;
 import java.util.Map;
 
 /**
- * 项目名称: boot-module-demo
- * 创建时间: 2017/11/16 17:46
  * 作者: xiangwb
  * 说明: 快递鸟工具类
  * 文档: http://www.kdniao.com/documents

@@ -9,8 +9,6 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 /**
- * 项目名称: boot-module-demo
- * 创建时间: 2017/11/7 10:24
  * 作者: xiangwb
  * 说明:
  */

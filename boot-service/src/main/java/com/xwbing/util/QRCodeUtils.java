@@ -25,8 +25,6 @@ import java.util.Hashtable;
 import java.util.Map;
 
 /**
- * 项目名称: boot-module-demo
- * 创建时间: 2017/11/17 11:43
  * 作者: xiangwb
  * 说明: 二维码工具类
  */
@@ -282,7 +280,7 @@ public class QRCodeUtils {
         }
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
 //        String tomcatHome = System.getProperty("catalina.home");
 //        String name="QRcode";
 //        File output=new File(tomcatHome+File.separator+"file"+File.separator+name+".png");

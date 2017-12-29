@@ -30,8 +30,6 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 项目名称: boot-module-demo
- * 创建时间: 2017/11/21 10:36
  * 作者: xiangwb
  * 说明: HttpClientUtil
  */

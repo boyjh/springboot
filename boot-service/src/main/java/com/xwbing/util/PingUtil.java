@@ -13,8 +13,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * 项目名称: boot-module-demo
- * 创建时间: 2017/11/17 11:43
  * 作者: xiangwb
  * 说明: PingUtil
  */

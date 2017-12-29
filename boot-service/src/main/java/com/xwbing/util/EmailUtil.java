@@ -12,7 +12,6 @@ import javax.mail.internet.*;
 import java.util.Properties;
 
 /**
- * 创建时间: 2016/11/7 10:11
  * 作者: xiangwb
  * 说明: 邮箱工具类
  */

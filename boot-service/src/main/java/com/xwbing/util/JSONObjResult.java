@@ -8,7 +8,6 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * 说明: 封装对象结果的json结果
- * 创建日期: 2016年12月14日 下午3:20:05
  * 作者: xiangwb
  */
 @Data

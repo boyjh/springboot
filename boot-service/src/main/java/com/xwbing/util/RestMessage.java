@@ -3,9 +3,9 @@ package com.xwbing.util;
 import lombok.Data;
 
 import java.io.Serializable;
+
 /**
  * 说明:返回消息封装类
- * 创建日期: 2017年3月3日 上午11:43:13
  * 作者: xiangwb
  */
 @Data

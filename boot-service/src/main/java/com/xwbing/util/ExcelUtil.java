@@ -22,8 +22,6 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * 项目名称: boot-module-demo
- * 创建时间: 2017/11/20 17:07
  * 作者: xiangwb
  * 说明: excel导出工具类
  */

@@ -14,7 +14,6 @@ import java.util.Map;
 
 /**
  * 说明: json格式转换
- * 创建日期: 2016年8月16日
  * 作者: xiangwb
  */
 public class JSONUtil {
