@@ -6,6 +6,7 @@ import com.xwbing.annotation.LogInfo;
 import com.xwbing.constant.CommonConstant;
 import com.xwbing.constant.CommonEnum;
 import com.xwbing.domain.entity.sys.SysAuthority;
+import com.xwbing.domain.entity.vo.ListSysAuthorityVo;
 import com.xwbing.domain.entity.vo.SysAuthVo;
 import com.xwbing.redis.RedisService;
 import com.xwbing.service.sys.SysAuthorityService;
@@ -37,7 +38,7 @@ public class SysAuthorityControl {
 
     @LogInfo("添加权限")
     @PostMapping("save")
-    @ApiOperation(value = "添加权限")
+    @ApiOperation(value = "添加权限", response = RestMessage.class)
     public JSONObject save(@RequestBody SysAuthority sysAuthority) {
         RestMessage save = sysAuthorityService.save(sysAuthority);
         //删除缓存
@@ -47,7 +48,7 @@ public class SysAuthorityControl {
     }
 
     @LogInfo("删除权限")
-    @ApiOperation(value = "删除权限")
+    @ApiOperation(value = "删除权限", response = RestMessage.class)
     @GetMapping("removeById")
     public JSONObject removeById(@RequestParam String id) {
         if (StringUtils.isEmpty(id))
@@ -60,7 +61,7 @@ public class SysAuthorityControl {
     }
 
     @LogInfo("修改权限")
-    @ApiOperation(value = "修改权限")
+    @ApiOperation(value = "修改权限", response = RestMessage.class)
     @PostMapping("update")
     public JSONObject update(@RequestBody SysAuthority sysAuthority) {
         if (StringUtils.isEmpty(sysAuthority.getId()))
@@ -88,7 +89,7 @@ public class SysAuthorityControl {
     }
 
     @LogInfo("根据是否启用查询所有权限")
-    @ApiOperation(value = "根据是否启用查询所有权限")
+    @ApiOperation(value = "根据是否启用查询所有权限", response = ListSysAuthorityVo.class)
     @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query", dataType = "string")
     @GetMapping("listByEnable")
     public JSONObject listByEnable(String enable) {
@@ -98,7 +99,7 @@ public class SysAuthorityControl {
 
     @LogInfo("根据父节点查询子节点")
     @GetMapping("listByParentId")
-    @ApiOperation(value = "根据父节点查询子节点")
+    @ApiOperation(value = "根据父节点查询子节点", response = ListSysAuthorityVo.class)
     @ApiImplicitParam(name = "parentId", value = "父id,可为空", paramType = "query", dataType = "string")
     public JSONObject listByParentId(String parentId) {
         if (StringUtils.isEmpty(parentId))
@@ -110,7 +111,7 @@ public class SysAuthorityControl {
     }
 
     @LogInfo("递归查询所有权限")
-    @ApiOperation(value = "递归查询所有权限")
+    @ApiOperation(value = "递归查询所有权限", response = ListSysAuthorityVo.class)
     @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query", dataType = "string")
     @GetMapping("listTree")
     public JSONObject listTree(String enable) {

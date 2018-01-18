@@ -3,6 +3,7 @@ package com.xwbing.controller.sys;
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.annotation.LogInfo;
 import com.xwbing.domain.entity.sys.SysUserLoginInOut;
+import com.xwbing.domain.entity.vo.ListSysUserLoginInOutVo;
 import com.xwbing.service.sys.SysUserLoginInOutService;
 import com.xwbing.util.JSONObjResult;
 import io.swagger.annotations.Api;
@@ -29,7 +30,7 @@ public class SysUserLoginInOutControl {
     private SysUserLoginInOutService inOutService;
 
     @LogInfo("获取登录或登出信息")
-    @ApiOperation(value = "获取登录或登出信息")
+    @ApiOperation(value = "获取登录或登出信息", response = ListSysUserLoginInOutVo.class)
     @GetMapping("listByType")
     public JSONObject listByType(@RequestParam int inout) {
         List<SysUserLoginInOut> sysUserLoginInOuts = inOutService.listByType(inout);

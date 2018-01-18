@@ -5,6 +5,8 @@ import com.xwbing.annotation.LogInfo;
 import com.xwbing.domain.entity.sys.SysAuthority;
 import com.xwbing.domain.entity.sys.SysRole;
 import com.xwbing.domain.entity.sys.SysRoleAuthority;
+import com.xwbing.domain.entity.vo.ListSysRoleVo;
+import com.xwbing.domain.entity.vo.SysRoleVo;
 import com.xwbing.service.sys.SysAuthorityService;
 import com.xwbing.service.sys.SysRoleAuthorityService;
 import com.xwbing.service.sys.SysRoleService;
@@ -38,7 +40,7 @@ public class SysRoleControl {
     private SysRoleAuthorityService sysRoleAuthorityService;
 
     @LogInfo("添加角色")
-    @ApiOperation(value = "添加角色")
+    @ApiOperation(value = "添加角色", response = RestMessage.class)
     @PostMapping("save")
     public JSONObject save(@RequestBody SysRole sysRole) {
         RestMessage result = sysRoleService.save(sysRole);
@@ -46,7 +48,7 @@ public class SysRoleControl {
     }
 
     @LogInfo("删除角色")
-    @ApiOperation(value = "删除角色")
+    @ApiOperation(value = "删除角色", response = RestMessage.class)
     @GetMapping("removeById")
     public JSONObject removeById(@RequestParam String id) {
         if (StringUtils.isEmpty(id))
@@ -56,7 +58,7 @@ public class SysRoleControl {
     }
 
     @LogInfo("修改角色")
-    @ApiOperation(value = "修改角色")
+    @ApiOperation(value = "修改角色", response = RestMessage.class)
     @PostMapping("update")
     public JSONObject update(@RequestBody SysRole sysRole) {
         if (StringUtils.isEmpty(sysRole.getId()))
@@ -66,7 +68,7 @@ public class SysRoleControl {
     }
 
     @LogInfo("获取角色详情")
-    @ApiOperation(value = "获取角色详情")
+    @ApiOperation(value = "获取角色详情", response = SysRoleVo.class)
     @GetMapping("getById")
     public JSONObject getById(@RequestParam String id) {
         if (StringUtils.isEmpty(id))
@@ -78,7 +80,7 @@ public class SysRoleControl {
     }
 
     @LogInfo("根据是否启用查询所有角色")
-    @ApiOperation(value = "根据是否启用查询所有角色")
+    @ApiOperation(value = "根据是否启用查询所有角色", response = ListSysRoleVo.class)
     @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query", dataType = "string")
     @GetMapping("listByEnable")
     public JSONObject listByEnable(String enable) {
@@ -87,7 +89,7 @@ public class SysRoleControl {
     }
 
     @LogInfo("根据角色主键查找权限")
-    @ApiOperation(value = "根据角色主键查找权限")
+    @ApiOperation(value = "根据角色主键查找权限", response = ListSysRoleVo.class)
     @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query", dataType = "string")
     @PostMapping("listAuthorityByRoleId")
     public JSONObject listAuthorityByRoleId(@RequestParam String roleId, String enable) {
@@ -101,7 +103,7 @@ public class SysRoleControl {
     }
 
     @LogInfo("保存角色权限")
-    @ApiOperation(value = "保存角色权限")
+    @ApiOperation(value = "保存角色权限", response = RestMessage.class)
     @PostMapping("saveAuthority")
     public JSONObject saveAuthority(@RequestParam String authorityIds, @RequestParam String roleId) {
         if (StringUtils.isEmpty(authorityIds))
