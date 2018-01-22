@@ -6,6 +6,7 @@ import com.xwbing.domain.entity.sys.SysAuthority;
 import com.xwbing.domain.entity.sys.SysRole;
 import com.xwbing.domain.entity.sys.SysRoleAuthority;
 import com.xwbing.domain.entity.vo.ListSysRoleVo;
+import com.xwbing.domain.entity.vo.RestMessageVo;
 import com.xwbing.domain.entity.vo.SysRoleVo;
 import com.xwbing.service.sys.SysAuthorityService;
 import com.xwbing.service.sys.SysRoleAuthorityService;
@@ -40,7 +41,7 @@ public class SysRoleControl {
     private SysRoleAuthorityService sysRoleAuthorityService;
 
     @LogInfo("添加角色")
-    @ApiOperation(value = "添加角色", response = RestMessage.class)
+    @ApiOperation(value = "添加角色", response = RestMessageVo.class)
     @PostMapping("save")
     public JSONObject save(@RequestBody SysRole sysRole) {
         RestMessage result = sysRoleService.save(sysRole);
@@ -48,7 +49,7 @@ public class SysRoleControl {
     }
 
     @LogInfo("删除角色")
-    @ApiOperation(value = "删除角色", response = RestMessage.class)
+    @ApiOperation(value = "删除角色", response = RestMessageVo.class)
     @GetMapping("removeById")
     public JSONObject removeById(@RequestParam String id) {
         if (StringUtils.isEmpty(id))
@@ -58,7 +59,7 @@ public class SysRoleControl {
     }
 
     @LogInfo("修改角色")
-    @ApiOperation(value = "修改角色", response = RestMessage.class)
+    @ApiOperation(value = "修改角色", response = RestMessageVo.class)
     @PostMapping("update")
     public JSONObject update(@RequestBody SysRole sysRole) {
         if (StringUtils.isEmpty(sysRole.getId()))
@@ -103,7 +104,7 @@ public class SysRoleControl {
     }
 
     @LogInfo("保存角色权限")
-    @ApiOperation(value = "保存角色权限", response = RestMessage.class)
+    @ApiOperation(value = "保存角色权限", response = RestMessageVo.class)
     @PostMapping("saveAuthority")
     public JSONObject saveAuthority(@RequestParam String authorityIds, @RequestParam String roleId) {
         if (StringUtils.isEmpty(authorityIds))

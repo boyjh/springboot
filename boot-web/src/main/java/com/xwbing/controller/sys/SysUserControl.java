@@ -8,10 +8,7 @@ import com.xwbing.domain.entity.sys.SysAuthority;
 import com.xwbing.domain.entity.sys.SysRole;
 import com.xwbing.domain.entity.sys.SysUser;
 import com.xwbing.domain.entity.sys.SysUserRole;
-import com.xwbing.domain.entity.vo.ListSysAuthorityVo;
-import com.xwbing.domain.entity.vo.ListSysRoleVo;
-import com.xwbing.domain.entity.vo.ListSysUserVo;
-import com.xwbing.domain.entity.vo.SysUserVo;
+import com.xwbing.domain.entity.vo.*;
 import com.xwbing.service.sys.SysAuthorityService;
 import com.xwbing.service.sys.SysRoleService;
 import com.xwbing.service.sys.SysUserRoleService;
@@ -53,7 +50,7 @@ public class SysUserControl {
     private SysAuthorityService sysAuthorityService;
 
     @LogInfo("添加用户")
-    @ApiOperation(value = "添加用户", response = RestMessage.class)
+    @ApiOperation(value = "添加用户", response = RestMessageVo.class)
     @PostMapping("save")
     public JSONObject save(@RequestBody @Valid SysUser sysUser) {
         RestMessage result = sysUserService.save(sysUser);
@@ -61,7 +58,7 @@ public class SysUserControl {
     }
 
     @LogInfo("删除用户")
-    @ApiOperation(value = "删除用户", response = RestMessage.class)
+    @ApiOperation(value = "删除用户", response = RestMessageVo.class)
     @GetMapping("removeById")
     public JSONObject removeById(@RequestParam String id) {
         if (StringUtils.isEmpty(id))
@@ -71,7 +68,7 @@ public class SysUserControl {
     }
 
     @LogInfo("修改用户信息")
-    @ApiOperation(value = "修改用户信息", response = RestMessage.class)
+    @ApiOperation(value = "修改用户信息", response = RestMessageVo.class)
     @PostMapping("update")
     public JSONObject update(@RequestBody @Valid SysUser sysUser) {
         if (StringUtils.isEmpty(sysUser.getId()))
@@ -101,7 +98,7 @@ public class SysUserControl {
     }
 
     @LogInfo("登录")
-    @ApiOperation(value = "登录", response = RestMessage.class)
+    @ApiOperation(value = "登录", response = RestMessageVo.class)
     @PostMapping("login")
     public JSONObject login(HttpServletRequest request, @RequestParam String userName, @RequestParam String passWord, @RequestParam String checkCode) {
         if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(passWord))
@@ -113,7 +110,7 @@ public class SysUserControl {
     }
 
     @LogInfo("登出")
-    @ApiOperation(value = "登出", response = RestMessage.class)
+    @ApiOperation(value = "登出", response = RestMessageVo.class)
     @GetMapping("logout")
     public JSONObject logout(HttpServletRequest request) {
         RestMessage logout = sysUserService.logout(request);
@@ -121,7 +118,7 @@ public class SysUserControl {
     }
 
     @LogInfo("修改密码")
-    @ApiOperation(value = "修改密码", response = RestMessage.class)
+    @ApiOperation(value = "修改密码", response = RestMessageVo.class)
     @PostMapping("updatePassWord")
     public JSONObject updatePassWord(@RequestParam String newPassWord, @RequestParam String oldPassWord, @RequestParam String id) {
         if (StringUtils.isEmpty(id))
@@ -133,7 +130,7 @@ public class SysUserControl {
     }
 
     @LogInfo("重置密码")
-    @ApiOperation(value = "重置密码", response = RestMessage.class)
+    @ApiOperation(value = "重置密码", response = RestMessageVo.class)
     @GetMapping("resetPassWord")
     public JSONObject resetPassWord(@RequestParam String id) {
         if (StringUtils.isEmpty(id))
@@ -170,7 +167,7 @@ public class SysUserControl {
     }
 
     @LogInfo("保存用户角色")
-    @ApiOperation(value = "保存用户角色", response = RestMessage.class)
+    @ApiOperation(value = "保存用户角色", response = RestMessageVo.class)
     @PostMapping("saveRole")
     public JSONObject saveRole(@RequestParam String roleIds, @RequestParam String userId) {
         if (StringUtils.isEmpty(roleIds))

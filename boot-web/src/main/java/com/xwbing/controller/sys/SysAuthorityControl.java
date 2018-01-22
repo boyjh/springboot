@@ -7,6 +7,7 @@ import com.xwbing.constant.CommonConstant;
 import com.xwbing.constant.CommonEnum;
 import com.xwbing.domain.entity.sys.SysAuthority;
 import com.xwbing.domain.entity.vo.ListSysAuthorityVo;
+import com.xwbing.domain.entity.vo.RestMessageVo;
 import com.xwbing.domain.entity.vo.SysAuthVo;
 import com.xwbing.redis.RedisService;
 import com.xwbing.service.sys.SysAuthorityService;
@@ -38,7 +39,7 @@ public class SysAuthorityControl {
 
     @LogInfo("添加权限")
     @PostMapping("save")
-    @ApiOperation(value = "添加权限", response = RestMessage.class)
+    @ApiOperation(value = "添加权限", response = RestMessageVo.class)
     public JSONObject save(@RequestBody SysAuthority sysAuthority) {
         RestMessage save = sysAuthorityService.save(sysAuthority);
         //删除缓存
@@ -48,7 +49,7 @@ public class SysAuthorityControl {
     }
 
     @LogInfo("删除权限")
-    @ApiOperation(value = "删除权限", response = RestMessage.class)
+    @ApiOperation(value = "删除权限", response = RestMessageVo.class)
     @GetMapping("removeById")
     public JSONObject removeById(@RequestParam String id) {
         if (StringUtils.isEmpty(id))
@@ -61,7 +62,7 @@ public class SysAuthorityControl {
     }
 
     @LogInfo("修改权限")
-    @ApiOperation(value = "修改权限", response = RestMessage.class)
+    @ApiOperation(value = "修改权限", response = RestMessageVo.class)
     @PostMapping("update")
     public JSONObject update(@RequestBody SysAuthority sysAuthority) {
         if (StringUtils.isEmpty(sysAuthority.getId()))

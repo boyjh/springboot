@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.xwbing.annotation.LogInfo;
 import com.xwbing.domain.entity.sys.SysConfig;
 import com.xwbing.domain.entity.vo.ListSysConfigVo;
+import com.xwbing.domain.entity.vo.RestMessageVo;
 import com.xwbing.domain.entity.vo.SysConfigVo;
 import com.xwbing.service.sys.SysConfigService;
 import com.xwbing.util.JSONObjResult;
@@ -36,7 +37,7 @@ public class SysConfigControl {
     private SysConfigService sysConfigService;
 
     @LogInfo("新增系统配置信息")
-    @ApiOperation(value = "新增", notes = "新增系统配置信息", response = RestMessage.class)
+    @ApiOperation(value = "新增", notes = "新增系统配置信息", response = RestMessageVo.class)
 //    @ApiImplicitParams({
 //            @ApiImplicitParam(name = "code", value = "配置项的key，长度为1-50", paramType = "query", required = true, dataType = "string"),
 //            @ApiImplicitParam(name = "value", value = "配置项的值", paramType = "query", required = true, dataType = "string"),
@@ -52,7 +53,7 @@ public class SysConfigControl {
     }
 
     @LogInfo("根据code删除系统配置信息")
-    @ApiOperation(value = "删除", notes = "根据code删除系统配置信息", response = RestMessage.class)
+    @ApiOperation(value = "删除", notes = "根据code删除系统配置信息", response = RestMessageVo.class)
     @ApiImplicitParam(name = "code", value = "配置项的code", paramType = "query", required = true, dataType = "string")
     @GetMapping("removeByCode")
     public JSONObject removeByCode(@RequestParam String code) {
@@ -66,7 +67,7 @@ public class SysConfigControl {
     }
 
     @LogInfo("修改系统配置信息")
-    @ApiOperation(value = "修改", notes = "修改系统配置信息", response = RestMessage.class)
+    @ApiOperation(value = "修改", notes = "修改系统配置信息", response = RestMessageVo.class)
     @ApiImplicitParams({
             @ApiImplicitParam(name = "code", value = "配置项的key，长度为1-50", paramType = "query", required = true, dataType = "string"),
             @ApiImplicitParam(name = "value", value = "配置项的值", paramType = "query", required = true, dataType = "string"),
