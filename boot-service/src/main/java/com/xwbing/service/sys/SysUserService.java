@@ -52,6 +52,7 @@ public class SysUserService {
      */
     public RestMessage save(SysUser sysUser) {
         RestMessage result = new RestMessage();
+        //检查用户名是否存在
         SysUser old = getByUserName(sysUser.getUserName());
         if (old != null) {
             throw new BusinessException("已经存在此用户名");
@@ -63,7 +64,7 @@ public class SysUserService {
         String[] res = PassWordUtil.getUserSecret(null, null);
         sysUser.setSalt(res[1]);
         sysUser.setPassword(res[2]);
-        // 设置否管理员
+        // 设置为非管理员
         sysUser.setAdmin(CommonEnum.YesOrNoEnum.NO.getCode());
         SysUser one = sysUserRepository.save(sysUser);
         if (one == null) {
@@ -88,6 +89,7 @@ public class SysUserService {
      */
     public RestMessage removeById(String id) {
         RestMessage result = new RestMessage();
+        //检查该用户是否存在
         SysUser old = getById(id);
         if (old == null) {
             throw new BusinessException("该用户不存在");
@@ -119,6 +121,7 @@ public class SysUserService {
      */
     public RestMessage update(SysUser sysUser) {
         RestMessage result = new RestMessage();
+        //检查该用户是否存在
         SysUser old = getById(sysUser.getId());
         if (old == null) {
             throw new BusinessException("该用户不存在");
@@ -192,6 +195,7 @@ public class SysUserService {
         if (CommonEnum.YesOrNoEnum.YES.getCode().equals(old.getAdmin())) {
             throw new BusinessException("管理员密码不能重置");
         }
+        //生成密码
         String[] str = PassWordUtil.getUserSecret(null, null);
         old.setSalt(str[1]);
         old.setPassword(str[2]);
@@ -222,6 +226,7 @@ public class SysUserService {
         boolean flag = checkPassWord(oldPassWord, sysUser.getPassword(), sysUser.getSalt());
         if (!flag)
             throw new BusinessException("原密码错误,请重新输入");
+        //生成密码
         String[] str = PassWordUtil.getUserSecret(newPassWord, null);
         sysUser.setSalt(str[1]);
         sysUser.setPassword(str[2]);
@@ -258,6 +263,7 @@ public class SysUserService {
         boolean flag = checkPassWord(passWord, user.getPassword(), user.getSalt());
         if (!flag)
             throw new BusinessException("密码错误");
+        //保存登录数据
         CommonDataUtil.setToken(CommonConstant.CURRENT_USER, userName);
         CommonDataUtil.setToken(CommonConstant.CURRENT_USER_ID, user.getId());
         //保存登录信息

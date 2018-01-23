@@ -53,11 +53,13 @@ public class SysAuthorityService {
             if (!sorted)
                 throw new BusinessException("该排序编号已存在");
         }
+        //添加必要参数
         String id = PassWordUtil.createId();
         sysAuthority.setId(id);
         sysAuthority.setCreateTime(new Date());
         if (StringUtils.isEmpty(sysAuthority.getParentId()))
             sysAuthority.setParentId(CommonConstant.ROOT);
+        //保存
         SysAuthority save = sysAuthorityRepository.save(sysAuthority);
         if (save != null) {
             result.setSuccess(true);
@@ -77,6 +79,7 @@ public class SysAuthorityService {
      */
     public RestMessage removeById(String id) {
         RestMessage result = new RestMessage();
+        //判断该权限是否存在
         SysAuthority one = getById(id);
         if (one == null)
             throw new BusinessException("该权限不存在");
@@ -100,17 +103,20 @@ public class SysAuthorityService {
     public RestMessage update(SysAuthority sysAuthority) {
         RestMessage result = new RestMessage();
         String id = sysAuthority.getId();
+        //判断该权限是否存在
         SysAuthority old = getById(id);
         if (old == null)
             throw new BusinessException("该权限不存在");
-        //检查排序
+        //检查排序是否重复
         boolean sorted = uniqueSort(sysAuthority.getSort(), id);
         if (!sorted)
             throw new BusinessException("该排序编号已存在");
         old.setSort(sysAuthority.getSort());
+        //其他参数更新
         old.setName(sysAuthority.getName());
         old.setEnable(sysAuthority.getEnable());
         old.setUrl(sysAuthority.getUrl());
+//        old.setCode(sysAuthority.getCode());编码不能修改
         old.setType(sysAuthority.getType());
         SysAuthority save = sysAuthorityRepository.save(old);
         if (save != null) {
@@ -169,9 +175,11 @@ public class SysAuthorityService {
      */
     public List<SysAuthority> listByRoleIdEnable(String roleId, String enable) {
         List<SysAuthority> list = new ArrayList<>();
+        // 从角色权限表中获取所有该角色id的权限
         List<SysRoleAuthority> roleAuthorities = sysRoleAuthorityService.listByRoleId(roleId);
         if (CollectionUtils.isEmpty(roleAuthorities))
             return list;
+        //根据权限id获取对应权限列表
         List<String> authorityIds = roleAuthorities.stream().map(SysRoleAuthority::getAuthorityId).collect(Collectors.toList());
         if (CollectionUtils.isNotEmpty(authorityIds))
             if (StringUtils.isNotEmpty(enable))
@@ -189,7 +197,9 @@ public class SysAuthorityService {
      * @return
      */
     public boolean disableChildrenByParentId(String parentId) {
+        //递归查询父节点下所有权限的id集合,并将状态设置为禁用
         List<SysAuthority> sysAuthorities = disableChildren(parentId);
+        //批量修改权限
         if (CollectionUtils.isNotEmpty(sysAuthorities)) {
             List<SysAuthority> save = sysAuthorityRepository.save(sysAuthorities);
             return CollectionUtils.isNotEmpty(save);
@@ -244,7 +254,7 @@ public class SysAuthorityService {
      * @return
      */
     private List<SysAuthority> disableChildren(String parentId) {
-        //获取结果
+        //根据状态查询所有子节点
         List<SysAuthority> sysAuthoritys = listByParentEnable(parentId, CommonConstant.IS_ENABLE);
         //遍历子集
         List<SysAuthority> list = new ArrayList<>();
@@ -266,7 +276,7 @@ public class SysAuthorityService {
      * @return
      */
     private List<SysAuthority> listChildrenForRemove(String parentId) {
-        //获取结果
+        //根据状态查询所有子节点
         List<SysAuthority> sysAuthoritys = listByParentEnable(parentId, null);
         //遍历子集
         List<SysAuthority> list = new ArrayList<>();
@@ -286,7 +296,7 @@ public class SysAuthorityService {
      * @param id
      * @return
      */
-    private boolean  uniqueCode(String code, String id) {
+    private boolean uniqueCode(String code, String id) {
         if (StringUtils.isEmpty(code))
             throw new BusinessException("code不能为空");
         SysAuthority one = sysAuthorityRepository.getByCode(code);

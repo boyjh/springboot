@@ -25,12 +25,19 @@ public class SysConfigService {
     private SysConfigRepository sysConfigRepository;
     private static Logger logger = LoggerFactory.getLogger(SysConfigService.class);
 
+    /**
+     * 保存
+     *
+     * @param sysConfig
+     * @return
+     */
     public RestMessage save(SysConfig sysConfig) {
         logger.info("保存配置信息");
         RestMessage result = new RestMessage();
         if (sysConfig == null) {
             throw new BusinessException("配置数据不能为空");
         }
+        //检查code是否存在
         SysConfig old = getByCode(sysConfig.getCode());
         if (old != null) {
             throw new BusinessException(sysConfig.getCode() + "已存在");
@@ -47,6 +54,12 @@ public class SysConfigService {
         return result;
     }
 
+    /**
+     * 根据code删除配置
+     *
+     * @param code
+     * @return
+     */
     public RestMessage removeByCode(String code) {
         logger.info("删除配置信息");
         RestMessage result = new RestMessage();
@@ -60,6 +73,12 @@ public class SysConfigService {
         return result;
     }
 
+    /**
+     * 修改
+     *
+     * @param sysConfig
+     * @return
+     */
     public RestMessage update(SysConfig sysConfig) {
         RestMessage result = new RestMessage();
         SysConfig old = getByCode(sysConfig.getCode());
@@ -79,10 +98,22 @@ public class SysConfigService {
         return result;
     }
 
+    /**
+     * 根据code查找配置
+     *
+     * @param code
+     * @return
+     */
     public SysConfig getByCode(String code) {
         return sysConfigRepository.getByCode(code);
     }
 
+    /**
+     * 根据状态获取配置列表
+     *
+     * @param enable
+     * @return
+     */
     public List<SysConfig> listByEnable(String enable) {
         return sysConfigRepository.getByEnable(enable);
     }

@@ -144,9 +144,11 @@ public class SysRoleService {
      */
     public List<SysRole> listByUserIdEnable(String userId, String enable) {
         List<SysRole> list = new ArrayList<>();
+        //从用户角色表中获取所有该用户id的角色
         List<SysUserRole> sysUserRoles = sysUserRoleService.listByUserId(userId);
         if (sysUserRoles == null)
             return list;
+        //根据角色id获取对应角色列表
         List<String> roleIds = sysUserRoles.stream().map(SysUserRole::getRoleId).collect(Collectors.toList());
         if (CollectionUtils.isNotEmpty(roleIds))
             if (StringUtils.isNotEmpty(enable))
