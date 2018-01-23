@@ -286,7 +286,7 @@ public class SysAuthorityService {
      * @param id
      * @return
      */
-    private boolean uniqueCode(String code, String id) {
+    private boolean  uniqueCode(String code, String id) {
         if (StringUtils.isEmpty(code))
             throw new BusinessException("code不能为空");
         SysAuthority one = sysAuthorityRepository.getByCode(code);
