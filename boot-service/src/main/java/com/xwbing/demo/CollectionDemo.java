@@ -118,6 +118,8 @@ public class CollectionDemo {
          * lambda表达式
          */
         list.forEach(o -> System.out.println(o));
+        //删除某元素
+        list.removeIf(integer -> integer == 0);
 
         /**
          * 迭代器
