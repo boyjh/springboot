@@ -119,14 +119,14 @@ public class LambdaDemo {
      *
      * @return
      */
-    public List<SysUser> getRoleUsers(int flag) {
-        if (flag == 0) {//例一
+    public List<SysUser> getRoleUsers() {
+        if (1 == 1) {//分两步
             Predicate<SysUser> roles = sysUser -> {
                 String admin = isAdmin(sysUser.getId());
                 return "Y".equals(admin);
             };
             return listAll().stream().filter(roles).collect(Collectors.toList());
-        } else {//例二
+        } else {//一步到底
             return listAll().stream().filter(sysUser -> {
                 String admin = isAdmin(sysUser.getId());
                 return "Y".equals(admin);
