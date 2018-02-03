@@ -144,8 +144,7 @@ public class LambdaDemo {
         return null;
     }
 
-    public JSONObject setData(JSONObject object) {
+    private JSONObject setData(JSONObject object) {
         return object;
     }
-
 }
