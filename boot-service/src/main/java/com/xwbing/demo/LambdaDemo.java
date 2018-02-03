@@ -3,6 +3,7 @@ package com.xwbing.demo;
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.domain.entity.sys.SysUser;
 import com.xwbing.domain.entity.sys.SysUserRole;
+import com.xwbing.exception.BusinessException;
 import com.xwbing.service.sys.SysUserRoleService;
 import com.xwbing.service.sys.SysUserService;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -87,12 +88,36 @@ public class LambdaDemo {
             reduce = optional.get();
         }
         //异步回调
-        CompletableFuture<List<SysUser>> future = CompletableFuture.supplyAsync(LambdaDemo::getList, taskExecutor);
+//        CompletableFuture<List<SysUser>> future = CompletableFuture.supplyAsync(LambdaDemo::getList, taskExecutor);//添加时候可以用任务线程池
+        CompletableFuture<List<JSONObject>> future = CompletableFuture.supplyAsync(LambdaDemo::getList);//查询不需要任务线程池
         try {
-            List<SysUser> sysUsers = future.get();
+            List<JSONObject> sysUsers = future.get();
         } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+            throw new BusinessException("");
         }
+    }
+
+    /**
+     * 遍历集合，集合里数据还要进行复杂操作，导致速度很慢，可以用异步
+     */
+    public List<JSONObject> supplyAsync() {
+        List<JSONObject> list = getList();
+        int size = list.size();
+        CompletableFuture[] futures = new CompletableFuture[size];
+        List<JSONObject> finalList = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            JSONObject object = list.get(i);
+            if (object != null) {
+                futures[i] = CompletableFuture.supplyAsync(() -> finalList.add(setData(object)), taskExecutor);
+            }
+        }
+        CompletableFuture<Void> completableFuture = CompletableFuture.allOf(futures);
+        try {
+            completableFuture.get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new BusinessException("获取数据出错");
+        }
+        return finalList;
     }
 
     /**
@@ -115,7 +140,12 @@ public class LambdaDemo {
         }
     }
 
-    public static List<SysUser> getList() {
+    public static List<JSONObject> getList() {
         return null;
     }
+
+    public JSONObject setData(JSONObject object) {
+        return object;
+    }
+
 }
