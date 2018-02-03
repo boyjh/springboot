@@ -33,7 +33,7 @@ public class SwaggerConfig {
 
     private ApiInfo sysApiInf() {
         return new ApiInfoBuilder()
-                .title("Document RESTful APIs")
+                .title("RESTful API Document")
                 .description("系统接口文档")
                 .termsOfServiceUrl("http://localhost:8080/swagger-ui.html")
                 .contact(new Contact("项伟兵", "https://github.com/xiangwbs/boot-module-demo.git", "xiangwbs@163.com"))
@@ -54,7 +54,7 @@ public class SwaggerConfig {
 
     private ApiInfo otherApiInf() {
         return new ApiInfoBuilder()
-                .title("Document RESTful APIs")
+                .title("RESTful API Document")
                 .description("other接口文档")
                 .termsOfServiceUrl("http://localhost:8080/swagger-ui.html")
                 .contact(new Contact("项伟兵", "https://github.com/xiangwbs/boot-module-demo.git", "xiangwbs@163.com"))
