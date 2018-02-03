@@ -60,4 +60,5 @@ public class SysUser extends BaseEntity {
     private transient List<SysAuthority> menus;
     @ApiModelProperty(hidden = true)
     private transient List<SysAuthority> buttons;
+
 }

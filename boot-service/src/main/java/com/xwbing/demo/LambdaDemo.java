@@ -1,11 +1,7 @@
 package com.xwbing.demo;
 
 import com.alibaba.fastjson.JSONObject;
-import com.xwbing.domain.entity.sys.SysUser;
-import com.xwbing.domain.entity.sys.SysUserRole;
 import com.xwbing.exception.BusinessException;
-import com.xwbing.service.sys.SysUserRoleService;
-import com.xwbing.service.sys.SysUserService;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import javax.annotation.Resource;
@@ -21,8 +17,6 @@ import java.util.stream.Collectors;
  * Author: xiangwb
  */
 public class LambdaDemo {
-    @Resource
-    private SysUserRoleService sysUserRoleService;
     @Resource
     private static ThreadPoolTaskExecutor taskExecutor;
 
@@ -76,11 +70,11 @@ public class LambdaDemo {
         //all example
         System.out.println("all:" + lists.stream().filter(Objects::nonNull).distinct().mapToInt(num -> num * 2).skip(2).limit(4).sum());
         //遍历list存入map里
-        Map<String, SysUser> userMap = new SysUserService().listAll().stream().collect(Collectors.toMap(SysUser::getId, Function.identity()));
-        Map<String, String> nameMap = new SysUserService().listAll().stream().collect(Collectors.toMap(SysUser::getId, SysUser::getName));
-        Map<String, String> jsonMap = new ArrayList<JSONObject>().stream().collect(Collectors.toMap(o1 -> o1.getString(""), o2 -> o2.getString("")));
+        Map<String, SysUser> userMap = listAll().stream().collect(Collectors.toMap(SysUser::getId, Function.identity()));
+        Map<String, String> nameMap = listAll().stream().collect(Collectors.toMap(SysUser::getId, SysUser::getName));
+        Map<String, String> jsonMap = getList().stream().collect(Collectors.toMap(o1 -> o1.getString(""), o2 -> o2.getString("")));
         //分组
-        Map<String, List<SysUser>> groupMap = new SysUserService().listAll().stream().collect(Collectors.groupingBy(SysUser::getSex));//(分组条件为key，分组成员为value)
+        Map<String, List<SysUser>> groupMap = listAll().stream().collect(Collectors.groupingBy(SysUser::getSex));//(分组条件为key，分组成员为value)
         //非空判断
         Optional<String> optional = list.stream().reduce((sum, item) -> sum + "," + item);
         String reduce;
@@ -128,23 +122,66 @@ public class LambdaDemo {
     public List<SysUser> getRoleUsers(int flag) {
         if (flag == 0) {//例一
             Predicate<SysUser> roles = sysUser -> {
-                List<SysUserRole> sysUserRoles = sysUserRoleService.listByUserId(sysUser.getId());
-                return sysUserRoles.size() > 0;
+                String admin = isAdmin(sysUser.getId());
+                return "Y".equals(admin);
             };
-            return new ArrayList<SysUser>().stream().filter(roles).collect(Collectors.toList());
+            return listAll().stream().filter(roles).collect(Collectors.toList());
         } else {//例二
-            return new ArrayList<SysUser>().stream().filter(sysUser -> {
-                List<SysUserRole> sysUserRoles = sysUserRoleService.listByUserId(sysUser.getId());
-                return sysUserRoles.size() > 0;
+            return listAll().stream().filter(sysUser -> {
+                String admin = isAdmin(sysUser.getId());
+                return "Y".equals(admin);
             }).collect(Collectors.toList());
         }
     }
 
-    public static List<JSONObject> getList() {
-        return null;
+    /**
+     * 假接口假数据-----------------------------------------------------------------------------------------------------
+     */
+
+    private static List<JSONObject> getList() {
+        return Collections.EMPTY_LIST;
+    }
+
+    private static List<SysUser> listAll() {
+        return Collections.EMPTY_LIST;
     }
 
     private JSONObject setData(JSONObject object) {
         return object;
     }
+
+    private String isAdmin(String id) {
+        return "Y";
+    }
+
+    private class SysUser {
+        private String name;
+        private String sex;
+        private String id;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getSex() {
+            return sex;
+        }
+
+        public void setSex(String sex) {
+            this.sex = sex;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+    }
+
 }
