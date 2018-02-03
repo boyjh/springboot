@@ -21,19 +21,41 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfig {
     @Bean
-    public Docket buildDocket() {
+    public Docket sysDocket() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .apiInfo(buildApiInf())
+                .groupName("system")
+                .apiInfo(sysApiInf())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.xwbing.controller"))//controller路径
+                .apis(RequestHandlerSelectors.basePackage("com.xwbing.controller.sys"))
                 .paths(PathSelectors.any())
                 .build();
     }
 
-    private ApiInfo buildApiInf() {
+    private ApiInfo sysApiInf() {
         return new ApiInfoBuilder()
                 .title("Document RESTful APIs")
-                .description("API接口文档")
+                .description("系统接口文档")
+                .termsOfServiceUrl("http://localhost:8080/swagger-ui.html")
+                .contact(new Contact("项伟兵", "https://github.com/xiangwbs/boot-module-demo.git", "xiangwbs@163.com"))
+                .version("1.0.0")
+                .build();
+    }
+
+    @Bean
+    public Docket otherDocket() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("other")
+                .apiInfo(otherApiInf())
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.xwbing.controller.other"))
+                .paths(PathSelectors.any())
+                .build();
+    }
+
+    private ApiInfo otherApiInf() {
+        return new ApiInfoBuilder()
+                .title("Document RESTful APIs")
+                .description("other接口文档")
                 .termsOfServiceUrl("http://localhost:8080/swagger-ui.html")
                 .contact(new Contact("项伟兵", "https://github.com/xiangwbs/boot-module-demo.git", "xiangwbs@163.com"))
                 .version("1.0.0")

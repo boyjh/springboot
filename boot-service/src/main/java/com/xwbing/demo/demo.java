@@ -1,7 +1,7 @@
 package com.xwbing.demo;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * 项目名称: boot-module-demo
@@ -11,9 +11,23 @@ import java.util.Map;
  */
 public class demo {
     public static void main(String[] args) {
-        Map<String, String> map = new HashMap<>();
-        String s = map.get(null);
-        System.out.println("");
+
+        ArrayList<Integer> objects = new ArrayList<>();
+        long l2 = System.currentTimeMillis();
+        for (int i=0;i<1000000;i++){
+            objects.add(i);
+        }
+        long l3 = System.currentTimeMillis();
+        System.out.println(l3-l2);
+
+        LinkedList<Integer> list = new LinkedList<>();
+        long l = System.currentTimeMillis();
+        for (int i=0;i<1000000;i++){
+            list.add(i);
+        }
+        long l1 = System.currentTimeMillis();
+        System.out.println(l1-l);
+
 
 
     }
