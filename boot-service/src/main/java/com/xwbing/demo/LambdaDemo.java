@@ -82,8 +82,7 @@ public class LambdaDemo {
             reduce = optional.get();
         }
         //异步回调
-//        CompletableFuture<List<SysUser>> future = CompletableFuture.supplyAsync(LambdaDemo::getList, taskExecutor);//添加时候可以用任务线程池
-        CompletableFuture<List<JSONObject>> future = CompletableFuture.supplyAsync(LambdaDemo::getList);//查询不需要任务线程池
+        CompletableFuture<List<JSONObject>> future = CompletableFuture.supplyAsync(LambdaDemo::getList);
         try {
             List<JSONObject> sysUsers = future.get();
         } catch (InterruptedException | ExecutionException e) {
@@ -103,6 +102,8 @@ public class LambdaDemo {
             JSONObject object = list.get(i);
             if (object != null) {
                 futures[i] = CompletableFuture.supplyAsync(() -> finalList.add(setData(object)), taskExecutor);
+            } else {
+                futures[i] = CompletableFuture.runAsync(() -> System.out.println("null"));
             }
         }
 //        CompletableFuture.allOf(futures).join();//线程等待,效果等同于get(),不用抛检测异常,不推荐

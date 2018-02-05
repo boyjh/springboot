@@ -51,17 +51,17 @@ public class CollectionDemo {
          * 那么就不能表示原来的数组了,会抛出UnsupportedOperationException异常
          */
         String[] array = {"one", "two", "three", "four"};
-        List<String> l = Arrays.asList(array);
+        List<String> coll = Arrays.asList(array);
         /*
          * 所有的集合提供了一个带有collection类型参数的构造方法 该构造方法称为：复制构造器
          * 作用是在创建当前集合的同时，集合中包含给定集合中的所有元素
          */
-        List<String> list1 = new ArrayList<String>(l);
+        List<String> list1 = new ArrayList<>(coll);
 
         /**
          * 集合转数组
          */
-        List<String> lsit = new ArrayList<String>(2);
+        List<String> lsit = new ArrayList<>(2);
         lsit.add("guan");
         lsit.add("bao");
         String[] arrayy = new String[lsit.size()];// 大小为list.size()
@@ -74,7 +74,7 @@ public class CollectionDemo {
         /**
          * 基本api
          */
-        List<Integer> list = new ArrayList<Integer>();// 有序
+        List<Integer> list = new ArrayList<>();// 有序
         list.add(1);
         list.add(0, 0);// 元素插入到指定位置
         list.add(2);
