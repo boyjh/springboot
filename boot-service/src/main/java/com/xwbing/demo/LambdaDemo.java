@@ -105,6 +105,7 @@ public class LambdaDemo {
                 futures[i] = CompletableFuture.supplyAsync(() -> finalList.add(setData(object)), taskExecutor);
             }
         }
+//        CompletableFuture.allOf(futures).join();//效果等同于get()，区别不用抛检测异常
         CompletableFuture<Void> completableFuture = CompletableFuture.allOf(futures);
         try {
             completableFuture.get();
