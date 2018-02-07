@@ -39,7 +39,7 @@ public class CompletableFutureDemo {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            //出现异常
+            //出现异常,异常会被限制在执行任务的线程范围内
             if (1 == 1)
                 throw new RuntimeException("异常");
             return "world";
@@ -48,7 +48,7 @@ public class CompletableFutureDemo {
             object.put("s1", s1);
             object.put("s2", s2);
             return object;
-        }).exceptionally(e -> {
+        }).exceptionally(e -> {//捕获异常
             throw new RuntimeException(e.getMessage());
         }).join();
     }
