@@ -2,6 +2,8 @@ package com.xwbing.demo;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.exception.BusinessException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import javax.annotation.Resource;
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 public class LambdaDemo {
     @Resource
     private static ThreadPoolTaskExecutor taskExecutor;
+    private static final Logger logger = LoggerFactory.getLogger(LambdaDemo.class);
 
     public static void main(String[] args) {
         //匿名内部类
@@ -86,7 +89,8 @@ public class LambdaDemo {
         try {
             List<JSONObject> sysUsers = future.get();
         } catch (InterruptedException | ExecutionException e) {
-            throw new BusinessException("");
+            logger.error(e.getMessage());
+            throw new BusinessException("获取数据出错");
         }
     }
 
@@ -111,6 +115,7 @@ public class LambdaDemo {
         try {
             completableFuture.get();
         } catch (InterruptedException | ExecutionException e) {
+            logger.error(e.getMessage());
             throw new BusinessException("获取数据出错");
         }
         return finalList;

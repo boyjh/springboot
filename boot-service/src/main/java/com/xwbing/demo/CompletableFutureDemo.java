@@ -1,6 +1,8 @@
 package com.xwbing.demo;
 
 import com.alibaba.fastjson.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,36 +18,46 @@ import java.util.concurrent.ExecutionException;
  * 参数: Function(函数)有返回值 Consumer(消费者)无返回值
  */
 public class CompletableFutureDemo {
+    private static final Logger logger = LoggerFactory.getLogger(CompletableFutureDemo.class);
+
     /**
      * 结合两个CompletionStage的结果，进行转化后返回
      *
      * @return 有返回值
      */
     public static JSONObject thenCombine() {
-        try {
-            return CompletableFuture.supplyAsync(() -> {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                return "hello";
-            }).thenCombine(CompletableFuture.supplyAsync(() -> {
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                return "world";
-            }), (s1, s2) -> {
-                JSONObject object = new JSONObject();
-                object.put("s1", s1);
-                object.put("s2", s2);
-                return object;
-            }).get();
-        } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException("获取数据异常");
-        }
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return "hello";
+        }).thenCombine(CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            //出现异常
+            if (1 == 1)
+                throw new RuntimeException("异常");
+            return "world";
+        }), (s1, s2) -> {
+            JSONObject object = new JSONObject();
+            object.put("s1", s1);
+            object.put("s2", s2);
+            return object;
+        }).exceptionally(e -> {
+            throw new RuntimeException(e.getMessage());
+        }).join();
+    }
+
+    public static void main(String[] args) {
+        long l = System.currentTimeMillis();
+        thenCombine();
+        long l1 = System.currentTimeMillis();
+        System.out.println(l1 - l);
     }
 
     /**
@@ -75,12 +87,14 @@ public class CompletableFutureDemo {
                 jsonObject.put("s2", s2);
             }).get();
         } catch (InterruptedException | ExecutionException e) {
+            logger.error(e.getMessage());
             throw new RuntimeException("获取数据异常");
         }
         return jsonObject;
     }
 
     /**
+     * 在两个CompletionStage都运行完执行
      * 不关心这两个的结果，只关心这两个执行完毕，之后在进行操作（Runnable）
      *
      * @return void
@@ -149,12 +163,5 @@ public class CompletableFutureDemo {
             throw new RuntimeException("获取数据异常");
         }
         return object;
-    }
-
-    public static void main(String[] args) {
-        long l = System.currentTimeMillis();
-        acceptEither();
-        long l1 = System.currentTimeMillis();
-        System.out.println(l1 - l);
     }
 }
