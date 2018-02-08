@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 /**
  * 项目名称: boot-module-demo
@@ -39,7 +38,7 @@ public class CompletableFutureDemo {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            //出现异常,异常会被限制在执行任务的线程范围内
+            //出现异常,异常会被限制在执行任务的线程的范围内，最终会杀死该线程，而这会导致等待 get 方法返回结果的线程永久地被阻塞。
             if (1 == 1)
                 throw new RuntimeException("异常");
             return "world";
@@ -48,9 +47,11 @@ public class CompletableFutureDemo {
             object.put("s1", s1);
             object.put("s2", s2);
             return object;
-        }).exceptionally(e -> {//捕获异常
-            throw new RuntimeException(e.getMessage());
-        }).join();
+        })
+//                .exceptionally(e -> {//捕获CompletionException，如有全局异常处理，可省略
+//                    throw new RuntimeException(e.getMessage());
+//                })
+                .join();
     }
 
     public static void main(String[] args) {
@@ -67,29 +68,24 @@ public class CompletableFutureDemo {
      */
     public static JSONObject thenAcceptBoth() {
         JSONObject jsonObject = new JSONObject();
-        try {
-            CompletableFuture.supplyAsync(() -> {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                return "hello";
-            }).thenAcceptBoth(CompletableFuture.supplyAsync(() -> {
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                return "world";
-            }), (s1, s2) -> {
-                jsonObject.put("s1", s1);
-                jsonObject.put("s2", s2);
-            }).get();
-        } catch (InterruptedException | ExecutionException e) {
-            logger.error(e.getMessage());
-            throw new RuntimeException("获取数据异常");
-        }
+        CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return "hello";
+        }).thenAcceptBoth(CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return "world";
+        }), (s1, s2) -> {
+            jsonObject.put("s1", s1);
+            jsonObject.put("s2", s2);
+        }).join();
         return jsonObject;
     }
 
@@ -103,36 +99,32 @@ public class CompletableFutureDemo {
         List<Integer> allResult = new ArrayList<>();
         List<Integer> s1 = new ArrayList<>();
         List<Integer> s2 = new ArrayList<>();
-        try {
-            CompletableFuture.runAsync(() -> {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                s1.add(1);
-            }).runAfterBothAsync(CompletableFuture.runAsync(() -> {
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                s2.add(1);
-            }), () -> {
-                for (int i = 0; i < s1.size(); i++) {
-                    Integer ii = s1.get(i);
-                    for (int j = 0; j < s2.size(); j++) {
-                        if (j == i) {
-                            Integer jj = s2.get(j);
-                            allResult.add(ii + jj);
-                            break;
-                        }
+        CompletableFuture.runAsync(() -> {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            s1.add(1);
+        }).runAfterBothAsync(CompletableFuture.runAsync(() -> {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            s2.add(1);
+        }), () -> {
+            for (int i = 0; i < s1.size(); i++) {
+                Integer ii = s1.get(i);
+                for (int j = 0; j < s2.size(); j++) {
+                    if (j == i) {
+                        Integer jj = s2.get(j);
+                        allResult.add(ii + jj);
+                        break;
                     }
                 }
-            }).get();
-        } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException("获取数据异常");
-        }
+            }
+        }).join();
         return allResult;
     }
 
@@ -143,25 +135,21 @@ public class CompletableFutureDemo {
      */
     public static JSONObject acceptEither() {
         JSONObject object = new JSONObject();
-        try {
-            CompletableFuture.supplyAsync(() -> {
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                return "hello";
-            }).acceptEither(CompletableFuture.supplyAsync(() -> {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                return "world";
-            }), s -> object.put("s", s)).get();
-        } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException("获取数据异常");
-        }
+        CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return "hello";
+        }).acceptEither(CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return "world";
+        }), s -> object.put("s", s)).join();
         return object;
     }
 }

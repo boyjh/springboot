@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.concurrent.CompletionException;
 import java.util.stream.Collectors;
 
 /**
@@ -43,9 +44,28 @@ public class GlobalExceptionHandler {
     // 返回给页面200状态码
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
-    public JSONObject handlerGuideException(BusinessException ex) {
+    public JSONObject handlerBusinessException(BusinessException ex) {
         logger.error(ex.getMessage());
         return JSONObjResult.toJSONObj(ex.getMessage());
+    }
+
+    /**
+     * CompletableFuture完成结果或任务过程中出现的异常
+     *
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler(value = CompletionException.class)
+    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
+    public JSONObject handlerCompletionException(CompletionException ex) {
+        Throwable cause = ex.getCause();
+        String errorMessages = cause.getMessage();
+        logger.error(errorMessages);
+        String detail = cause.toString();
+        if (!detail.contains("BusinessException"))
+            errorMessages = "异步获取数据出错";
+        return JSONObjResult.toJSONObj(errorMessages);
     }
 
     /**

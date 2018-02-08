@@ -1,7 +1,6 @@
 package com.xwbing.demo;
 
 import com.alibaba.fastjson.JSONObject;
-import com.xwbing.exception.BusinessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -9,7 +8,6 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import javax.annotation.Resource;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -85,13 +83,7 @@ public class LambdaDemo {
             reduce = optional.get();
         }
         //异步回调
-        CompletableFuture<List<JSONObject>> future = CompletableFuture.supplyAsync(LambdaDemo::getList);
-        try {
-            List<JSONObject> sysUsers = future.get();
-        } catch (InterruptedException | ExecutionException e) {
-            logger.error(e.getMessage());
-            throw new BusinessException("获取数据出错");
-        }
+        List<JSONObject> sysUsers = CompletableFuture.supplyAsync(LambdaDemo::getList).join();
     }
 
     /**
@@ -110,14 +102,14 @@ public class LambdaDemo {
                 futures[i] = CompletableFuture.runAsync(() -> System.out.println("null"));
             }
         }
-//        CompletableFuture.allOf(futures).join();//线程等待,效果等同于get(),不用抛检测异常,不推荐
-        CompletableFuture<Void> completableFuture = CompletableFuture.allOf(futures);
-        try {
-            completableFuture.get();
-        } catch (InterruptedException | ExecutionException e) {
-            logger.error(e.getMessage());
-            throw new BusinessException("获取数据出错");
-        }
+        CompletableFuture.allOf(futures).join();//线程等待,效果等同于get(),会拋出CompletionException
+//        CompletableFuture<Void> completableFuture = CompletableFuture.allOf(futures);
+//        try {
+//            completableFuture.get();
+//        } catch (InterruptedException | ExecutionException e) {
+//            logger.error(e.getMessage());
+//            throw new BusinessException("获取数据出错");
+//        }
         return finalList;
     }
 

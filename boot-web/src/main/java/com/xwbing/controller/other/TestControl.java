@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.xwbing.annotation.LogInfo;
 import com.xwbing.domain.entity.ExpressInfo;
 import com.xwbing.domain.entity.vo.ExpressInfoVo;
+import com.xwbing.exception.BusinessException;
 import com.xwbing.redis.RedisService;
 import com.xwbing.service.other.CookieSessionService;
 import com.xwbing.service.other.ExpressDeliveryService;
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * 说明: 测试控制层
@@ -128,5 +130,37 @@ public class TestControl {
     @GetMapping("cookie")
     public JSONObject cookie(HttpServletRequest request, HttpServletResponse response) {
         return JSONObjResult.toJSONObj(cookieSessionService.cookie(response, request));
+    }
+
+    @LogInfo("completableFuture")
+    @GetMapping("completableFuture")
+    public JSONObject completableFuture() {
+        return JSONObjResult.toJSONObj(thenCombine(), "");
+    }
+
+    private JSONObject thenCombine() {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return "hello";
+        }).thenCombine(CompletableFuture.supplyAsync(() -> {
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            //出现异常,异常会被限制在执行任务的线程范围内
+            if (1 == 1)
+                throw new RuntimeException("545456");
+            return "world";
+        }), (s1, s2) -> {
+            JSONObject object = new JSONObject();
+            object.put("s1", s1);
+            object.put("s2", s2);
+            return object;
+        }).join();
     }
 }

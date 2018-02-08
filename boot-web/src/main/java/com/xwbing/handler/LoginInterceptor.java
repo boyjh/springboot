@@ -42,7 +42,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String servletPath = request.getServletPath();
-        if (!set.contains(servletPath) && !servletPath.contains("login")) {
+        if (!set.contains(servletPath) && !servletPath.contains("login") && !servletPath.contains("test")) {
 //            HttpSession session = request.getSession();
 //            if (session.getAttribute(CommonConstant.CURRENT_USER)!=null) {
 //                return true;
