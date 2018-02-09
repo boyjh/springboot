@@ -83,11 +83,11 @@ public class LambdaDemo {
             reduce = optional.get();
         }
         //异步回调
-        List<JSONObject> sysUsers = CompletableFuture.supplyAsync(LambdaDemo::getList).join();
+        List<JSONObject> sysUsers = CompletableFuture.supplyAsync(LambdaDemo::getList).join();//线程等待,效果等同于get(),会拋出CompletionException
     }
 
     /**
-     * 遍历集合，集合里数据还要进行复杂操作，导致速度很慢，可以用异步
+     * 遍历集合，集合里数据还要进行复杂操作，导致速度很慢，可以用异步(无法保证顺序)
      */
     public List<JSONObject> supplyAsync() {
         List<JSONObject> list = getList();
