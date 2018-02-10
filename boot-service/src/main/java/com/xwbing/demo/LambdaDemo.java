@@ -101,7 +101,7 @@ public class LambdaDemo {
             finalList.add(null);//必须有这步，否则会下标越界
             Integer integer = list.get(i);
             final int pos = i;
-            futures[i] = CompletableFuture.supplyAsync(() -> finalList.set(pos, integer));//按原来顺序存
+            futures[i] = CompletableFuture.supplyAsync(() -> finalList.set(pos, integer),taskExecutor);//按原来顺序存
         }
         CompletableFuture.allOf(futures).join();//线程等待,效果等同于get(),会拋出CompletionException
 //        CompletableFuture<Void> completableFuture = CompletableFuture.allOf(futures);
