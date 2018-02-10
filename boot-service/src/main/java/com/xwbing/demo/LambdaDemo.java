@@ -87,20 +87,21 @@ public class LambdaDemo {
     }
 
     /**
-     * 遍历集合，集合里数据还要进行复杂操作，导致速度很慢，可以用异步(无法保证顺序)
+     * 遍历集合，集合里数据还要进行复杂操作，导致速度很慢，可以用异步
      */
-    public List<JSONObject> supplyAsync() {
-        List<JSONObject> list = getList();
+    public List<Integer> supplyAsync() {
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            list.add(i);
+        }
         int size = list.size();
         CompletableFuture[] futures = new CompletableFuture[size];
-        List<JSONObject> finalList = new ArrayList<>();
+        List<Integer> finalList = new ArrayList<>();
         for (int i = 0; i < size; i++) {
-            JSONObject object = list.get(i);
-            if (object != null) {
-                futures[i] = CompletableFuture.supplyAsync(() -> finalList.add(setData(object)), taskExecutor);
-            } else {
-                futures[i] = CompletableFuture.runAsync(() -> System.out.println("null"));
-            }
+            finalList.add(null);//必须有这步，否则会下标越界
+            Integer integer = list.get(i);
+            final int pos = i;
+            futures[i] = CompletableFuture.supplyAsync(() -> finalList.set(pos, integer));//按原来顺序存
         }
         CompletableFuture.allOf(futures).join();//线程等待,效果等同于get(),会拋出CompletionException
 //        CompletableFuture<Void> completableFuture = CompletableFuture.allOf(futures);

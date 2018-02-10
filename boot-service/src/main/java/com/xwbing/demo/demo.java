@@ -17,12 +17,13 @@ public class demo {
         for (int i = 0; i < 100; i++) {
             list.add(i);
         }
-        List<Integer> finalList = new ArrayList<>();
         int size = list.size();
         CompletableFuture[] futures = new CompletableFuture[size];
+        List<Integer> finalList = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             Integer integer = list.get(i);
-            futures[i] = CompletableFuture.supplyAsync(() -> finalList.add(integer));
+            int finalI = i;
+            futures[i] = CompletableFuture.supplyAsync(() -> finalList.set(finalI, integer));
         }
         CompletableFuture.allOf(futures).join();
         System.out.println(finalList);
