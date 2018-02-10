@@ -87,7 +87,7 @@ public class LambdaDemo {
     }
 
     /**
-     * 遍历集合，集合里数据还要进行复杂操作，导致速度很慢
+     * 遍历集合，集合里数据还要进行复杂操作，导致速度很慢,用以下操作
      */
     public List<Integer> supplyAsync() {
         List<Integer> list = new ArrayList<>();
@@ -96,12 +96,12 @@ public class LambdaDemo {
         }
         int size = list.size();
         CompletableFuture[] futures = new CompletableFuture[size];
-        List<Integer> finalList = new ArrayList<>();
+        List<Integer> finalList = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
             finalList.add(null);//必须有这步，否则会下标越界
             Integer integer = list.get(i);
             final int pos = i;
-            futures[i] = CompletableFuture.supplyAsync(() -> finalList.set(pos, integer),taskExecutor);//按原来顺序存
+            futures[i] = CompletableFuture.supplyAsync(() -> finalList.set(pos, integer), taskExecutor);//按原来顺序存
         }
         CompletableFuture.allOf(futures).join();//线程等待,效果等同于get(),会拋出CompletionException
 //        CompletableFuture<Void> completableFuture = CompletableFuture.allOf(futures);
@@ -144,10 +144,6 @@ public class LambdaDemo {
 
     private static List<SysUser> listAll() {
         return Collections.EMPTY_LIST;
-    }
-
-    private JSONObject setData(JSONObject object) {
-        return object;
     }
 
     private String isAdmin(String id) {

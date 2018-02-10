@@ -91,7 +91,7 @@ public class CollectionDemo {
         boolean isEmpty = list.isEmpty();// 是否为空
         boolean contains = list.contains(Integer.valueOf(1));// 是否包含元素
         // l.clear();//清除集合元素
-        Set<Integer> s = new HashSet<Integer>();// 无序
+        Set<Integer> s = new HashSet<>();// 无序
         s.add(111);
         s.add(222);
         s.add(333);
