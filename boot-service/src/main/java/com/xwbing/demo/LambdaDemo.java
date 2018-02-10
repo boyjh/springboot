@@ -87,7 +87,7 @@ public class LambdaDemo {
     }
 
     /**
-     * 遍历集合，集合里数据还要进行复杂操作，导致速度很慢，可以用异步
+     * 遍历集合，集合里数据还要进行复杂操作，导致速度很慢
      */
     public List<Integer> supplyAsync() {
         List<Integer> list = new ArrayList<>();
