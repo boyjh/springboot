@@ -21,6 +21,7 @@ public class demo {
         CompletableFuture[] futures = new CompletableFuture[size];
         List<Integer> finalList = new ArrayList<>();
         for (int i = 0; i < size; i++) {
+            finalList.add(null);
             Integer integer = list.get(i);
             int finalI = i;
             futures[i] = CompletableFuture.supplyAsync(() -> finalList.set(finalI, integer));

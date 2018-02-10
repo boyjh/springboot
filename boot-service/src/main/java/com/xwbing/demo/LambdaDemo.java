@@ -98,7 +98,7 @@ public class LambdaDemo {
         CompletableFuture[] futures = new CompletableFuture[size];
         List<Integer> finalList = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
-            finalList.add(null);//必须有这步，否则会下标越界
+            finalList.add(null);//在异步之前size+1，必须有这步，否则会下标越界
             Integer integer = list.get(i);
             final int pos = i;
             futures[i] = CompletableFuture.supplyAsync(() -> finalList.set(pos, integer), taskExecutor);//按原来顺序存
