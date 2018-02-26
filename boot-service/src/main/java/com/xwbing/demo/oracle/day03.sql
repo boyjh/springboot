@@ -61,11 +61,11 @@ MAX,MIN 统计最大值,最小值
 查看最高工资?
 SELECT MAX(sal),MIN(sal) FROM emp_xwbing;
 
-AVG,SUM 统计平均值与总和
+AVG,SUM 统计平均值与总和,无值为null
 查看平均工资和工资总和
 SELECT trunc(AVG(sal)) avg,SUM(sal) sum FROM emp_xwbing;
 
-COUNT 统计的是记录条数,而不关注具体该字段的取值,
+COUNT 统计的是记录条数,而不关注具体该字段的取值,无值为0
 统计表中记录数,常使用 COUNT(*)
 查看公司员工人数?
 SELECT COUNT (*) FROM emp_xwbing;
