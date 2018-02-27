@@ -8,6 +8,7 @@ import java.util.*;
 /**
  * 创建日期: 2017年2月16日 下午4:06:56
  * 作者: xiangwb
+ * 说明: ArrayList初始容量为10,容量不足,会扩充为原有容量的1.5倍+1。然后通过底层的复制方法将原有数据复制过来
  */
 
 public class CollectionDemo {
