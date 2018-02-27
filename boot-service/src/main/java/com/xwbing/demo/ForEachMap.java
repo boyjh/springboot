@@ -39,8 +39,7 @@ public class ForEachMap {
         for (String key : keySet) {
             System.out.println(key);
         }
-
-		/*
+        /*
          * 遍历每一组键值对（推荐）
 		 * map中每一组键值对都是由map的内部类：
 		 * java.util.map.entry的一个实例类表示的
@@ -56,8 +55,7 @@ public class ForEachMap {
             Integer value = e.getValue();
             System.out.println(key + ":" + value);
         }
-
-		/*
+        /*
          * 遍历所有的value
 		 * Collection values()
 		 * 该方法会将当前map中所有的value存入一个集合后返回
@@ -66,8 +64,6 @@ public class ForEachMap {
         for (Integer value : values) {
             System.out.println(value);
         }
-
-
         /*
          * jdk1.8
          */
