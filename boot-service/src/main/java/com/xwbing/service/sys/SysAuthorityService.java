@@ -42,23 +42,26 @@ public class SysAuthorityService {
         RestMessage result = new RestMessage();
         //检查编码
         boolean b = uniqueCode(sysAuthority.getCode(), null);
-        if (!b)
+        if (!b) {
             throw new BusinessException("该编码已存在");
+        }
         //排序处理
         if (sysAuthority.getSort() == null) {
             int sort = getSort() + 1;
             sysAuthority.setSort(sort);
         } else {
             boolean sorted = uniqueSort(sysAuthority.getSort(), null);
-            if (!sorted)
+            if (!sorted) {
                 throw new BusinessException("该排序编号已存在");
+            }
         }
         //添加必要参数
         String id = PassWordUtil.createId();
         sysAuthority.setId(id);
         sysAuthority.setCreateTime(new Date());
-        if (StringUtils.isEmpty(sysAuthority.getParentId()))
+        if (StringUtils.isEmpty(sysAuthority.getParentId())) {
             sysAuthority.setParentId(CommonConstant.ROOT);
+        }
         //保存
         SysAuthority save = sysAuthorityRepository.save(sysAuthority);
         if (save != null) {
@@ -81,14 +84,16 @@ public class SysAuthorityService {
         RestMessage result = new RestMessage();
         //判断该权限是否存在
         SysAuthority one = getById(id);
-        if (one == null)
+        if (one == null) {
             throw new BusinessException("该权限不存在");
+        }
         //删除自身
         sysAuthorityRepository.delete(id);
         //如果有子节点,递归删除子节点
         List<SysAuthority> list = listChildrenForRemove(id);
-        if (CollectionUtils.isNotEmpty(list))
+        if (CollectionUtils.isNotEmpty(list)) {
             sysAuthorityRepository.deleteInBatch(list);
+        }
         result.setMessage("删除成功");
         result.setSuccess(true);
         return result;
@@ -105,12 +110,14 @@ public class SysAuthorityService {
         String id = sysAuthority.getId();
         //判断该权限是否存在
         SysAuthority old = getById(id);
-        if (old == null)
+        if (old == null) {
             throw new BusinessException("该权限不存在");
+        }
         //检查排序是否重复
         boolean sorted = uniqueSort(sysAuthority.getSort(), id);
-        if (!sorted)
+        if (!sorted) {
             throw new BusinessException("该排序编号已存在");
+        }
         old.setSort(sysAuthority.getSort());
         //其他参数更新
         old.setName(sysAuthority.getName());
@@ -146,10 +153,11 @@ public class SysAuthorityService {
      * @return
      */
     public List<SysAuthority> listByEnable(String enable) {
-        if (StringUtils.isNotEmpty(enable))
+        if (StringUtils.isNotEmpty(enable)) {
             return sysAuthorityRepository.getByEnableOrderBySort(enable);
-        else
+        } else {
             return sysAuthorityRepository.findAll(new Sort(Sort.Direction.ASC, "sort"));
+        }
     }
 
     /**
@@ -160,10 +168,11 @@ public class SysAuthorityService {
      * @return
      */
     public List<SysAuthority> listByParentEnable(String parentId, String enable) {
-        if (StringUtils.isNotEmpty(enable))
+        if (StringUtils.isNotEmpty(enable)) {
             return sysAuthorityRepository.getByParentIdAndEnableOrderBySort(parentId, enable);
-        else
+        } else {
             return sysAuthorityRepository.getByParentIdOrderBySort(parentId);
+        }
     }
 
     /**
@@ -177,15 +186,18 @@ public class SysAuthorityService {
         List<SysAuthority> list = new ArrayList<>();
         // 从角色权限表中获取所有该角色id的权限
         List<SysRoleAuthority> roleAuthorities = sysRoleAuthorityService.listByRoleId(roleId);
-        if (CollectionUtils.isEmpty(roleAuthorities))
+        if (CollectionUtils.isEmpty(roleAuthorities)) {
             return list;
+        }
         //根据权限id获取对应权限列表
         List<String> authorityIds = roleAuthorities.stream().map(SysRoleAuthority::getAuthorityId).collect(Collectors.toList());
-        if (CollectionUtils.isNotEmpty(authorityIds))
-            if (StringUtils.isNotEmpty(enable))
+        if (CollectionUtils.isNotEmpty(authorityIds)) {
+            if (StringUtils.isNotEmpty(enable)) {
                 list = sysAuthorityRepository.getByEnableAndIdInOrderBySort(enable, authorityIds);
-            else
+            } else {
                 list = sysAuthorityRepository.getByIdInOrderBySort(authorityIds);
+            }
+        }
         return list;
     }
 
@@ -217,12 +229,14 @@ public class SysAuthorityService {
     public List<SysAuthVo> listChildren(String parentId, String enable) {
         List<SysAuthVo> list = new ArrayList<>();
         List<SysAuthority> authoritys;
-        if (StringUtils.isNotEmpty(enable))
+        if (StringUtils.isNotEmpty(enable)) {
             authoritys = sysAuthorityRepository.getByParentIdAndEnableOrderBySort(parentId, enable);
-        else
+        } else {
             authoritys = sysAuthorityRepository.getByParentIdOrderBySort(parentId);
-        if (CollectionUtils.isEmpty(authoritys))
+        }
+        if (CollectionUtils.isEmpty(authoritys)) {
             return list;
+        }
         SysAuthVo vo;
         for (SysAuthority authority : authoritys) {
             vo = new SysAuthVo(authority);
@@ -297,8 +311,9 @@ public class SysAuthorityService {
      * @return
      */
     private boolean uniqueCode(String code, String id) {
-        if (StringUtils.isEmpty(code))
+        if (StringUtils.isEmpty(code)) {
             throw new BusinessException("code不能为空");
+        }
         SysAuthority one = sysAuthorityRepository.getByCode(code);
         return one == null || StringUtils.isNotEmpty(id) && id.equals(one.getId());
     }
@@ -311,8 +326,9 @@ public class SysAuthorityService {
      * @return
      */
     private boolean uniqueSort(Integer sort, String id) {
-        if (sort == null)
+        if (sort == null) {
             throw new BusinessException("sort不能为空");
+        }
         SysAuthority one = sysAuthorityRepository.getBySort(sort);
         return one == null || StringUtils.isNotEmpty(id) && id.equals(one.getId());
     }

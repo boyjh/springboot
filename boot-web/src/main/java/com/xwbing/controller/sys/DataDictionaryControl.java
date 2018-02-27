@@ -45,8 +45,9 @@ public class DataDictionaryControl {
     @PostMapping("update")
     @ApiOperation(value = "修改字典", response = RestMessageVo.class)
     public JSONObject update(@RequestBody DataDictionary dictionary) {
-        if (StringUtils.isEmpty(dictionary.getId()))
+        if (StringUtils.isEmpty(dictionary.getId())) {
             return JSONObjResult.toJSONObj("主键不能为空");
+        }
         RestMessage result = dataDictionaryService.update(dictionary);
         return JSONObjResult.toJSONObj(result);
     }
@@ -55,11 +56,13 @@ public class DataDictionaryControl {
     @ApiOperation(value = "获取字典详情", response = DataDictionaryVo.class)
     @GetMapping("getById")
     public JSONObject getById(@RequestParam String id) {
-        if (StringUtils.isEmpty(id))
+        if (StringUtils.isEmpty(id)) {
             return JSONObjResult.toJSONObj("主键不能为空");
+        }
         DataDictionary dataDictionary = dataDictionaryService.getById(id);
-        if (dataDictionary == null)
+        if (dataDictionary == null) {
             return JSONObjResult.toJSONObj("该字典不存在");
+        }
         return JSONObjResult.toJSONObj(dataDictionary, "");
     }
 
@@ -70,8 +73,9 @@ public class DataDictionaryControl {
     public JSONObject uniqueCode(@RequestParam String code, String id) {
         boolean b = dataDictionaryService.uniqueCode(code, id);
         RestMessage result = new RestMessage();
-        if (b)
+        if (b) {
             result.setSuccess(true);
+        }
         return JSONObjResult.toJSONObj(result);
     }
 
@@ -83,8 +87,9 @@ public class DataDictionaryControl {
     })
     @PostMapping("findListByParent")
     public JSONObject findListByParent(String enable, String parentId) {
-        if (StringUtils.isEmpty(parentId))
+        if (StringUtils.isEmpty(parentId)) {
             parentId = CommonConstant.ROOT;
+        }
         List<DataDictionary> listByParent = dataDictionaryService.findListByParent(parentId, enable);
         return JSONObjResult.toJSONObj(listByParent, "");
     }
@@ -94,8 +99,9 @@ public class DataDictionaryControl {
     @ApiImplicitParam(name = "enable", value = "是否启用，格式为Y|N", paramType = "query", dataType = "string")
     @PostMapping("findListByCode")
     public JSONObject findListByCode(@RequestParam String code, String enable) {
-        if (StringUtils.isEmpty(code))
+        if (StringUtils.isEmpty(code)) {
             return JSONObjResult.toJSONObj("编码不能为空");
+        }
         List<DataDictionary> listByParent = dataDictionaryService.findListByCode(code, enable);
         return JSONObjResult.toJSONObj(listByParent, "");
     }

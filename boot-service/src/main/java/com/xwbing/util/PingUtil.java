@@ -46,8 +46,9 @@ public class PingUtil {
             Process pro = Runtime.getRuntime().exec("ping " + ipAddress);
             //根据操作系统修改字符，否则乱码(windows:gbk,linux:utf-8)
             BufferedReader buf = new BufferedReader(new InputStreamReader(pro.getInputStream(), "gbk"));
-            while ((line = buf.readLine()) != null)
+            while ((line = buf.readLine()) != null) {
                 System.out.println(line);
+            }
             return true;
         } catch (Exception ex) {
             LOGGER.error(ex.getMessage());

@@ -32,8 +32,9 @@ public class JSONObjResult {
     public static JSONObject toJSONObj(Object o, String message) {
         JSONObjResult jsonObjResult = new JSONObjResult();
         jsonObjResult.setSuccess(true);
-        if (StringUtils.isNotEmpty(message))
+        if (StringUtils.isNotEmpty(message)) {
             jsonObjResult.setMessage(message);
+        }
         jsonObjResult.setData(JSONUtil.beanToMap(o));
         return JSON.parseObject(JSON.toJSONString(jsonObjResult, SerializerFeature.WriteMapNullValue));
     }

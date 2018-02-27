@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.xwbing.annotation.LogInfo;
 import com.xwbing.domain.entity.ExpressInfo;
 import com.xwbing.domain.entity.vo.ExpressInfoVo;
-import com.xwbing.exception.BusinessException;
 import com.xwbing.redis.RedisService;
 import com.xwbing.service.other.CookieSessionService;
 import com.xwbing.service.other.ExpressDeliveryService;
@@ -71,8 +70,9 @@ public class TestControl {
     @LogInfo("快递查询")
     @PostMapping("expressInfo")
     public JSONObject getExpressInfo(@RequestBody ExpressInfo info) {
-        if (StringUtils.isEmpty(info.getLogisticCode()) || StringUtils.isEmpty(info.getShipperCode()))
+        if (StringUtils.isEmpty(info.getLogisticCode()) || StringUtils.isEmpty(info.getShipperCode())) {
             return JSONObjResult.toJSONObj("快递公司或物流单号不能为空");
+        }
         ExpressInfoVo infoVo = expressDeliveryService.queryOrderTraces(info);
         return JSONObjResult.toJSONObj(infoVo, "查询快递信息成功");
     }
@@ -87,8 +87,9 @@ public class TestControl {
     @LogInfo("解析二维码")
     @GetMapping("decode")
     public JSONObject decode(@RequestParam String path) {
-        if (StringUtils.isEmpty(path))
+        if (StringUtils.isEmpty(path)) {
             return JSONObjResult.toJSONObj("二维码图片路径不能为空");
+        }
         File file = new File(path);
         RestMessage decode = qrCodeZipService.decode(file);
         return JSONObjResult.toJSONObj(decode);
@@ -97,8 +98,9 @@ public class TestControl {
     @LogInfo("导出zip")
     @GetMapping("batchGetImage")
     public JSONObject batchGetImage(HttpServletResponse response, @RequestParam String[] names, @RequestParam String fileName) {
-        if (StringUtils.isEmpty(fileName))
+        if (StringUtils.isEmpty(fileName)) {
             return JSONObjResult.toJSONObj("zip名称不能为空");
+        }
         RestMessage restMessage = qrCodeZipService.batchGetImage(response, names, fileName);
         return JSONObjResult.toJSONObj(restMessage);
     }
@@ -153,8 +155,9 @@ public class TestControl {
                 e.printStackTrace();
             }
             //出现异常,异常会被限制在执行任务的线程范围内
-            if (1 == 1)
+            if (1 == 1) {
                 throw new RuntimeException("545456");
+            }
             return "world";
         }), (s1, s2) -> {
             JSONObject object = new JSONObject();

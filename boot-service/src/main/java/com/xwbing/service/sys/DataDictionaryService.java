@@ -29,14 +29,16 @@ public class DataDictionaryService {
         RestMessage result = new RestMessage();
         //检查编码
         boolean b = uniqueCode(dictionary.getCode(), null);
-        if (!b)
+        if (!b) {
             throw new BusinessException("该编码已存在");
+        }
         //添加必要参数
         String id = PassWordUtil.createId();
         dictionary.setId(id);
         dictionary.setCreateTime(new Date());
-        if (StringUtils.isEmpty(dictionary.getParentId()))
+        if (StringUtils.isEmpty(dictionary.getParentId())) {
             dictionary.setParentId(CommonConstant.ROOT);
+        }
         //保存
         DataDictionary save = dataDictionaryRepository.save(dictionary);
         if (save != null) {
@@ -60,8 +62,9 @@ public class DataDictionaryService {
         String id = dictionary.getId();
         //判断该字典是否存在
         DataDictionary old = getById(id);
-        if (old == null)
+        if (old == null) {
             throw new BusinessException("该字典不存在");
+        }
         old.setName(dictionary.getName());
         old.setDescription(dictionary.getDescription());
         old.setEnable(dictionary.getEnable());
@@ -88,8 +91,9 @@ public class DataDictionaryService {
      * @return
      */
     public boolean uniqueCode(String code, String id) {
-        if (StringUtils.isEmpty(code))
+        if (StringUtils.isEmpty(code)) {
             throw new BusinessException("code不能为空");
+        }
         DataDictionary one = dataDictionaryRepository.getByCode(code);
         return one == null || StringUtils.isNotEmpty(id) && id.equals(one.getId());
     }
@@ -102,10 +106,11 @@ public class DataDictionaryService {
      * @return
      */
     public List<DataDictionary> findListByParent(String parentId, String enable) {
-        if (StringUtils.isNotEmpty(enable))
+        if (StringUtils.isNotEmpty(enable)) {
             return dataDictionaryRepository.getByParentIdAndEnable(parentId, enable);
-        else
+        } else {
             return dataDictionaryRepository.getByParentId(parentId);
+        }
     }
 
     /**

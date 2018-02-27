@@ -57,10 +57,12 @@ public class CaptchaUtil {
 	 * 给定范围获得随机颜色
 	 */
 	private Color getRandColor(int fc, int bc) {
-		if (fc > 255)
+		if (fc > 255) {
 			fc = 255;
-		if (bc > 255)
+		}
+		if (bc > 255) {
 			bc = 255;
+		}
 		int r = fc + random.nextInt(bc - fc);
 		int g = fc + random.nextInt(bc - fc);
 		int b = fc + random.nextInt(bc - fc);

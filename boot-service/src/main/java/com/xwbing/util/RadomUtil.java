@@ -10,8 +10,9 @@ import java.util.Random;
  */
 public class RadomUtil {
     public static String buildRandom(int length) {
-        if (length < 1)
+        if (length < 1) {
             throw new UtilException("参数异常!!!");
+        }
         Random random = new Random();
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < length; i++) {

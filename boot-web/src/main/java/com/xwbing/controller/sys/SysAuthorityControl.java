@@ -43,8 +43,9 @@ public class SysAuthorityControl {
     public JSONObject save(@RequestBody SysAuthority sysAuthority) {
         RestMessage save = sysAuthorityService.save(sysAuthority);
         //删除缓存
-        if (save.isSuccess())
+        if (save.isSuccess()) {
             redisService.del(CommonConstant.AUTHORITY_THREE);
+        }
         return JSONObjResult.toJSONObj(save);
     }
 
@@ -52,12 +53,14 @@ public class SysAuthorityControl {
     @ApiOperation(value = "删除权限", response = RestMessageVo.class)
     @GetMapping("removeById")
     public JSONObject removeById(@RequestParam String id) {
-        if (StringUtils.isEmpty(id))
+        if (StringUtils.isEmpty(id)) {
             return JSONObjResult.toJSONObj("主键不能为空");
+        }
         RestMessage result = sysAuthorityService.removeById(id);
         //删除缓存
-        if (result.isSuccess())
+        if (result.isSuccess()) {
             redisService.del(CommonConstant.AUTHORITY_THREE);
+        }
         return JSONObjResult.toJSONObj(result);
     }
 
@@ -65,8 +68,9 @@ public class SysAuthorityControl {
     @ApiOperation(value = "修改权限", response = RestMessageVo.class)
     @PostMapping("update")
     public JSONObject update(@RequestBody SysAuthority sysAuthority) {
-        if (StringUtils.isEmpty(sysAuthority.getId()))
+        if (StringUtils.isEmpty(sysAuthority.getId())) {
             return JSONObjResult.toJSONObj("主键不能为空");
+        }
         String enable = sysAuthority.getEnable();
         // 如果禁用，查询是否有子节点，如果有，子节点也要被禁用
         if (CommonConstant.IS_NOT_ENABLE.equals(enable)) {
@@ -78,14 +82,16 @@ public class SysAuthorityControl {
             // 如果是启用,看父节点是否被禁用,一级的不需要判断
             if (!CommonConstant.ROOT.equals(sysAuthority.getParentId())) {
                 SysAuthority parent = sysAuthorityService.getById(sysAuthority.getParentId());
-                if (parent != null && CommonEnum.YesOrNoEnum.NO.getCode().equals(parent.getEnable()))
+                if (parent != null && CommonEnum.YesOrNoEnum.NO.getCode().equals(parent.getEnable())) {
                     return JSONObjResult.toJSONObj("父节点已被禁用，请先启用父节点");
+                }
             }
         }
         RestMessage result = sysAuthorityService.update(sysAuthority);
         //删除缓存
-        if (result.isSuccess())
+        if (result.isSuccess()) {
             redisService.del(CommonConstant.AUTHORITY_THREE);
+        }
         return JSONObjResult.toJSONObj(result);
     }
 
@@ -103,10 +109,12 @@ public class SysAuthorityControl {
     @ApiOperation(value = "根据父节点查询子节点", response = ListSysAuthorityVo.class)
     @ApiImplicitParam(name = "parentId", value = "父id,可为空", paramType = "query", dataType = "string")
     public JSONObject listByParentId(String parentId) {
-        if (StringUtils.isEmpty(parentId))
+        if (StringUtils.isEmpty(parentId)) {
             parentId = CommonConstant.ROOT;
-        if (!CommonConstant.ROOT.equals(parentId) && sysAuthorityService.getById(parentId) == null)
+        }
+        if (!CommonConstant.ROOT.equals(parentId) && sysAuthorityService.getById(parentId) == null) {
             return JSONObjResult.toJSONObj("父节点不存在");
+        }
         List<SysAuthority> queryByParentId = sysAuthorityService.listByParentEnable(parentId, null);
         return JSONObjResult.toJSONObj(queryByParentId, "");
     }

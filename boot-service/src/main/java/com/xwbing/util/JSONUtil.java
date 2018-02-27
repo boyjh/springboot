@@ -26,10 +26,12 @@ public class JSONUtil {
      * @return
      */
     public static Object beanToMap(Object obj) {
-        if (obj == null)
+        if (obj == null) {
             return null;
-        if (obj instanceof String)
+        }
+        if (obj instanceof String) {
             return obj;
+        }
         if (obj instanceof JSONObject) {
             return obj;
         } else if (obj instanceof Map) {

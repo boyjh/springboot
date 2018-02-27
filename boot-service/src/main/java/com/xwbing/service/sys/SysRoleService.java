@@ -42,8 +42,9 @@ public class SysRoleService {
         RestMessage result = new RestMessage();
         //检查编码
         boolean b = uniqueCode(sysRole.getCode(), null);
-        if (!b)
+        if (!b) {
             throw new BusinessException("该编码已存在");
+        }
         String id = PassWordUtil.createId();
         sysRole.setId(id);
         sysRole.setCreateTime(new Date());
@@ -67,14 +68,16 @@ public class SysRoleService {
     public RestMessage removeById(String id) {
         RestMessage result = new RestMessage();
         SysRole one = getById(id);
-        if (one == null)
+        if (one == null) {
             throw new BusinessException("该角色不存在");
+        }
         //删除角色
         sysRoleRepository.delete(id);
         //删除角色权限
         List<SysRoleAuthority> roleAuthorities = sysRoleAuthorityService.listByRoleId(id);
-        if (CollectionUtils.isNotEmpty(roleAuthorities))
+        if (CollectionUtils.isNotEmpty(roleAuthorities)) {
             sysRoleAuthorityService.removeBatch(roleAuthorities);
+        }
         result.setMessage("删除成功");
         result.setSuccess(true);
         return result;
@@ -90,12 +93,14 @@ public class SysRoleService {
         RestMessage result = new RestMessage();
         String id = sysRole.getId();
         SysRole old = getById(id);
-        if (old == null)
+        if (old == null) {
             throw new BusinessException("该角色不存在");
+        }
         //检查编码
         boolean b = uniqueCode(sysRole.getCode(), id);
-        if (!b)
+        if (!b) {
             throw new BusinessException("该编码已存在");
+        }
         old.setModifiedTime(new Date());
         old.setName(sysRole.getName());
         old.setCode(sysRole.getCode());
@@ -129,10 +134,11 @@ public class SysRoleService {
      * @return
      */
     public List<SysRole> listAllByEnable(String enable) {
-        if (StringUtils.isNotEmpty(enable))
+        if (StringUtils.isNotEmpty(enable)) {
             return sysRoleRepository.getByEnable(enable);
-        else
+        } else {
             return sysRoleRepository.findAll();
+        }
     }
 
     /**
@@ -146,15 +152,18 @@ public class SysRoleService {
         List<SysRole> list = new ArrayList<>();
         //从用户角色表中获取所有该用户id的角色
         List<SysUserRole> sysUserRoles = sysUserRoleService.listByUserId(userId);
-        if (sysUserRoles == null)
+        if (sysUserRoles == null) {
             return list;
+        }
         //根据角色id获取对应角色列表
         List<String> roleIds = sysUserRoles.stream().map(SysUserRole::getRoleId).collect(Collectors.toList());
-        if (CollectionUtils.isNotEmpty(roleIds))
-            if (StringUtils.isNotEmpty(enable))
+        if (CollectionUtils.isNotEmpty(roleIds)) {
+            if (StringUtils.isNotEmpty(enable)) {
                 list = sysRoleRepository.getByEnableAndIdIn(enable, roleIds);
-            else
+            } else {
                 list = sysRoleRepository.getByIdIn(roleIds);
+            }
+        }
         return list;
     }
 
@@ -166,8 +175,9 @@ public class SysRoleService {
      * @return
      */
     private boolean uniqueCode(String code, String id) {
-        if (StringUtils.isEmpty(code))
+        if (StringUtils.isEmpty(code)) {
             throw new BusinessException("code不能为空");
+        }
         SysRole one = sysRoleRepository.getByCode(code);
         return one == null || StringUtils.isNotEmpty(id) && id.equals(one.getId());
     }

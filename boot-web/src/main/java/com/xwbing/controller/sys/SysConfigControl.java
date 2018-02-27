@@ -77,8 +77,9 @@ public class SysConfigControl {
     public JSONObject update(SysConfig sysConfig) {
         String logMsg = "修改系统配置信息";
         logger.info(logMsg);
-        if (StringUtils.isEmpty(sysConfig.getCode()))
+        if (StringUtils.isEmpty(sysConfig.getCode())) {
             return JSONObjResult.toJSONObj("配置项的code不能为空");
+        }
         RestMessage result = sysConfigService.update(sysConfig);
         return JSONObjResult.toJSONObj(result);
     }

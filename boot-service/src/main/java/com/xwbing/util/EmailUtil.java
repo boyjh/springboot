@@ -109,8 +109,9 @@ public class EmailUtil {
         StringBuffer toList = new StringBuffer();
         if (toEmailArray != null && toEmailArray.length > 0) {
             for (int i = 0; i < toEmailArray.length; i++) {
-                if (toList.length() > 0)
+                if (toList.length() > 0) {
                     toList.append(",");
+                }
                 toList.append(toEmailArray[i]);
             }
             return toList.toString();

@@ -70,8 +70,9 @@ public class QRCodeZipService {
      */
     public RestMessage batchGetImage(HttpServletResponse response, String[] names, String fileName) {
         List<File> files = new ArrayList<>();
-        if (names.length == 0)
+        if (names.length == 0) {
             throw new BusinessException("请选择要导出的图片");
+        }
         Arrays.stream(names).forEach(name -> {
             File file = getFile(name);
             if (file != null && file.length() > 0) {

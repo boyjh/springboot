@@ -26,6 +26,7 @@ public class RedisStartupInit implements InitializingBean {
     @Value("${redisCode}")
     private String redisCode;
 
+    @Override
     public void afterPropertiesSet() throws Exception {
         logger.info("redis has been start");
         System.out.println("启动执行方法======刷新缓存==================");

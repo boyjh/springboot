@@ -63,8 +63,9 @@ public class GlobalExceptionHandler {
         String errorMessages = cause.getMessage();
         logger.error(errorMessages);
         String detail = cause.toString();
-        if (!detail.contains("BusinessException"))
+        if (!detail.contains("BusinessException")) {
             errorMessages = "异步获取数据出错";
+        }
         return JSONObjResult.toJSONObj(errorMessages);
     }
 

@@ -172,8 +172,9 @@ public class SysUserService {
                 sysUser.setSexName(sexEnum.getName());
                 sysUser.setCreate(DateUtil2.dateToStr(sysUser.getCreateTime(), DateUtil2.YYYY_MM_DD_HH_MM_SS));
                 Date modifiedTime = sysUser.getModifiedTime();
-                if (modifiedTime != null)
+                if (modifiedTime != null) {
                     sysUser.setModified(DateUtil2.dateToStr(sysUser.getModifiedTime(), DateUtil2.YYYY_MM_DD_HH_MM_SS));
+                }
             });
         }
         return all;
@@ -188,10 +189,12 @@ public class SysUserService {
     public RestMessage resetPassWord(String id) {
         RestMessage result = new RestMessage();
         SysUser old = getById(id);
-        if (old == null)
+        if (old == null) {
             throw new BusinessException("未查询到用户信息");
-        if (CommonDataUtil.getToken(CommonConstant.CURRENT_USER_ID).equals(id))
+        }
+        if (CommonDataUtil.getToken(CommonConstant.CURRENT_USER_ID).equals(id)) {
             throw new BusinessException("不能重置当前登录用户");
+        }
         if (CommonEnum.YesOrNoEnum.YES.getCode().equals(old.getAdmin())) {
             throw new BusinessException("管理员密码不能重置");
         }
@@ -201,11 +204,13 @@ public class SysUserService {
         old.setPassword(str[2]);
         old.setModifiedTime(new Date());
         SysUser save = sysUserRepository.save(old);
-        if (save == null)
+        if (save == null) {
             throw new BusinessException("重置密码失败");
+        }
         boolean send = sendEmail(old, str[0]);
-        if (!send)
+        if (!send) {
             throw new BusinessException("发送密码邮件错误");
+        }
         result.setSuccess(true);
         result.setMessage("重置密码成功");
         return result;
@@ -221,11 +226,13 @@ public class SysUserService {
     public RestMessage updatePassWord(String newPassWord, String oldPassWord, String id) {
         RestMessage result = new RestMessage();
         SysUser sysUser = getById(id);
-        if (sysUser == null)
+        if (sysUser == null) {
             throw new BusinessException("该用户不存在");
+        }
         boolean flag = checkPassWord(oldPassWord, sysUser.getPassword(), sysUser.getSalt());
-        if (!flag)
+        if (!flag) {
             throw new BusinessException("原密码错误,请重新输入");
+        }
         //生成密码
         String[] str = PassWordUtil.getUserSecret(newPassWord, null);
         sysUser.setSalt(str[1]);
@@ -258,11 +265,13 @@ public class SysUserService {
         }
         //验证账号,密码
         SysUser user = getByUserName(userName);
-        if (user == null)
+        if (user == null) {
             throw new BusinessException("账号错误");
+        }
         boolean flag = checkPassWord(passWord, user.getPassword(), user.getSalt());
-        if (!flag)
+        if (!flag) {
             throw new BusinessException("密码错误");
+        }
         //保存登录数据
         CommonDataUtil.setToken(CommonConstant.CURRENT_USER, userName);
         CommonDataUtil.setToken(CommonConstant.CURRENT_USER_ID, user.getId());
@@ -273,8 +282,9 @@ public class SysUserService {
         loginInOut.setInoutType(CommonEnum.LoginInOutEnum.IN.getValue());
         loginInOut.setIp(IpUtil.getIpAddr(request));
         RestMessage save = loginInOutService.save(loginInOut);
-        if (!save.isSuccess())
+        if (!save.isSuccess()) {
             throw new BusinessException("保存用户登录日志失败");
+        }
         restMessage.setSuccess(true);
         restMessage.setMessage("登录成功");
         return restMessage;
@@ -322,16 +332,18 @@ public class SysUserService {
         List<SysAuthority> list = new ArrayList<>();
         //根据用戶id和是否启用获取获取角色
         List<SysRole> sysRoles = sysRoleService.listByUserIdEnable(userId, enable);
-        if (CollectionUtils.isEmpty(sysRoles))
+        if (CollectionUtils.isEmpty(sysRoles)) {
             return list;
+        }
         //遍历获取每个角色拥有的权限，并去重
         List<SysAuthority> temp;
         for (SysRole sysRole : sysRoles) {
             temp = sysAuthorityService.listByRoleIdEnable(sysRole.getId(), enable);
             if (CollectionUtils.isNotEmpty(temp)) {
                 for (SysAuthority auth : temp) {
-                    if (list.contains(auth))
+                    if (list.contains(auth)) {
                         continue;// 如果存在，那么去除
+                    }
                     list.add(auth);
                 }
             }
