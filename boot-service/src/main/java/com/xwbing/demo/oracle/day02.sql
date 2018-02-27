@@ -49,12 +49,11 @@ n,m不写默认都是1
 SELECT INSTR('think in java','in')FROM dual;
 SELECT INSTR('think in java','in',2,2)FROM dual;
 
-
-
-
 SELECT ENAME,SAL,DEPTNO FROM emp_xwbing WHERE LOWER(ENAME)='smith';
 SELECT ename,sal FROM emp_xwbing WHERE LENGTH(ename)=5;
 SELECT ename,sal FROM emp_xwbing WHERE SUBSTR(ename,1,1)='A';
+
+
 
 
 数字函数
@@ -76,6 +75,8 @@ SELECT ename,sal,mod(sal,1000) FROM emp_xwbing;
 CEIL(N)和 FLOOR(N)向上取整和向下取整
 SELECT CEIL(44.5) FROM DUAL;
 SELECT FLOOR(44.5) FROM DUAL;
+
+
 
 
 日期类型
@@ -146,6 +147,8 @@ insert into student_xwbing(id,name) values(1002,'张无忌');
 SELECT * FROM student_xwbing;
 UPDATE student_xwbing SET gender='m' WHERE gender IS NULL;
 UPDATE student_xwbing SET gender=NULL WHERE gender='m';
+
+
 
 
 NULL的运算

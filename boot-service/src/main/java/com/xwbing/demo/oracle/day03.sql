@@ -2,6 +2,8 @@ SELECT 子句中 可以对字段加别名,别名前加空格或as,若希望别�
 SELECT ENAME,SAL*12 SAL FROM EMP_XWBING;
 SELECT ename,sal*12 AS "S al" FROM emp_xwbing;
 
+
+
 查询条件:
 <>不等于
 SELECT ename,sal FROM emp_xwbing WHERE sal<2000;
@@ -32,8 +34,6 @@ SELECT * FROM emp_xwbing WHERE comm IS NOT NULL AND sal>1300;
 
 ANY,ALL  需要配合> >=  < <=  一个列表使用,常用于判断子查询的结果
 SELECT * FROM emp_xwbing WHERE sal>ALL(2800,3000,1800);
-
-
 
 DISTINCT 过滤重复,必须跟在SELECT后面.可以对多列去重,去重原则是这些列的组合没有重复
 SELECT DISTINCT job FROM emp_xwbing;
