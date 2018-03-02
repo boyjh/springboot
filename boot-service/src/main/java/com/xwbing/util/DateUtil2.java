@@ -435,6 +435,11 @@ public class DateUtil2 {
         return map;
     }
 
+    public static void main(String[] args) {
+        Map<String, Integer> datePool = getDatePool("2018-01-01", "2018-01-02");
+        System.out.println(datePool);
+    }
+
     /**
      * 字符串类型日期集合排序
      *
