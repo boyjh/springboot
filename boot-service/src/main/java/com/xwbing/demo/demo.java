@@ -12,5 +12,3 @@ public class demo {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         int i = "222".compareTo("11111");
         System.out.println(i);
-    }
-}
