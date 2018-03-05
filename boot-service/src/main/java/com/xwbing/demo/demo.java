@@ -1,7 +1,5 @@
 package com.xwbing.demo;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -12,12 +10,7 @@ import java.util.concurrent.ExecutionException;
  */
 public class demo {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
-        String s="001";
-        Integer integer = Integer.valueOf(s);
-        System.out.println(integer);
-        List<Integer> list = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
-            list.add(i);
-        }
+        int i = "222".compareTo("11111");
+        System.out.println(i);
     }
 }

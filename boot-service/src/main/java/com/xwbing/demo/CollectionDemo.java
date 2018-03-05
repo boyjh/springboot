@@ -90,7 +90,7 @@ public class CollectionDemo {
         list.remove(0);// 从集合中删除指定位置的元素，并将其返回
         int size = list.size();// 长度
         boolean isEmpty = list.isEmpty();// 是否为空
-        boolean contains = list.contains(Integer.valueOf(1));// 是否包含元素
+        boolean contains = list.contains(1);// 是否包含元素
         // l.clear();//清除集合元素
         Set<Integer> s = new HashSet<>();// 无序
         s.add(111);
@@ -118,7 +118,7 @@ public class CollectionDemo {
         /**
          * lambda表达式
          */
-        list.forEach(o -> System.out.println(o));
+        list.forEach(System.out::println);
         //删除某元素
         list.removeIf(integer -> integer == 0);
 
@@ -150,7 +150,7 @@ public class CollectionDemo {
         /**
          * lambda表达式
          */
-        list.sort((o1, o2) -> o1 - o2);
+        list.sort(Comparator.comparingInt(o -> o));
 
         /*
          * 队列 队列也可以存放一组元素，但是存取元素必须 遵循：先进先出原则
