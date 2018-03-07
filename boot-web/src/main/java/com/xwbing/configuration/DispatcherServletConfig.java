@@ -116,10 +116,10 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
         FastJsonConfig fastJsonConfig = new FastJsonConfig();
         fastJsonConfig.setSerializerFeatures(
                 SerializerFeature.PrettyFormat,
-//                SerializerFeature.WriteMapNullValue,//输出所有为null的字段
+                SerializerFeature.WriteMapNullValue,//输出所有为null的字段
 //                SerializerFeature.WriteNullNumberAsZero,//包装类字段如果为null,输出为0,而非null
-                SerializerFeature.WriteNullListAsEmpty,//List字段如果为null,输出为[],而非null
-                SerializerFeature.WriteNullStringAsEmpty);//字符类型字段如果为null,输出为"",而非null
+//                SerializerFeature.WriteNullStringAsEmpty,//字符类型字段如果为null,输出为"",而非null
+                SerializerFeature.WriteNullListAsEmpty);//List字段如果为null,输出为[],而非null
         messageConverter.setFastJsonConfig(fastJsonConfig);
         return messageConverter;
     }
