@@ -41,7 +41,7 @@ public class JsonResult {
         if (StringUtils.isNotEmpty(message)) {
             jsonObjResult.setMessage(message);
         }
-        jsonObjResult.setData(JSONUtil.beanToMap(o));
+        jsonObjResult.setData(JsonUtil.beanToMap(o));
         return JSON.parseObject(JSON.toJSONString(jsonObjResult, SerializerFeature.WriteMapNullValue));
     }
 
@@ -54,7 +54,7 @@ public class JsonResult {
         JsonResult jsonObjResult = new JsonResult();
         jsonObjResult.setSuccess(rest.isSuccess());
         jsonObjResult.setMessage(rest.getMessage());
-        jsonObjResult.setData(JSONUtil.beanToMap(rest.getData()));
+        jsonObjResult.setData(JsonUtil.beanToMap(rest.getData()));
         jsonObjResult.setId(rest.getId());
         return JSON.parseObject(JSON.toJSONString(jsonObjResult, SerializerFeature.WriteMapNullValue));
     }

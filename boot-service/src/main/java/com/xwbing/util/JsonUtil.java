@@ -16,8 +16,8 @@ import java.util.Map;
  * 说明: json格式转换
  * 作者: xiangwb
  */
-public class JSONUtil {
-    private static final Logger LOGGER = LoggerFactory.getLogger(JSONUtil.class);
+public class JsonUtil {
+    private static final Logger LOGGER = LoggerFactory.getLogger(JsonUtil.class);
 
     /**
      * 实体对象不序列化转换成jsonObject
