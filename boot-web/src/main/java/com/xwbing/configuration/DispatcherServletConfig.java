@@ -1,5 +1,7 @@
 package com.xwbing.configuration;
 
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.xwbing.handler.LoginInterceptor;
 import org.springframework.context.annotation.Bean;
@@ -102,12 +104,21 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
     @Bean
     public HttpMessageConverter getFastJsonHttpMessageConverter() {
         FastJsonHttpMessageConverter httpMessageConverter = new FastJsonHttpMessageConverter();
+        //设置支持的Content-Type
         List<MediaType> mediaTypes = new ArrayList<>();
         mediaTypes.add(MediaType.APPLICATION_JSON);
         mediaTypes.add(MediaType.APPLICATION_FORM_URLENCODED);
         mediaTypes.add(MediaType.APPLICATION_OCTET_STREAM);
         mediaTypes.add(MediaType.TEXT_HTML);//避免IE出现下载JSON文件的情况
         httpMessageConverter.setSupportedMediaTypes(mediaTypes);
+        //不忽略对象属性中的null值
+        FastJsonConfig fastJsonConfig = new FastJsonConfig();
+        fastJsonConfig.setSerializerFeatures(
+                SerializerFeature.PrettyFormat,
+//                SerializerFeature.WriteMapNullValue,//输出所有为null的字段
+                SerializerFeature.WriteNullListAsEmpty,//List字段如果为null,输出为[],而非null
+                SerializerFeature.WriteNullStringAsEmpty);//字符类型字段如果为null,输出为"",而非null
+        httpMessageConverter.setFastJsonConfig(fastJsonConfig);
         return httpMessageConverter;
     }
 }
