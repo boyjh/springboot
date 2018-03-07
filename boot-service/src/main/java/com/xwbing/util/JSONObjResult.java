@@ -31,7 +31,7 @@ public class JSONObjResult {
 
     /**
      * 查询返回值为Object
-     * @param o
+     * @param o Object/List
      * @param message
      * @return
      */

@@ -33,7 +33,7 @@ public class ApplicationContextConfig {
     }
 
     /**
-     * encoding编码问题
+     * encoding编码问题(springBoot默认已经配置好)
      *
      * @return
      */
