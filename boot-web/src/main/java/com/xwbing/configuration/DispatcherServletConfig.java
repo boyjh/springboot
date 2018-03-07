@@ -83,10 +83,11 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
                 .allowCredentials(true)
                 .allowedMethods("GET", "POST", "DELETE", "PUT", "OPTIONS")
                 .maxAge(3600);
+        super.addCorsMappings(registry);
     }
 
     /**
-     * 扩展消息转换器，增加fastjson
+     * 扩展消息转换器，增加fastJson
      *
      * @param converters
      */
