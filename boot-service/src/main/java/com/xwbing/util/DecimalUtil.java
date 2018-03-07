@@ -1,8 +1,6 @@
 package com.xwbing.util;
 
 import com.xwbing.exception.UtilException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 
@@ -12,7 +10,6 @@ import java.math.BigDecimal;
  */
 public class DecimalUtil {
     private static final int DEF_DIV_SCALE = 10;
-    private static final Logger LOGGER = LoggerFactory.getLogger(DecimalUtil.class);
 
     /**
      * 两个Double数相加
@@ -75,7 +72,7 @@ public class DecimalUtil {
      * @return Double
      */
     public static Double div(Double v1, Double v2, int scale) {
-        if (scale < 0){
+        if (scale < 0) {
             throw new UtilException("小数位数不能为负数");
         }
         BigDecimal b1 = new BigDecimal(v1.toString());
