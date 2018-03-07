@@ -104,22 +104,23 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
      */
     @Bean
     public HttpMessageConverter getFastJsonHttpMessageConverter() {
-        FastJsonHttpMessageConverter httpMessageConverter = new FastJsonHttpMessageConverter();
+        FastJsonHttpMessageConverter messageConverter = new FastJsonHttpMessageConverter();
         //设置支持的Content-Type
         List<MediaType> mediaTypes = new ArrayList<>();
-        mediaTypes.add(MediaType.APPLICATION_JSON);
+        mediaTypes.add(MediaType.APPLICATION_JSON_UTF8);
         mediaTypes.add(MediaType.APPLICATION_FORM_URLENCODED);
         mediaTypes.add(MediaType.APPLICATION_OCTET_STREAM);
         mediaTypes.add(MediaType.TEXT_HTML);//避免IE出现下载JSON文件的情况
-        httpMessageConverter.setSupportedMediaTypes(mediaTypes);
+        messageConverter.setSupportedMediaTypes(mediaTypes);
         //不忽略对象属性中的null值
         FastJsonConfig fastJsonConfig = new FastJsonConfig();
         fastJsonConfig.setSerializerFeatures(
                 SerializerFeature.PrettyFormat,
 //                SerializerFeature.WriteMapNullValue,//输出所有为null的字段
+//                SerializerFeature.WriteNullNumberAsZero,//包装类字段如果为null,输出为0,而非null
                 SerializerFeature.WriteNullListAsEmpty,//List字段如果为null,输出为[],而非null
                 SerializerFeature.WriteNullStringAsEmpty);//字符类型字段如果为null,输出为"",而非null
-        httpMessageConverter.setFastJsonConfig(fastJsonConfig);
-        return httpMessageConverter;
+        messageConverter.setFastJsonConfig(fastJsonConfig);
+        return messageConverter;
     }
 }

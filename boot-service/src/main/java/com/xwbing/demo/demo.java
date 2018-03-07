@@ -13,7 +13,7 @@ import com.xwbing.domain.entity.model.EntityModel;
 public class demo {
     public static void main(String[] args) {
         EntityModel jsonObject=new EntityModel();
-        String s = JSONObject.toJSONString(jsonObject, SerializerFeature.WriteMapNullValue, SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteNullListAsEmpty);
+        String s = JSONObject.toJSONString(jsonObject, SerializerFeature.WriteMapNullValue,SerializerFeature.WriteNullNumberAsZero);
         System.out.println(s);
     }
 }
