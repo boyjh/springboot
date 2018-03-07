@@ -101,7 +101,7 @@ public class HttpClientUtil {
         if (param == null) {
             throw new IllegalArgumentException(PARAM_ERROR);
         }
-        LOGGER.info("postByJson request URL:{}==================", url);
+        LOGGER.info("postByJson request url:{}==================", url);
         HttpPost post = new HttpPost(url);// 创建HttpPost的实例
         post.setEntity(new StringEntity(param.toString(), "UTF-8"));// 设置参数到请求对象中
         post.addHeader("Content-Type", APPLICATION_JSON);// 发送json数据需要设置contentType
@@ -122,7 +122,7 @@ public class HttpClientUtil {
         if (param == null || param.size() == 0) {
             throw new IllegalArgumentException(PARAM_ERROR);
         }
-        LOGGER.info("postByForm request URL:{}================", url);
+        LOGGER.info("postByForm request url:{}================", url);
         HttpPost post = new HttpPost(url);
         // 创建参数队列
         List<NameValuePair> params = new ArrayList<>();
@@ -149,7 +149,7 @@ public class HttpClientUtil {
         if (StringUtils.isEmpty(url)) {
             throw new IllegalArgumentException(URL_ERROR);
         }
-        LOGGER.info("GET request URL:{}======================", url);
+        LOGGER.info("get request url:{}======================", url);
         HttpGet httpGet = new HttpGet(url);
         return getResult(httpGet);
     }
@@ -168,7 +168,7 @@ public class HttpClientUtil {
         if (param == null || param.size() == 0) {
             throw new IllegalArgumentException(PARAM_ERROR);
         }
-        LOGGER.info("PUT request URL:{}====================", url);
+        LOGGER.info("put request url:{}====================", url);
         HttpPut put = new HttpPut(url);
         put.setEntity(new StringEntity(param.toString(), "UTF-8"));
         put.addHeader("Content-type", APPLICATION_JSON);
@@ -185,7 +185,7 @@ public class HttpClientUtil {
         if (StringUtils.isBlank(url)) {
             throw new IllegalArgumentException(URL_ERROR);
         }
-        LOGGER.info("delete request URL:{}=====================", url);
+        LOGGER.info("delete request url:{}=====================", url);
         HttpDelete delete = new HttpDelete(url);
         return getResult(delete);
     }
