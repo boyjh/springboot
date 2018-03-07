@@ -38,8 +38,8 @@ public class HttpClientUtil {
     private static PoolingHttpClientConnectionManager poolingHttpClientConnectionManager;
     private static final String APPLICATION_JSON = "application/json";
     private static final String FORM_URLENCODED = "application/x-www-form-urlencoded";
-    private static final String URL_ERROR = "Request Url can not be empty";
-    private static final String PARAM_ERROR = "Request Params is null";
+    private static final String URL_ERROR = "request url can not be empty";
+    private static final String PARAM_ERROR = "request params is null";
 
     static {
         poolingHttpClientConnectionManager = new PoolingHttpClientConnectionManager();
