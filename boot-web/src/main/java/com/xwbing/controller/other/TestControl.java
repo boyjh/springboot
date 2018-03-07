@@ -8,7 +8,7 @@ import com.xwbing.redis.RedisService;
 import com.xwbing.service.other.CookieSessionService;
 import com.xwbing.service.other.ExpressDeliveryService;
 import com.xwbing.service.other.QRCodeZipService;
-import com.xwbing.util.HttpClientUtil;
+import com.xwbing.util.HttpUtil;
 import com.xwbing.util.JsonResult;
 import com.xwbing.util.RSAUtil;
 import com.xwbing.util.RestMessage;
@@ -119,7 +119,7 @@ public class TestControl {
 //        String url = "http://localhost:8080/user/listAll";
 //        return HttpClientUtil.get(url);
         String url = "http://localhost:8080/user/save";
-        return HttpClientUtil.postByJson(url, param);
+        return HttpUtil.postByJson(url, param);
     }
 
     @LogInfo("session")

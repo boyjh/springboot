@@ -33,8 +33,8 @@ import java.util.concurrent.TimeUnit;
  * 作者: xiangwb
  * 说明: HttpClientUtil
  */
-public class HttpClientUtil {
-    private static Logger LOGGER = LoggerFactory.getLogger(HttpClientUtil.class);
+public class HttpUtil {
+    private static Logger LOGGER = LoggerFactory.getLogger(HttpUtil.class);
     private static PoolingHttpClientConnectionManager poolingHttpClientConnectionManager;
     private static final String APPLICATION_JSON = "application/json";
     private static final String FORM_URLENCODED = "application/x-www-form-urlencoded";
