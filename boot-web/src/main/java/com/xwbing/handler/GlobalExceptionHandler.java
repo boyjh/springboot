@@ -2,7 +2,7 @@ package com.xwbing.handler;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.exception.BusinessException;
-import com.xwbing.util.JSONObjResult;
+import com.xwbing.util.JsonResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -46,7 +46,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public JSONObject handlerBusinessException(BusinessException ex) {
         logger.error(ex.getMessage());
-        return JSONObjResult.toJSONObj(ex.getMessage());
+        return JsonResult.toJSONObj(ex.getMessage());
     }
 
     /**
@@ -66,7 +66,7 @@ public class GlobalExceptionHandler {
         if (!detail.contains("BusinessException")) {
             errorMessages = "异步获取数据出错";
         }
-        return JSONObjResult.toJSONObj(errorMessages);
+        return JsonResult.toJSONObj(errorMessages);
     }
 
     /**
@@ -84,7 +84,7 @@ public class GlobalExceptionHandler {
         String errorMessages = list.stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.joining("&&"));
         logger.error(errorMessages);
         response.setStatus(HttpStatus.OK.value());
-        return JSONObjResult.toJSONObj(errorMessages);
+        return JsonResult.toJSONObj(errorMessages);
     }
 
     /**
@@ -101,7 +101,7 @@ public class GlobalExceptionHandler {
         List<ObjectError> allErrors = bindingResult.getAllErrors();
         String errorMessages = allErrors.stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.joining("&&"));
         logger.error(errorMessages);
-        return JSONObjResult.toJSONObj(errorMessages);
+        return JsonResult.toJSONObj(errorMessages);
     }
 
     /**
@@ -115,6 +115,6 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public JSONObject handlerException(Exception ex) {
         logger.error(ex.getMessage());
-        return JSONObjResult.toJSONObj("系统异常，请联系管理员");
+        return JsonResult.toJSONObj("系统异常，请联系管理员");
     }
 }

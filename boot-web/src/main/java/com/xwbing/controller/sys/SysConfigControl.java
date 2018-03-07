@@ -7,7 +7,7 @@ import com.xwbing.domain.entity.vo.ListSysConfigVo;
 import com.xwbing.domain.entity.vo.RestMessageVo;
 import com.xwbing.domain.entity.vo.SysConfigVo;
 import com.xwbing.service.sys.SysConfigService;
-import com.xwbing.util.JSONObjResult;
+import com.xwbing.util.JsonResult;
 import com.xwbing.util.RestMessage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -49,7 +49,7 @@ public class SysConfigControl {
         String logMsg = "新增系统配置信息";
         logger.info(logMsg);
         RestMessage result = sysConfigService.save(sysConfig);
-        return JSONObjResult.toJSONObj(result);
+        return JsonResult.toJSONObj(result);
     }
 
     @LogInfo("根据code删除系统配置信息")
@@ -60,10 +60,10 @@ public class SysConfigControl {
         String logMsg = "删除系统配置信息";
         logger.info(logMsg + " code:{}", code);
         if (StringUtils.isEmpty(code)) {
-            return JSONObjResult.toJSONObj("code不能为空");
+            return JsonResult.toJSONObj("code不能为空");
         }
         RestMessage result = sysConfigService.removeByCode(code);
-        return JSONObjResult.toJSONObj(result);
+        return JsonResult.toJSONObj(result);
     }
 
     @LogInfo("修改系统配置信息")
@@ -78,10 +78,10 @@ public class SysConfigControl {
         String logMsg = "修改系统配置信息";
         logger.info(logMsg);
         if (StringUtils.isEmpty(sysConfig.getCode())) {
-            return JSONObjResult.toJSONObj("配置项的code不能为空");
+            return JsonResult.toJSONObj("配置项的code不能为空");
         }
         RestMessage result = sysConfigService.update(sysConfig);
-        return JSONObjResult.toJSONObj(result);
+        return JsonResult.toJSONObj(result);
     }
 
     @LogInfo("根据key查找系统配置信息")
@@ -92,13 +92,13 @@ public class SysConfigControl {
         String logMsg = "根据code查找系统配置信息";
         logger.info(logMsg + " code:{}", code);
         if (StringUtils.isEmpty(code)) {
-            return JSONObjResult.toJSONObj("code不能为空");
+            return JsonResult.toJSONObj("code不能为空");
         }
         SysConfig one = sysConfigService.getByCode(code);
         if (one == null) {
-            return JSONObjResult.toJSONObj("该配置不存在");
+            return JsonResult.toJSONObj("该配置不存在");
         }
-        return JSONObjResult.toJSONObj(one, "");
+        return JsonResult.toJSONObj(one, "");
     }
 
     @LogInfo("根据是否启用查找配置列表")
@@ -109,9 +109,9 @@ public class SysConfigControl {
         String logMsg = "根据是否启用查找配置列表";
         logger.info(logMsg + " enable:{}", enable);
         if (StringUtils.isEmpty(enable)) {
-            return JSONObjResult.toJSONObj("是否启用不能为空");
+            return JsonResult.toJSONObj("是否启用不能为空");
         }
         List<SysConfig> byEnable = sysConfigService.listByEnable(enable);
-        return JSONObjResult.toJSONObj(byEnable, "");
+        return JsonResult.toJSONObj(byEnable, "");
     }
 }

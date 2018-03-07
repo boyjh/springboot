@@ -3,7 +3,7 @@ package com.xwbing.controller.other;
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.annotation.LogInfo;
 import com.xwbing.service.other.MailService;
-import com.xwbing.util.JSONObjResult;
+import com.xwbing.util.JsonResult;
 import com.xwbing.util.RestMessage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -31,7 +31,7 @@ public class MailTestControl {
     @ApiOperation(value = "发送纯文本邮件")
     public JSONObject sendSimpleMail() {
         RestMessage restMessage = mailService.sendSimpleMail("786461501@qq.com", "测试邮件", "收到一个纯文本邮件");
-        return JSONObjResult.toJSONObj(restMessage);
+        return JsonResult.toJSONObj(restMessage);
     }
 
     @LogInfo("发送html格式邮件")
@@ -44,7 +44,7 @@ public class MailTestControl {
                 "</body>" +
                 "</html>";
         RestMessage restMessage = mailService.sendHtmlMail("786461501@qq.com", "html测试邮件", content);
-        return JSONObjResult.toJSONObj(restMessage);
+        return JsonResult.toJSONObj(restMessage);
     }
 
     @LogInfo("发送带附件邮件")
@@ -53,7 +53,7 @@ public class MailTestControl {
     public JSONObject sendAttachmentsMail() {
         String path = "C:\\Users\\admin\\Desktop\\qq.txt";
         RestMessage restMessage = mailService.sendAttachmentsMail("786461501@qq.com", "附件测试邮件", "收到一个带附件邮件", path);
-        return JSONObjResult.toJSONObj(restMessage);
+        return JsonResult.toJSONObj(restMessage);
     }
 
     @LogInfo("发送文本内嵌图片邮件")
@@ -64,6 +64,6 @@ public class MailTestControl {
         String content = "<html><body>这是有图片的邮件：<img src=\'cid:" + rscId + "\'></body></html>";
         String imgPath = "C:\\Users\\admin\\Desktop\\0000001.png";
         RestMessage restMessage = mailService.sendInlineResourceMail("786461501@qq.com", "内嵌图片测试邮件", content, imgPath, rscId);
-        return JSONObjResult.toJSONObj(restMessage);
+        return JsonResult.toJSONObj(restMessage);
     }
 }

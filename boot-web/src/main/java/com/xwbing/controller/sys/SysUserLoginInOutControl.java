@@ -5,7 +5,7 @@ import com.xwbing.annotation.LogInfo;
 import com.xwbing.domain.entity.sys.SysUserLoginInOut;
 import com.xwbing.domain.entity.vo.ListSysUserLoginInOutVo;
 import com.xwbing.service.sys.SysUserLoginInOutService;
-import com.xwbing.util.JSONObjResult;
+import com.xwbing.util.JsonResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +34,6 @@ public class SysUserLoginInOutControl {
     @GetMapping("listByType")
     public JSONObject listByType(@RequestParam int inout) {
         List<SysUserLoginInOut> sysUserLoginInOuts = inOutService.listByType(inout);
-        return JSONObjResult.toJSONObj(sysUserLoginInOuts, "获取列表成功");
+        return JsonResult.toJSONObj(sysUserLoginInOuts, "获取列表成功");
     }
 }

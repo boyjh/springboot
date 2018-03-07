@@ -11,7 +11,7 @@ import org.apache.commons.lang3.StringUtils;
  * 作者: xiangwb
  */
 @Data
-public class JSONObjResult {
+public class JsonResult {
     /**
      * 是否成功
      */
@@ -36,7 +36,7 @@ public class JSONObjResult {
      * @return
      */
     public static JSONObject toJSONObj(Object o, String message) {
-        JSONObjResult jsonObjResult = new JSONObjResult();
+        JsonResult jsonObjResult = new JsonResult();
         jsonObjResult.setSuccess(true);
         if (StringUtils.isNotEmpty(message)) {
             jsonObjResult.setMessage(message);
@@ -51,7 +51,7 @@ public class JSONObjResult {
      * @return
      */
     public static JSONObject toJSONObj(RestMessage rest) {
-        JSONObjResult jsonObjResult = new JSONObjResult();
+        JsonResult jsonObjResult = new JsonResult();
         jsonObjResult.setSuccess(rest.isSuccess());
         jsonObjResult.setMessage(rest.getMessage());
         jsonObjResult.setData(JSONUtil.beanToMap(rest.getData()));
@@ -65,7 +65,7 @@ public class JSONObjResult {
      * @return
      */
     public static JSONObject toJSONObj(String error) {
-        JSONObjResult jsonObjResult = new JSONObjResult();
+        JsonResult jsonObjResult = new JsonResult();
         jsonObjResult.setSuccess(false);
         jsonObjResult.setMessage(error);
         return JSON.parseObject(JSONObject.toJSONString(jsonObjResult, SerializerFeature.WriteMapNullValue));

@@ -9,7 +9,7 @@ import com.xwbing.service.other.CookieSessionService;
 import com.xwbing.service.other.ExpressDeliveryService;
 import com.xwbing.service.other.QRCodeZipService;
 import com.xwbing.util.HttpClientUtil;
-import com.xwbing.util.JSONObjResult;
+import com.xwbing.util.JsonResult;
 import com.xwbing.util.RSAUtil;
 import com.xwbing.util.RestMessage;
 import io.swagger.annotations.Api;
@@ -64,45 +64,45 @@ public class TestControl {
     @GetMapping("listShipperCode")
     public JSONObject listShipperCode() {
         List<JSONObject> list = expressDeliveryService.listShipperCode();
-        return JSONObjResult.toJSONObj(list, "");
+        return JsonResult.toJSONObj(list, "");
     }
 
     @LogInfo("快递查询")
     @PostMapping("expressInfo")
     public JSONObject getExpressInfo(@RequestBody ExpressInfo info) {
         if (StringUtils.isEmpty(info.getLogisticCode()) || StringUtils.isEmpty(info.getShipperCode())) {
-            return JSONObjResult.toJSONObj("快递公司或物流单号不能为空");
+            return JsonResult.toJSONObj("快递公司或物流单号不能为空");
         }
         ExpressInfoVo infoVo = expressDeliveryService.queryOrderTraces(info);
-        return JSONObjResult.toJSONObj(infoVo, "查询快递信息成功");
+        return JsonResult.toJSONObj(infoVo, "查询快递信息成功");
     }
 
     @LogInfo("生成二维码")
     @PostMapping("createQRCode")
     public JSONObject createQRCode(@RequestParam String name, @RequestParam String text) {
         RestMessage qrCode = qrCodeZipService.createQRCode(name, text);
-        return JSONObjResult.toJSONObj(qrCode);
+        return JsonResult.toJSONObj(qrCode);
     }
 
     @LogInfo("解析二维码")
     @GetMapping("decode")
     public JSONObject decode(@RequestParam String path) {
         if (StringUtils.isEmpty(path)) {
-            return JSONObjResult.toJSONObj("二维码图片路径不能为空");
+            return JsonResult.toJSONObj("二维码图片路径不能为空");
         }
         File file = new File(path);
         RestMessage decode = qrCodeZipService.decode(file);
-        return JSONObjResult.toJSONObj(decode);
+        return JsonResult.toJSONObj(decode);
     }
 
     @LogInfo("导出zip")
     @GetMapping("batchGetImage")
     public JSONObject batchGetImage(HttpServletResponse response, @RequestParam String[] names, @RequestParam String fileName) {
         if (StringUtils.isEmpty(fileName)) {
-            return JSONObjResult.toJSONObj("zip名称不能为空");
+            return JsonResult.toJSONObj("zip名称不能为空");
         }
         RestMessage restMessage = qrCodeZipService.batchGetImage(response, names, fileName);
-        return JSONObjResult.toJSONObj(restMessage);
+        return JsonResult.toJSONObj(restMessage);
     }
 
     @LogInfo("rsa")
@@ -125,19 +125,19 @@ public class TestControl {
     @LogInfo("session")
     @GetMapping("session")
     public JSONObject session(HttpServletRequest request) {
-        return JSONObjResult.toJSONObj(cookieSessionService.session(request));
+        return JsonResult.toJSONObj(cookieSessionService.session(request));
     }
 
     @LogInfo("cookie")
     @GetMapping("cookie")
     public JSONObject cookie(HttpServletRequest request, HttpServletResponse response) {
-        return JSONObjResult.toJSONObj(cookieSessionService.cookie(response, request));
+        return JsonResult.toJSONObj(cookieSessionService.cookie(response, request));
     }
 
     @LogInfo("completableFuture")
     @GetMapping("completableFuture")
     public JSONObject completableFuture() {
-        return JSONObjResult.toJSONObj(thenCombine(), "");
+        return JsonResult.toJSONObj(thenCombine(), "");
     }
 
     private JSONObject thenCombine() {
