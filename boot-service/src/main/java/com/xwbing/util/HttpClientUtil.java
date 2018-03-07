@@ -37,6 +37,7 @@ public class HttpClientUtil {
     private static Logger LOGGER = LoggerFactory.getLogger(HttpClientUtil.class);
     private static PoolingHttpClientConnectionManager poolingHttpClientConnectionManager;
     private static final String APPLICATION_JSON = "application/json";
+    private static final String FORM_URLENCODED = "application/x-www-form-urlencoded";
     private static final String URL_ERROR = "Request Url can not be empty";
     private static final String PARAM_ERROR = "Request Params is null";
 
@@ -60,14 +61,17 @@ public class HttpClientUtil {
         }
         if (exception instanceof InterruptedIOException) {
             // Timeout
+            LOGGER.error("请求超时");
             return false;
         }
         if (exception instanceof UnknownHostException) {
             // Unknown host
+            LOGGER.error("未知主机");
             return false;
         }
         if (exception instanceof SSLException) {
             // SSL handshake exception
+            LOGGER.error("SSL连接失败");
             return false;
         }
         HttpClientContext clientContext = HttpClientContext.adapt(context);
@@ -127,6 +131,7 @@ public class HttpClientUtil {
         }
         try {
             post.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
+            post.setHeader("Content-Type", FORM_URLENCODED);
         } catch (UnsupportedEncodingException e) {
             LOGGER.error(e.getMessage());
             throw new UtilException("postByForm数据转换错误");
