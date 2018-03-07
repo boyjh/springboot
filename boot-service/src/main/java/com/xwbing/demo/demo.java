@@ -10,5 +10,7 @@ import java.util.concurrent.ExecutionException;
  */
 public class demo {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
-        int i = "222".compareTo("11111");
+        int i = "222".compareTo("222");
         System.out.println(i);
+    }
+}
