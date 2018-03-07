@@ -53,7 +53,8 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
         //swagger
 //        registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
 //        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
-        //
+        //服务器部署的tomcat下html路径
+//        registry.addResourceHandler("/js/**").addResourceLocations("html/js/");
         super.addResourceHandlers(registry);
     }
 
@@ -110,7 +111,7 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
         mediaTypes.add(MediaType.APPLICATION_JSON_UTF8);
         mediaTypes.add(MediaType.APPLICATION_FORM_URLENCODED);
         mediaTypes.add(MediaType.APPLICATION_OCTET_STREAM);
-        mediaTypes.add(MediaType.TEXT_HTML);//避免IE出现下载JSON文件的情况
+        mediaTypes.add(MediaType.TEXT_HTML);
         messageConverter.setSupportedMediaTypes(mediaTypes);
         //不忽略对象属性中的null值
         FastJsonConfig fastJsonConfig = new FastJsonConfig();

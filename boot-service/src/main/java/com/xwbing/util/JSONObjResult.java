@@ -29,6 +29,12 @@ public class JSONObjResult {
      */
     private Object data;
 
+    /**
+     * 查询返回值为Object
+     * @param o
+     * @param message
+     * @return
+     */
     public static JSONObject toJSONObj(Object o, String message) {
         JSONObjResult jsonObjResult = new JSONObjResult();
         jsonObjResult.setSuccess(true);
@@ -39,6 +45,11 @@ public class JSONObjResult {
         return JSON.parseObject(JSON.toJSONString(jsonObjResult, SerializerFeature.WriteMapNullValue));
     }
 
+    /**
+     * 增删改返回值为RestMessage
+     * @param rest
+     * @return
+     */
     public static JSONObject toJSONObj(RestMessage rest) {
         JSONObjResult jsonObjResult = new JSONObjResult();
         jsonObjResult.setSuccess(rest.isSuccess());
@@ -48,6 +59,11 @@ public class JSONObjResult {
         return JSON.parseObject(JSON.toJSONString(jsonObjResult, SerializerFeature.WriteMapNullValue));
     }
 
+    /**
+     * 直接返回错误提示
+     * @param error
+     * @return
+     */
     public static JSONObject toJSONObj(String error) {
         JSONObjResult jsonObjResult = new JSONObjResult();
         jsonObjResult.setSuccess(false);

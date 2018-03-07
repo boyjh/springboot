@@ -1,8 +1,9 @@
 package com.xwbing.demo;
 
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.xwbing.domain.entity.model.EntityModel;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 项目名称: boot-module-demo
@@ -12,8 +13,17 @@ import com.xwbing.domain.entity.model.EntityModel;
  */
 public class demo {
     public static void main(String[] args) {
-        EntityModel jsonObject=new EntityModel();
-        String s = JSONObject.toJSONString(jsonObject, SerializerFeature.WriteMapNullValue,SerializerFeature.WriteNullNumberAsZero);
-        System.out.println(s);
+        Map<String, Object> map = new HashMap<>();
+        map.put("a","aa");
+        map.put("aaa","");
+        map.put("bbb",null);
+        System.out.println(map);
+
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("a","aa");
+        jsonObject.put("aaa","");
+        jsonObject.put("bbb",null);
+        System.out.println(jsonObject);
+
     }
 }
