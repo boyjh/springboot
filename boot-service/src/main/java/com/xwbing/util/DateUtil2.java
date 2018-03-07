@@ -163,9 +163,9 @@ public class DateUtil2 {
 
     /**
      * 获取n分钟前/后时间字符串
-     * 返回格式：HH_MM_SS/HH_MM
+     * 返回格式：HH:mm/HH:mm:ss
      *
-     * @param time   格式:hh:mm/hh:mm:ss
+     * @param time   格式:HH:mm/HH:mm:ss
      * @param minute 分钟
      * @return
      */
@@ -177,9 +177,9 @@ public class DateUtil2 {
 
     /**
      * 获取n小时前/后的时间字符串
-     * 返回格式:hh:mm
+     * 返回格式:HH:mm
      *
-     * @param time 格式 hh:mm
+     * @param time 格式 HH:mm
      * @param h
      * @return
      */
@@ -191,9 +191,9 @@ public class DateUtil2 {
 
     /**
      * 获取n天前/后日期
-     * 返回格式：YYYY_MM_DD
+     * 返回格式：yyyy_MM_dd
      *
-     * @param date
+     * @param date yyyy_MM_dd
      * @param day
      * @return
      */
@@ -239,7 +239,7 @@ public class DateUtil2 {
     /**
      * 获取指定月份第一天
      *
-     * @param month YYYY-MM
+     * @param month yyyy-MM
      * @return
      */
     public static String getMonthFirstDay(int month) {
@@ -273,8 +273,8 @@ public class DateUtil2 {
     /**
      * 遍历获取月份集合
      *
-     * @param startMoth YYYY-MM
-     * @param endMonth  YYYY-MM
+     * @param startMoth yyyy-MM
+     * @param endMonth  yyyy-MM
      * @return
      */
     public static List<String> listYearMonth(String startMoth, String endMonth) {
@@ -291,8 +291,8 @@ public class DateUtil2 {
     /**
      * 遍历获取两个日期之间天数集合
      *
-     * @param startDate
-     * @param endDate
+     * @param startDate yyyy-MM-dd
+     * @param endDate yyyy-MM-dd
      * @return
      */
     public static List<String> listDate(String startDate, String endDate) {
@@ -324,8 +324,8 @@ public class DateUtil2 {
     /**
      * 比较两个时间相差几小时（不隔天）
      *
-     * @param startTime 09:00
-     * @param endTime   13:00
+     * @param startTime HH:mm
+     * @param endTime   HH:mm
      */
     public static Double hoursBetween1(String startTime, String endTime) {
         LocalTime sTime = LocalTime.parse(startTime);
@@ -338,8 +338,8 @@ public class DateUtil2 {
     /**
      * 比较两个时间相差几小时（隔天）
      *
-     * @param startDateTime 2016-11-11 10:00
-     * @param endDateTime   2016-11-12 10:00
+     * @param startDateTime yyyy-MM-dd HH:mm
+     * @param endDateTime   yyyy-MM-dd HH:mm
      * @return
      */
 
@@ -354,8 +354,8 @@ public class DateUtil2 {
     /**
      * 比较两个日期相差的天数
      *
-     * @param startDate
-     * @param endDate
+     * @param startDate yyyy-MM-dd
+     * @param endDate   yyyy-MM-dd
      * @return
      */
     public static long daysBetween(String startDate, String endDate) {
@@ -367,8 +367,8 @@ public class DateUtil2 {
     /**
      * 比较两个日期相差的月数
      *
-     * @param startDate
-     * @param endDate
+     * @param startDate yyyy-MM-dd
+     * @param endDate   yyyy-MM-dd
      * @return
      */
     public static long monthBetween(String startDate, String endDate) {
@@ -380,8 +380,8 @@ public class DateUtil2 {
     /**
      * 比较两个日期相差的年数
      *
-     * @param startDate
-     * @param endDate
+     * @param startDate yyyy-MM-dd
+     * @param endDate   yyyy-MM-dd
      * @return
      */
     public static long yearsBetween(String startDate, String endDate) {
@@ -391,10 +391,10 @@ public class DateUtil2 {
     }
 
     /**
-     * 获取两个时间差(时间分量：日时分秒)
+     * 获取两个时间差(时间分量:日时分秒)
      *
-     * @param startDateTime
-     * @param endDateTime
+     * @param startDateTime yyyy-MM-dd HH:mm:ss
+     * @param endDateTime   yyyy-MM-dd HH:mm:ss
      * @return
      */
     public static Map<String, Integer> getDateTimePool(String startDateTime,
@@ -418,10 +418,10 @@ public class DateUtil2 {
     }
 
     /**
-     * 获取两个时间差(时间分量：年月日)
+     * 获取两个时间差(时间分量:年月日)
      *
-     * @param startDate
-     * @param endDate
+     * @param startDate yyyy-MM-dd
+     * @param endDate   yyyy-MM-dd
      * @return
      */
     public static Map<String, Integer> getDatePool(String startDate, String endDate) {
@@ -435,11 +435,6 @@ public class DateUtil2 {
         return map;
     }
 
-    public static void main(String[] args) {
-        Map<String, Integer> datePool = getDatePool("2018-01-01", "2018-01-02");
-        System.out.println(datePool);
-    }
-
     /**
      * 字符串类型日期集合排序
      *
@@ -451,36 +446,12 @@ public class DateUtil2 {
         return list;
     }
 
-    /**
-     * 判断两者时间是否重合 重合返回true
-     * 格式HH:mm:ss/HH:mm
-     *
-     * @param needSTime    需要的时间段
-     * @param needETime    需要的时间段
-     * @param compareSTime 比较的时间段
-     * @param compareETime 比较的时间段
-     * @return
-     */
-    public static boolean compareTime(String needSTime, String needETime, String compareSTime, String compareETime) {
-        if (needSTime.compareTo(compareETime) == 0
-                || needETime.compareTo(compareSTime) == 0)// 表示开始时间等于结束时间,或者结束时间等于开始时间
-            return false;
-        if (needSTime.compareTo(compareSTime) >= 0
-                && needSTime.compareTo(compareETime) < 0)// 需要时间开始时间在比较时间之间,表示已经重复了
-            return true;
-        if (needETime.compareTo(compareSTime) > 0
-                && needETime.compareTo(compareETime) <= 0) {// 需要时间结束时间在比较时间之间,表示已经重复了
-            return true;
-        }
-        if (needSTime.compareTo(compareSTime) < 0
-                && needETime.compareTo(compareETime) > 0)// 需要时间在比较时间前后,表示已经重复了
-            return true;
-        return false;
+    public static void main(String[] args) {
+        boolean b = compareDate("2017-10-10", "2017-10-11", "2017-10-11", "2017-10-12");
+        System.out.println(b);
     }
-
     /**
      * 判断两者时间是否重合 重合返回true
-     * 格式yyyy-MM-dd
      *
      * @param needSDate    需要的时间段
      * @param needEDate    需要的时间段
