@@ -2,8 +2,9 @@ package com.xwbing.demo;
 
 import com.alibaba.fastjson.JSONObject;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 项目名称: boot-module-demo
@@ -13,17 +14,19 @@ import java.util.Map;
  */
 public class demo {
     public static void main(String[] args) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("a","aa");
-        map.put("aaa","");
-        map.put("bbb",null);
-        System.out.println(map);
+        List<JSONObject> list = new ArrayList<>();
+        for (int i = 0; i <2 ; i++) {
+            JSONObject jsonObject=new JSONObject();
+            jsonObject.put("a","a");
+            jsonObject.put("b","b");
+            jsonObject.put("c","c");
+            list.add(jsonObject);
+        }
+        List<String> a1 = list.stream().map(jsonObject ->
+             jsonObject.getString("a")
+        ).collect(Collectors.toList());
+        System.out.println(a1);
 
-        JSONObject jsonObject=new JSONObject();
-        jsonObject.put("a","aa");
-        jsonObject.put("aaa","");
-        jsonObject.put("bbb",null);
-        System.out.println(jsonObject);
 
     }
 }

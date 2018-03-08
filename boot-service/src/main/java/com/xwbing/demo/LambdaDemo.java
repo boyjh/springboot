@@ -37,7 +37,7 @@ public class LambdaDemo {
         lists.sort(Comparator.comparingInt(o -> o));//升序排序，不需要收集
         System.out.println("sort:" + lists.stream().sorted((o1, o2) -> o2 - o1).collect(Collectors.toList()));//排序
         System.out.println("map:" + lists.stream().map(o1 -> o1 * 2).collect(Collectors.toList()));//转换成新元素
-        System.out.println("peak:" + lists.stream().peek(String::valueOf).collect(Collectors.toList()));//生成一个包含原Stream的所有元素的新Stream
+        System.out.println("peak:" + lists.stream().peek(String::valueOf).collect(Collectors.toList()));//生成一个包含原Stream元素的新Stream
         System.out.println("distinct:" + lists.stream().distinct().collect(Collectors.toList()));//去重(去重逻辑依赖元素的equals方法)
         System.out.println("limit:" + lists.stream().limit(4).collect(Collectors.toList()));//截取
         System.out.println("skip:" + lists.stream().skip(4).collect(Collectors.toList()));//丢弃
