@@ -44,7 +44,7 @@ public class WebLogAspect {
         String info = logInfo.value();
         String targetName = joinPoint.getTarget().getClass().getName();
         String methodName = joinPoint.getSignature().getName();
-        logger.info("{} {} : {} started", targetName, methodName, info);
+        logger.info("{} {}:{} started", targetName, methodName, info);
     }
 
     /**
@@ -59,7 +59,7 @@ public class WebLogAspect {
         String info = logInfo.value();
         String targetName = joinPoint.getTarget().getClass().getName();
         String methodName = joinPoint.getSignature().getName();
-        logger.info("{} {} : {} completed in {} ms", targetName, methodName, info, ms);
+        logger.info("{} {}:{} completed in {} ms", targetName, methodName, info, ms);
     }
 
     /**
