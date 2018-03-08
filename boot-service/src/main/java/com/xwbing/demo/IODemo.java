@@ -66,7 +66,7 @@ public class IODemo {
          */
         InputStreamReader isr = new InputStreamReader(fis, "utf-8");
         OutputStreamWriter osw = new OutputStreamWriter(fos, "gbk");
-        int leng = 1;
+        int leng;
         while ((leng = isr.read()) != -1) {
             osw.write(leng);
         }
