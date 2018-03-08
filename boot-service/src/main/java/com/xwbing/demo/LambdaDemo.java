@@ -33,7 +33,7 @@ public class LambdaDemo {
         List<Integer> lists = Arrays.asList(1, 2, 4, 2, 3, 5, 5, 6, 8, 9, 7, 10);
 //        //遍历
 //        Arrays.stream(arrays).forEach(System.out::println);
-        list.forEach(System.out::println);
+        list.forEach(System.out::println);//遍历时：对象,json等引用类型可直接转换
         lists.sort(Comparator.comparingInt(o -> o));//升序排序，不需要收集
         System.out.println("sort:" + lists.stream().sorted((o1, o2) -> o2 - o1).collect(Collectors.toList()));//排序
         System.out.println("map:" + lists.stream().map(o1 -> o1 * 2).collect(Collectors.toList()));//转换成新元素
