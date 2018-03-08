@@ -1,5 +1,7 @@
 package com.xwbing.demo;
 
+import org.springframework.core.io.ClassPathResource;
+
 import java.io.*;
 
 /**
@@ -97,9 +99,11 @@ public class IODemo {
 
 
         /**
-         * 读取配置文件的2种方式
+         * 读取文件
          */
-        String filePath = IODemo.class.getResource("/conf/jdbc.properties").getPath();
-        InputStream in = IODemo.class.getResourceAsStream("/conf/jdbc.properties");
+        String filePath = IODemo.class.getResource("/redis.properties").getPath();
+        InputStream in = IODemo.class.getResourceAsStream("/redis.properties");
+        ClassPathResource pic = new ClassPathResource("file");
+        String absolutePath = pic.getFile().getAbsolutePath();
     }
 }
