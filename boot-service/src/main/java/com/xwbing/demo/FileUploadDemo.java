@@ -18,7 +18,7 @@ import java.util.List;
  */
 @Service
 public class FileUploadDemo {
-    public static List<JSONObject> fileUpload(CommonsMultipartFile[] multipartFiles) {
+    public List<JSONObject> fileUpload(CommonsMultipartFile[] multipartFiles) {
         List<JSONObject> list = new ArrayList<>();
         JSONObject materialInfo;
         for (MultipartFile multipartFile : multipartFiles) {
