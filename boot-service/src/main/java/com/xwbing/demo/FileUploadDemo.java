@@ -20,6 +20,11 @@ import java.util.List;
  */
 @Service
 public class FileUploadDemo {
+    /**
+     * 获取文件数据
+     * @param multipartFiles
+     * @return
+     */
     public List<JSONObject> fileUpload(CommonsMultipartFile[] multipartFiles) {
         List<JSONObject> list = new ArrayList<>();
         JSONObject materialInfo;
