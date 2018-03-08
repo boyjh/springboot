@@ -1,7 +1,5 @@
 package com.xwbing.demo;
 
-import org.springframework.core.io.ClassPathResource;
-
 import java.io.*;
 
 /**
@@ -96,14 +94,5 @@ public class IODemo {
         PrintWriter pw1 = new PrintWriter(osw, true);///////当第一个参数为流，可以使用第二个参数来指定是否自动flush
         pw1.println("......");
         pw1.close();
-
-
-        /**
-         * 读取文件
-         */
-        String filePath = IODemo.class.getResource("/redis.properties").getPath();
-        InputStream in = IODemo.class.getResourceAsStream("/redis.properties");
-        ClassPathResource pic = new ClassPathResource("file");
-        String absolutePath = pic.getFile().getAbsolutePath();
     }
 }
