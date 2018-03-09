@@ -12,12 +12,12 @@ public class PageUtil {
         int size = list.size();
         pageMap.put("count", size);
         int totalPage;
-        if(size==0){
+        if (size == 0) {
             pageMap.put("data", Collections.emptyList());
-            totalPage=0;
-        }else {
+            totalPage = 0;
+        } else {
             int start = (currentPage - 1) * pageSize;
-            start=start>size?size:start;
+            start = start > size ? size : start;
 //            if (start >= size) {
 //                pageMap.put("data", Collections.emptyList());
 //            }
