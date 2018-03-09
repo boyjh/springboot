@@ -38,7 +38,7 @@ public class FileUploadDemo {
                 byte[] data;
                 try {
                     InputStream is = multipartFile.getInputStream();//文件输入流
-                    data = new byte[1024 * 10];
+                    data = new byte[is.available()];
                     is.read(data);
                     is.close();
                 } catch (IOException e) {
@@ -59,11 +59,10 @@ public class FileUploadDemo {
     public void fileUpload(CommonsMultipartFile multipartFile) {
             if (!multipartFile.isEmpty()) {
                 String name = multipartFile.getOriginalFilename();//原始名字
-                String fileType = name.substring(name.lastIndexOf("."));//获取文件后缀
                 ClassPathResource file = new ClassPathResource("file");
                 try {
                     String path = file.getFile().getAbsolutePath();
-                    File targetFile = new File(path+ File.separator+name+fileType);
+                    File targetFile = new File(path+ File.separator+ File.separator+name);
                     if (!targetFile.exists()) {
                         targetFile.createNewFile();
                     }
@@ -75,5 +74,12 @@ public class FileUploadDemo {
     }
 
     public static void main(String[] args) throws Exception{
+        ClassPathResource file = new ClassPathResource("file");
+        String path = file.getFile().getAbsolutePath();
+        File targetFile = new File(path+ File.separator+ File.separator+"test.txt");
+        if(!targetFile.exists()){
+            targetFile.createNewFile(); //创建文件
+        }
+        System.out.println("");
     }
 }

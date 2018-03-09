@@ -27,7 +27,7 @@ public class IODemo {
          * 读
          */
         FileInputStream fis = new FileInputStream("fos.txt");
-        byte[] data = new byte[1024 * 10];
+        byte[] data = new byte[fis.available()];
         int len = fis.read(data);//数据读入data里
         String str = new String(data, 0, len, "gbk");
         fis.close();
