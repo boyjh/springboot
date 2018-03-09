@@ -99,7 +99,7 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
     }
 
     /**
-     * 请求处理程序映射适配器,使用fastJson
+     * fastJson消息转换器(处理@RequestBody/@ResponseBody注解的入参或返回值)
      *
      * @return
      */
