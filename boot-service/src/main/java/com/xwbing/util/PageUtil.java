@@ -1,9 +1,6 @@
 package com.xwbing.util;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 作者: xiangwb
@@ -14,13 +11,20 @@ public class PageUtil {
         Map<String, Object> pageMap = new HashMap<>();
         int size = list.size();
         pageMap.put("count", size);
-        int start = (currentPage - 1) * pageSize;
-        if (start >= size) {
+        int totalPage;
+        if(size==0){
             pageMap.put("data", Collections.emptyList());
+            totalPage=0;
+        }else {
+            int start = (currentPage - 1) * pageSize;
+            start=start>size?size:start;
+//            if (start >= size) {
+//                pageMap.put("data", Collections.emptyList());
+//            }
+            int end = pageSize * currentPage > size ? size : pageSize * currentPage;
+            pageMap.put("data", list.subList(start, end));
+            totalPage = size % pageSize == 0 ? size / pageSize : size / pageSize + 1;
         }
-        int end = pageSize * currentPage > size ? size : pageSize * currentPage;
-        pageMap.put("data", list.subList(start, end));
-        int totalPage = size % pageSize == 0 ? size / pageSize : size / pageSize + 1;
         pageMap.put("totalPage", totalPage);
         return pageMap;
     }
