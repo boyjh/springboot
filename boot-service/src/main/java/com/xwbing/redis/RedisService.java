@@ -7,13 +7,13 @@ package com.xwbing.redis;
  * 作者:  xiangwb
  */
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -21,7 +21,7 @@ import java.util.Set;
 @Component
 @PropertySource("classpath:redis.properties")
 public class RedisService {
-    @Autowired
+    @Resource
     private JedisPool jedisPool;
     @Value("${redisCode}")
     private String redisCode;

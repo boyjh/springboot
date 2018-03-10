@@ -2,7 +2,6 @@ package com.xwbing.service.other;
 
 import com.xwbing.exception.BusinessException;
 import com.xwbing.util.RestMessage;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
