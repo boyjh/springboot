@@ -36,50 +36,50 @@ public class LambdaDemo {
 //        Arrays.stream(arrays).forEach(System.out::println);
         list.forEach(System.out::println);//遍历时：对象,json等引用类型可直接转换
         lists.sort(Comparator.comparingInt(o -> o));//升序排序，不需要收集
-        System.out.println("sort:" + lists.stream().sorted((o1, o2) -> o2 - o1).collect(Collectors.toList()));//排序
-        System.out.println("map:" + lists.stream().map(o1 -> o1 * 2).collect(Collectors.toList()));//转换成新元素
-        System.out.println("peak:" + lists.stream().peek(String::valueOf).collect(Collectors.toList()));//生成一个包含原Stream元素的新Stream
-        System.out.println("distinct:" + lists.stream().distinct().collect(Collectors.toList()));//去重(去重逻辑依赖元素的equals方法)
-        System.out.println("limit:" + lists.stream().limit(4).collect(Collectors.toList()));//截取
-        System.out.println("skip:" + lists.stream().skip(4).collect(Collectors.toList()));//丢弃
+        System.out.println("sort:" + lists.parallelStream().sorted((o1, o2) -> o2 - o1).collect(Collectors.toList()));//排序
+        System.out.println("map:" + lists.parallelStream().map(o1 -> o1 * 2).collect(Collectors.toList()));//转换成新元素
+        System.out.println("peak:" + lists.parallelStream().peek(String::valueOf).collect(Collectors.toList()));//生成一个包含原Stream元素的新Stream
+        System.out.println("distinct:" + lists.parallelStream().distinct().collect(Collectors.toList()));//去重(去重逻辑依赖元素的equals方法)
+        System.out.println("limit:" + lists.parallelStream().limit(4).collect(Collectors.toList()));//截取
+        System.out.println("skip:" + lists.parallelStream().skip(4).collect(Collectors.toList()));//丢弃
         //匹配
-        boolean b1 = lists.stream().anyMatch(o -> o == 1);
-        boolean b = lists.stream().allMatch(o -> o == 1);
-        boolean b2 = lists.stream().noneMatch(o -> o == 1);
+        boolean b1 = lists.parallelStream().anyMatch(o -> o == 1);
+        boolean b = lists.parallelStream().allMatch(o -> o == 1);
+        boolean b2 = lists.parallelStream().noneMatch(o -> o == 1);
         //过滤
-        System.out.println("filter:" + lists.stream().filter(o1 -> o1 > 3 && o1 < 8).collect(Collectors.toList()));
+        System.out.println("filter:" + lists.parallelStream().filter(o1 -> o1 > 3 && o1 < 8).collect(Collectors.toList()));
         Predicate<Integer> gt = integer -> integer > 3;//函数式接口Predicate
         Predicate<Integer> lt = integer -> integer < 8;
-        System.out.println("重用filter:" + lists.stream().filter(gt.and(lt)).collect(Collectors.toList()));
+        System.out.println("重用filter:" + lists.parallelStream().filter(gt.and(lt)).collect(Collectors.toList()));
         //删除
         lists.removeIf(item -> item > 3);//根据条件删除，不用收集
         //聚合
-        System.out.println("reduce:" + lists.stream().reduce((o1, o2) -> o1 + o2).get());//聚合
-        System.out.println("reduce:" + lists.stream().reduce(0, (o1, o2) -> o1 + o2));//聚合(给定默认值)
-        System.out.println("ids:" + list.stream().reduce((sum, item) -> sum + "," + item).get());//常用//list(a,b,c)-->,a,b,c-->a,b,c
-        System.out.println("ids:" + list.stream().reduce("", (sum, item) -> sum + "," + item).substring(1));
-        String s = list.stream().reduce("", (sum, item) -> sum + "'" + item + "',");//list(a,b,c)-->'a','b','c',-->'a','b','c'
+        System.out.println("reduce:" + lists.parallelStream().reduce((o1, o2) -> o1 + o2).get());//聚合
+        System.out.println("reduce:" + lists.parallelStream().reduce(0, (o1, o2) -> o1 + o2));//聚合(给定默认值)
+        System.out.println("ids:" + list.parallelStream().reduce((sum, item) -> sum + "," + item).get());//常用//list(a,b,c)-->,a,b,c-->a,b,c
+        System.out.println("ids:" + list.parallelStream().reduce("", (sum, item) -> sum + "," + item).substring(1));
+        String s = list.parallelStream().reduce("", (sum, item) -> sum + "'" + item + "',");//list(a,b,c)-->'a','b','c',-->'a','b','c'
         System.out.println("id in:" + s.substring(0, s.lastIndexOf(",")));
         //join
-        System.out.println("join:" + list.stream().collect(Collectors.joining(",")));//list(a,b,c)-->a,b,c
+        System.out.println("join:" + list.parallelStream().collect(Collectors.joining(",")));//list(a,b,c)-->a,b,c
         System.out.println("join:" + String.join(",", list));
         //统计
-        IntSummaryStatistics statistics = lists.stream().mapToInt(x -> x).summaryStatistics();
+        IntSummaryStatistics statistics = lists.parallelStream().mapToInt(x -> x).summaryStatistics();
         System.out.println("List中最大的数字 : " + statistics.getMax());
         System.out.println("List中最小的数字 : " + statistics.getMin());
         System.out.println("所有数字的总和   : " + statistics.getSum());
         System.out.println("所有数字的平均值 : " + statistics.getAverage());
         System.out.println("List成员个数     : " + statistics.getCount());
         //all example
-        System.out.println("all:" + lists.stream().filter(Objects::nonNull).distinct().mapToInt(num -> num * 2).skip(2).limit(4).sum());
+        System.out.println("all:" + lists.parallelStream().filter(Objects::nonNull).distinct().mapToInt(num -> num * 2).skip(2).limit(4).sum());
         //遍历list存入map里
-        Map<String, SysUser> userMap = listAll().stream().collect(Collectors.toMap(SysUser::getId, Function.identity()));
-        Map<String, String> nameMap = listAll().stream().collect(Collectors.toMap(SysUser::getId, SysUser::getName));
-        Map<String, String> jsonMap = getList().stream().collect(Collectors.toMap(o1 -> o1.getString(""), o2 -> o2.getString("")));
+        Map<String, SysUser> userMap = listAll().parallelStream().collect(Collectors.toMap(SysUser::getId, Function.identity()));
+        Map<String, String> nameMap = listAll().parallelStream().collect(Collectors.toMap(SysUser::getId, SysUser::getName));
+        Map<String, String> jsonMap = getList().parallelStream().collect(Collectors.toMap(o1 -> o1.getString(""), o2 -> o2.getString("")));
         //分组
-        Map<String, List<SysUser>> groupMap = listAll().stream().collect(Collectors.groupingBy(SysUser::getSex));//(分组条件为key，分组成员为value)
+        Map<String, List<SysUser>> groupMap = listAll().parallelStream().collect(Collectors.groupingBy(SysUser::getSex));//(分组条件为key，分组成员为value)
         //非空判断
-        Optional<String> optional = list.stream().reduce((sum, item) -> sum + "," + item);
+        Optional<String> optional = list.parallelStream().reduce((sum, item) -> sum + "," + item);
         String reduce;
         if (optional.isPresent()) {
             reduce = optional.get();
@@ -127,9 +127,9 @@ public class LambdaDemo {
                 String admin = isAdmin(sysUser.getId());
                 return "Y".equals(admin);
             };
-            return listAll().stream().filter(roles).collect(Collectors.toList());
+            return listAll().parallelStream().filter(roles).collect(Collectors.toList());
         } else {//一步到底
-            return listAll().stream().filter(sysUser -> {
+            return listAll().parallelStream().filter(sysUser -> {
                 String admin = isAdmin(sysUser.getId());
                 return "Y".equals(admin);
             }).collect(Collectors.toList());
