@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 /**
  * Date: 2017/6/15 17:09
  * Author: xiangwb
+ * 说明: 纯遍历list.forEach/需要collect用parallelStream
  */
 public class LambdaDemo {
     @Resource

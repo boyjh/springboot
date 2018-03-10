@@ -35,7 +35,7 @@
         <!-- 自动追加日志信息到文件中，直至文件达到预定的大小，然后自动重新生成另外一个文件来记录之后的日志-->
         <!-- 设置日志格式并配置回滚日志压缩格式(error.log.年份.gz) -->
         <RollingRandomAccessFile name="error_appender"
-                                 immediateFlush="true" fileName="${LOG_HOME}/error.log"
+                                 immediateFlush="false" fileName="${LOG_HOME}/error.log"
                                  filePattern="${LOG_HOME}/error.%d{yyyy-MM-dd}.log.gz">
             <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout>
@@ -49,7 +49,7 @@
         </RollingRandomAccessFile>
         <!-- info.log-->
         <RollingRandomAccessFile name="info_appender"
-                                 immediateFlush="true" fileName="${LOG_HOME}/info.log"
+                                 immediateFlush="false" fileName="${LOG_HOME}/info.log"
                                  filePattern="${LOG_HOME}/info.%d{yyyy-MM-dd}.log.gz">
             <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout>

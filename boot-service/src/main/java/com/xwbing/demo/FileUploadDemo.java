@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * 作者: xiangwb
- * 说明: FileUploadDemo
+ * 说明: FileUpload
  */
 @Service
 public class FileUploadDemo {
@@ -62,7 +62,7 @@ public class FileUploadDemo {
                 ClassPathResource file = new ClassPathResource("file");
                 try {
                     String path = file.getFile().getAbsolutePath();
-                    File targetFile = new File(path+ File.separator+ File.separator+name);
+                    File targetFile = new File(path+ File.separator+name);
                     if (!targetFile.exists()) {
                         targetFile.createNewFile();
                     }
@@ -76,7 +76,7 @@ public class FileUploadDemo {
     public static void main(String[] args) throws Exception{
         ClassPathResource file = new ClassPathResource("file");
         String path = file.getFile().getAbsolutePath();
-        File targetFile = new File(path+ File.separator+ File.separator+"test.txt");
+        File targetFile = new File(path+ File.separator+"test.txt");
         if(!targetFile.exists()){
             targetFile.createNewFile(); //创建文件
         }
