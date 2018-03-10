@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 /**
  * Date: 2017/6/15 17:09
  * Author: xiangwb
- * 说明: 数据量大或者每个元素涉及到复杂操作的用parallelStream
+ * 说明: 数据量大或者每个元素涉及到复杂操作的用parallelStream reduce/collect会并行化处理结果
  */
 public class LambdaDemo {
     @Resource
