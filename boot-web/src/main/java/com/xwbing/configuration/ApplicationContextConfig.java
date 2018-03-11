@@ -52,7 +52,7 @@ public class ApplicationContextConfig {
      * @return
      */
     @Bean(name = "taskExecutor")
-    public static ThreadPoolTaskExecutor getPoolTaskExecutor() {
+    public ThreadPoolTaskExecutor getPoolTaskExecutor() {
         ThreadPoolTaskExecutor poolTaskExecutor = new ThreadPoolTaskExecutor();
         poolTaskExecutor.setCorePoolSize(5);//核心线程数
         poolTaskExecutor.setMaxPoolSize(1000);//最大线程数

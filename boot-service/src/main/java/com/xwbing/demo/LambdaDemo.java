@@ -1,8 +1,6 @@
 package com.xwbing.demo;
 
 import com.alibaba.fastjson.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import javax.annotation.Resource;
@@ -19,8 +17,7 @@ import java.util.stream.Collectors;
  */
 public class LambdaDemo {
     @Resource
-    private static ThreadPoolTaskExecutor taskExecutor;
-    private static final Logger logger = LoggerFactory.getLogger(LambdaDemo.class);
+    private ThreadPoolTaskExecutor taskExecutor;
 
     public static void main(String[] args) {
         //匿名内部类
