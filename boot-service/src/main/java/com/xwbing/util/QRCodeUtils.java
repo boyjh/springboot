@@ -292,7 +292,7 @@ public class QRCodeUtils {
          * @return
          * @throws IOException
          */
-        private InputStream bufferImage_to_InputStream(BufferedImage image) throws IOException {
+        private InputStream bufferImageToInputStream(BufferedImage image) throws IOException {
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             ImageIO.write(image, _format, os);
             return new ByteArrayInputStream(os.toByteArray());
