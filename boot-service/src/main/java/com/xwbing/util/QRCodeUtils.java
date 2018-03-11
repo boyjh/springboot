@@ -74,11 +74,11 @@ public class QRCodeUtils {
     /**
      * 生成自定义尺寸带logo的二维码
      * @param output 图片文件
-     * @param title 二维码图片描述
      * @param width 宽
      * @param height 高
      * @param logoImg logo图片
      * @param text 二维码内容
+     * @param title 二维码图片描述
      * @param size 字体大小
      */
     public static void createCodeLogo(File output,String text,InputStream logoImg, String title, int width, int height,int size) {
@@ -124,7 +124,7 @@ public class QRCodeUtils {
     }
 
     /**
-     * 二维码信息
+     * 二维码信息内部类
      */
     private static class Internal {
         // 二维码大小
@@ -132,10 +132,9 @@ public class QRCodeUtils {
         private int _codeHeight;
         //二维码导出位置
         private File _output;
-        /**
-         * logo文件流，二维码文本
-         */
+        //logo文件流
         private InputStream _logoImg;
+        //标题内容,字体大小
         private String _text;
         private int _fontSize;
         //logo大小
