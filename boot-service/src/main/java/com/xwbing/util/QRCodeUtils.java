@@ -14,10 +14,7 @@ import org.slf4j.LoggerFactory;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -64,33 +61,35 @@ public class QRCodeUtils {
 
     /**
      * 生成默认尺寸带logo的二维码
-     *
-     * @param url     二维码
-     * @param logoImg
-     * @param text
+     * @param output  图片文件
+     * @param text 二维码内容
+     * @param logoImg logo图片
+     * @param title 二维码图片描述
      */
-    public static void createCodeLogo(String url, InputStream logoImg, String text) {
-        createCodeLogo(url, 200, 200, logoImg, text, 14);
+    public static void createCodeLogo(File output,String text, InputStream logoImg, String title) {
+        createCodeLogo(output,text,  logoImg, title, 200, 200,14);
     }
 
     /**
      * 生成自定义尺寸带logo的二维码
-     *
-     * @param text
-     * @param width
-     * @param height
-     * @param logoImg
+     * @param output 图片文件
+     * @param title 二维码图片描述
+     * @param width 宽
+     * @param height 高
+     * @param logoImg logo图片
+     * @param text 二维码内容
+     * @param size 字体大小
      */
-    public static InputStream createCodeLogo(String url, int width, int height, InputStream logoImg, String text, int size) {
+    public static void createCodeLogo(File output,String text,InputStream logoImg, String title, int width, int height,int size) {
         try {
             internal._codeHeight = height;
             internal._codeWidth = width;
             internal._logoImg = logoImg;
-            internal._text = text;
+            internal._text = title;
             internal._fontSize = size;
-            BitMatrix bitMatrix = internal.createCode(url);
-            return internal.addMaterial(bitMatrix);
-            //internal.output(output, bitMatrix);
+            internal._output=output;
+             BitMatrix bitMatrix = internal.createCode(text);
+             internal.addMaterial(bitMatrix);
         } catch (WriterException e) {
             LOGGER.error(e.getMessage());
             throw new UtilException("生成自定义尺寸带logo的二维码失败");
@@ -101,9 +100,8 @@ public class QRCodeUtils {
     /**
      * 解析二维码图片
      *
-     * @param file
+     * @param file 二维码文件
      * @return
-     * @throws Exception
      */
     public static String decode(File file) {
         try {
@@ -124,6 +122,9 @@ public class QRCodeUtils {
         }
     }
 
+    /**
+     * 二维码信息
+     */
     private static class Internal {
         // 二维码大小
         private int _codeWidth;
@@ -148,12 +149,17 @@ public class QRCodeUtils {
         //图像类型
         private final String _format = "png";
 
-        private BitMatrix createCode(String url) throws WriterException {
+        /**
+         * 根据内容生成二维码矩阵
+         * @param text
+         * @return
+         * @throws WriterException
+         */
+        private BitMatrix createCode(String text) throws WriterException {
             Map<EncodeHintType, Object> hints = new HashMap<>();
             hints.put(EncodeHintType.CHARACTER_SET, "UTF-8");
             hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
-            BitMatrix encode = new MultiFormatWriter().encode(url, BarcodeFormat.QR_CODE, _codeWidth, _codeHeight, hints);// 生成矩阵
-            return encode;
+            return new MultiFormatWriter().encode(text, BarcodeFormat.QR_CODE, _codeWidth, _codeHeight, hints);// 生成矩阵
         }
 
         /***
@@ -182,7 +188,7 @@ public class QRCodeUtils {
          *
          * @param bitMatrix
          */
-        private InputStream addMaterial(BitMatrix bitMatrix) {
+        private void addMaterial(BitMatrix bitMatrix) {
             try {
                 BufferedImage image = toBufferedImage(bitMatrix);
                 //计算高宽
@@ -192,15 +198,17 @@ public class QRCodeUtils {
                 //定位文字
                 image = position_text(image);
                 //生成二维码
-                //output(image);
-                //转InputStream
-                return bufferImage_to_InputStream(image);
+                output(image);
             } catch (IOException e) {
                 e.printStackTrace();
-                return null;
             }
         }
 
+        /**
+         * 定位文字
+         * @param image
+         * @return
+         */
         private BufferedImage position_text(BufferedImage image) {
             Graphics2D gh = image.createGraphics();
             gh.setColor(Color.black);
@@ -217,6 +225,9 @@ public class QRCodeUtils {
 
         /**
          * 定位logo
+         * @param image
+         * @return
+         * @throws IOException
          */
         private BufferedImage position_logo(BufferedImage image) throws IOException {
             Graphics2D gs = image.createGraphics();
@@ -280,13 +291,14 @@ public class QRCodeUtils {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception{
 //        String tomcatHome = System.getProperty("catalina.home");
 //        String name="QRcode";
 //        File output=new File(tomcatHome+File.separator+"file"+File.separator+name+".png");
-        File output = new File("C:/Users/10232/Desktop/xwbing.png");
-        createCode("xwbing", 500, 500, output);//text即QRcode
-        String decode = decode(output);
+        File image = new File("C:/Users/ThinkPad/Desktop/xwbing.png");
+        FileInputStream logo=new FileInputStream(image);
+        File out = new File("C:/Users/ThinkPad/Desktop/bbb.png");
+        createCodeLogo(out,"aaaa",logo,"");
     }
 }
 

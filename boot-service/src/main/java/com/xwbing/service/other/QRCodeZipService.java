@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -24,7 +22,7 @@ import java.util.List;
  */
 @Service
 public class QRCodeZipService {
-    private final Logger logger = LoggerFactory.getLogger(QRCodeZipService.class);
+    private final static Logger logger = LoggerFactory.getLogger(QRCodeZipService.class);
 
     /**
      * 生成默认长度的二维码
@@ -33,7 +31,7 @@ public class QRCodeZipService {
      * @param text 二维码内容
      * @return
      */
-    public RestMessage createQRCode(String name, String text) {
+    public static RestMessage createQRCode(String name, String text) {
         RestMessage result = new RestMessage();
         String path = getPath();
         File output = new File(path + File.separator + name + ".png");
@@ -68,19 +66,19 @@ public class QRCodeZipService {
      *
      * @return
      */
-    public RestMessage batchGetImage(HttpServletResponse response, String[] names, String fileName) {
-        List<File> files = new ArrayList<>();
-        if (names.length == 0) {
-            throw new BusinessException("请选择要导出的图片");
-        }
-        Arrays.stream(names).forEach(name -> {
-            File file = getFile(name);
-            if (file != null && file.length() > 0) {
-                files.add(file);
-            }
-        });
-        return zipFile(response, files, fileName);
-    }
+//    public RestMessage batchGetImage(HttpServletResponse response, String[] names, String fileName) {
+//        List<File> files = new ArrayList<>();
+//        if (names.length == 0) {
+//            throw new BusinessException("请选择要导出的图片");
+//        }
+//        Arrays.stream(names).forEach(name -> {
+//            File file = getFile(name);
+//            if (file != null && file.length() > 0) {
+//                files.add(file);
+//            }
+//        });
+//        return zipFile(response, files, fileName);
+//    }
 
     /**
      * 根据文件名获取图片
@@ -102,7 +100,7 @@ public class QRCodeZipService {
      *
      * @return
      */
-    public String getPath() {
+    public static String getPath() {
         ClassPathResource pic = new ClassPathResource("file");
         String absolutePath;
         try {
@@ -125,5 +123,9 @@ public class QRCodeZipService {
         restMessage.setSuccess(true);
         restMessage.setMessage("导出zip文件成功");
         return restMessage;
+    }
+
+    public static void main(String[] args) {
+        createQRCode("aa","aa");
     }
 }
