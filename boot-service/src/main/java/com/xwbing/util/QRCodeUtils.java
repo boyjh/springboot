@@ -10,6 +10,7 @@ import com.xwbing.exception.UtilException;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -295,10 +296,12 @@ public class QRCodeUtils {
 //        String tomcatHome = System.getProperty("catalina.home");
 //        String name="QRcode";
 //        File output=new File(tomcatHome+File.separator+"file"+File.separator+name+".png");
-        File image = new File("C:/Users/ThinkPad/Desktop/xwbing.png");
+        ClassPathResource file = new ClassPathResource("file");
+        String path = file.getFile().getAbsolutePath();
+        File image = new File(path+File.separator+"logo.png");
         FileInputStream logo=new FileInputStream(image);
-        File out = new File("C:/Users/ThinkPad/Desktop/bbb.png");
-        createCodeLogo(out,"aaaa",logo,"");
+        File out = new File(path+File.separator+"QRCode.png");
+        createCodeLogo(out,"java生成的二維碼",logo,"");
     }
 }
 
