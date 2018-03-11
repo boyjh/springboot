@@ -188,7 +188,7 @@ public class QRCodeUtils {
          *
          * @param bitMatrix
          */
-        private InputStream addMaterial(BitMatrix bitMatrix) {
+        private void addMaterial(BitMatrix bitMatrix) {
             try {
                 BufferedImage image = toBufferedImage(bitMatrix);
                 //计算高宽
@@ -199,10 +199,10 @@ public class QRCodeUtils {
                 image = position_text(image);
                 //生成二维码
                 output(image);
-                return bufferImage_to_InputStream(image);
+//                return bufferImage_to_InputStream(image);
             } catch (IOException e) {
                 e.printStackTrace();
-                return null;
+//                return null;
             }
         }
 
