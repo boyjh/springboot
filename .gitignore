@@ -3,12 +3,13 @@
 .mvn
 *.iml
 logs
-
 */target
 */*.iml
 
+### maven ###
 mvnw
 mvnw.cmd
+
 ### eclipse ###
 */.project
 */.classpath
