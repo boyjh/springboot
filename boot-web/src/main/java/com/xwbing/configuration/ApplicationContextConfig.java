@@ -20,6 +20,20 @@ import javax.servlet.Filter;
 //@ImportResource("classpath:applicationContext.xml")//用来加载其他xml配置文件
 public class ApplicationContextConfig {
     /**
+     * encoding编码问题(springBoot默认已经配置好)
+     *
+     * @return
+     */
+    @Bean//相当于XML中的<bean></bean>
+    @ConditionalOnMissingBean(CharacterEncodingFilter.class)
+    public Filter characterEncodingFilter() {
+        CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
+        characterEncodingFilter.setEncoding("UTF-8");
+        characterEncodingFilter.setForceEncoding(true);
+        return characterEncodingFilter;
+    }
+
+    /**
      * 文件上传解析器
      *
      * @return
@@ -33,25 +47,11 @@ public class ApplicationContextConfig {
     }
 
     /**
-     * encoding编码问题(springBoot默认已经配置好)
-     *
-     * @return
-     */
-    @Bean
-    @ConditionalOnMissingBean(CharacterEncodingFilter.class)
-    public Filter characterEncodingFilter() {
-        CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
-        characterEncodingFilter.setEncoding("UTF-8");
-        characterEncodingFilter.setForceEncoding(true);
-        return characterEncodingFilter;
-    }
-
-    /**
      * 任务线程池
      *
      * @return
      */
-    @Bean(name = "taskExecutor")//相当于XML中的<bean></bean>
+    @Bean(name = "taskExecutor")
     public static ThreadPoolTaskExecutor getPoolTaskExecutor() {
         ThreadPoolTaskExecutor poolTaskExecutor = new ThreadPoolTaskExecutor();
         poolTaskExecutor.setCorePoolSize(5);//核心线程数

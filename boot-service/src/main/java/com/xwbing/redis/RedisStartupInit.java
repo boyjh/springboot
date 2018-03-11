@@ -25,6 +25,9 @@ public class RedisStartupInit implements InitializingBean {
     @Value("${redisCode}")
     private String redisCode;
 
+    /**
+     * 初始化bean的时候会执行该方法
+     */
     @Override
     public void afterPropertiesSet() {
         logger.info("redis has been start");
