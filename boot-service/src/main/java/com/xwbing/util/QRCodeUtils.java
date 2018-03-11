@@ -200,8 +200,8 @@ public class QRCodeUtils {
                 //生成二维码
                 output(image);
 //                return bufferImage_to_InputStream(image);
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException c) {
+                LOGGER.error(c.getMessage());
 //                return null;
             }
         }
