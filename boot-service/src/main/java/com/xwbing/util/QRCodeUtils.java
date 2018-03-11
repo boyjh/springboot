@@ -188,7 +188,7 @@ public class QRCodeUtils {
          *
          * @param bitMatrix
          */
-        private void addMaterial(BitMatrix bitMatrix) {
+        private InputStream addMaterial(BitMatrix bitMatrix) {
             try {
                 BufferedImage image = toBufferedImage(bitMatrix);
                 //计算高宽
@@ -199,8 +199,10 @@ public class QRCodeUtils {
                 image = position_text(image);
                 //生成二维码
                 output(image);
+                return bufferImage_to_InputStream(image);
             } catch (IOException e) {
                 e.printStackTrace();
+                return null;
             }
         }
 
@@ -284,6 +286,12 @@ public class QRCodeUtils {
             return image;
         }
 
+        /**
+         * 二维码图片转化为输入流
+         * @param image
+         * @return
+         * @throws IOException
+         */
         private InputStream bufferImage_to_InputStream(BufferedImage image) throws IOException {
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             ImageIO.write(image, _format, os);
