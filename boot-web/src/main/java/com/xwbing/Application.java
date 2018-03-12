@@ -2,7 +2,6 @@ package com.xwbing;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 /**
@@ -12,11 +11,10 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
  * 说明: 启动类
  */
 @SpringBootApplication
+//@Configuration 定义为配置类,相当于xml文件中的<beans></beans>
+//@ComponentScan 组件扫描
+//@EnableAutoConfiguration 借助@Import的帮助,将所有符合自动配置条件的bean定义加载到IoC容器
 public class Application extends SpringBootServletInitializer {
-    @Override
-    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(Application.class);
-    }
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
