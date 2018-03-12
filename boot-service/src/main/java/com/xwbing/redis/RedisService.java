@@ -1,12 +1,5 @@
 package com.xwbing.redis;
 
-/**
- * 说明: 封装redis 缓存服务器服务接口
- * 项目名称: boot-module-demo
- * 创建时间: 2017/5/5 16:44
- * 作者:  xiangwb
- */
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
@@ -17,7 +10,12 @@ import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
+/**
+ * 说明: 封装redis 缓存服务器服务接口
+ * 项目名称: boot-module-demo
+ * 创建时间: 2017/5/5 16:44
+ * 作者:  xiangwb
+ */
 @Component
 @PropertySource("classpath:redis.properties")
 public class RedisService {
@@ -44,7 +42,7 @@ public class RedisService {
      *
      * @param jedis
      */
-    private void returnJedies(Jedis jedis) {
+    private void returnJedis(Jedis jedis) {
         if (null != jedis) {
             jedis.close();
         }
@@ -64,7 +62,7 @@ public class RedisService {
             key = redisCode + key;
             jedis.set(key, value);
         } finally {
-            returnJedies(jedis);
+            returnJedis(jedis);
         }
     }
 
@@ -82,7 +80,7 @@ public class RedisService {
             key = redisCode + key;
             jedis.setex(key, liveTime, value);
         } finally {
-            returnJedies(jedis);
+            returnJedis(jedis);
         }
     }
 
@@ -97,10 +95,9 @@ public class RedisService {
         try {
             jedis = getJedis();
             key = redisCode + key;
-            String value = jedis.get(key);
-            return value;
+            return jedis.get(key);
         } finally {
-            returnJedies(jedis);
+            returnJedis(jedis);
         }
     }
 
@@ -116,7 +113,7 @@ public class RedisService {
             jedis = getJedis();
             return jedis.keys(pattern);
         } finally {
-            returnJedies(jedis);
+            returnJedis(jedis);
         }
     }
     ////////////////////////////////////////list////////////////////////////////////////
@@ -134,7 +131,7 @@ public class RedisService {
             list = redisCode + list;
             jedis.lpush(list, values);
         } finally {
-            returnJedies(jedis);
+            returnJedis(jedis);
         }
     }
 
@@ -151,7 +148,7 @@ public class RedisService {
             key = redisCode + key;
             return jedis.lrange(key, 0, -1);
         } finally {
-            returnJedies(jedis);
+            returnJedis(jedis);
         }
     }
     ////////////////////////////////////////map////////////////////////////////////////
@@ -170,7 +167,7 @@ public class RedisService {
             key = redisCode + key;
             return jedis.hmset(key, hash);
         } finally {
-            returnJedies(jedis);
+            returnJedis(jedis);
         }
     }
 
@@ -187,7 +184,7 @@ public class RedisService {
             map = redisCode + map;
             return jedis.hgetAll(map);
         } finally {
-            returnJedies(jedis);
+            returnJedis(jedis);
         }
     }
 
@@ -206,7 +203,7 @@ public class RedisService {
             map = redisCode + map;
             jedis.hset(key, map, value);
         } finally {
-            returnJedies(jedis);
+            returnJedis(jedis);
         }
     }
 
@@ -224,7 +221,7 @@ public class RedisService {
             map = redisCode + map;
             return jedis.hget(key, map);
         } finally {
-            returnJedies(jedis);
+            returnJedis(jedis);
         }
     }
 
@@ -241,7 +238,7 @@ public class RedisService {
             map = redisCode + map;
             jedis.hdel(key, map);
         } finally {
-            returnJedies(jedis);
+            returnJedis(jedis);
         }
     }
 
@@ -257,7 +254,7 @@ public class RedisService {
             map = redisCode + map;
             return jedis.hkeys(map);
         } finally {
-            returnJedies(jedis);
+            returnJedis(jedis);
         }
     }
 
@@ -273,7 +270,7 @@ public class RedisService {
             map = redisCode + map;
             return jedis.hvals(map);
         } finally {
-            returnJedies(jedis);
+            returnJedis(jedis);
         }
     }
     ///////////////////////////////////public/////////////////////////////////////////////////
@@ -290,7 +287,7 @@ public class RedisService {
             key = redisCode + key;
             jedis.del(key);
         } finally {
-            returnJedies(jedis);
+            returnJedis(jedis);
         }
     }
 
@@ -305,7 +302,7 @@ public class RedisService {
             jedis = getJedis();
             jedis.del(key);
         } finally {
-            returnJedies(jedis);
+            returnJedis(jedis);
         }
     }
 
@@ -322,7 +319,7 @@ public class RedisService {
             key = redisCode + key;
             return jedis.exists(key);
         } finally {
-            returnJedies(jedis);
+            returnJedis(jedis);
         }
     }
 
@@ -335,7 +332,7 @@ public class RedisService {
             jedis = getJedis();
             jedis.flushAll();
         } finally {
-            returnJedies(jedis);
+            returnJedis(jedis);
         }
     }
 
@@ -350,7 +347,7 @@ public class RedisService {
             jedis = getJedis();
             return jedis.flushDB();
         } finally {
-            returnJedies(jedis);
+            returnJedis(jedis);
         }
     }
 
@@ -363,7 +360,7 @@ public class RedisService {
             jedis = getJedis();
             return jedis.dbSize();
         } finally {
-            returnJedies(jedis);
+            returnJedis(jedis);
         }
     }
 
@@ -378,7 +375,7 @@ public class RedisService {
             jedis = getJedis();
             return jedis.ping();
         } finally {
-            returnJedies(jedis);
+            returnJedis(jedis);
         }
     }
 }
