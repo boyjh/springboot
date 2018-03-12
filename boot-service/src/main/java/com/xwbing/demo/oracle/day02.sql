@@ -159,13 +159,13 @@ SELECT ENAME,SAL,COMM FROM EMP_XWBING;
 
 NVL(P1,P2) 若p1为NULL,函数返回p2. 若不为NULL,函数返回p1自身.所以该函数的作用是将NULL替代换为非NULL值
 查看员工总收入?
-SELECT ENAME,nvl(sum(SAL),0) FROM EMP_XWBING;
-SELECT ENAME,IFNULL(sum(SAL),0) FROM EMP_XWBING;//MYSQL---------
+SELECT ENAME,NVL(sum(SAL),0) FROM EMP_XWBING;
+SELECT ENAME,IFNULL(sum(SAL),0) FROM EMP_XWBING;//MYSQL----------------------------
 
 NVL2(P1,P2,P3) 若p1不为NULL值为p2,p1为NULL值为p3
 查看每个员工的奖金情况?
 SELECT ENAME,SAL,NVL2(BOUNS,'有奖金','无奖金') FROM EMP_XWBING;
-//MYSQL
+//MYSQL----------------------------------------
 ISNULL(字段) true返回1
 IF(p1,p2,p3):如果p1是true,返回值为p2;否则返回值则为p3
 IF(ISNULL(p1),p2,p3) 若p1为null值为p2,p1不为null值为p3

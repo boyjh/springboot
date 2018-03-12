@@ -51,7 +51,9 @@ DESC:降序
 SELECT ename ,sal FROM emp_xwbing ORDER BY sal;
 SELECT ename ,sal,deptno FROM emp_xwbing ORDER BY deptno,sal DESC;
 SELECT ename FROM emp_xwbing ORDER BY ename;
-SELECT * FROM emp_xwbing ORDER BY field(字段,'','');//mysql
+SELECT * FROM emp_xwbing ORDER BY decode(job,'doctor',1,'teacher',2,'student',3);
+SELECT * FROM emp_xwbing ORDER BY field(字段名,'','');//MYSQL---------------------------------
+
 
 
 
