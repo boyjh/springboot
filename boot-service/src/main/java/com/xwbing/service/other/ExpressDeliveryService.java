@@ -86,15 +86,15 @@ public class ExpressDeliveryService {
         String result = KdniaoUtil.sendPost(reqURL, params);
         ExpressInfoVo infoVo = JSONObject.parseObject(result, ExpressInfoVo.class);
         if (infoVo != null) {
-            logger.info("查询快递信息:{}", infoVo.getSuccess());
-            String status = infoVo.getState();
-            if (StringUtils.isEmpty(status)) {
-                status = "0";
+            Boolean success = infoVo.getSuccess();
+            logger.info("查询快递信息:{}", success);
+            if(success){
+                String status= StringUtils.isNotEmpty(infoVo.getState()) ? infoVo.getState() : "0";
+                int statusValue = Integer.valueOf(status);
+                Optional<CommonEnum.ExpressStatusEnum> statusEnum = Arrays.stream(CommonEnum.ExpressStatusEnum.values()).filter(obj -> obj.getValue() == statusValue).findFirst();
+                statusEnum.ifPresent(expressStatusEnum -> infoVo.setDescribe(expressStatusEnum.getName()));
+                // TODO: 2017/11/16 根据公司业务处理返回的信息......
             }
-            int statusValue = Integer.valueOf(status);
-            Optional<CommonEnum.ExpressStatusEnum> statusEnum = Arrays.stream(CommonEnum.ExpressStatusEnum.values()).filter(obj -> obj.getValue() == statusValue).findFirst();
-            statusEnum.ifPresent(expressStatusEnum -> infoVo.setDescribe(expressStatusEnum.getName()));
-            // TODO: 2017/11/16 根据公司业务处理返回的信息......
         }
         return infoVo;
     }
