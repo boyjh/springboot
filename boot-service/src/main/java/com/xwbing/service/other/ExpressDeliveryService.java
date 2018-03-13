@@ -89,11 +89,11 @@ public class ExpressDeliveryService {
             logger.info("查询快递信息:{}", infoVo.getSuccess());
             String status = infoVo.getState();
             if (StringUtils.isEmpty(status)) {
-                status = String.valueOf(0);
+                status = "0";
             }
             int statusValue = Integer.valueOf(status);
-            CommonEnum.ExpressStatusEnum expressStatus = Arrays.stream(CommonEnum.ExpressStatusEnum.values()).filter(obj -> obj.getValue() == statusValue).findFirst().get();
-            infoVo.setDescribe(expressStatus.getName());
+            Optional<CommonEnum.ExpressStatusEnum> statusEnum = Arrays.stream(CommonEnum.ExpressStatusEnum.values()).filter(obj -> obj.getValue() == statusValue).findFirst();
+            statusEnum.ifPresent(expressStatusEnum -> infoVo.setDescribe(expressStatusEnum.getName()));
             // TODO: 2017/11/16 根据公司业务处理返回的信息......
         }
         return infoVo;

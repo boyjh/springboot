@@ -116,8 +116,8 @@ public class CommonEnum {
         QUESTION("问题件", 4),
         TO_TAKE("待取件", 5),
         TO_SEND("待派件", 6),
-        HAS_BEEN_SHIPPED("已发货", 8),
-        UFILLED("未发货", 9);
+        HAS_SHIPPED("已发货", 8),
+        UN_SHIPPED("未发货", 9);
         private String name;
         private int value;
 
