@@ -80,7 +80,7 @@ public class ZipUtil {
             try {
                 FileInputStream fis = new FileInputStream(file);
                 ByteArrayOutputStream bos = new ByteArrayOutputStream();
-                byte[] data = new byte[1024 * 10];
+                byte[] data = new byte[fis.available()];
                 int len;
                 while ((len = fis.read(data)) != -1) {
                     bos.write(data, 0, len);

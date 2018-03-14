@@ -15,7 +15,7 @@ import java.io.Serializable;
 public class RestMessage implements Serializable {
     private static final long serialVersionUID = -4167591341943919542L;
     @ApiModelProperty(value = "是否成功")
-    private boolean success = false;
+    private boolean success;
     @ApiModelProperty(value = "成功、错误返回提示信息")
     private String message;
     @ApiModelProperty(value = "返回的数据")

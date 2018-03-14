@@ -66,7 +66,7 @@ public class JsonResult {
      */
     public static JSONObject toJSONObj(String error) {
         JsonResult jsonObjResult = new JsonResult();
-        jsonObjResult.setSuccess(false);
+//        jsonObjResult.setSuccess(false);
         jsonObjResult.setMessage(error);
         return JSON.parseObject(JSONObject.toJSONString(jsonObjResult, SerializerFeature.WriteMapNullValue));
     }
