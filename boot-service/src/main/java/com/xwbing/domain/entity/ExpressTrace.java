@@ -10,6 +10,6 @@ import lombok.Data;
  */
 @Data
 public class ExpressTrace {
-    private String AcceptTime;
-    private String AcceptStation;
+    private String acceptTime;
+    private String acceptStation;
 }

@@ -16,16 +16,16 @@ public class ExpressInfoVo {
     /**
      * 快递代码
      */
-    private String ShipperCode;
-    private Boolean Success;
+    private String shipperCode;
+    private boolean success;
     /**
      * 运单号
      */
-    private String LogisticCode;
+    private String logisticCode;
     /**
      * 状态
      */
-    private String State;
+    private String state;
     /**
      * 物流信息
      */

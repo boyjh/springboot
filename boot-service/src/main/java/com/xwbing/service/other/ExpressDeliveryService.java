@@ -86,7 +86,7 @@ public class ExpressDeliveryService {
         String result = KdniaoUtil.sendPost(reqURL, params);
         ExpressInfoVo infoVo = JSONObject.parseObject(result, ExpressInfoVo.class);
         if (infoVo != null) {
-            Boolean success = infoVo.getSuccess();
+            boolean success = infoVo.isSuccess();
             logger.info("查询快递信息:{}", success);
             if(success){
                 String status= StringUtils.isNotEmpty(infoVo.getState()) ? infoVo.getState() : "0";
@@ -107,21 +107,7 @@ public class ExpressDeliveryService {
         info.setLogisticCode("211386517825");
         try {
             ExpressInfoVo result = api.queryOrderTraces(info);
-            String status = result.getState();
-            if (StringUtils.isEmpty(status)) {
-                status = String.valueOf(0);
-            }
-            String describe = null;
-            //更新订单物流状态
-            for (CommonEnum.ExpressStatusEnum statusEnum : CommonEnum.ExpressStatusEnum.values()) {
-                int value = statusEnum.getValue();
-                if (Integer.valueOf(status) == value) {
-                    describe = statusEnum.getName();
-                    break;
-                }
-            }
-            // TODO: 2017/11/17
-            System.out.print(describe);
+            // TODO: 根据公司业务处理返回的信息......
         } catch (Exception e) {
             throw new BusinessException(e.getMessage());
         }
