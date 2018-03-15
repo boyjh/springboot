@@ -79,7 +79,6 @@ public class ExpressDeliveryService {
         } catch (Exception e) {
             logger.error("快递查询出错:{}", e.getMessage());
             throw new BusinessException("快递查询出错");
-
         }
         // 返回物流信息
         // status: 0|null 无信息 1已取件 2在途中 3已签收 4问题件 5待取件 6待派件 8已发货 9未发货
