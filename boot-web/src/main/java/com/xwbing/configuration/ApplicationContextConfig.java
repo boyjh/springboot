@@ -18,6 +18,7 @@ import javax.servlet.Filter;
 @Configuration//相当于.xml文件中的<beans></beans>
 //@Import(xxx.class)//用来导入其他配置类
 //@ImportResource("classpath:applicationContext.xml")//用来加载其他xml配置文件
+//@ConfigurationProperties(prefix="myProps") //接收application.yml中的myProps下面的所有属性
 public class ApplicationContextConfig {
     /**
      * encoding编码问题(springBoot默认已经配置好)
