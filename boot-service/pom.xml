@@ -68,7 +68,7 @@
         <dependency>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcprov-jdk16</artifactId>
-            <version>1.45</version>
+            <version>${rsa.version}</version>
         </dependency>
         <!-- 引入excel解析jar包 start -->
         <dependency>
