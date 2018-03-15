@@ -40,21 +40,12 @@ spring:
           starttls:
             enable: true
             required: true
-  #b编码
+  #编码
   http:
     encoding:
       charset: UTF-8
       enabled: true
       force: true
-#redis
-redis:
-  host: 192.168.11.202
-  port: 6379
-  password:
-  timeout: 10000
-  maxTotal: 8 #最大连接数
-  maxIdle: 8  #最大空闲数
-  minIdle: 0  #最小空闲数
 
 #log
 logging:

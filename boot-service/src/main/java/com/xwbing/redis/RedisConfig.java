@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
@@ -15,19 +16,20 @@ import redis.clients.jedis.JedisPoolConfig;
  * 作者:  xiangwb
  */
 @Configuration
+@PropertySource("classpath:redis.properties")
 public class RedisConfig {
     private final Logger logger = LoggerFactory.getLogger(RedisConfig.class);
-    @Value("${redis.maxTotal}")
+    @Value("${maxTotal}")
     private Integer maxTotal;
-    @Value("${redis.maxIdle}")
+    @Value("${maxIdle}")
     private Integer maxIdle;
-    @Value("${redis.minIdle}")
+    @Value("${minIdle}")
     private Integer minIdle;
-    @Value("${redis.host}")
+    @Value("${host}")
     private String host;
-    @Value("${redis.port}")
+    @Value("${port}")
     private Integer port;
-    @Value("${redis.timeout}")
+    @Value("${timeout}")
     private Integer timeOut;
 
     @Bean
