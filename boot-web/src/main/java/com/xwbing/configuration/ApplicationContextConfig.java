@@ -20,7 +20,7 @@ import javax.servlet.Filter;
 //@ImportResource("classpath:applicationContext.xml")//用来加载其他xml配置文件
 public class ApplicationContextConfig {
     /**
-     * encoding编码问题(springBoot默认已经配置好)
+     * encoding编码问题(springBoot默认已经配置好,也可以在application.yml里配置)
      *
      * @return
      */

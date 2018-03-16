@@ -8,13 +8,15 @@ package com.xwbing.demo;
  */
 public class Ademo {
     public static void main(String[] args) {
-        qq:
-        for(int i=0;i<10;i++) {
-            for(int j=0;j<10;j++) {
-                if(j == 5) break qq;
-            }
-        }
-        System.out.println("11"=="11");
-        System.out.println("11".equalsIgnoreCase(new String("11")));
+        String a="aaaaa";
+        String b="bbbbb";
+        String aa = aa(a);
+        System.out.println(aa);
+
     }
+    public static String aa(String aa){
+        aa="aa";
+        return aa;
+    }
+
 }

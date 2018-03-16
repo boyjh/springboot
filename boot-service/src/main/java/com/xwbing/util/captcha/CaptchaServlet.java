@@ -15,8 +15,7 @@ import java.io.OutputStream;
 
 /**
  * 说明: 创建验证码的servlet
- * 创建日期: 2016年8月29日 上午10:59:27
- * 作者: xiangwbd
+ * 作者: xiangwb
  */
 public class CaptchaServlet extends HttpServlet {
     private static final long serialVersionUID = -8687266469702749102L;

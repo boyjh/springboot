@@ -50,11 +50,11 @@ public class LambdaDemo {
         System.out.println("重用filter:" + lists.stream().filter(gt.and(lt)).collect(Collectors.toList()));
         //删除
         lists.removeIf(item -> item > 3);//根据条件删除，不用收集
-        //聚合
+        //聚合(最好给默认值,不然如果list为空时,聚合计算时会报错)
         System.out.println("reduce:" + lists.stream().reduce((o1, o2) -> o1 + o2).get());//聚合
         System.out.println("reduce:" + lists.stream().reduce(0, (o1, o2) -> o1 + o2));//聚合(给定默认值)
-        System.out.println("ids:" + list.stream().reduce((sum, item) -> sum + "," + item).get());//常用//list(a,b,c)-->,a,b,c-->a,b,c
-        System.out.println("ids:" + list.stream().reduce("", (sum, item) -> sum + "," + item).substring(1));
+        System.out.println("ids:" + list.stream().reduce((sum, item) -> sum + "," + item).get());//list(a,b,c)-->,a,b,c
+        System.out.println("ids:" + list.stream().reduce("", (sum, item) -> sum + "," + item).substring(1));//list(a,b,c)-->,a,b,c-->a,b,c
         String s = list.stream().reduce("", (sum, item) -> sum + "'" + item + "',");//list(a,b,c)-->'a','b','c',-->'a','b','c'
         System.out.println("id in:" + s.substring(0, s.lastIndexOf(",")));
         //join
