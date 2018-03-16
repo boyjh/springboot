@@ -70,7 +70,7 @@
             <artifactId>bcprov-jdk16</artifactId>
             <version>${rsa.version}</version>
         </dependency>
-        <!-- 引入excel解析jar包 start -->
+        <!-- 解析excel -->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
@@ -85,6 +85,7 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
+            <version>4.5.1</version>
         </dependency>
         <!-- servlet -->
         <dependency>

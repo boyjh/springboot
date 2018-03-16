@@ -45,7 +45,7 @@ public class RedisConfig {
     public JedisPool jedisPool() {
         JedisPoolConfig config = jedisPoolConfig();
         JedisPool pool = new JedisPool(config, host, port, timeOut);
-        logger.info("init JedisPool=================");
+        logger.info("init jedisPool=================");
         return pool;
     }
 }
