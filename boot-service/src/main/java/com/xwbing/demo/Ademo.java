@@ -1,8 +1,5 @@
 package com.xwbing.demo;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * 项目名称: boot-module-demo
  * 创建时间: 2018/1/23 14:45
@@ -11,17 +8,15 @@ import java.util.List;
  */
 public class Ademo {
     public static void main(String[] args) {
-        qq:
-        for(int i=0;i<10;i++) {
-            for(int j=0;j<10;j++) {
-                if(j == 5) break qq;
-            }
-        }
-        System.out.println("11"=="11");
-        System.out.println("11".equalsIgnoreCase(new String("11")));
-        List<Integer> integers = new ArrayList<>();
-        Integer integer1 = integers.stream().reduce((integer, integer2) -> integer + integer2).get();
-        System.out.println(integer1);
+        String a="aaaaa";
+        String b="bbbbb";
+        String aa = aa(a);
+        System.out.println(aa);
 
     }
+    public static String aa(String aa){
+        aa="aa";
+        return aa;
+    }
+
 }
