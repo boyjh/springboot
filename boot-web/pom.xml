@@ -56,7 +56,7 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <!-- maven打war包需要 项目部署到外部tomcat -->
+        <!-- springBoot运行时需要tomcat支持。maven打war包部署到外部tomcat,去除tomcat -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
