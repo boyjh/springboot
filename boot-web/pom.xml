@@ -12,15 +12,15 @@
     <packaging>war</packaging>
     <repositories>
         <repository>
-            <id>nexus-aliyun</id>
-            <name>Nexus aliyun</name>
+            <id>nexus</id>
+            <name>aliyun nexus</name>
             <url>http://maven.aliyun.com/nexus/content/groups/public</url>
         </repository>
     </repositories>
     <pluginRepositories>
         <pluginRepository>
-            <id>nexus-aliyun</id>
-            <name>Nexus aliyun</name>
+            <id>nexus</id>
+            <name>aliyun nexus</name>
             <url>http://maven.aliyun.com/nexus/content/groups/public</url>
         </pluginRepository>
     </pluginRepositories>
