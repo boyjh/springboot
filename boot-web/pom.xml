@@ -77,6 +77,7 @@
     <build>
         <finalName>boot-web</finalName>
         <plugins>
+            <!-- 将SpringBoot应用打包为可执行的jar或war 并指定运行类 -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
