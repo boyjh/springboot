@@ -24,7 +24,7 @@
             <url>http://maven.aliyun.com/nexus/content/groups/public</url>
         </pluginRepository>
     </pluginRepositories>
-    <!-- maven打包上传私服地址。id要跟maven->settings->server匹配 -->
+    <!-- maven打包上传私服地址。id要跟maven->settings->server->id匹配 -->
     <distributionManagement>
         <repository>
             <id>nexus-drore-team-3rd</id>
