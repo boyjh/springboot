@@ -42,7 +42,6 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
         </dependency>
         <!-- 表单校验 -->
         <dependency>
@@ -53,7 +52,6 @@
         <dependency>
             <groupId>redis.clients</groupId>
             <artifactId>jedis</artifactId>
-            <version>2.7.3</version>
         </dependency>
         <!-- 二维码 -->
         <dependency>
@@ -70,9 +68,9 @@
         <dependency>
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcprov-jdk16</artifactId>
-            <version>1.45</version>
+            <version>${rsa.version}</version>
         </dependency>
-        <!-- 引入excel解析jar包 start -->
+        <!-- 解析excel -->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>

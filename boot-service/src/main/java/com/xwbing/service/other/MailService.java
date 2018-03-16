@@ -111,7 +111,7 @@ public class MailService {
      * @param to      收件人
      * @param subject 主题
      * @param content 邮件内容，需要包括一个静态资源的id，比如：<img src='cid:rscId01'>
-     * @param rscPath 静态资源路径和文件名
+     * @param rscPath 静态资源路径
      * @param rscId   静态资源id
      */
     public RestMessage sendInlineResourceMail(String to, String subject, String content, String rscPath, String rscId) {
