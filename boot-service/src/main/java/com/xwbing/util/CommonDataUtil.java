@@ -8,10 +8,9 @@ import java.util.Map;
  * 说明: 公共数据类
  */
 public class CommonDataUtil {
-    private static  Map<String, Object> token;
+    private static  Map<String, Object> token=new HashMap<>();
 
     private CommonDataUtil() {
-        token=new HashMap<>();
     }
 
     public static Object getToken(String key) {
