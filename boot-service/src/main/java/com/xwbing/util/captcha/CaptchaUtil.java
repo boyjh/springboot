@@ -45,7 +45,7 @@ public class CaptchaUtil {
 			drowLine(g);
 		}
 		// 绘制随机字符
-		g.setFont(new Font(FONT_NAME, Font.ROMAN_BASELINE, FONT_SIZE));
+		g.setFont(new Font(FONT_NAME, Font.PLAIN, FONT_SIZE));
 		for (int i = 1; i <= strNum; i++) {
 			randomCode.append(drowString(g, i));
 		}
@@ -104,7 +104,7 @@ public class CaptchaUtil {
 		CaptchaUtil tool = new CaptchaUtil();
 		StringBuffer code = new StringBuffer();
 		BufferedImage image = tool.genRandomCodeImage(code);
-		System.out.println("&gt;&gt;&gt; random code =: " + code);
+		System.out.println("random code : " + code);
 		try {
 			// 将内存中的图片通过流动形式输出到客户端
 			ImageIO.write(image, "JPEG", new FileOutputStream(new File(
