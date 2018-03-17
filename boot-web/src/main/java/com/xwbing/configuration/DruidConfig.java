@@ -2,6 +2,8 @@ package com.xwbing.configuration;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.xwbing.domain.entity.model.DruidDataSourceModel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,6 +23,7 @@ import java.sql.SQLException;
 public class DruidConfig {
     @Resource
     private DruidDataSourceModel druidDataSourceModel;
+    private final Logger logger= LoggerFactory.getLogger(DruidConfig.class);
 
     @Bean
     @Primary
@@ -47,7 +50,7 @@ public class DruidConfig {
         try {
             dataSource.setFilters(druidDataSourceModel.getFilters());
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("获取Druid数据源异常");
         }
         return dataSource;
     }
