@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 import java.sql.SQLException;
 
 /**
- * 说明: 德鲁伊监控:druid/index.html
+ * 说明: 德鲁伊数据源。监控地址:druid/index.html
  * 项目名称: boot-module-demo
  * 创建时间: 2017/5/10 16:36
  * 作者:  xiangwb

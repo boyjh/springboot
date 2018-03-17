@@ -41,6 +41,7 @@ public class ServletFilterConfig {
         registration.addInitParameter("resetEnable", "false");//禁用HTML页面上的“Reset All”功能
         return registration;
     }
+
     /*******************************************************/
 
     @Bean
