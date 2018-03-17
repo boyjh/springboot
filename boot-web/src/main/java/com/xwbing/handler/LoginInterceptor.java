@@ -31,7 +31,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         //映射swagger文档
         set.add("/doc");
         //验证码
-        set.add("/servlet/captcha");
+        set.add("/captcha");
         //swagger
         set.add("/v2/api-docs");
         set.add("/swagger-resources");
