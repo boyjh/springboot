@@ -37,6 +37,7 @@
         <dependency> <!-- mysql driver -->
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
+            <scope>runtime</scope>
         </dependency>
         <!-- lombok:实体类自动生成getting和setting方法,以及equals,hashCode,toString等 -->
         <dependency>
@@ -90,8 +91,7 @@
         <!-- servlet 有些类需要HttpServletResponse和HttpServletRequest的支持 -->
         <dependency>
             <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
+            <artifactId>javax.servlet-api</artifactId>
             <scope>provided</scope>
         </dependency>
     </dependencies>

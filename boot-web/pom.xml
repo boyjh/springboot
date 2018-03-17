@@ -10,6 +10,15 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>boot-web</artifactId>
     <packaging>war</packaging>
+    <developers>
+        <developer>
+            <email>xiangwbs@163.com</email>
+            <name>xiangwb</name>
+            <roles>
+                <role>Java Development Engineer</role>
+            </roles>
+        </developer>
+    </developers>
     <repositories>
         <repository>
             <id>nexus</id>
