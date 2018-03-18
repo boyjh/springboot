@@ -4,7 +4,12 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
-
+/**
+ * 说明: 德鲁伊数据源参数模型
+ * 项目名称: boot-module-demo
+ * 创建时间: 2017/5/10 16:36
+ * 作者:  xiangwb
+ */
 @Data
 @Component
 @PropertySource("classpath:druid.properties")

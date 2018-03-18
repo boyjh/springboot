@@ -12,7 +12,7 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
- * 说明: swagger config
+ * 说明: swagger配置
  * 项目名称: boot-module-demo
  * 创建时间: 2017/5/10 16:36
  * 作者:  xiangwb
