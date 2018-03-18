@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.mail.*;
 import javax.mail.internet.*;
+import java.util.Date;
 import java.util.Properties;
 
 /**
@@ -32,7 +33,11 @@ public class EmailUtil {
             if (StringUtils.isEmpty(serverHost)) {
                 throw new UtilException("发送邮件主机不能为空");
             }
-            props.setProperty("mail.transport.protocol", emailModel.getProtocol());// 使用的协议（JavaMail规范要求）
+            String protocol = emailModel.getProtocol();
+            if(protocol==null || "".equals(protocol.trim())){
+                protocol="smtp";
+            }
+            props.setProperty("mail.transport.protocol", protocol);// 使用的协议（JavaMail规范要求）
             props.setProperty("mail.smtp.host", serverHost); // 发件人的邮箱的
             // SMTP服务器地址
             if (emailModel.getServerPort() != null) {
@@ -77,7 +82,11 @@ public class EmailUtil {
             html.setContent(emailModel.getCentent(), "text/html; charset=utf-8");
             multipart.addBodyPart(html);
             message.setContent(multipart);
-            message.setSentDate(emailModel.getSendTime());// 设置显示的发件时间
+            Date sendTime = emailModel.getSendTime();
+            if(sendTime==null){
+                sendTime=new Date();
+            }
+            message.setSentDate(sendTime);// 设置显示的发件时间
             message.saveChanges();// 保存邮件
             // 4.根据 Session 获取邮件传输对象
             Transport transport = session.getTransport("smtp");

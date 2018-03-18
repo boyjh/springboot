@@ -14,7 +14,7 @@ import java.util.List;
 public class EntityModel {
     private String character ;
     private int number;
-    private Integer inte;
+    private Integer integer;
     private double decimal;
     private boolean b;
     private List list;

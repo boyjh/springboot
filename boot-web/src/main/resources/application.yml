@@ -8,11 +8,11 @@ server:
 #spring
 spring:
   #datasource
-  datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/springboot2?useUnicode=true&characterEncoding=utf8
-    username: root
-    password:
+#  datasource:
+#    driver-class-name: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://127.0.0.1:3306/springboot2?useUnicode=true&characterEncoding=utf8
+#    username: root
+#    password: xwbing
   #jpa
   jpa:
     database: mysql

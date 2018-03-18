@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * 说明: 统一的servlet/filter配置
+ * 说明: 统一servlet/filter配置
  * 项目名称: boot-module-demo
  * 创建时间: 2017/5/10 16:36
  * 作者:  xiangwb
@@ -29,8 +29,8 @@ public class ServletFilterConfig {
     }
 
     @Bean
-    public ServletRegistrationBean druidServlet() {
-        logger.info("注册druidServlet ======================= ");
+    public ServletRegistrationBean statViewServlet() {
+        logger.info("注册druid监控信息显示statViewServlet ======================= ");
         ServletRegistrationBean registration = new ServletRegistrationBean(new StatViewServlet());
         registration.addUrlMappings("/druid/*");
         //添加初始化参数:initParams
@@ -46,9 +46,10 @@ public class ServletFilterConfig {
 
     @Bean
     public FilterRegistrationBean webStatFilter() {
+        logger.info("注册druid监控信息采集webStatFilter ======================= ");
         FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new WebStatFilter());
         filterRegistrationBean.addUrlPatterns("/*");
-        filterRegistrationBean.addInitParameter("exclusions", "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*");
+        filterRegistrationBean.addInitParameter("exclusions", "*.js,*.gif,*.jpg,*.png,*.css,*.ico,*.jsp,/druid/*");
         return filterRegistrationBean;
     }
 }

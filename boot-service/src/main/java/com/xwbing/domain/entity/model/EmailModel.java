@@ -1,5 +1,7 @@
 package com.xwbing.domain.entity.model;
 
+import lombok.Data;
+
 import java.util.Date;
 
 /**
@@ -8,6 +10,7 @@ import java.util.Date;
  * 创建时间: 2017/5/10 16:36
  * 作者:  xiangwb
  */
+@Data
 public class EmailModel  {
 	public EmailModel(){
 		//默认值
@@ -57,97 +60,4 @@ public class EmailModel  {
 	 * 邮件附件的文件名
 	 */
 	private String[] attachFileNames;
-
-	public String getFromEmail() {
-		return fromEmail;
-	}
-
-	public void setFromEmail(String fromEmail) {
-		this.fromEmail = fromEmail;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getToEmail() {
-		return toEmail;
-	}
-
-	public void setToEmail(String toEmail) {
-		this.toEmail = toEmail;
-	}
-
-	public Date getSendTime() {
-		if (sendTime == null)
-			sendTime = new Date();
-		return sendTime;
-	}
-
-	public void setSendTime(Date sendTime) {
-		this.sendTime = sendTime;
-	}
-
-	public String getServerHost() {
-		return serverHost;
-	}
-
-	public void setServerHost(String serverHost) {
-		this.serverHost = serverHost;
-	}
-
-	public Integer getServerPort() {
-		return serverPort;
-	}
-
-	public void setServerPort(Integer serverPort) {
-		this.serverPort = serverPort;
-	}
-
-	public boolean isAuth() {
-		return auth;
-	}
-
-	public void setAuth(boolean auth) {
-		this.auth = auth;
-	}
-
-	public String getSubject() {
-		return subject;
-	}
-
-	public void setSubject(String subject) {
-		this.subject = subject;
-	}
-
-	public String getCentent() {
-		return centent;
-	}
-
-	public void setCentent(String centent) {
-		this.centent = centent;
-	}
-
-	public String[] getAttachFileNames() {
-		return attachFileNames;
-	}
-
-	public void setAttachFileNames(String[] attachFileNames) {
-		this.attachFileNames = attachFileNames;
-	}
-
-	public String getProtocol() {
-		if(protocol==null || "".equals(protocol.trim()))
-			this.protocol="smtp";
-		return protocol;
-	}
-
-	public void setProtocol(String protocol) {
-		this.protocol = protocol;
-	}
-
 }
