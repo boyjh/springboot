@@ -20,10 +20,10 @@ import java.sql.SQLException;
  */
 @Configuration
 @EnableConfigurationProperties(DruidDataSourceModel.class)
-public class DruidConfig {
+public class DruidDataSourceConfig {
     @Resource
     private DruidDataSourceModel druidDataSourceModel;
-    private final Logger logger= LoggerFactory.getLogger(DruidConfig.class);
+    private final Logger logger= LoggerFactory.getLogger(DruidDataSourceConfig.class);
 
     @Bean
     @Primary
