@@ -1,5 +1,6 @@
 package com.xwbing.redis;
 
+import com.xwbing.exception.BusinessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -7,7 +8,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.exceptions.JedisConnectionException;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -37,7 +37,12 @@ public class RedisService {
      * @return
      */
     private Jedis getJedis() {
-        return jedisPool.getResource();
+        try {
+            return jedisPool.getResource();
+        }catch (Exception ex){
+            logger.error("redis连接失败==================================");
+            throw new BusinessException("redis连接失败");
+        }
     }
 
     /**
@@ -377,10 +382,12 @@ public class RedisService {
         try {
             jedis = getJedis();
             String ping = jedis.ping();
-            logger.error("redis连接成功");
+            logger.info("redis连接成功");
             return ping;
-        } catch (JedisConnectionException ex){
-            logger.error("redis连接失败");
+        } catch (BusinessException ex){//获取jedis客户端失败
+            return "";
+        } catch (Exception ex){//ping失败
+            logger.error("redis连接失败=================================");
             return "";
         } finally {
             returnJedis(jedis);
