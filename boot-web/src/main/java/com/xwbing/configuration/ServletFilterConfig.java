@@ -22,7 +22,7 @@ public class ServletFilterConfig {
 
     @Bean
     public ServletRegistrationBean captchaServlet() {
-        logger.info("注册验证码servlet ======================= ");
+        logger.info("注册登陆验证码servlet ======================= ");
         ServletRegistrationBean registration = new ServletRegistrationBean(new CaptchaServlet());
         registration.addUrlMappings("/captcha");
         return registration;
