@@ -42,7 +42,7 @@ public class ServletFilterConfig {
         return registration;
     }
 
-    /*******************************************************/
+    /*servlet*****************************************************filter*/
 
     @Bean
     public FilterRegistrationBean webStatFilter() {
