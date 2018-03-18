@@ -1,7 +1,5 @@
 package com.xwbing.redis;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +16,6 @@ import redis.clients.jedis.JedisPoolConfig;
 @Configuration
 @PropertySource("classpath:redis.properties")
 public class RedisConfig {
-    private final Logger logger = LoggerFactory.getLogger(RedisConfig.class);
     @Value("${maxTotal}")
     private Integer maxTotal;
     @Value("${maxIdle}")
@@ -44,8 +41,6 @@ public class RedisConfig {
     @Bean
     public JedisPool jedisPool() {
         JedisPoolConfig config = jedisPoolConfig();
-        JedisPool pool = new JedisPool(config, host, port, timeOut);
-        logger.info("init jedisPool=================");
-        return pool;
+        return new JedisPool(config, host, port, timeOut);
     }
 }

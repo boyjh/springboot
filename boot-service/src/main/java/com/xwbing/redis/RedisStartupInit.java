@@ -30,16 +30,18 @@ public class RedisStartupInit implements InitializingBean {
      */
     @Override
     public void afterPropertiesSet() {
-        logger.info("redis启动===执行方法===刷新缓存==================");
+        logger.info("redis启动===执行方法===刷新缓存==========================");
+        redisService.ping();
         redisService.set("test", "成功");
-        logger.info("redis获取测试数据:{}===============================",redisService.get("test"));
+        logger.info("redis获取测试数据:{}",redisService.get("test"));
         redisService.del("xwb");
         boolean exists = redisService.exists("xwb");
-        logger.info("redis删除测试数据:{}=================================",!exists);
+        logger.info("redis删除测试数据:{}",!exists);
         Set<String> set = redisService.keys(redisCode + "*");
         set.forEach(keyStr -> {
-            logger.info("删除缓存名称:{}===========================",keyStr);
+            logger.info("删除缓存名称:{}",keyStr);
             redisService.delInit(keyStr);
         });
+        logger.info("redis初始化成功=================================");
     }
 }

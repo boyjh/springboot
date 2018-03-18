@@ -1,10 +1,13 @@
 package com.xwbing.redis;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.exceptions.JedisConnectionException;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -23,7 +26,7 @@ public class RedisService {
     private JedisPool jedisPool;
     @Value("${redisCode}")
     private String redisCode;
-
+    private final Logger logger= LoggerFactory.getLogger(RedisService.class);
     private RedisService() {
 
     }
@@ -373,7 +376,12 @@ public class RedisService {
         Jedis jedis = null;
         try {
             jedis = getJedis();
-            return jedis.ping();
+            String ping = jedis.ping();
+            logger.error("redis连接成功");
+            return ping;
+        } catch (JedisConnectionException ex){
+            logger.error("redis连接失败");
+            return "";
         } finally {
             returnJedis(jedis);
         }
