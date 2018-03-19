@@ -8,10 +8,9 @@ package com.xwbing.demo;
  */
 public class Ademo {
     public static void main(String[] args) {
-        String a="aaaaa";
-        String b="bbbbb";
-        String aa = aa(a);
-        System.out.println(aa);
+      double a=10;
+      a=a+a*0.2;
+        System.out.println(a);
 
     }
     public static String aa(String aa){
