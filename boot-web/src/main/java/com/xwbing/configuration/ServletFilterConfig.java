@@ -35,7 +35,7 @@ public class ServletFilterConfig {
         registration.addUrlMappings("/druid/*");
         //添加初始化参数:initParams
 //        registration.addInitParameter("allow", "127.0.0.1");//IP白名单(没有配置或者为空,则允许所有访问)
-//        registration.addInitParameter("deny", "192.168.31.234");//IP黑名单(存在共同时,deny优先于allow)
+//        registration.addInitParameter("deny", "172.17.21.232");//IP黑名单(存在共同时,deny优先于allow)
         registration.addInitParameter("loginUsername", "admin");//用户名
         registration.addInitParameter("loginPassword", "123456");//密码
         registration.addInitParameter("resetEnable", "true");//禁用HTML页面上的"Reset All"功能
@@ -50,7 +50,7 @@ public class ServletFilterConfig {
         FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new WebStatFilter());
         filterRegistrationBean.addUrlPatterns("/*");
         filterRegistrationBean.addInitParameter("exclusions", "*.js,*.gif,*.jpg,*.png,*.css,*.ico,*.jsp,/druid/*");
-        filterRegistrationBean.addInitParameter("profileEnable", "true");//监控单个url调用的sql列表
+        filterRegistrationBean.addInitParameter("profileEnable", "true");
         return filterRegistrationBean;
     }
 }

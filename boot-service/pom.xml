@@ -43,7 +43,7 @@
         <dependency> <!-- druid连接池 -->
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
-            <version>1.0.20</version>
+            <version>1.1.5</version>
         </dependency>
         <dependency> <!-- mysql driver -->
             <groupId>mysql</groupId>
