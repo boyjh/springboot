@@ -37,6 +37,8 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         set.add("/swagger-resources");
         set.add("/configuration/ui");
         set.add("/configuration/security");
+        //德鲁伊监控
+        set.add("/druid");
     }
 
     @Override
