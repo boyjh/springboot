@@ -54,7 +54,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
             if (CommonDataUtil.getToken(CommonConstant.CURRENT_USER) != null) {
                 return true;
             } else {
-                logger.info("用户未登录");
+                logger.error("用户未登录");
                 OutputStream outputStream = response.getOutputStream();
                 RestMessage restMessage = new RestMessage();
                 restMessage.setMessage("请先登录");

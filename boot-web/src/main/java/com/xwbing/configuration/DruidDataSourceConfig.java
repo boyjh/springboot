@@ -50,7 +50,7 @@ public class DruidDataSourceConfig {
         try {
             dataSource.setFilters(druidDataSourceModel.getFilters());
         } catch (SQLException e) {
-            logger.error("获取druid数据源异常");
+            logger.error("配置druid过滤器异常");
         }
         return dataSource;
     }
