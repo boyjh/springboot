@@ -17,6 +17,7 @@ import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.BufferedOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -275,6 +276,9 @@ public class SysUserService {
         //保存登录数据
         CommonDataUtil.setToken(CommonConstant.CURRENT_USER, userName);
         CommonDataUtil.setToken(CommonConstant.CURRENT_USER_ID, user.getId());
+        //生成session
+        HttpSession session = request.getSession();
+        session.setAttribute(userName, userName);
         //保存登录信息
         SysUserLoginInOut loginInOut = new SysUserLoginInOut();
         loginInOut.setCreateTime(new Date());
@@ -303,6 +307,9 @@ public class SysUserService {
         if (user != null) {
             //清空公共数据
             CommonDataUtil.clearMap();
+            //清除session参数
+            HttpSession session = request.getSession();
+            session.removeAttribute(user.getUserName());
             //保存登出信息
             SysUserLoginInOut loginInOut = new SysUserLoginInOut();
             loginInOut.setCreateTime(new Date());
