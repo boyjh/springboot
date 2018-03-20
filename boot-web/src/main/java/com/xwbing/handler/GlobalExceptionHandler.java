@@ -2,6 +2,7 @@ package com.xwbing.handler;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.exception.BusinessException;
+import com.xwbing.exception.UtilException;
 import com.xwbing.util.JsonResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +46,20 @@ public class GlobalExceptionHandler {
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
     public JSONObject handlerBusinessException(BusinessException ex) {
+        logger.error(ex.getMessage());
+        return JsonResult.toJSONObj(ex.getMessage());
+    }
+
+    /**
+     * 自定义工具类异常
+     *
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler(value = UtilException.class)
+    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
+    public JSONObject handlerUtilException(UtilException ex) {
         logger.error(ex.getMessage());
         return JsonResult.toJSONObj(ex.getMessage());
     }
