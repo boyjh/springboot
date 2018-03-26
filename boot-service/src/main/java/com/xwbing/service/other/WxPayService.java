@@ -1,12 +1,12 @@
 package com.xwbing.service.other;
 
-import com.sun.xml.internal.ws.util.xml.XmlUtil;
 import com.xwbing.domain.entity.wxpay.*;
 import com.xwbing.exception.BusinessException;
 import com.xwbing.exception.PayException;
+import com.xwbing.util.RandomUtil;
 import com.xwbing.util.payWxpay.ClientCustomSSL;
-import com.xwbing.util.payWxpay.RandomKit;
 import com.xwbing.util.payWxpay.WxSignKit;
+import com.xwbing.util.payWxpay.XmlUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
@@ -173,7 +173,7 @@ public class WxPayService {
                 logger.info(content + "===========++++");
                 // 解析返回值
                 Map<String, String> returnMap;
-                returnMap = XmlUtil.doXMLParse(content);
+                returnMap = com.xwbing.util.payWxpay.XmlUtil.doXMLParse(content);
                 //返回状态码SUCCESS/FAIL
                 result.setResultCode(returnMap.get("return_code"));
                 //返回信息  非空,为错误原因
@@ -369,7 +369,7 @@ public class WxPayService {
         Map<String, String> params = new HashMap<String, String>();
         params.put("appid", appId);
         params.put("mch_id", mchId);
-        String nonce_str = RandomKit.buildRandom(32);
+        String nonce_str = RandomUtil.buildRandom(32);
         params.put("nonce_str", nonce_str);
         params.put("body", param.getBody());
         params.put("out_trade_no", param.getOutTradeNo());
@@ -401,7 +401,7 @@ public class WxPayService {
         Map<String, String> params = new HashMap<String, String>();
         params.put("appid", appId);
         params.put("mch_id", mchId);
-        String nonce_str = RandomKit.buildRandom(32);
+        String nonce_str = RandomUtil.buildRandom(32);
         params.put("nonce_str", nonce_str);
         if (StringUtils.isEmpty(param.getTransactionId()) && StringUtils.isEmpty(param.getOutTradeNo())) {
             throw new PayException("商户订单号和微信订单号不能同时为空!");
@@ -450,7 +450,7 @@ public class WxPayService {
         if (StringUtils.isNotEmpty(outTradeNo)) {
             params.put("out_trade_no", outTradeNo);
         }
-        String nonce_str = RandomKit.buildRandom(32);
+        String nonce_str = RandomUtil.buildRandom(32);
         params.put("nonce_str", nonce_str);
         //签名放最后的
         String sign = WxSignKit.buildSign(params, apiKey);
@@ -494,7 +494,7 @@ public class WxPayService {
         if (StringUtils.isNotEmpty(refundid)) {
             params.put("refund_id", refundid);
         }
-        String nonce_str = RandomKit.buildRandom(32);
+        String nonce_str = RandomUtil.buildRandom(32);
         params.put("nonce_str", nonce_str);
         //签名放最后的
         String sign = WxSignKit.buildSign(params, apiKey);

@@ -4,6 +4,7 @@
 package com.xwbing.util.payWxpay;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.security.SignatureException;
@@ -30,7 +31,7 @@ public class MD5Signature {
 		try {
 			String mySign = DigestUtils.md5Hex(getContentBytes(tosign, "utf-8"));
 
-			return StringUtil.equals(mySign, sign) ? true : false;
+			return StringUtils.equals(mySign, sign) ? true : false;
 		} catch (UnsupportedEncodingException e) {
 			throw new SignatureException("MD5验证签名[content = " + content + "; charset =utf-8 " + "; signature = " + sign + "]发生异常!", e);
 		}
@@ -41,7 +42,7 @@ public class MD5Signature {
 		try {
 			String mySign = DigestUtils.md5Hex(getContentBytes(tosign, charset));
 
-			return StringUtil.equals(mySign, sign) ? true : false;
+			return StringUtils.equals(mySign, sign) ? true : false;
 		} catch (UnsupportedEncodingException e) {
 			throw new SignatureException("MD5验证签名[content = " + content + "; charset =" + charset + "; signature = " + sign + "]发生异常!", e);
 		}
@@ -55,7 +56,7 @@ public class MD5Signature {
 	 * @throws UnsupportedEncodingException
 	 */
 	protected static byte[] getContentBytes(String content, String charset) throws UnsupportedEncodingException {
-		if (StringUtil.isEmpty(charset)) {
+		if (StringUtils.isEmpty(charset)) {
 			return content.getBytes();
 		}
 

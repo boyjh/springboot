@@ -8,7 +8,7 @@ import java.util.Random;
  * 说明:生成随机码
  * 作者: xiangwb
  */
-public class RadomUtil {
+public class RandomUtil {
     public static String buildRandom(int length) {
         if (length < 1) {
             throw new UtilException("参数异常!!!");
