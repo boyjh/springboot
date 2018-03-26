@@ -35,7 +35,7 @@ public class PassWordUtil {
     public static String[] getUserSecret(String password, String pwdSalt) {
         String[] str = new String[3];
         if (StringUtils.isEmpty(password)) {
-            password = RandomUtil.buildRandom(PWD_LENGTH);
+            password = RadomUtil.buildRandom(PWD_LENGTH);
         }
         // 密码盐值
         byte[] salt;
