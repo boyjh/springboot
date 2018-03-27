@@ -1,11 +1,16 @@
-package com.xwbing.domain.entity.alipay;
+package com.xwbing.domain.entity.pay.alipay;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 说明: 支付宝查询状态
- * 项目名称: spring-demo
+ * 项目名称: boot-module-demo
  * 创建时间: 2017/5/10 17:38
  * 作者:  xiangwb
  */
+@EqualsAndHashCode(callSuper = true)
+@Data
 public class AlipayQueryResult extends  AlipayBaseResult {
     /**
      * 交易支付状态
@@ -14,14 +19,6 @@ public class AlipayQueryResult extends  AlipayBaseResult {
 
     public AlipayQueryResult(boolean success) {
         this.setSuccess(success);
-    }
-
-    public String getTradeStatus() {
-        return tradeStatus;
-    }
-
-    public void setTradeStatus(String tradeStatus) {
-        this.tradeStatus = tradeStatus;
     }
 }
 

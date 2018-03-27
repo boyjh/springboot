@@ -1,14 +1,15 @@
-package com.xwbing.domain.entity.wxpay;
+package com.xwbing.domain.entity.pay.wxpay;
 
+import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
 /**
  * 说明: 微信支付结果基础类
- * 项目名称: spring-demo
+ * 项目名称: boot-module-demo
  * 创建时间: 2017/5/10 17:42
  * 作者:  xiangwb
  */
-
+@Data
 public class WxBaseResult {
     /**
      * 返回状态码
@@ -25,29 +26,9 @@ public class WxBaseResult {
 
     public boolean isSuccess() {
         if (StringUtils.isNotEmpty(resultCode)) {
-            return resultCode.equals("SUCCESS");
+            return ("SUCCESS".equals(resultCode));
         }
         return isSuccess;
-    }
-
-    public void setSuccess(boolean success) {
-        isSuccess = success;
-    }
-
-    public String getResultCode() {
-        return resultCode;
-    }
-
-    public void setResultCode(String resultCode) {
-        this.resultCode = resultCode;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
     }
 
     @Override

@@ -1,11 +1,11 @@
-package com.xwbing.domain.entity.alipay;
+package com.xwbing.domain.entity.pay.alipay;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
 /**
  * 说明: 支付宝扫码支付参数
- * 项目名称: spring-demo
+ * 项目名称: boot-module-demo
  * 创建时间: 2017/5/10 17:34
  * 作者:  xiangwb
  */

@@ -1,18 +1,18 @@
-package com.xwbing.domain.entity.wxpay;
+package com.xwbing.domain.entity.pay.wxpay;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
  * 说明: 微信扫码支付接口结果
- * 项目名称: spring-demo
+ * 项目名称: boot-module-demo
  * 创建时间: 2017/5/10 17:42
  * 作者:  xiangwb
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class WxBarCodePayResult extends WxBaseResult {
-    public static final String HASPAYED = "ORDERPAID";
+    public static final String HAS_PAYED = "ORDERPAID";
     /**
      * 公众账号ID
      */

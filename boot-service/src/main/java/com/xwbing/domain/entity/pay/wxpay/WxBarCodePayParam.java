@@ -1,11 +1,11 @@
-package com.xwbing.domain.entity.wxpay;
+package com.xwbing.domain.entity.pay.wxpay;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
 /**
  * 说明: 微信扫码支付接口参数
- * 项目名称: spring-demo
+ * 项目名称: boot-module-demo
  * 创建时间: 2017/5/10 17:41
  * 作者:  xiangwb
  */
@@ -40,5 +40,4 @@ public class WxBarCodePayParam {
         this.body = body;
         this.totalFee = totalFee;
     }
-
 }

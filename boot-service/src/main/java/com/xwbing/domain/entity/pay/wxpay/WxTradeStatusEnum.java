@@ -1,8 +1,8 @@
-package com.xwbing.domain.entity.wxpay;
+package com.xwbing.domain.entity.pay.wxpay;
 
 /**
  * 说明: 微信支付结果状态
- * 项目名称: spring-demo
+ * 项目名称: boot-module-demo
  * 创建时间: 2017/5/10 17:44
  * 作者:  xiangwb
  */
@@ -15,7 +15,6 @@ public enum WxTradeStatusEnum {
     REVOKED("已撤销（刷卡支付）", "REVOKED"),
     USERPAYING("用户支付中", "USERPAYING"),
     PAYERROR("支付失败", "PAYERROR");
-    // 成员变量
     private String code;
     private String name;
 

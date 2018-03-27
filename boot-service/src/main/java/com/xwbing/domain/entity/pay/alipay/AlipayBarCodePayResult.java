@@ -1,4 +1,4 @@
-package com.xwbing.domain.entity.alipay;
+package com.xwbing.domain.entity.pay.alipay;
 
 import com.alipay.api.domain.TradeFundBill;
 import lombok.Data;
@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * 说明: 条形码支付结果
- * 项目名称: spring-demo
+ * 项目名称: boot-module-demo
  * 创建时间: 2017/5/10 17:36
  * 作者:  xiangwb
  */
@@ -62,6 +62,6 @@ public class AlipayBarCodePayResult extends AlipayBaseResult {
     @Override
     public boolean isSuccess() {
         //如果已支付过也认为是成功
-        return super.getCode().equals("10000");
+        return "10000".equals(super.getCode());
     }
 }

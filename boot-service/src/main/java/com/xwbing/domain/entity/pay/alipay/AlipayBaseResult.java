@@ -1,10 +1,10 @@
-package com.xwbing.domain.entity.alipay;
+package com.xwbing.domain.entity.pay.alipay;
 
 import lombok.Data;
 
 /**
  * 说明: 支付宝接口基础类
- * 项目名称: spring-demo
+ * 项目名称: boot-module-demo
  * 创建时间: 2017/5/10 17:35
  * 作者:  xiangwb
  */

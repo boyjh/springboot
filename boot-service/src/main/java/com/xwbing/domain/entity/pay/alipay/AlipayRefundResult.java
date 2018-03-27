@@ -1,4 +1,4 @@
-package com.xwbing.domain.entity.alipay;
+package com.xwbing.domain.entity.pay.alipay;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
@@ -8,7 +8,7 @@ import java.util.Date;
 
 /**
  * 说明: 支付宝退款结果
- * 项目名称: spring-demo
+ * 项目名称: boot-module-demo
  * 创建时间: 2017/5/10 17:39
  * 作者:  xiangwb
  */

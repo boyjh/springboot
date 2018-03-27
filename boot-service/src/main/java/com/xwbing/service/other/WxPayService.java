@@ -1,6 +1,6 @@
 package com.xwbing.service.other;
 
-import com.xwbing.domain.entity.wxpay.*;
+import com.xwbing.domain.entity.pay.wxpay.*;
 import com.xwbing.exception.BusinessException;
 import com.xwbing.exception.PayException;
 import com.xwbing.util.payWxpay.ClientCustomSSL;
@@ -76,14 +76,14 @@ public class WxPayService {
 
     /**
      * 条形码扫码付
+     *
      * @param param
      * @return
-     * @throws PayException
      */
-    public WxBarCodePayResult barCodePay(WxBarCodePayParam param) throws PayException {
+    public WxBarCodePayResult barCodePay(WxBarCodePayParam param) {
         WxBarCodePayResult result = new WxBarCodePayResult(false);
         HttpPost post = new HttpPost(barCodePayUrl);
-        //输入参数为转为strxml
+        //输入参数为转为strXml
         String reqBody = buildBarCodeRequestBody(param);
         post.setEntity(new StringEntity(reqBody, "UTF-8"));
         CloseableHttpClient httpclient;
@@ -93,9 +93,8 @@ public class WxPayService {
             CloseableHttpResponse response = httpclient.execute(post);
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 HttpEntity entity = response.getEntity();
-                //返回结果为strxml
+                //返回结果为strXml
                 String content = EntityUtils.toString(entity, "UTF-8");
-                logger.info(content + "===========++++");
                 // 解析返回值
                 Map<String, String> returnMap;
                 returnMap = XmlUtil.doXMLParse(content);
@@ -151,14 +150,14 @@ public class WxPayService {
 
     /**
      * 退款
+     *
      * @param param
      * @return
-     * @throws PayException
      */
-    public WxRefundResult refund(WxRefundParam param) throws PayException {
+    public WxRefundResult refund(WxRefundParam param) {
         WxRefundResult result = new WxRefundResult(false);
         HttpPost post = new HttpPost(refundUrl);
-        //输入参数为转为strxml
+        //输入参数为转为strXml
         String reqBody = buildRefundBarCodeRequestBody(param);
         post.setEntity(new StringEntity(reqBody, "UTF-8"));
         CloseableHttpClient httpclient;
@@ -167,10 +166,9 @@ public class WxPayService {
             httpclient = ClientCustomSSL.getCloseableHttpClient(mchId);
             CloseableHttpResponse response = httpclient.execute(post);
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                //返回结果为strxml
+                //返回结果为strXml
                 HttpEntity entity = response.getEntity();
                 String content = EntityUtils.toString(entity, "UTF-8");
-                logger.info(content + "===========++++");
                 // 解析返回值
                 Map<String, String> returnMap;
                 returnMap = com.xwbing.util.payWxpay.XmlUtil.doXMLParse(content);
@@ -231,10 +229,10 @@ public class WxPayService {
      * @param transactionId 微信的订单号(推荐)
      * @return
      */
-    public WxQueryResult oderQuery(String outTradeNo, String transactionId) throws PayException {
+    public WxQueryResult orderQuery(String outTradeNo, String transactionId) {
         WxQueryResult result = new WxQueryResult(false);
         HttpPost post = new HttpPost(orderQueryUrl);
-        //输入参数为转为strxml
+        //输入参数为转为strXml
         String reqBody = buildQueryRequestBody(outTradeNo, transactionId);
         post.setEntity(new StringEntity(reqBody, "UTF-8"));
         CloseableHttpClient httpclient;
@@ -244,9 +242,8 @@ public class WxPayService {
             CloseableHttpResponse response = httpclient.execute(post);
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 HttpEntity entity = response.getEntity();
-                //返回结果为strxml
+                //返回结果为strXml
                 String content = EntityUtils.toString(entity, "UTF-8");
-                logger.info(content + "===========++++");
                 // 解析返回值
                 Map<String, String> returnMap;
                 returnMap = XmlUtil.doXMLParse(content);
@@ -299,12 +296,11 @@ public class WxPayService {
      * @param ouRefundNo    商户退款单号(推荐)
      * @param refundid      微信退款单号(推荐)
      * @return
-     * @throws PayException
      */
-    public WxQueryResult refundQuery(String outTradeNo, String transactionId, String ouRefundNo, String refundid) throws PayException {
+    public WxQueryResult refundQuery(String outTradeNo, String transactionId, String ouRefundNo, String refundid) {
         WxQueryResult result = new WxQueryResult(false);
         HttpPost post = new HttpPost(refundQueryUrl);
-        //输入参数为转为strxml
+        //输入参数为转为strXml
         String reqBody = buildRefundQueryRequestBody(outTradeNo, transactionId, ouRefundNo, refundid);
         post.setEntity(new StringEntity(reqBody, "UTF-8"));
         CloseableHttpClient httpclient;
@@ -314,9 +310,8 @@ public class WxPayService {
             CloseableHttpResponse response = httpclient.execute(post);
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 HttpEntity entity = response.getEntity();
-                //返回结果为strxml
+                //返回结果为strXml
                 String content = EntityUtils.toString(entity, "UTF-8");
-                logger.info(content + "===========++++");
                 // 解析返回值
                 Map<String, String> returnMap;
                 returnMap = XmlUtil.doXMLParse(content);
@@ -324,7 +319,7 @@ public class WxPayService {
                 result.setMessage(returnMap.get("return_msg"));
                 //此字段是通信标识，非交易标识
                 if ("FAIL".equalsIgnoreCase(returnMap.get("return_code"))) {
-                    logger.info("wx barCodePay failed!");
+                    logger.error("wx barCodePay failed!");
                     result.setSuccess(false);
                     return result;
                 }
@@ -369,8 +364,8 @@ public class WxPayService {
         Map<String, String> params = new HashMap<String, String>();
         params.put("appid", appId);
         params.put("mch_id", mchId);
-        String nonce_str = RandomKit.buildRandom(32);
-        params.put("nonce_str", nonce_str);
+        String nonceStr = RandomKit.buildRandom(32);
+        params.put("nonce_str", nonceStr);
         params.put("body", param.getBody());
         params.put("out_trade_no", param.getOutTradeNo());
         //单位分
@@ -380,7 +375,7 @@ public class WxPayService {
         //签名放最后的
         String sign = WxSignKit.buildSign(params, apiKey);
         params.put("sign", sign);
-        StringBuffer reqBody = new StringBuffer();
+        StringBuilder reqBody = new StringBuilder();
         reqBody.append("<xml>");
         for (String key : params.keySet()) {
             String value = params.get(key);
@@ -398,11 +393,11 @@ public class WxPayService {
      * @return
      */
     private String buildRefundBarCodeRequestBody(WxRefundParam param) {
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put("appid", appId);
         params.put("mch_id", mchId);
-        String nonce_str = RandomKit.buildRandom(32);
-        params.put("nonce_str", nonce_str);
+        String nonceStr = RandomKit.buildRandom(32);
+        params.put("nonce_str", nonceStr);
         if (StringUtils.isEmpty(param.getTransactionId()) && StringUtils.isEmpty(param.getOutTradeNo())) {
             throw new PayException("商户订单号和微信订单号不能同时为空!");
         }
@@ -419,7 +414,7 @@ public class WxPayService {
         String sign = WxSignKit.buildSign(params, apiKey);
         params.put("sign", sign);
         //签名放最后的
-        StringBuffer reqBody = new StringBuffer();
+        StringBuilder reqBody = new StringBuilder();
         reqBody.append("<xml>");
         for (String key : params.keySet()) {
             String value = params.get(key);
@@ -438,7 +433,7 @@ public class WxPayService {
      * @return
      */
     private String buildQueryRequestBody(String outTradeNo, String transactionId) {
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put("appid", appId);
         params.put("mch_id", mchId);
         if (StringUtils.isEmpty(transactionId) && StringUtils.isEmpty(outTradeNo)) {
@@ -450,12 +445,12 @@ public class WxPayService {
         if (StringUtils.isNotEmpty(outTradeNo)) {
             params.put("out_trade_no", outTradeNo);
         }
-        String nonce_str = RandomKit.buildRandom(32);
-        params.put("nonce_str", nonce_str);
+        String nonceStr = RandomKit.buildRandom(32);
+        params.put("nonce_str", nonceStr);
         //签名放最后的
         String sign = WxSignKit.buildSign(params, apiKey);
         params.put("sign", sign);
-        StringBuffer reqBody = new StringBuffer();
+        StringBuilder reqBody = new StringBuilder();
         reqBody.append("<xml>");
         for (String key : params.keySet()) {
             String value = params.get(key);
@@ -476,7 +471,7 @@ public class WxPayService {
      * @return
      */
     private String buildRefundQueryRequestBody(String outTradeNo, String transactionId, String ouRefundNo, String refundid) {
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put("appid", appId);
         params.put("mch_id", mchId);
         if (StringUtils.isEmpty(transactionId) && StringUtils.isEmpty(outTradeNo) && StringUtils.isEmpty(ouRefundNo) && StringUtils.isEmpty(refundid)) {
@@ -494,12 +489,12 @@ public class WxPayService {
         if (StringUtils.isNotEmpty(refundid)) {
             params.put("refund_id", refundid);
         }
-        String nonce_str = RandomKit.buildRandom(32);
-        params.put("nonce_str", nonce_str);
+        String nonceStr = RandomKit.buildRandom(32);
+        params.put("nonce_str", nonceStr);
         //签名放最后的
         String sign = WxSignKit.buildSign(params, apiKey);
         params.put("sign", sign);
-        StringBuffer reqBody = new StringBuffer();
+        StringBuilder reqBody = new StringBuilder();
         reqBody.append("<xml>");
         for (String key : params.keySet()) {
             String value = params.get(key);
@@ -521,7 +516,7 @@ public class WxPayService {
         //查询订单
         String outTradeNo = "2017051200";
         String transactionId = "4001082001201705120512385115";
-        WxQueryResult queryResult = wxPayBuilder.oderQuery(outTradeNo, transactionId);
+        WxQueryResult queryResult = wxPayBuilder.orderQuery(outTradeNo, transactionId);
         if (!queryResult.isSuccess()) {
             throw new BusinessException(queryResult.getMessage());
         }

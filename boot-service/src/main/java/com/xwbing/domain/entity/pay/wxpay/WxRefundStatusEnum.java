@@ -1,8 +1,8 @@
-package com.xwbing.domain.entity.wxpay;
+package com.xwbing.domain.entity.pay.wxpay;
 
 /**
  * 说明: 微信退款状态
- * 项目名称: spring-demo
+ * 项目名称: boot-module-demo
  * 创建时间: 2017/5/12 10:05
  * 作者:  xiangwb
  */
@@ -12,7 +12,6 @@ public enum WxRefundStatusEnum {
     REFUNDCLOSE("退款关闭", "REFUNDCLOSE"),
     PROCESSING("退款处理中", "PROCESSING"),
     CHANGE("退款失败", "CHANGE");
-    // 成员变量
     private String code;
     private String name;
 

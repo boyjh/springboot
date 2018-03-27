@@ -1,10 +1,10 @@
-package com.xwbing.domain.entity.wxpay;
+package com.xwbing.domain.entity.pay.wxpay;
 
 import lombok.Data;
 
 /**
  * 说明: 微信退款参数
- * 项目名称: spring-demo
+ * 项目名称: boot-module-demo
  * 创建时间: 2017/5/10 17:43
  * 作者:  xiangwb
  */

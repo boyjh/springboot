@@ -10,7 +10,7 @@ import com.alipay.api.request.AlipayTradeRefundRequest;
 import com.alipay.api.response.AlipayTradePayResponse;
 import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.alipay.api.response.AlipayTradeRefundResponse;
-import com.xwbing.domain.entity.alipay.*;
+import com.xwbing.domain.entity.pay.alipay.*;
 import com.xwbing.exception.BusinessException;
 import com.xwbing.exception.PayException;
 import org.apache.commons.lang3.StringUtils;
@@ -59,43 +59,38 @@ public class AlipayService {
      * @param param
      * @return
      */
-    public AlipayBarCodePayResult barCodePay(AlipayBarCodePayParam param) throws PayException {
-        param.setScene("bar_code");//设置条码支付
+    public AlipayBarCodePayResult barCodePay(AlipayBarCodePayParam param) {
+        //设置条码支付
+        param.setScene("bar_code");
         AlipayBarCodePayResult result = new AlipayBarCodePayResult(false);
         String checkArgument = checkArgument(param);
         if (StringUtils.isNotEmpty(checkArgument)) {
             result.setMessage(checkArgument);
             return result;
         }
-        //获得初始化的AlipayClient
+        //获得初始化的aliPayClient
         AlipayClient alipayClient = new DefaultAlipayClient(requestUrl, appId, privateKey, "json", "UTF-8", publicKey, "RSA2");
         //创建API对应的request类
         AlipayTradePayRequest request = new AlipayTradePayRequest();
         request.setBizContent(JSONObject.toJSONString(param));
-        //通过alipayClient调用API，获得对应的response类
-        AlipayTradePayResponse response = null;
+        //通过aliPayClient调用API，获得对应的response类
+        AlipayTradePayResponse response;
         try {
             response = alipayClient.execute(request);
         } catch (AlipayApiException e) {
-            logger.info(e.getMessage());
-            result.setMessage(e.getMessage());
-            return result;
-        }
-        if (response==null) {
-            logger.info("alipay response is null!");
-            result.setMessage("alipay response is null!");
-            return result;
+            logger.error(e.getMessage());
+            throw new PayException("扫码支付异常");
         }
         result.setSuccess(response.isSuccess()); //源码StringUtils.isEmpty(this.subCode)
         //根据response中的结果继续业务逻辑处理:subCode不为空，表示接口调用失败|code为10000，代表接口调用成功，subCode为空
-        if (StringUtils.isNotEmpty(response.getSubCode())) {
-            result.setCode(response.getSubCode());
-            result.setMessage(response.getSubMsg());
-            logger.info(response.getSubMsg());
-            return result;
-        } else {
+        if (StringUtils.isEmpty(response.getSubCode())) {
             result.setCode(response.getCode());
             result.setMessage(response.getMsg());
+        } else {
+            result.setCode(response.getSubCode());
+            result.setMessage(response.getSubMsg());
+            logger.error(response.getSubMsg());
+            return result;
         }
         result.setTradeNo(response.getTradeNo());
         result.setOutTradeNo(response.getOutTradeNo());
@@ -116,31 +111,25 @@ public class AlipayService {
      * @param param
      * @return
      */
-    public AlipayRefundResult refund(AlipayRefundParam param) throws PayException {
+    public AlipayRefundResult refund(AlipayRefundParam param) {
         AlipayRefundResult result = new AlipayRefundResult(false);
         AlipayClient alipayClient = new DefaultAlipayClient(requestUrl, appId, privateKey, "json", "UTF-8", publicKey, "RSA2");
         AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
         request.setBizContent(JSONObject.toJSONString(param));
-        //通过alipayClient调用API，获得对应的response类
-        AlipayTradeRefundResponse response = null;
+        //通过aliPayClient调用API，获得对应的response类
+        AlipayTradeRefundResponse response;
         try {
             response = alipayClient.execute(request);
         } catch (AlipayApiException e) {
-            logger.info(e.getMessage());
-            result.setMessage(e.getMessage());
-            return result;
-        }
-        if (response==null) {
-            logger.info("alipay response is null!");
-            result.setMessage("alipay response is null!");
-            return result;
+            logger.error(e.getMessage());
+            throw new PayException("退款异常");
         }
         result.setSuccess(response.isSuccess());
-        //如果subCode存在，代表调用接接口失败
+        //如果subCode存在，代表调用接口失败
         if (StringUtils.isNotEmpty(response.getSubCode())) {
+            logger.error(response.getSubMsg());
             result.setCode(response.getSubCode());
             result.setMessage(response.getSubMsg());
-            logger.info(response.getSubMsg());
             return result;
         } else {
             result.setCode(response.getCode());
@@ -165,7 +154,7 @@ public class AlipayService {
      * @param tradeNo    交易号(推荐)
      * @return
      */
-    public AlipayQueryResult queryOrder(String outTradeNo, String tradeNo) throws PayException {
+    public AlipayQueryResult queryOrder(String outTradeNo, String tradeNo) {
         if (StringUtils.isEmpty(outTradeNo) && StringUtils.isEmpty(tradeNo)) {
             throw new PayException("订单号和交易号不能同时为空!");
         }
@@ -180,48 +169,32 @@ public class AlipayService {
             jsonObject.put("trade_no", tradeNo);
         }
         request.setBizContent(jsonObject.toString());
-        //通过alipayClient调用API，获得对应的response类
-        AlipayTradeQueryResponse response = null;
+        //通过aliPayClient调用API，获得对应的response类
+        AlipayTradeQueryResponse response;
         try {
             response = alipayClient.execute(request);
         } catch (AlipayApiException e) {
-            logger.info(e.getMessage());
-            result.setMessage(e.getMessage());
-            return result;
-        }
-        if (response==null) {
-            logger.info("alipay response is null!");
-            result.setMessage("alipay response is null!");
-            return result;
+            logger.error(e.getMessage());
+            throw new PayException("查询订单异常");
         }
         result.setSuccess(response.isSuccess());
-        //如果subCode存在，代表调用接接口失败
-        if (StringUtils.isNotEmpty(response.getSubCode())) {
-            result.setCode(response.getSubCode());
-            result.setMessage(response.getSubMsg());
-            logger.info(response.getSubMsg());
-            return result;
-        } else {
-            result.setCode(response.getCode());
-            result.setMessage(response.getMsg());
-        }
-        //返回支付状态,业务调用时,遍历AlipayTradeStatusEnum与tradeStatus做比较
+        //如果subCode存在,代表调用接口失败
+        checkSubCode(result, response);
+        //返回支付状态,业务调用时,遍历AliPayTradeStatusEnum与tradeStatus做比较
         result.setTradeStatus(response.getTradeStatus());
-        logger.info(response.getTradeStatus());
         return result;
     }
 
     /**
-     * 退款查询  没有tradeStatus，isSuccess即为成功
+     * 退款查询  没有tradeStatus,isSuccess即为成功
      * 订单号和交易号2选1
      *
      * @param outTradeNo   订单号
      * @param tradeNo      交易号(推荐)
      * @param outRequestNo 退款请求号
      * @return
-     * @throws PayException
      */
-    public AlipayQueryResult queryRefund(String outTradeNo, String tradeNo, String outRequestNo) throws PayException {
+    public AlipayQueryResult queryRefund(String outTradeNo, String tradeNo, String outRequestNo) {
         if (StringUtils.isEmpty(outTradeNo) && StringUtils.isEmpty(tradeNo)) {
             throw new PayException("订单号和交易号不能同时为空!");
         }
@@ -237,32 +210,34 @@ public class AlipayService {
             jsonObject.put("trade_no", tradeNo);
         }
         request.setBizContent(jsonObject.toString());
-        //通过alipayClient调用API，获得对应的response类
-        AlipayTradeQueryResponse response = null;
+        //通过aliPayClient调用API，获得对应的response类
+        AlipayTradeQueryResponse response;
         try {
             response = alipayClient.execute(request);
         } catch (AlipayApiException e) {
-            logger.info(e.getMessage());
-            result.setMessage(e.getMessage());
-            return result;
-        }
-        if (response==null) {
-            logger.info("alipay response is null!");
-            result.setMessage("alipay response is null!");
-            return result;
+            logger.error(e.getMessage());
+            throw new PayException("退款查询异常");
         }
         result.setSuccess(response.isSuccess());
-        //如果subCode存在，代表调用接接口失败。业务调用时只需判断result是否为success即可
+        //如果subCode存在,代表调用接口失败
+        checkSubCode(result, response);
+        return result;
+    }
+
+    /**
+     * 查询接口校验subCode是否存在。如果subCode存在，代表调用接口失败。业务调用时只需判断result是否为success即可
+     *
+     * @return
+     */
+    private void checkSubCode(AlipayQueryResult result, AlipayTradeQueryResponse response) {
         if (StringUtils.isNotEmpty(response.getSubCode())) {
             result.setCode(response.getSubCode());
             result.setMessage(response.getSubMsg());
-            logger.info(response.getSubMsg());
+            logger.error(response.getSubMsg());
         } else {
             result.setCode(response.getCode());
             result.setMessage(response.getMsg());
-            logger.info(response.getMsg());
         }
-        return result;
     }
 
     /**
@@ -270,15 +245,15 @@ public class AlipayService {
      *
      * @return
      */
-    private String checkArgument(AlipayBarCodePayParam parma) {
+    private String checkArgument(AlipayBarCodePayParam param) {
         String message;
-        if (StringUtils.isEmpty(parma.getOutTradeNo())) {
+        if (StringUtils.isEmpty(param.getOutTradeNo())) {
             message = "订单号为空";
-        } else if (StringUtils.isEmpty(parma.getAuthCode())) {
+        } else if (StringUtils.isEmpty(param.getAuthCode())) {
             message = "授权码为空";
-        } else if (StringUtils.isEmpty(parma.getSubject())) {
+        } else if (StringUtils.isEmpty(param.getSubject())) {
             message = "产品名称为空";
-        } else if (0 >= parma.getTotalAmount()) {
+        } else if (0 >= param.getTotalAmount()) {
             message = "金额必须大于0";
         } else {
             message = StringUtils.EMPTY;
