@@ -11,13 +11,13 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class AlipayQueryResult extends  AlipayBaseResult {
+public class AliPayQueryResult extends AliPayBaseResult {
     /**
      * 交易支付状态
      */
     private  String tradeStatus;
 
-    public AlipayQueryResult(boolean success) {
+    public AliPayQueryResult(boolean success) {
         this.setSuccess(success);
     }
 }

@@ -25,33 +25,33 @@ import java.util.Objects;
 /**
  * 说明: 支付宝支付接口实现
  * 项目名称: spring-demo
- * 创建时间: 2017/5/10 17:30
+ * 创建时间: 2017/5/10 17:50
  * 作者:  xiangwb
  */
 @Service
 @PropertySource("classpath:pay.properties")
-public class AlipayService {
-    private final Logger logger = LoggerFactory.getLogger(AlipayService.class);
+public class AliPayService {
+    private final Logger logger = LoggerFactory.getLogger(AliPayService.class);
     /**
      * 支付宝分配给开发者的应用ID
      */
-    @Value("${alipay.appId}")
-    private static String appId;
+    @Value("${aliPay.appId}")
+    private String appId;
     /**
      * 私钥
      */
-    @Value("${alipay.rsaPrivateKey}")
-    private static String privateKey;
+    @Value("${aliPay.rsaPrivateKey}")
+    private String privateKey;
     /**
      * 公钥
      */
-    @Value("${alipay.rsaPublicKey}")
-    private static String publicKey;
+    @Value("${aliPay.rsaPublicKey}")
+    private String publicKey;
     /**
      * 请求url
      */
-    @Value("${alipay.requestUrl}")
-    private static String requestUrl;
+    @Value("${aliPay.requestUrl}")
+    private String requestUrl;
 
     /**
      * 条形码扫码付
@@ -59,10 +59,10 @@ public class AlipayService {
      * @param param
      * @return
      */
-    public AlipayBarCodePayResult barCodePay(AlipayBarCodePayParam param) {
+    public AliPayBarCodePayResult barCodePay(AliPayBarCodePayParam param) {
         //设置条码支付
         param.setScene("bar_code");
-        AlipayBarCodePayResult result = new AlipayBarCodePayResult(false);
+        AliPayBarCodePayResult result = new AliPayBarCodePayResult(false);
         String checkArgument = checkArgument(param);
         if (StringUtils.isNotEmpty(checkArgument)) {
             result.setMessage(checkArgument);
@@ -81,7 +81,8 @@ public class AlipayService {
             logger.error(e.getMessage());
             throw new PayException("扫码支付异常");
         }
-        result.setSuccess(response.isSuccess()); //源码StringUtils.isEmpty(this.subCode)
+        //源码StringUtils.isEmpty(this.subCode)
+        result.setSuccess(response.isSuccess());
         //根据response中的结果继续业务逻辑处理:subCode不为空，表示接口调用失败|code为10000，代表接口调用成功，subCode为空
         if (StringUtils.isEmpty(response.getSubCode())) {
             result.setCode(response.getCode());
@@ -101,7 +102,7 @@ public class AlipayService {
         result.setFundBillList(response.getFundBillList());
         result.setBuyerUserId(response.getBuyerUserId());
         result.setDiscountGoodsDetail(response.getDiscountGoodsDetail());
-        logger.info("result = " + result);
+        logger.info("result = {}", result);
         return result;
     }
 
@@ -111,12 +112,11 @@ public class AlipayService {
      * @param param
      * @return
      */
-    public AlipayRefundResult refund(AlipayRefundParam param) {
-        AlipayRefundResult result = new AlipayRefundResult(false);
+    public AliPayRefundResult refund(AliPayRefundParam param) {
+        AliPayRefundResult result = new AliPayRefundResult(false);
         AlipayClient alipayClient = new DefaultAlipayClient(requestUrl, appId, privateKey, "json", "UTF-8", publicKey, "RSA2");
         AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
         request.setBizContent(JSONObject.toJSONString(param));
-        //通过aliPayClient调用API，获得对应的response类
         AlipayTradeRefundResponse response;
         try {
             response = alipayClient.execute(request);
@@ -125,7 +125,6 @@ public class AlipayService {
             throw new PayException("退款异常");
         }
         result.setSuccess(response.isSuccess());
-        //如果subCode存在，代表调用接口失败
         if (StringUtils.isNotEmpty(response.getSubCode())) {
             logger.error(response.getSubMsg());
             result.setCode(response.getSubCode());
@@ -142,23 +141,23 @@ public class AlipayService {
         result.setRefundFee(response.getRefundFee());
         result.setGmtRefundPay(response.getGmtRefundPay());
         result.setBuyerUserId(response.getBuyerUserId());
-        logger.info("result = " + result);
+        logger.info("result = {}", result);
         return result;
     }
 
     /**
      * 根据订单号 交易号查询 只需要一个即可
-     * 如果isSuccess，根据tradeStatus，遍历AlipayTradeStatusEnum获取对应支付状态
+     * 如果isSuccess，根据tradeStatus，遍历AliPayTradeStatusEnum获取对应支付状态
      *
      * @param outTradeNo 订单号
      * @param tradeNo    交易号(推荐)
      * @return
      */
-    public AlipayQueryResult queryOrder(String outTradeNo, String tradeNo) {
+    public AliPayQueryResult queryOrder(String outTradeNo, String tradeNo) {
         if (StringUtils.isEmpty(outTradeNo) && StringUtils.isEmpty(tradeNo)) {
             throw new PayException("订单号和交易号不能同时为空!");
         }
-        AlipayQueryResult result = new AlipayQueryResult(false);
+        AliPayQueryResult result = new AliPayQueryResult(false);
         AlipayClient alipayClient = new DefaultAlipayClient(requestUrl, appId, privateKey, "json", "UTF-8", publicKey, "RSA2");
         AlipayTradeQueryRequest request = new AlipayTradeQueryRequest();
         JSONObject jsonObject = new JSONObject();
@@ -169,7 +168,6 @@ public class AlipayService {
             jsonObject.put("trade_no", tradeNo);
         }
         request.setBizContent(jsonObject.toString());
-        //通过aliPayClient调用API，获得对应的response类
         AlipayTradeQueryResponse response;
         try {
             response = alipayClient.execute(request);
@@ -194,11 +192,11 @@ public class AlipayService {
      * @param outRequestNo 退款请求号
      * @return
      */
-    public AlipayQueryResult queryRefund(String outTradeNo, String tradeNo, String outRequestNo) {
+    public AliPayQueryResult queryRefund(String outTradeNo, String tradeNo, String outRequestNo) {
         if (StringUtils.isEmpty(outTradeNo) && StringUtils.isEmpty(tradeNo)) {
             throw new PayException("订单号和交易号不能同时为空!");
         }
-        AlipayQueryResult result = new AlipayQueryResult(false);
+        AliPayQueryResult result = new AliPayQueryResult(false);
         AlipayClient alipayClient = new DefaultAlipayClient(requestUrl, appId, privateKey, "json", "UTF-8", publicKey, "RSA2");
         AlipayTradeQueryRequest request = new AlipayTradeQueryRequest();
         JSONObject jsonObject = new JSONObject();
@@ -210,7 +208,6 @@ public class AlipayService {
             jsonObject.put("trade_no", tradeNo);
         }
         request.setBizContent(jsonObject.toString());
-        //通过aliPayClient调用API，获得对应的response类
         AlipayTradeQueryResponse response;
         try {
             response = alipayClient.execute(request);
@@ -229,7 +226,7 @@ public class AlipayService {
      *
      * @return
      */
-    private void checkSubCode(AlipayQueryResult result, AlipayTradeQueryResponse response) {
+    private void checkSubCode(AliPayQueryResult result, AlipayTradeQueryResponse response) {
         if (StringUtils.isNotEmpty(response.getSubCode())) {
             result.setCode(response.getSubCode());
             result.setMessage(response.getSubMsg());
@@ -245,7 +242,7 @@ public class AlipayService {
      *
      * @return
      */
-    private String checkArgument(AlipayBarCodePayParam param) {
+    private String checkArgument(AliPayBarCodePayParam param) {
         String message;
         if (StringUtils.isEmpty(param.getOutTradeNo())) {
             message = "订单号为空";
@@ -263,7 +260,7 @@ public class AlipayService {
 
     public static void main(String[] args) {
         //刷卡支付
-        AlipayService alipayBuilder = new AlipayService();
+        AliPayService alipayBuilder = new AliPayService();
         String orderNo = "201705180202";
 //        String authCode = "286796667181427987";
 //        AlipayBarCodePayParam codePayParam = new AlipayBarCodePayParam(orderNo, authCode, "test", 0.1f);
@@ -272,12 +269,12 @@ public class AlipayService {
 
         //查询订单
         String tradeNo = "2017051221001004630289850336";
-        AlipayQueryResult queryResult = alipayBuilder.queryOrder(orderNo, tradeNo);
+        AliPayQueryResult queryResult = alipayBuilder.queryOrder(orderNo, tradeNo);
         if (!queryResult.isSuccess()) {
             throw new BusinessException(queryResult.getMessage());
         }
         String tradeStatus = queryResult.getTradeStatus();
-        for (AlipayTradeStatusEnum status : AlipayTradeStatusEnum.values()) {
+        for (AliPayTradeStatusEnum status : AliPayTradeStatusEnum.values()) {
             if (Objects.equals(tradeStatus, status.getCode())) {
                 System.out.println(status.getName());
                 break;
@@ -285,7 +282,7 @@ public class AlipayService {
         }
 
 //        //退款操作
-        AlipayRefundParam refundParam = new AlipayRefundParam("201505129999", orderNo, 0.05f, "test");
+        AliPayRefundParam refundParam = new AliPayRefundParam("201505129999", orderNo, 0.05f, "test");
 //        AlipayRefundResult refundResult = alipayBuilder.refund(refundParam);
 //        System.out.println(refundResult.getMessage());
 

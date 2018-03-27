@@ -42,37 +42,37 @@ public class WxPayService {
      * 商户支付密钥 生成签名时用
      */
     @Value("${wx.apiKey}")
-    private static String apiKey;
+    private String apiKey;
     /**
      * 公众账号ID(企业号corpid)
      */
     @Value("${wx.appId}")
-    private static String appId;
+    private String appId;
     /**
      * 商户号
      */
     @Value("${wx.mchId}")
-    private static String mchId;
+    private String mchId;
     /**
      * 刷卡支付url
      */
     @Value("${wx.barCodePayUrl}")
-    private static String barCodePayUrl;
+    private String barCodePayUrl;
     /**
      * 申请退款url
      */
     @Value("${wx.refundUrl}")
-    private static String refundUrl;
+    private String refundUrl;
     /**
      * 查询订单url
      */
     @Value("${wx.orderQueryUrl}")
-    private static String orderQueryUrl;
+    private String orderQueryUrl;
     /**
      * 退款查询url
      */
     @Value("${wx.refundQueryUrl}")
-    private static String refundQueryUrl;
+    private String refundQueryUrl;
 
     /**
      * 条形码扫码付
@@ -95,15 +95,14 @@ public class WxPayService {
                 HttpEntity entity = response.getEntity();
                 //返回结果为strXml
                 String content = EntityUtils.toString(entity, "UTF-8");
-                // 解析返回值
-                Map<String, String> returnMap;
-                returnMap = XmlUtil.doXMLParse(content);
+                //解析返回值
+                Map<String, String> returnMap = XmlUtil.doXMLParse(content);
                 //返回状态码SUCCESS/FAIL
                 result.setResultCode(returnMap.get("return_code"));
-                //返回信息  非空,为错误原因
+                //返回信息:非空,为错误原因
                 result.setMessage(returnMap.get("return_msg"));
                 if ("FAIL".equalsIgnoreCase(returnMap.get("return_code"))) {
-                    logger.info("wx barCodePay failed!");
+                    logger.error("wx barCodePay failed!");
                     result.setSuccess(false);
                     return result;
                 }
@@ -157,32 +156,24 @@ public class WxPayService {
     public WxRefundResult refund(WxRefundParam param) {
         WxRefundResult result = new WxRefundResult(false);
         HttpPost post = new HttpPost(refundUrl);
-        //输入参数为转为strXml
         String reqBody = buildRefundBarCodeRequestBody(param);
         post.setEntity(new StringEntity(reqBody, "UTF-8"));
         CloseableHttpClient httpclient;
         try {
-            //根据mchId读取微信证书,SSL创建安全连接
             httpclient = ClientCustomSSL.getCloseableHttpClient(mchId);
             CloseableHttpResponse response = httpclient.execute(post);
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                //返回结果为strXml
                 HttpEntity entity = response.getEntity();
                 String content = EntityUtils.toString(entity, "UTF-8");
-                // 解析返回值
-                Map<String, String> returnMap;
-                returnMap = com.xwbing.util.payWxpay.XmlUtil.doXMLParse(content);
-                //返回状态码SUCCESS/FAIL
+                Map<String, String> returnMap = com.xwbing.util.payWxpay.XmlUtil.doXMLParse(content);
                 result.setResultCode(returnMap.get("return_code"));
-                //返回信息  非空,为错误原因
                 result.setMessage(returnMap.get("return_msg"));
                 if ("FAIL".equalsIgnoreCase(returnMap.get("return_code"))) {
-                    logger.info("wx barCodePay failed!");
+                    logger.error("wx barCodePay failed!");
                     result.setSuccess(false);
                     return result;
                 }
                 logger.info("outRefundNo=" + param.getOutTradeNo() + ",err_code=" + returnMap.get("err_code") + ",result_code=" + returnMap.get("result_code") + ",err_code_des=" + returnMap.get("err_code_des"));
-                //业务结果SUCCESS/FAIL
                 if ("SUCCESS".equals(returnMap.get("result_code"))) {
                     result.setSuccess(true);
                     result.setAppid(returnMap.get("appid"));
@@ -232,31 +223,24 @@ public class WxPayService {
     public WxQueryResult orderQuery(String outTradeNo, String transactionId) {
         WxQueryResult result = new WxQueryResult(false);
         HttpPost post = new HttpPost(orderQueryUrl);
-        //输入参数为转为strXml
         String reqBody = buildQueryRequestBody(outTradeNo, transactionId);
         post.setEntity(new StringEntity(reqBody, "UTF-8"));
         CloseableHttpClient httpclient;
         try {
-            //根据mchId读取微信证书,SSL创建安全连接
             httpclient = ClientCustomSSL.getCloseableHttpClient(mchId);
             CloseableHttpResponse response = httpclient.execute(post);
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 HttpEntity entity = response.getEntity();
-                //返回结果为strXml
                 String content = EntityUtils.toString(entity, "UTF-8");
-                // 解析返回值
-                Map<String, String> returnMap;
-                returnMap = XmlUtil.doXMLParse(content);
+                Map<String, String> returnMap = XmlUtil.doXMLParse(content);
                 result.setResultCode(returnMap.get("return_code"));
                 result.setMessage(returnMap.get("return_msg"));
-                //此字段是通信标识，非交易标识
                 if ("FAIL".equalsIgnoreCase(returnMap.get("return_code"))) {
-                    logger.info("wx barCodePay failed!");
+                    logger.error("wx barCodePay failed!");
                     result.setSuccess(false);
                     return result;
                 }
                 logger.info("outTradeNo=" + outTradeNo + ",transactionId=" + transactionId);
-                //业务结果
                 if ("SUCCESS".equals(returnMap.get("result_code"))) {
                     result.setSuccess(true);
                     //交易状态
@@ -300,24 +284,18 @@ public class WxPayService {
     public WxQueryResult refundQuery(String outTradeNo, String transactionId, String ouRefundNo, String refundid) {
         WxQueryResult result = new WxQueryResult(false);
         HttpPost post = new HttpPost(refundQueryUrl);
-        //输入参数为转为strXml
         String reqBody = buildRefundQueryRequestBody(outTradeNo, transactionId, ouRefundNo, refundid);
         post.setEntity(new StringEntity(reqBody, "UTF-8"));
         CloseableHttpClient httpclient;
         try {
-            //根据mchId读取微信证书,SSL创建安全连接
             httpclient = ClientCustomSSL.getCloseableHttpClient(mchId);
             CloseableHttpResponse response = httpclient.execute(post);
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 HttpEntity entity = response.getEntity();
-                //返回结果为strXml
                 String content = EntityUtils.toString(entity, "UTF-8");
-                // 解析返回值
-                Map<String, String> returnMap;
-                returnMap = XmlUtil.doXMLParse(content);
+                Map<String, String> returnMap = XmlUtil.doXMLParse(content);
                 result.setResultCode(returnMap.get("return_code"));
                 result.setMessage(returnMap.get("return_msg"));
-                //此字段是通信标识，非交易标识
                 if ("FAIL".equalsIgnoreCase(returnMap.get("return_code"))) {
                     logger.error("wx barCodePay failed!");
                     result.setSuccess(false);
@@ -361,7 +339,7 @@ public class WxPayService {
      * @return
      */
     private String buildBarCodeRequestBody(WxBarCodePayParam param) {
-        Map<String, String> params = new HashMap<String, String>();
+        Map<String, String> params = new HashMap<>();
         params.put("appid", appId);
         params.put("mch_id", mchId);
         String nonceStr = RandomKit.buildRandom(32);
@@ -382,7 +360,6 @@ public class WxPayService {
             reqBody.append("<").append(key).append(">").append(value).append("</").append(key).append(">");
         }
         reqBody.append("</xml>");
-        logger.info(reqBody + "~~~------------");
         return reqBody.toString();
     }
 
@@ -421,12 +398,11 @@ public class WxPayService {
             reqBody.append("<").append(key).append(">").append(value).append("</").append(key).append(">");
         }
         reqBody.append("</xml>");
-        logger.info(reqBody + "~~~------------");
         return reqBody.toString();
     }
 
     /**
-     * 查询封装参数
+     * 构建订单查询参数
      *
      * @param outTradeNo    商户订单号
      * @param transactionId 微信订单号
@@ -457,12 +433,11 @@ public class WxPayService {
             reqBody.append("<").append(key).append(">").append(value).append("</").append(key).append(">");
         }
         reqBody.append("</xml>");
-        logger.info(reqBody + "~~~------------");
         return reqBody.toString();
     }
 
     /**
-     * 查询封装参数
+     * 构建退款查询参数
      *
      * @param outTradeNo    商户订单号
      * @param transactionId 微信订单号
@@ -501,17 +476,16 @@ public class WxPayService {
             reqBody.append("<").append(key).append(">").append(value).append("</").append(key).append(">");
         }
         reqBody.append("</xml>");
-        logger.info(reqBody + "~~~------------");
         return reqBody.toString();
     }
 
     public static void main(String[] args) {
         WxPayService wxPayBuilder = new WxPayService();
         //刷卡支付
-//        String authCode = "130203463134616871";
-//        WxBarCodePayParam payParam = new WxBarCodePayParam("2017051200", "127.0.0.0", authCode, "test", 1);
-//        WxBarCodePayResult result = wxPayBuilder.barCodePay(payParam);
-//        System.out.println(result.isSuccess() + result.getMessage());
+        String authCode = "130203463134616871";
+        WxBarCodePayParam payParam = new WxBarCodePayParam("2017051200", "127.0.0.0", authCode, "test", 1);
+        WxBarCodePayResult result = wxPayBuilder.barCodePay(payParam);
+        System.out.println(result.isSuccess() + result.getMessage());
 
         //查询订单
         String outTradeNo = "2017051200";

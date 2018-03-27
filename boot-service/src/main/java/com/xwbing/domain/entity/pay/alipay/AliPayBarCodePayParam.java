@@ -10,7 +10,7 @@ import lombok.Data;
  * 作者:  xiangwb
  */
 @Data
-public class AlipayBarCodePayParam {
+public class AliPayBarCodePayParam {
     /**
      * 本系统订单号
      */
@@ -35,7 +35,7 @@ public class AlipayBarCodePayParam {
     @JSONField(name = "total_amount")
     private float totalAmount;
 
-    public AlipayBarCodePayParam(String outTradeNo, String authCode, String subject, float totalAmount) {
+    public AliPayBarCodePayParam(String outTradeNo, String authCode, String subject, float totalAmount) {
         this.outTradeNo = outTradeNo;
         this.authCode = authCode;
         this.subject = subject;

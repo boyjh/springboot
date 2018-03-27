@@ -10,7 +10,7 @@ import lombok.Data;
  * 作者:  xiangwb
  */
 @Data
-public class AlipayRefundParam {
+public class AliPayRefundParam {
     /**
      * 本系统订单号  订单号和支付宝交易号2选1
      */
@@ -37,14 +37,14 @@ public class AlipayRefundParam {
     @JSONField(name = "refund_reason")
     private String refundReason;
 
-    public AlipayRefundParam(String outRequestNo, String outTradeNo, float refundAmount, String refundReason) {
+    public AliPayRefundParam(String outRequestNo, String outTradeNo, float refundAmount, String refundReason) {
         this.outRequestNo = outRequestNo;
         this.outTradeNo = outTradeNo;
         this.refundAmount = refundAmount;
         this.refundReason = refundReason;
     }
 
-    public AlipayRefundParam(String outRequestNo, String tradeNo, String refundReason, float refundAmount) {
+    public AliPayRefundParam(String outRequestNo, String tradeNo, String refundReason, float refundAmount) {
         this.outRequestNo = outRequestNo;
         this.tradeNo = tradeNo;
         this.refundAmount = refundAmount;

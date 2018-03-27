@@ -7,7 +7,7 @@ package com.xwbing.domain.entity.pay.alipay;
  * 作者:  xiangwb
  */
 
-public class AlipayConstant {
+public class AliPayConstant {
     /**
      * 接口调用成功
      */

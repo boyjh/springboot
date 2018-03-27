@@ -9,7 +9,7 @@ import lombok.Data;
  * 作者:  xiangwb
  */
 @Data
-public class AlipayBaseResult {
+public class AliPayBaseResult {
     /**
      * 是否成功
      */

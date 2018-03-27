@@ -15,7 +15,7 @@ import java.util.List;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class AlipayBarCodePayResult extends AlipayBaseResult {
+public class AliPayBarCodePayResult extends AliPayBaseResult {
     public static final String HASPAYED = "ACQ.TRADE_HAS_SUCCESS";
 
     /**
@@ -55,7 +55,7 @@ public class AlipayBarCodePayResult extends AlipayBaseResult {
      */
     private String discountGoodsDetail;
 
-    public AlipayBarCodePayResult(boolean isSuccess) {
+    public AliPayBarCodePayResult(boolean isSuccess) {
         this.setSuccess(isSuccess);
     }
 

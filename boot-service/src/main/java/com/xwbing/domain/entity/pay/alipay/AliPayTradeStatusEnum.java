@@ -6,7 +6,7 @@ package com.xwbing.domain.entity.pay.alipay;
  * 创建时间: 2017/5/10 17:39
  * 作者:  xiangwb
  */
-public enum AlipayTradeStatusEnum {
+public enum AliPayTradeStatusEnum {
     WAIT_BUYER_PAY("交易创建，等待买家付款", "WAIT_BUYER_PAY"),
     TRADE_CLOSED("未付款交易超时关闭，或支付完成后全额退款", "TRADE_CLOSED"),
     TRADE_SUCCESS("交易支付成功", "TRADE_SUCCESS"),
@@ -15,7 +15,7 @@ public enum AlipayTradeStatusEnum {
     private String code;
     private String name;
 
-    private AlipayTradeStatusEnum(String name, String code) {
+    private AliPayTradeStatusEnum(String name, String code) {
         this.code = code;
         this.name = name;
     }
