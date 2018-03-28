@@ -417,7 +417,7 @@ public class SysUserService {
      * @param userName
      * @return
      */
-    private SysUser getByUserName(String userName) {
+    public SysUser getByUserName(String userName) {
         return sysUserRepository.getByUserName(userName);
     }
 
@@ -429,15 +429,26 @@ public class SysUserService {
      * @param salt
      * @return
      */
-    private boolean checkPassWord(String passWord, String realPassWord, String salt) {
+    public boolean checkPassWord(String passWord, String realPassWord, String salt) {
+        String validatePassWord = getSysPassWord(passWord, salt);
+        //判断密码是否相同
+        return realPassWord.equals(validatePassWord);
+    }
+
+    /**
+     * 获取数据库密码
+     *
+     * @param passWord
+     * @param salt
+     * @return
+     */
+    public String getSysPassWord(String passWord, String salt) {
         // 根据密码盐值 解码
         byte[] saltByte = EncodeUtils.hexDecode(salt);
         byte[] hashPassword = Digests.sha1(passWord.getBytes(), saltByte,
                 PassWordUtil.HASH_INTERATIONS);
         // 密码 数据库中密码
-        String validatePassWord = EncodeUtils.hexEncode(hashPassword);
-        //判断密码是否相同
-        return realPassWord.equals(validatePassWord);
+        return EncodeUtils.hexEncode(hashPassword);
     }
 
     /**

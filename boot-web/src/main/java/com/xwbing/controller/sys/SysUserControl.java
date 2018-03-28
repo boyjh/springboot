@@ -4,16 +4,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.xwbing.annotation.LogInfo;
 import com.xwbing.constant.CommonConstant;
 import com.xwbing.constant.CommonEnum;
-import com.xwbing.domain.entity.sys.SysAuthority;
-import com.xwbing.domain.entity.sys.SysRole;
-import com.xwbing.domain.entity.sys.SysUser;
-import com.xwbing.domain.entity.sys.SysUserRole;
+import com.xwbing.domain.entity.sys.*;
 import com.xwbing.domain.entity.vo.*;
-import com.xwbing.service.sys.SysAuthorityService;
-import com.xwbing.service.sys.SysRoleService;
-import com.xwbing.service.sys.SysUserRoleService;
-import com.xwbing.service.sys.SysUserService;
+import com.xwbing.redis.RedisService;
+import com.xwbing.service.sys.*;
+import com.xwbing.shiro.UsernamePasswordCaptchaToken;
 import com.xwbing.util.CommonDataUtil;
+import com.xwbing.util.IpUtil;
 import com.xwbing.util.JsonResult;
 import com.xwbing.util.RestMessage;
 import io.swagger.annotations.Api;
@@ -21,6 +18,8 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -28,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -48,6 +48,10 @@ public class SysUserControl {
     private SysRoleService sysRoleService;
     @Resource
     private SysAuthorityService sysAuthorityService;
+    @Resource
+    private RedisService redisService;
+    @Resource
+    private SysUserLoginInOutService loginInOutService;
 
     @LogInfo("添加用户")
     @ApiOperation(value = "添加用户", response = RestMessageVo.class)
@@ -115,12 +119,64 @@ public class SysUserControl {
         return JsonResult.toJSONObj(login);
     }
 
+    @LogInfo("登录")
+    @ApiOperation(value = "登录", response = RestMessageVo.class)
+    @PostMapping("login2")
+    public JSONObject login2(HttpServletRequest request, @RequestParam String userName, @RequestParam String passWord, @RequestParam String checkCode, boolean rememberMe) {
+        if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(passWord)) {
+            return JsonResult.toJSONObj("用户名或密码不能为空");
+        }
+        if (StringUtils.isEmpty(checkCode)) {
+            return JsonResult.toJSONObj("请输入验证码");
+        }
+        SysUser user = sysUserService.getByUserName(userName);
+        Subject subject = SecurityUtils.getSubject();
+        String ip = IpUtil.getIpAddr(request);
+        UsernamePasswordCaptchaToken token = new UsernamePasswordCaptchaToken(userName, passWord.toCharArray(), rememberMe, ip, checkCode);
+        subject.login(token);
+        if (subject.isAuthenticated()) {
+            //保存登录信息
+            SysUserLoginInOut loginInOut = new SysUserLoginInOut();
+            loginInOut.setCreateTime(new Date());
+            loginInOut.setUserId(user.getId());
+            loginInOut.setInoutType(CommonEnum.LoginInOutEnum.IN.getValue());
+            loginInOut.setIp(ip);
+            RestMessage save = loginInOutService.save(loginInOut);
+            if (!save.isSuccess()) {
+                return JsonResult.toJSONObj("保存用户登录日志失败");
+            }
+        }
+        return JsonResult.toJSONObj(new Object(), "登录成功");
+    }
+
     @LogInfo("登出")
     @ApiOperation(value = "登出", response = RestMessageVo.class)
     @GetMapping("logout")
     public JSONObject logout(HttpServletRequest request) {
         RestMessage logout = sysUserService.logout(request);
         return JsonResult.toJSONObj(logout);
+    }
+
+    @LogInfo("登出")
+    @ApiOperation(value = "登出", response = RestMessageVo.class)
+    @GetMapping("logout2")
+    public JSONObject logout2(HttpServletRequest request) {
+        Subject subject = SecurityUtils.getSubject();
+        if (subject != null && subject.getPrincipals() != null) {
+            SysUser sysUser = (SysUser) subject.getPrincipals().getPrimaryPrincipal();
+            if (null != sysUser) {
+                SysUserLoginInOut loginInOut = new SysUserLoginInOut();
+                loginInOut.setCreateTime(new Date());
+                loginInOut.setUserId(sysUser.getId());
+                loginInOut.setInoutType(CommonEnum.LoginInOutEnum.OUT.getValue());
+                loginInOut.setIp(IpUtil.getIpAddr(request));
+                RestMessage out = loginInOutService.save(loginInOut);
+                if (out.isSuccess()) {
+                    return JsonResult.toJSONObj("保存用户登出信息失败");
+                }
+            }
+        }
+        return JsonResult.toJSONObj(new Object(),"登出成功");
     }
 
     @LogInfo("修改密码")
