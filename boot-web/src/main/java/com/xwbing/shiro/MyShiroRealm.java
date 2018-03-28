@@ -72,7 +72,7 @@ public class MyShiroRealm extends AuthorizingRealm {
     }
 
     /**
-     * 验证用户身份
+     * 认证.登录
      *
      * @param authenticationToken
      * @return
