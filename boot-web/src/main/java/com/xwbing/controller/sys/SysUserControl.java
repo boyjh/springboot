@@ -126,9 +126,6 @@ public class SysUserControl {
         if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(passWord)) {
             return JsonResult.toJSONObj("用户名或密码不能为空");
         }
-        if (StringUtils.isEmpty(checkCode)) {
-            return JsonResult.toJSONObj("请输入验证码");
-        }
         SysUser user = sysUserService.getByUserName(userName);
         Subject subject = SecurityUtils.getSubject();
         String ip = IpUtil.getIpAddr(request);

@@ -7,9 +7,9 @@ import com.xwbing.domain.entity.sys.SysUser;
 import com.xwbing.exception.BusinessException;
 import com.xwbing.service.sys.SysRoleService;
 import com.xwbing.service.sys.SysUserService;
+import com.xwbing.util.CommonDataUtil;
 import com.xwbing.util.captcha.CaptchaException;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -92,9 +92,8 @@ public class MyShiroRealm extends AuthorizingRealm {
             throw new BusinessException("密码错误");
         }
         String captcha = captchaToken.getCaptcha();
-        String exitCode = (String) SecurityUtils.getSubject().getSession()
-                .getAttribute(CommonConstant.KEY_CAPTCHA);
-        if (StringUtils.isEmpty(captcha) || !captcha.equalsIgnoreCase(exitCode)) {
+        String imgCode = (String) CommonDataUtil.getToken(CommonConstant.KEY_CAPTCHA);
+        if (StringUtils.isEmpty(captcha) || !captcha.equalsIgnoreCase(imgCode)) {
             throw new CaptchaException("验证码错误");
         }
         return new SimpleAuthenticationInfo(user, sysPassWord,
