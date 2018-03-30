@@ -1,7 +1,6 @@
 package com.xwbing.util.captcha;
 
 import com.xwbing.constant.CommonConstant;
-import com.xwbing.util.CommonDataUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,6 +8,7 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -33,10 +33,9 @@ public class CaptchaServlet extends HttpServlet {
             CaptchaUtil tool = new CaptchaUtil();
             StringBuffer code = new StringBuffer();
             BufferedImage image = tool.genRandomCodeImage(code);
-//            HttpSession session = req.getSession();
-//            session.removeAttribute(CommonConstant.KEY_CAPTCHA);
-//            session.setAttribute(CommonConstant.KEY_CAPTCHA, code.toString());
-            CommonDataUtil.setToken(CommonConstant.KEY_CAPTCHA, code.toString());
+            HttpSession session = req.getSession();
+            session.removeAttribute(CommonConstant.KEY_CAPTCHA);
+            session.setAttribute(CommonConstant.KEY_CAPTCHA, code.toString());
             // 将内存中的图片通过流形式输出到客户端
             OutputStream out = res.getOutputStream();
             ImageIO.write(image, "JPEG", out);

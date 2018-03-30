@@ -108,25 +108,10 @@ public class SysUserControl {
     @LogInfo("登录")
     @ApiOperation(value = "登录", response = RestMessageVo.class)
     @PostMapping("login")
-    public JSONObject login(HttpServletRequest request, @RequestParam String userName, @RequestParam String passWord, @RequestParam String checkCode) {
+    public JSONObject login(HttpServletRequest request, @RequestParam String userName, @RequestParam String passWord, @RequestParam String checkCode, boolean rememberMe) {
         if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(passWord)) {
             return JsonResult.toJSONObj("用户名或密码不能为空");
         }
-        if (StringUtils.isEmpty(checkCode)) {
-            return JsonResult.toJSONObj("请输入验证码");
-        }
-        RestMessage login = sysUserService.login(request, userName, passWord, checkCode);
-        return JsonResult.toJSONObj(login);
-    }
-
-    @LogInfo("登录")
-    @ApiOperation(value = "登录", response = RestMessageVo.class)
-    @PostMapping("login2")
-    public JSONObject login2(HttpServletRequest request, @RequestParam String userName, @RequestParam String passWord, @RequestParam String checkCode, boolean rememberMe) {
-        if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(passWord)) {
-            return JsonResult.toJSONObj("用户名或密码不能为空");
-        }
-        SysUser user = sysUserService.getByUserName(userName);
         Subject subject = SecurityUtils.getSubject();
         String ip = IpUtil.getIpAddr(request);
         UsernamePasswordCaptchaToken token = new UsernamePasswordCaptchaToken(userName, passWord.toCharArray(), rememberMe, ip, checkCode);
@@ -135,7 +120,7 @@ public class SysUserControl {
             //保存登录信息
             SysUserLoginInOut loginInOut = new SysUserLoginInOut();
             loginInOut.setCreateTime(new Date());
-            loginInOut.setUserId(user.getId());
+            loginInOut.setUserId("");
             loginInOut.setInoutType(CommonEnum.LoginInOutEnum.IN.getValue());
             loginInOut.setIp(ip);
             RestMessage save = loginInOutService.save(loginInOut);
@@ -150,14 +135,6 @@ public class SysUserControl {
     @ApiOperation(value = "登出", response = RestMessageVo.class)
     @GetMapping("logout")
     public JSONObject logout(HttpServletRequest request) {
-        RestMessage logout = sysUserService.logout(request);
-        return JsonResult.toJSONObj(logout);
-    }
-
-    @LogInfo("登出")
-    @ApiOperation(value = "登出", response = RestMessageVo.class)
-    @GetMapping("logout2")
-    public JSONObject logout2(HttpServletRequest request) {
         Subject subject = SecurityUtils.getSubject();
         if (subject != null && subject.getPrincipals() != null) {
             SysUser sysUser = (SysUser) subject.getPrincipals().getPrimaryPrincipal();
@@ -173,7 +150,7 @@ public class SysUserControl {
                 }
             }
         }
-        return JsonResult.toJSONObj(new Object(),"登出成功");
+        return JsonResult.toJSONObj(new Object(), "登出成功");
     }
 
     @LogInfo("修改密码")

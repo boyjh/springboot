@@ -3,6 +3,8 @@ package com.xwbing.handler;
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.exception.BusinessException;
 import com.xwbing.util.JsonResult;
+import com.xwbing.util.captcha.CaptchaException;
+import org.apache.shiro.authc.AuthenticationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -50,11 +52,19 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * CompletableFuture完成结果或任务过程中出现的异常
+     * shiro登录认证
      *
      * @param ex
      * @return
      */
+    @ExceptionHandler(value = AuthenticationException.class)
+    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
+    public JSONObject handlerAuthenticationException(AuthenticationException ex) {
+        logger.error(ex.getMessage());
+        return JsonResult.toJSONObj(ex.getMessage());
+    }
+
     @ExceptionHandler(value = CompletionException.class)
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
@@ -67,6 +77,20 @@ public class GlobalExceptionHandler {
             errorMessages = "异步获取数据出错";
         }
         return JsonResult.toJSONObj(errorMessages);
+    }
+
+    /**
+     * 验证码异常
+     *
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler(value = CaptchaException.class)
+    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
+    public JSONObject handlerCaptchaException(CaptchaException ex) {
+        logger.error(ex.getMessage());
+        return JsonResult.toJSONObj(ex.getMessage());
     }
 
     /**

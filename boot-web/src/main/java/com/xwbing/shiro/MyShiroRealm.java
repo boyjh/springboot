@@ -4,12 +4,9 @@ import com.xwbing.constant.CommonConstant;
 import com.xwbing.domain.entity.sys.SysAuthority;
 import com.xwbing.domain.entity.sys.SysRole;
 import com.xwbing.domain.entity.sys.SysUser;
-import com.xwbing.exception.BusinessException;
 import com.xwbing.service.sys.SysRoleService;
 import com.xwbing.service.sys.SysUserService;
-import com.xwbing.util.CommonDataUtil;
-import com.xwbing.util.captcha.CaptchaException;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -72,7 +69,7 @@ public class MyShiroRealm extends AuthorizingRealm {
     }
 
     /**
-     * 认证.登录
+     * 登录.认证
      *
      * @param authenticationToken
      * @return
@@ -81,22 +78,21 @@ public class MyShiroRealm extends AuthorizingRealm {
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         UsernamePasswordCaptchaToken captchaToken = (UsernamePasswordCaptchaToken) authenticationToken;
+        String captcha = captchaToken.getCaptcha();
+        String imgCode = (String) SecurityUtils.getSubject().getSession().getAttribute(CommonConstant.KEY_CAPTCHA);
+//        if (StringUtils.isEmpty(captcha) || !captcha.equalsIgnoreCase(imgCode)) {
+//            throw new AuthenticationException("验证码错误");
+//        }
         SysUser user = sysUserService.getByUserName(captchaToken.getUsername());
         if (user == null) {
-            throw new BusinessException("账号错误");
+            throw new AuthenticationException("账号或密码错误");
         }
         String sysPassWord = user.getPassword();
         String salt = user.getSalt();
         boolean flag = sysUserService.checkPassWord(String.valueOf(captchaToken.getPassword()), sysPassWord, salt);
         if (!flag) {
-            throw new BusinessException("密码错误");
+            throw new AuthenticationException("账号或密码错误");
         }
-        String captcha = captchaToken.getCaptcha();
-        String imgCode = (String) CommonDataUtil.getToken(CommonConstant.KEY_CAPTCHA);
-        if (StringUtils.isEmpty(captcha) || !captcha.equalsIgnoreCase(imgCode)) {
-            throw new CaptchaException("验证码错误");
-        }
-        return new SimpleAuthenticationInfo(user, sysPassWord,
-                ByteSource.Util.bytes(salt), getName());
+        return new SimpleAuthenticationInfo(user, sysPassWord, ByteSource.Util.bytes(salt), getName());
     }
 }

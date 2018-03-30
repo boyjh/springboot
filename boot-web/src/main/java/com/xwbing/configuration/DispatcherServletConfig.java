@@ -3,7 +3,6 @@ package com.xwbing.configuration;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
-import com.xwbing.handler.LoginInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -29,7 +28,7 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         //拦截器1:登录判断
-        registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**");
+//        registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**");
 //        registry.addInterceptor(new LoginInterceptor())
 //                .addPathPatterns("/**").excludePathPatterns("/user/login", "/servlet/captchaCode", "/swagger-ui.html");
         //拦截器2...
