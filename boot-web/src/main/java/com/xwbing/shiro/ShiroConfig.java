@@ -37,17 +37,25 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setSecurityManager(securityManager());
         //配置访问权限
         Map<String, String> chains = new LinkedHashMap<>();
-        //配置登录的url和登录成功的url
         shiroFilterFactoryBean.setLoginUrl("/user/login");
-        shiroFilterFactoryBean.setUnauthorizedUrl("/403");
-        chains.put("/user/logout", "logout");
+        shiroFilterFactoryBean.setSuccessUrl("/doc");
+        //静态资源
+        chains.put("/META-INF/resources/**", "anon");
+        chains.put("/resources/**", "anon");
+        chains.put("/static/**", "anon");
+        chains.put("/public/**", "anon");
+        chains.put("/*.*", "anon");
         chains.put("/", "anon");
         chains.put("/doc", "anon");
+        //验证码
         chains.put("/captcha", "anon");
+        //swagger
+        chains.put("/webjars/**", "anon");
         chains.put("/v2/api-docs", "anon");
         chains.put("/swagger-resources", "anon");
         chains.put("/configuration/ui", "anon");
         chains.put("/configuration/security", "anon");
+        //
         chains.put("/druid", "anon");
         chains.put("/**", "authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(chains);
