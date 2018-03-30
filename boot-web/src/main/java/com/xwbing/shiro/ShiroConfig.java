@@ -32,7 +32,7 @@ public class ShiroConfig {
     private String sessionIdCookieName;
 
     @Bean
-    public ShiroFilterFactoryBean shirFilter() {
+    public ShiroFilterFactoryBean shiroFilter() {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager());
         //配置访问权限
@@ -45,8 +45,6 @@ public class ShiroConfig {
         chains.put("/static/**", "anon");
         chains.put("/public/**", "anon");
         chains.put("/*.*", "anon");
-        chains.put("/", "anon");
-        chains.put("/doc", "anon");
         //验证码
         chains.put("/captcha", "anon");
         //swagger
@@ -55,8 +53,11 @@ public class ShiroConfig {
         chains.put("/swagger-resources", "anon");
         chains.put("/configuration/ui", "anon");
         chains.put("/configuration/security", "anon");
-        //
+        chains.put("/doc", "anon");
+        //德鲁伊数据源
+        chains.put("/druid/*", "anon");
         chains.put("/druid", "anon");
+        //权限认证路径
         chains.put("/**", "authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(chains);
         return shiroFilterFactoryBean;

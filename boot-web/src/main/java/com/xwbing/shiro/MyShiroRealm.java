@@ -36,19 +36,20 @@ public class MyShiroRealm extends AuthorizingRealm {
     private SysRoleService sysRoleService;
 
     /**
-     * 授权
+     * 授权用户权限
      *
-     * @param principalCollection
+     * @param principals
      * @return
      */
     @Override
-    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
+    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
         // 获取验证的对象
-        if (principalCollection == null) {
+        if (principals == null) {
             throw new AuthorizationException("Principal对象不能为空");
         }
-        SysUser user = (SysUser) principalCollection.fromRealm(getName()).iterator().next();
-        if (user != null) {
+        Object primaryPrincipal = principals.getPrimaryPrincipal();
+        if (primaryPrincipal != null) {
+            SysUser user = (SysUser) primaryPrincipal;
             // 权限信息对象info,用来存放查出的用户的所有的角色（role）及权限（permission）
             SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
             // 用户的角色集合
@@ -67,7 +68,7 @@ public class MyShiroRealm extends AuthorizingRealm {
     }
 
     /**
-     * 登录.认证
+     * 验证用户身份
      *
      * @param authenticationToken
      * @return

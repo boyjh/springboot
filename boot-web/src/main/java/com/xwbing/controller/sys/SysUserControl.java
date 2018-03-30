@@ -137,8 +137,8 @@ public class SysUserControl {
     @GetMapping("logout")
     public JSONObject logout(HttpServletRequest request) {
         Subject subject = SecurityUtils.getSubject();
-        if (subject != null && subject.getPrincipals() != null) {
-            SysUser sysUser = (SysUser) subject.getPrincipals().getPrimaryPrincipal();
+        if (subject != null && subject.getPrincipal()!= null) {
+            SysUser sysUser = (SysUser) subject.getPrincipal();
             if (null != sysUser) {
                 SysUserLoginInOut loginInOut = new SysUserLoginInOut();
                 loginInOut.setCreateTime(new Date());
