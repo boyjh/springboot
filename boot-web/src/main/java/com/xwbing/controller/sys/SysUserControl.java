@@ -118,9 +118,10 @@ public class SysUserControl {
         subject.login(token);
         if (subject.isAuthenticated()) {
             //保存登录信息
+            SysUser user = (SysUser) subject.getPrincipal();
             SysUserLoginInOut loginInOut = new SysUserLoginInOut();
             loginInOut.setCreateTime(new Date());
-            loginInOut.setUserId("");
+            loginInOut.setUserId(user.getId());
             loginInOut.setInoutType(CommonEnum.LoginInOutEnum.IN.getValue());
             loginInOut.setIp(ip);
             RestMessage save = loginInOutService.save(loginInOut);
@@ -146,6 +147,7 @@ public class SysUserControl {
                 loginInOut.setIp(IpUtil.getIpAddr(request));
                 RestMessage out = loginInOutService.save(loginInOut);
                 if (out.isSuccess()) {
+                    subject.logout();
                     return JsonResult.toJSONObj("保存用户登出信息失败");
                 }
             }

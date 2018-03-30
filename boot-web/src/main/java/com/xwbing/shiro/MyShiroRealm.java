@@ -1,12 +1,10 @@
 package com.xwbing.shiro;
 
-import com.xwbing.constant.CommonConstant;
 import com.xwbing.domain.entity.sys.SysAuthority;
 import com.xwbing.domain.entity.sys.SysRole;
 import com.xwbing.domain.entity.sys.SysUser;
 import com.xwbing.service.sys.SysRoleService;
 import com.xwbing.service.sys.SysUserService;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -76,23 +74,29 @@ public class MyShiroRealm extends AuthorizingRealm {
      * @throws AuthenticationException
      */
     @Override
-    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
+    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) {
         UsernamePasswordCaptchaToken captchaToken = (UsernamePasswordCaptchaToken) authenticationToken;
-        String captcha = captchaToken.getCaptcha();
-        String imgCode = (String) SecurityUtils.getSubject().getSession().getAttribute(CommonConstant.KEY_CAPTCHA);
+        //1.校验验证码
+//        String captcha = captchaToken.getCaptcha();
+//        String imgCode = (String) SecurityUtils.getSubject().getSession().getAttribute(CommonConstant.KEY_CAPTCHA);
 //        if (StringUtils.isEmpty(captcha) || !captcha.equalsIgnoreCase(imgCode)) {
 //            throw new AuthenticationException("验证码错误");
 //        }
+        //2.查是否有此用户
         SysUser user = sysUserService.getByUserName(captchaToken.getUsername());
         if (user == null) {
             throw new AuthenticationException("账号或密码错误");
         }
+        //3.校验密码
+        String password = new String(captchaToken.getPassword());
         String sysPassWord = user.getPassword();
         String salt = user.getSalt();
-        boolean flag = sysUserService.checkPassWord(String.valueOf(captchaToken.getPassword()), sysPassWord, salt);
-        if (!flag) {
+        boolean checkPassWord = sysUserService.checkPassWord(password, sysPassWord, salt);
+        if (!checkPassWord) {
             throw new AuthenticationException("账号或密码错误");
         }
+        //重新把数据库密码放置到token中
+        captchaToken.setPassword(sysPassWord.toCharArray());
         return new SimpleAuthenticationInfo(user, sysPassWord, ByteSource.Util.bytes(salt), getName());
     }
 }

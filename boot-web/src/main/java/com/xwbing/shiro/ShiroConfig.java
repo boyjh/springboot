@@ -37,23 +37,19 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setSecurityManager(securityManager());
         //配置访问权限
         Map<String, String> chains = new LinkedHashMap<>();
-        // 配置不会被拦截的链接 顺序判断
         //配置登录的url和登录成功的url
         shiroFilterFactoryBean.setLoginUrl("/user/login");
-//        shiroFilterFactoryBean.setSuccessUrl("/index");
-        // 未授权界面;
         shiroFilterFactoryBean.setUnauthorizedUrl("/403");
-//        chains.put("/favicon.ico", "anon");
-//        chains.put("/static/**", "anon");
-//        chains.put("/", "anon");
-//        chains.put("/doc", "anon");
-//        chains.put("/captcha", "anon");
-//        chains.put("/v2/api-docs", "anon");
-//        chains.put("/swagger-resources", "anon");
-//        chains.put("/configuration/ui", "anon");
-//        chains.put("/configuration/security", "anon");
-//        chains.put("/druid", "anon");
-//        chains.put("/**", "authc");
+        chains.put("/user/logout", "logout");
+        chains.put("/", "anon");
+        chains.put("/doc", "anon");
+        chains.put("/captcha", "anon");
+        chains.put("/v2/api-docs", "anon");
+        chains.put("/swagger-resources", "anon");
+        chains.put("/configuration/ui", "anon");
+        chains.put("/configuration/security", "anon");
+        chains.put("/druid", "anon");
+        chains.put("/**", "authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(chains);
         return shiroFilterFactoryBean;
     }
@@ -62,7 +58,6 @@ public class ShiroConfig {
     public MyShiroRealm shiroRealm() {
         return new MyShiroRealm();
     }
-
 
     @Bean
     public SecurityManager securityManager() {

@@ -390,6 +390,33 @@ public class SysUserService {
     }
 
     /**
+     * 根据用户名查找用户
+     *
+     * @param userName
+     * @return
+     */
+    public SysUser getByUserName(String userName) {
+        return sysUserRepository.getByUserName(userName);
+    }
+
+    /**
+     * 校验密码
+     *
+     * @param sysPassWord 数据库密码
+     * @param passWord    明文密码
+     * @param salt        盐值
+     * @return
+     */
+    public boolean checkPassWord(String passWord, String sysPassWord, String salt) {
+        //根据盐值和明文密码进行sha1散列
+        byte[] saltByte = EncodeUtils.hexDecode(salt);
+        byte[] hashPassword = Digests.sha1(passWord.getBytes(), saltByte, PassWordUtil.HASH_INTERATIONS);
+        String validatePassWord = EncodeUtils.hexEncode(hashPassword);
+        //比较编码后的密码和数据库的密码是否相等
+        return sysPassWord.equals(validatePassWord);
+    }
+
+    /**
      * 获取excel导出列表所需数据
      *
      * @return
@@ -409,46 +436,6 @@ public class SysUserService {
             }
         }
         return listDto;
-    }
-
-    /**
-     * 根据用户名查找用户
-     *
-     * @param userName
-     * @return
-     */
-    public SysUser getByUserName(String userName) {
-        return sysUserRepository.getByUserName(userName);
-    }
-
-    /**
-     * 校验密码
-     *
-     * @param realPassWord
-     * @param passWord
-     * @param salt
-     * @return
-     */
-    public boolean checkPassWord(String passWord, String realPassWord, String salt) {
-        String validatePassWord = getSysPassWord(passWord, salt);
-        //判断密码是否相同
-        return realPassWord.equals(validatePassWord);
-    }
-
-    /**
-     * 获取数据库密码
-     *
-     * @param passWord
-     * @param salt
-     * @return
-     */
-    public String getSysPassWord(String passWord, String salt) {
-        // 根据密码盐值 解码
-        byte[] saltByte = EncodeUtils.hexDecode(salt);
-        byte[] hashPassword = Digests.sha1(passWord.getBytes(), saltByte,
-                PassWordUtil.HASH_INTERATIONS);
-        // 密码 数据库中密码
-        return EncodeUtils.hexEncode(hashPassword);
     }
 
     /**
