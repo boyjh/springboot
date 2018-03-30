@@ -35,10 +35,10 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean shiroFilter() {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager());
-        //配置访问权限
-        Map<String, String> chains = new LinkedHashMap<>();
-        shiroFilterFactoryBean.setLoginUrl("/user/login");
+        //如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
+        shiroFilterFactoryBean.setLoginUrl("/login.html");
         shiroFilterFactoryBean.setSuccessUrl("/doc");
+        Map<String, String> chains = new LinkedHashMap<>();
         //静态资源
         chains.put("/META-INF/resources/**", "anon");
         chains.put("/resources/**", "anon");
@@ -57,6 +57,8 @@ public class ShiroConfig {
         //德鲁伊数据源
         chains.put("/druid/*", "anon");
         chains.put("/druid", "anon");
+        //登录校验
+        chains.put("/user/login", "anon");
         //权限认证路径
         chains.put("/**", "authc");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(chains);

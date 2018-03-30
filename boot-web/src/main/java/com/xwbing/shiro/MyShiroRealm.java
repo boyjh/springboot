@@ -36,7 +36,7 @@ public class MyShiroRealm extends AuthorizingRealm {
     private SysRoleService sysRoleService;
 
     /**
-     * 授权用户权限
+     * 授权用户权限(授权)
      *
      * @param principals
      * @return
@@ -68,7 +68,7 @@ public class MyShiroRealm extends AuthorizingRealm {
     }
 
     /**
-     * 验证用户身份
+     * 验证用户身份(认证)
      *
      * @param authenticationToken
      * @return
