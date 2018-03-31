@@ -2,14 +2,12 @@ package com.xwbing.controller.sys;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.annotation.LogInfo;
-import com.xwbing.constant.CommonConstant;
 import com.xwbing.constant.CommonEnum;
 import com.xwbing.domain.entity.sys.*;
 import com.xwbing.domain.entity.vo.*;
 import com.xwbing.redis.RedisService;
 import com.xwbing.service.sys.*;
 import com.xwbing.shiro.UsernamePasswordCaptchaToken;
-import com.xwbing.util.CommonDataUtil;
 import com.xwbing.util.IpUtil;
 import com.xwbing.util.JsonResult;
 import com.xwbing.util.RestMessage;
@@ -132,7 +130,7 @@ public class SysUserControl {
                 return JsonResult.toJSONObj(new Object(), "登录成功");
             }
         }else {
-            return JsonResult.toJSONObj("登录失败");
+            return JsonResult.toJSONObj("你认证未通过,请重新登录");
         }
     }
 
@@ -161,17 +159,18 @@ public class SysUserControl {
         return JsonResult.toJSONObj("没有获取到用户登录信息");
     }
 
-    @LogInfo("修改密码")
-    @ApiOperation(value = "修改密码", response = RestMessageVo.class)
+    @LogInfo("当前用修改密码")
+    @ApiOperation(value = "当前用户修改密码", response = RestMessageVo.class)
     @PostMapping("updatePassWord")
-    public JSONObject updatePassWord(@RequestParam String newPassWord, @RequestParam String oldPassWord, @RequestParam String id) {
-        if (StringUtils.isEmpty(id)) {
-            return JsonResult.toJSONObj("主键不能为空");
+    public JSONObject updatePassWord(@RequestParam String newPassWord, @RequestParam String oldPassWord) {
+        SysUser currentInfo = sysUserService.getCurrentInfo();
+        if(currentInfo==null){
+            return JsonResult.toJSONObj("没有获取到当前登录用户信息");
         }
         if (StringUtils.isEmpty(newPassWord) || StringUtils.isEmpty(oldPassWord)) {
             return JsonResult.toJSONObj("原密码或新密码不能为空");
         }
-        RestMessage restMessage = sysUserService.updatePassWord(newPassWord, oldPassWord, id);
+        RestMessage restMessage = sysUserService.updatePassWord(newPassWord, oldPassWord, currentInfo.getId());
         return JsonResult.toJSONObj(restMessage);
     }
 
@@ -190,7 +189,7 @@ public class SysUserControl {
     @ApiOperation(value = "获取当前登录用户信息")
     @GetMapping("getLoginUserInfo")
     public JSONObject getLoginUserInfo() {
-        SysUser sysUser = sysUserService.getById((String) CommonDataUtil.getToken(CommonConstant.CURRENT_USER_ID));
+        SysUser sysUser = sysUserService.getCurrentInfo();
         if (sysUser == null) {
             return JsonResult.toJSONObj("未获取到当前登录用户信息");
         }

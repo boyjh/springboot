@@ -11,6 +11,8 @@ import com.xwbing.exception.BusinessException;
 import com.xwbing.util.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -95,23 +97,27 @@ public class SysUserService {
         if (old == null) {
             throw new BusinessException("该用户不存在");
         }
-        if (id.equals(CommonDataUtil.getToken(CommonConstant.CURRENT_USER_ID))) {
-            throw new BusinessException("不能删除当前登录用户");
+        SysUser currentInfo = getCurrentInfo();
+        if (currentInfo != null) {
+            if (id.equals(currentInfo.getId())) {
+                throw new BusinessException("不能删除当前登录用户");
+            }
+            if (CommonEnum.YesOrNoEnum.YES.getCode().equals(old.getAdmin())) {
+                throw new BusinessException("不能对管理员进行删除操作");
+            }
+            //删除用户
+            sysUserRepository.delete(id);
+            //删除用户角色
+            List<SysUserRole> sysUserRoles = sysUserRoleService.listByUserId(id);
+            if (CollectionUtils.isNotEmpty(sysUserRoles)) {
+                sysUserRoleService.removeBatch(sysUserRoles);
+            }
+            result.setMessage("删除成功");
+            result.setSuccess(true);
+            return result;
+        } else {
+            throw new BusinessException("未能获取当前登录用户信息");
         }
-        if (CommonEnum.YesOrNoEnum.YES.getCode().equals(old.getAdmin())) {
-            throw new BusinessException("不能对管理员进行删除操作");
-        }
-        //删除用户
-        sysUserRepository.delete(id);
-        //删除用户角色
-        List<SysUserRole> sysUserRoles = sysUserRoleService.listByUserId(id);
-        if (CollectionUtils.isNotEmpty(sysUserRoles)) {
-            sysUserRoleService.removeBatch(sysUserRoles);
-        }
-        result.setMessage("删除成功");
-        result.setSuccess(true);
-        return result;
-
     }
 
     /**
@@ -126,9 +132,6 @@ public class SysUserService {
         SysUser old = getById(sysUser.getId());
         if (old == null) {
             throw new BusinessException("该用户不存在");
-        }
-        if (old.getId().equals(CommonDataUtil.getToken(CommonConstant.CURRENT_USER_ID))) {
-            throw new BusinessException("不能修改当前登录用户");
         }
         if (CommonEnum.YesOrNoEnum.YES.getCode().equals(old.getAdmin())) {
             throw new BusinessException("不能对管理员进行修改操作");
@@ -158,6 +161,20 @@ public class SysUserService {
      */
     public SysUser getById(String id) {
         return sysUserRepository.findOne(id);
+    }
+
+    /**
+     * 获取用户对象
+     *
+     * @return
+     */
+    public SysUser getCurrentInfo() {
+        Subject subject = SecurityUtils.getSubject();
+        if (subject != null && subject.getPrincipal() != null) {
+            return (SysUser) subject.getPrincipal();
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -193,28 +210,33 @@ public class SysUserService {
         if (old == null) {
             throw new BusinessException("未查询到用户信息");
         }
-        if (CommonDataUtil.getToken(CommonConstant.CURRENT_USER_ID).equals(id)) {
-            throw new BusinessException("不能重置当前登录用户");
+        SysUser currentInfo = getCurrentInfo();
+        if (currentInfo != null) {
+            if (id.equals(currentInfo.getId())) {
+                throw new BusinessException("不能重置当前登录用户");
+            }
+            if (CommonEnum.YesOrNoEnum.YES.getCode().equals(old.getAdmin())) {
+                throw new BusinessException("管理员密码不能重置");
+            }
+            //生成密码
+            String[] str = PassWordUtil.getUserSecret(null, null);
+            old.setSalt(str[1]);
+            old.setPassword(str[2]);
+            old.setModifiedTime(new Date());
+            SysUser save = sysUserRepository.save(old);
+            if (save == null) {
+                throw new BusinessException("重置密码失败");
+            }
+            boolean send = sendEmail(old, str[0]);
+            if (!send) {
+                throw new BusinessException("发送密码邮件错误");
+            }
+            result.setSuccess(true);
+            result.setMessage("重置密码成功");
+            return result;
+        } else {
+            throw new BusinessException("未能获取当前登录用户信息");
         }
-        if (CommonEnum.YesOrNoEnum.YES.getCode().equals(old.getAdmin())) {
-            throw new BusinessException("管理员密码不能重置");
-        }
-        //生成密码
-        String[] str = PassWordUtil.getUserSecret(null, null);
-        old.setSalt(str[1]);
-        old.setPassword(str[2]);
-        old.setModifiedTime(new Date());
-        SysUser save = sysUserRepository.save(old);
-        if (save == null) {
-            throw new BusinessException("重置密码失败");
-        }
-        boolean send = sendEmail(old, str[0]);
-        if (!send) {
-            throw new BusinessException("发送密码邮件错误");
-        }
-        result.setSuccess(true);
-        result.setMessage("重置密码成功");
-        return result;
     }
 
     /**
