@@ -108,7 +108,7 @@ public class SysUserControl {
     @LogInfo("登录")
     @ApiOperation(value = "登录", response = RestMessageVo.class)
     @PostMapping("login")
-    public JSONObject login(HttpServletRequest request, @RequestParam String userName, @RequestParam String passWord, @RequestParam String checkCode, boolean rememberMe) {
+    public JSONObject login(HttpServletRequest request,@RequestParam boolean rememberMe, @RequestParam String userName, @RequestParam String passWord, @RequestParam String checkCode) {
         if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(passWord)) {
             return JsonResult.toJSONObj("用户名或密码不能为空");
         }
@@ -126,10 +126,14 @@ public class SysUserControl {
             loginInOut.setIp(ip);
             RestMessage save = loginInOutService.save(loginInOut);
             if (!save.isSuccess()) {
+                subject.logout();
                 return JsonResult.toJSONObj("保存用户登录日志失败");
+            }else {
+                return JsonResult.toJSONObj(new Object(), "登录成功");
             }
+        }else {
+            return JsonResult.toJSONObj("登录失败");
         }
-        return JsonResult.toJSONObj(new Object(), "登录成功");
     }
 
     @LogInfo("登出")
@@ -137,7 +141,7 @@ public class SysUserControl {
     @GetMapping("logout")
     public JSONObject logout(HttpServletRequest request) {
         Subject subject = SecurityUtils.getSubject();
-        if (subject != null && subject.getPrincipal()!= null) {
+        if (subject != null && subject.getPrincipal() != null) {
             SysUser sysUser = (SysUser) subject.getPrincipal();
             if (null != sysUser) {
                 SysUserLoginInOut loginInOut = new SysUserLoginInOut();
@@ -148,11 +152,13 @@ public class SysUserControl {
                 RestMessage out = loginInOutService.save(loginInOut);
                 if (out.isSuccess()) {
                     subject.logout();
+                    return JsonResult.toJSONObj(new Object(), "登出成功");
+                }else {
                     return JsonResult.toJSONObj("保存用户登出信息失败");
                 }
             }
         }
-        return JsonResult.toJSONObj(new Object(), "登出成功");
+        return JsonResult.toJSONObj("没有获取到用户登录信息");
     }
 
     @LogInfo("修改密码")
