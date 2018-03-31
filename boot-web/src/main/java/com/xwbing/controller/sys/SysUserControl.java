@@ -105,7 +105,7 @@ public class SysUserControl {
 
     @LogInfo("登录")
     @ApiOperation(value = "登录", response = RestMessageVo.class)
-    @PostMapping("login")
+    @RequestMapping("login")
     public JSONObject login(HttpServletRequest request,@RequestParam boolean rememberMe, @RequestParam String userName, @RequestParam String passWord, @RequestParam String checkCode) {
         if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(passWord)) {
             return JsonResult.toJSONObj("用户名或密码不能为空");
