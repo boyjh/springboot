@@ -36,7 +36,7 @@ import java.util.List;
  * 创建时间: 2017/5/10 16:36
  * 作者:  xiangwb
  */
-@Api(tags = "userApi", description = "用户相关接口")
+@Api(tags = "sysUserApi", description = "用户相关接口")
 @RestController
 @RequestMapping("/user/")
 public class SysUserControl {

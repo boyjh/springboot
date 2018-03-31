@@ -55,7 +55,7 @@ public class ShiroConfig {
         chains.put("/configuration/security", "anon");
         chains.put("/doc", "anon");
         //德鲁伊数据源
-        chains.put("/druid/*", "anon");
+        chains.put("/druid/**", "anon");
         chains.put("/druid", "anon");
         //登录校验
         chains.put("/user/login", "anon");
