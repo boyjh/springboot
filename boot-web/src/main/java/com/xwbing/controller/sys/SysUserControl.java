@@ -159,7 +159,7 @@ public class SysUserControl {
         return JsonResult.toJSONObj("没有获取到用户登录信息");
     }
 
-    @LogInfo("当前用修改密码")
+    @LogInfo("当前用户修改密码")
     @ApiOperation(value = "当前用户修改密码", response = RestMessageVo.class)
     @PostMapping("updatePassWord")
     public JSONObject updatePassWord(@RequestParam String newPassWord, @RequestParam String oldPassWord) {

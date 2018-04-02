@@ -21,19 +21,6 @@ import java.util.List;
  */
 @Configuration
 public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
-    /***
-     * 添加拦截器
-     * @param registry
-     */
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        //拦截器1:登录判断
-//        registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**");
-//        registry.addInterceptor(new LoginInterceptor())
-//                .addPathPatterns("/**").excludePathPatterns("/user/login", "/servlet/captchaCode", "/swagger-ui.html");
-        //拦截器2...
-        super.addInterceptors(registry);
-    }
 
     /**
      * 配置静态访问资源

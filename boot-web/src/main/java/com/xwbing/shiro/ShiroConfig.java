@@ -36,9 +36,8 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager());
         //如果不设置默认会自动寻找Web工程根目录下的"/login.jsp"页面
-        shiroFilterFactoryBean.setLoginUrl("/login");
-        shiroFilterFactoryBean.setSuccessUrl("/index");
-        shiroFilterFactoryBean.setUnauthorizedUrl("/redirect:unauthor");
+        shiroFilterFactoryBean.setLoginUrl("/login.html");
+        shiroFilterFactoryBean.setUnauthorizedUrl("/login.html");
         Map<String, String> chains = new LinkedHashMap<>();
         //静态资源
         chains.put("/META-INF/resources/**", "anon");
