@@ -33,7 +33,7 @@ import java.util.Map;
  * 项目名称: boot-module-demo
  * 创建时间: 2018/3/28 14:06
  * 作者: xiangwb
- * 说明: anon,authc
+ * 说明: shiro配置类
  */
 @Configuration
 @PropertySource("classpath:redis.properties")
