@@ -68,6 +68,7 @@ public class SysRoleService {
     public RestMessage removeById(String id) {
         RestMessage result = new RestMessage();
         SysRole one = getById(id);
+        //检查角色是否存在
         if (one == null) {
             throw new BusinessException("该角色不存在");
         }
@@ -93,6 +94,7 @@ public class SysRoleService {
         RestMessage result = new RestMessage();
         String id = sysRole.getId();
         SysRole old = getById(id);
+        //检查角色时候存在
         if (old == null) {
             throw new BusinessException("该角色不存在");
         }

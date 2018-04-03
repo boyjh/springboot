@@ -17,9 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.BufferedOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,8 +36,6 @@ public class SysUserService {
     private SysUserRepository sysUserRepository;
     @Resource
     private SysConfigService sysConfigService;
-    @Resource
-    private SysUserLoginInOutService loginInOutService;
     @Resource
     private SysRoleService sysRoleService;
     @Resource
@@ -164,6 +160,16 @@ public class SysUserService {
     }
 
     /**
+     * 根据用户名查找用户
+     *
+     * @param userName
+     * @return
+     */
+    public SysUser getByUserName(String userName) {
+        return sysUserRepository.getByUserName(userName);
+    }
+
+    /**
      * 获取用户对象
      *
      * @return
@@ -272,85 +278,6 @@ public class SysUserService {
     }
 
     /**
-     * 登录
-     *
-     * @param userName
-     * @param passWord
-     * @param checkCode
-     * @return
-     */
-    public RestMessage login(HttpServletRequest request, String userName, String passWord, String checkCode) {
-        RestMessage restMessage = new RestMessage();
-        String imgCode = (String) CommonDataUtil.getToken(CommonConstant.KEY_CAPTCHA);
-        //验证验证码
-        if (!checkCode.equalsIgnoreCase(imgCode)) {
-            throw new BusinessException("验证码错误");
-        }
-        //验证账号,密码
-        SysUser user = getByUserName(userName);
-        if (user == null) {
-            throw new BusinessException("账号错误");
-        }
-        boolean flag = checkPassWord(passWord, user.getPassword(), user.getSalt());
-        if (!flag) {
-            throw new BusinessException("密码错误");
-        }
-        //保存登录数据
-        CommonDataUtil.setToken(CommonConstant.CURRENT_USER, userName);
-        CommonDataUtil.setToken(CommonConstant.CURRENT_USER_ID, user.getId());
-        //生成session
-        HttpSession session = request.getSession();
-        session.setAttribute(userName, userName);
-        //保存登录信息
-        SysUserLoginInOut loginInOut = new SysUserLoginInOut();
-        loginInOut.setCreateTime(new Date());
-        loginInOut.setUserId(user.getId());
-        loginInOut.setInoutType(CommonEnum.LoginInOutEnum.IN.getValue());
-        loginInOut.setIp(IpUtil.getIpAddr(request));
-        RestMessage save = loginInOutService.save(loginInOut);
-        if (!save.isSuccess()) {
-            throw new BusinessException("保存用户登录日志失败");
-        }
-        restMessage.setSuccess(true);
-        restMessage.setMessage("登录成功");
-        return restMessage;
-    }
-
-    /**
-     * 登出
-     *
-     * @param request
-     * @return
-     */
-    public RestMessage logout(HttpServletRequest request) {
-        RestMessage restMessage = new RestMessage();
-        String userId = (String) CommonDataUtil.getToken(CommonConstant.CURRENT_USER_ID);
-        SysUser user = getById(userId);
-        if (user != null) {
-            //清空公共数据
-            CommonDataUtil.clearMap();
-            //清除session参数
-            HttpSession session = request.getSession();
-            session.removeAttribute(user.getUserName());
-            //保存登出信息
-            SysUserLoginInOut loginInOut = new SysUserLoginInOut();
-            loginInOut.setCreateTime(new Date());
-            loginInOut.setUserId(user.getId());
-            loginInOut.setInoutType(CommonEnum.LoginInOutEnum.OUT.getValue());
-            loginInOut.setIp(IpUtil.getIpAddr(request));
-            restMessage = loginInOutService.save(loginInOut);
-            if (restMessage.isSuccess()) {
-                restMessage.setMessage("登出成功");
-            } else {
-                restMessage.setMessage("保存用户登出信息失败");
-            }
-        } else {
-            restMessage.setMessage("没有获取到用户登录信息,请重新登录");
-        }
-        return restMessage;
-    }
-
-    /**
      * 根据用户主键，是否有效，查找所拥有的权限
      *
      * @param userId
@@ -409,16 +336,6 @@ public class SysUserService {
         } catch (Exception e) {
             throw new BusinessException("导出excel错误");
         }
-    }
-
-    /**
-     * 根据用户名查找用户
-     *
-     * @param userName
-     * @return
-     */
-    public SysUser getByUserName(String userName) {
-        return sysUserRepository.getByUserName(userName);
     }
 
     /**

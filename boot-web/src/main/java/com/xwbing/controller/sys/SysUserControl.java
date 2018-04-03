@@ -196,6 +196,7 @@ public class SysUserControl {
         List<SysAuthority> button = new ArrayList<>();
         List<SysAuthority> menu = new ArrayList<>();
         List<SysAuthority> list;
+        //如果是管理员，获取全部权限。否则查询所拥有的权限
         if (CommonEnum.YesOrNoEnum.YES.getCode().equalsIgnoreCase(sysUser.getAdmin())) {
             list = sysAuthorityService.listByEnable(CommonEnum.YesOrNoEnum.YES.getCode());
         } else {
