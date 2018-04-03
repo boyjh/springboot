@@ -12,7 +12,6 @@ import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
 import org.crazycake.shiro.RedisCacheManager;
 import org.crazycake.shiro.RedisManager;
 import org.crazycake.shiro.RedisSessionDAO;
-import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -213,18 +212,7 @@ public class ShiroConfig {
     }
 
     /**
-     * 自动创建代理类，若不添加，shiro注解可能不会生效
-     */
-    @Bean
-    @DependsOn("lifecycleBeanPostProcessor")
-    public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
-        DefaultAdvisorAutoProxyCreator defaultAAP = new DefaultAdvisorAutoProxyCreator();
-        defaultAAP.setProxyTargetClass(true);
-        return defaultAAP;
-    }
-
-    /**
-     * 开启shiro注解
+     * AOP式方法级权限检查
      *
      * @param securityManager
      * @return
