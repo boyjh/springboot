@@ -8,7 +8,13 @@ import org.apache.shiro.web.filter.authc.AnonymousFilter;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
+import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
+import org.crazycake.shiro.RedisCacheManager;
+import org.crazycake.shiro.RedisManager;
+import org.crazycake.shiro.RedisSessionDAO;
+import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,18 +36,14 @@ import java.util.Map;
  * 说明: anon,authc
  */
 @Configuration
-@PropertySource("classpath:shiro.properties")
+@PropertySource("classpath:redis.properties")
 public class ShiroConfig {
-    @Value("${rememberMeCookieMaxAge}")
-    private Integer rememberMeCookieMaxAge;
-    @Value("${globalSessionTimeout}")
-    private Long globalSessionTimeout;
-    @Value("${sessionValidationInterval}")
-    private String sessionValidationInterval;
-    @Value("${sessionsCacheName}")
-    private String sessionsCacheName;
-    @Value("${sessionIdCookieName}")
-    private String sessionIdCookieName;
+    @Value("${host}")
+    private String host;
+    @Value("${port}")
+    private Integer port;
+    @Value("${timeout}")
+    private Integer timeOut;
 
     /**
      * 此处核心,对多个filter进行管理，其它filer设置不自动加载，作为过滤链条使用
@@ -98,89 +100,68 @@ public class ShiroConfig {
         //登出
         chains.put("/user/logout", "anon");
         //必须通过验证或者rememberMe
-        chains.put("/**", "user,authc");
+        chains.put("/**", "user,authc,sessionFilter");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(chains);
         return shiroFilterFactoryBean;
     }
 
-    /////////////////securityManager///////////////////
+    ///////////////////////securityManager///////////////////
     @Bean
     public SecurityManager securityManager() {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(shiroRealm());
-//        securityManager.setCacheManager(cacheManager());
-//        securityManager.setSessionManager(defaultWebSessionManager());
+        securityManager.setCacheManager(cacheManager());
+        securityManager.setSessionManager(sessionManager());
         securityManager.setRememberMeManager(rememberMeManager());
         return securityManager;
     }
 
-    ///////////////////shiroRealm///////////////////
+    ///////////////////////shiroRealm///////////////////
     @Bean
-    @DependsOn(value = "lifecycleBeanPostProcessor")
+    @DependsOn("lifecycleBeanPostProcessor")
     public MyShiroRealm shiroRealm() {
         MyShiroRealm myShiroRealm = new MyShiroRealm();
-//        myShiroRealm.setCacheManager(cacheManager());
+        myShiroRealm.setCacheManager(cacheManager());
         myShiroRealm.setAuthorizationCachingEnabled(false);
-//        //启用身份验证缓存,即缓存AuthenticationInfo信息，默认false
-//        myShiroRealm.setAuthenticationCachingEnabled(true);
-//        //缓存AuthenticationInfo信息的缓存名称
-//        myShiroRealm.setAuthenticationCacheName("authenticationCache");
-//        //缓存AuthorizationInfo信息的缓存名称
-//        myShiroRealm.setAuthorizationCacheName("authorizationCache");
         return myShiroRealm;
     }
 
-    ///////////////////cacheManager////////////////
-//    @Bean
-//    public RedisCacheManager cacheManager() {
-//        RedisManager redisManager = new RedisManager();
-//        redisManager.setExpire(333333333);
-//        redisManager.setHost("192.168.11.202");
-//        redisManager.setPort(6379);
-//        RedisCacheManager cacheManager = new RedisCacheManager();
-//        cacheManager.setRedisManager(redisManager);
-//        return cacheManager;
-//    }
-//    //////////////////////sessionManager//////////////////
-//
-//    @Bean
-//    public SessionManager defaultWebSessionManager() {
-//        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
-//        sessionManager.setCacheManager(cacheManager());
-//        sessionManager.setGlobalSessionTimeout(globalSessionTimeout);
-//        sessionManager.setDeleteInvalidSessions(true);
-//        sessionManager.setSessionValidationSchedulerEnabled(true);
-//        sessionManager.setDeleteInvalidSessions(true);
-////        sessionManager.setSessionValidationScheduler(sessionValidationScheduler());
-//        sessionManager.setSessionIdCookie(sessionIdCookie());
-//        sessionManager.setSessionIdCookieEnabled(true);
-//        sessionManager.setSessionDAO(sessionDAO());
-//        return sessionManager;
-//    }
-//
-//    @Bean
-//    public SimpleCookie sessionIdCookie() {
-//        SimpleCookie simpleCookie = new SimpleCookie(sessionIdCookieName);
-//        simpleCookie.setHttpOnly(true);
-//        simpleCookie.setMaxAge(-1);//<!-- maxAge=-1表示浏览器关闭时失效此Cookie； -->
-//        return simpleCookie;
-//    }
-//
-//    @Bean
-//    public EnterpriseCacheSessionDAO sessionDAO() {
-//        EnterpriseCacheSessionDAO sessionDAO = new EnterpriseCacheSessionDAO();
-//        sessionDAO.setActiveSessionsCacheName("shiro-activeSessionCache");
-//        sessionDAO.setSessionIdGenerator(new JavaUuidSessionIdGenerator());
-//        return sessionDAO;
-//    }
+    ///////////////////////redisManager///////////////////
+    @Bean
+    public RedisManager redisManager() {
+        RedisManager redisManager = new RedisManager();
+        redisManager.setHost("192.168.11.202");
+        redisManager.setPort(6379);
+        redisManager.setExpire(1800);//配置缓存过期时间
+        redisManager.setTimeout(10000);
+        return redisManager;
+    }
 
-    //////////////rememberMeManager//////////////////
+    ///////////////////////cacheManager///////////////////
+    @Bean
+    @DependsOn("lifecycleBeanPostProcessor")
+    public RedisCacheManager cacheManager() {
+        RedisCacheManager redisCacheManager = new RedisCacheManager();
+        redisCacheManager.setRedisManager(redisManager());
+        return redisCacheManager;
+    }
 
-    /**
-     * cookie管理对象,记住我功能
-     *
-     * @return
-     */
+    ///////////////////////sessionManager///////////////////
+    @Bean
+    public DefaultWebSessionManager sessionManager() {
+        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+        sessionManager.setSessionDAO(redisSessionDAO());
+        return sessionManager;
+    }
+
+    @Bean
+    public RedisSessionDAO redisSessionDAO() {
+        RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
+        redisSessionDAO.setRedisManager(redisManager());
+        return redisSessionDAO;
+    }
+
+    ///////////////////////rememberMeManager///////////////////
     @Bean
     public CookieRememberMeManager rememberMeManager() {
         CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
@@ -190,11 +171,6 @@ public class ShiroConfig {
         return cookieRememberMeManager;
     }
 
-    /**
-     * cookie对象;
-     *
-     * @return
-     */
     @Bean
     public SimpleCookie rememberMeCookie() {
         //这个参数是cookie的名称,对应前端的checkbox的name = rememberMe
@@ -204,7 +180,7 @@ public class ShiroConfig {
         return simpleCookie;
     }
 
-    /////////////////////////urlPermissionsFilter//////////////////
+    ///////////////////////urlPermissionsFilter///////////////////
     @Bean
     public FilterRegistrationBean urlPermissionsFilterRegistrationBean(UrlPermissionsFilter urlPermissionsFilter) {
         FilterRegistrationBean registration = new FilterRegistrationBean(urlPermissionsFilter);
@@ -218,14 +194,18 @@ public class ShiroConfig {
         return new UrlPermissionsFilter();
     }
 
-    /////////////////////sessionFilter//////////////////////////////////////
+    /**
+     * session超时过滤
+     *
+     * @return
+     */
     @Bean(name = "sessionFilter")
     public SessionFilter sessionFilter() {
         return new SessionFilter();
     }
 
     /**
-     * 保证实现了Shiro内部lifecycle函数的bean执行 Shiro生命周期处理器
+     * Shiro生命周期处理器
      *
      * @return
      */
@@ -233,6 +213,7 @@ public class ShiroConfig {
     public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
         return new LifecycleBeanPostProcessor();
     }
+
 
     /**
      * AOP式方法级权限检查
@@ -245,5 +226,16 @@ public class ShiroConfig {
         AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
         authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
         return authorizationAttributeSourceAdvisor;
+    }
+
+    /**
+     * Spring的一个bean，由Advisor决定对哪些类的方法进行AOP代理。
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
+        DefaultAdvisorAutoProxyCreator defaultAAP = new DefaultAdvisorAutoProxyCreator();
+        defaultAAP.setProxyTargetClass(true);
+        return defaultAAP;
     }
 }
