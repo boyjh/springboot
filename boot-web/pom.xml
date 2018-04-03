@@ -81,10 +81,16 @@
             <artifactId>commons-fileupload</artifactId>
             <version>${fileUpLoad.version}</version>
         </dependency>
+        <!-- shiro-->
         <dependency>
             <groupId>org.crazycake</groupId>
             <artifactId>shiro-redis</artifactId>
             <version>1.1.0-RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-quartz</artifactId>
+            <version>1.2.3</version>
         </dependency>
     </dependencies>
     <build>

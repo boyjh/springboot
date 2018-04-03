@@ -1,19 +1,24 @@
 package com.xwbing.shiro;
 
 import org.apache.shiro.mgt.SecurityManager;
+import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.filter.authc.AnonymousFilter;
+import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.apache.shiro.web.servlet.SimpleCookie;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.web.filter.DelegatingFilterProxy;
 
 import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -63,6 +68,7 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setUnauthorizedUrl("/login.html");
 
         Map<String, Filter> filters = new HashMap<>();
+        filters.put("sessionFilter", sessionFilter());
         filters.put("authc", urlPermissionsFilter());
         filters.put("anon", new AnonymousFilter());
         shiroFilterFactoryBean.setFilters(filters);
@@ -103,17 +109,18 @@ public class ShiroConfig {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(shiroRealm());
 //        securityManager.setCacheManager(cacheManager());
-//        securityManager.setSessionManager(sessionManager());
-//        securityManager.setRememberMeManager(rememberMeManager());
+//        securityManager.setSessionManager(defaultWebSessionManager());
+        securityManager.setRememberMeManager(rememberMeManager());
         return securityManager;
     }
 
-    ///////////////////shiroRealm/////////////////
+    ///////////////////shiroRealm///////////////////
     @Bean
+    @DependsOn(value = "lifecycleBeanPostProcessor")
     public MyShiroRealm shiroRealm() {
         MyShiroRealm myShiroRealm = new MyShiroRealm();
 //        myShiroRealm.setCacheManager(cacheManager());
-//        myShiroRealm.setAuthorizationCachingEnabled(false);
+        myShiroRealm.setAuthorizationCachingEnabled(false);
 //        //启用身份验证缓存,即缓存AuthenticationInfo信息，默认false
 //        myShiroRealm.setAuthenticationCachingEnabled(true);
 //        //缓存AuthenticationInfo信息的缓存名称
@@ -126,32 +133,28 @@ public class ShiroConfig {
     ///////////////////cacheManager////////////////
 //    @Bean
 //    public RedisCacheManager cacheManager() {
-//        RedisCacheManager redisCacheManager = new RedisCacheManager();
-//        redisCacheManager.setRedisManager(redisManager());
-//        return redisCacheManager;
-//    }
-
-//    @Bean
-//    public RedisManager redisManager() {
 //        RedisManager redisManager = new RedisManager();
+//        redisManager.setExpire(333333333);
 //        redisManager.setHost("192.168.11.202");
 //        redisManager.setPort(6379);
-//        redisManager.setExpire(1800);// 配置缓存过期时间
-//        return redisManager;
+//        RedisCacheManager cacheManager = new RedisCacheManager();
+//        cacheManager.setRedisManager(redisManager);
+//        return cacheManager;
 //    }
-    //////////////////////sessionManager//////////////////
-
+//    //////////////////////sessionManager//////////////////
+//
 //    @Bean
-//    public SessionManager sessionManager() {
-//        MySessionManager sessionManager = new MySessionManager();
-//        sessionManager.setSessionDAO(redisSessionDAO());
+//    public SessionManager defaultWebSessionManager() {
+//        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
 //        sessionManager.setCacheManager(cacheManager());
 //        sessionManager.setGlobalSessionTimeout(globalSessionTimeout);
 //        sessionManager.setDeleteInvalidSessions(true);
 //        sessionManager.setSessionValidationSchedulerEnabled(true);
 //        sessionManager.setDeleteInvalidSessions(true);
+////        sessionManager.setSessionValidationScheduler(sessionValidationScheduler());
 //        sessionManager.setSessionIdCookie(sessionIdCookie());
 //        sessionManager.setSessionIdCookieEnabled(true);
+//        sessionManager.setSessionDAO(sessionDAO());
 //        return sessionManager;
 //    }
 //
@@ -164,39 +167,44 @@ public class ShiroConfig {
 //    }
 //
 //    @Bean
-//    public RedisSessionDAO redisSessionDAO() {
-//        RedisSessionDAO redisSessionDAO = new RedisSessionDAO();
-//        redisSessionDAO.setRedisManager(redisManager());
-//        return redisSessionDAO;
+//    public EnterpriseCacheSessionDAO sessionDAO() {
+//        EnterpriseCacheSessionDAO sessionDAO = new EnterpriseCacheSessionDAO();
+//        sessionDAO.setActiveSessionsCacheName("shiro-activeSessionCache");
+//        sessionDAO.setSessionIdGenerator(new JavaUuidSessionIdGenerator());
+//        return sessionDAO;
 //    }
 
     //////////////rememberMeManager//////////////////
 
     /**
-     * cookie管理对象;记住我功能
+     * cookie管理对象,记住我功能
      *
      * @return
      */
-//    public CookieRememberMeManager rememberMeManager() {
-//        CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
-//        cookieRememberMeManager.setCookie(rememberMeCookie());
-//        //rememberMe cookie加密的密钥 建议每个项目都不一样 默认AES算法 密钥长度(128 256 512 位)
-//        cookieRememberMeManager.setCipherKey(Base64.getDecoder().decode("3AvVhmFLUs0KTA3Kprsdag=="));
-//        return cookieRememberMeManager;
-//    }
-//
-//    /**
-//     * cookie对象;
-//     *
-//     * @return
-//     */
-//    public SimpleCookie rememberMeCookie() {
-//        //这个参数是cookie的名称，对应前端的checkbox的name = rememberMe
-//        SimpleCookie simpleCookie = new SimpleCookie("rememberMe");
-//        //<!-- 记住我cookie生效时间30天 ,单位秒;-->
-//        simpleCookie.setMaxAge(2592000);
-//        return simpleCookie;
-//    }
+    @Bean
+    public CookieRememberMeManager rememberMeManager() {
+        CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
+        cookieRememberMeManager.setCookie(rememberMeCookie());
+        //rememberMe cookie加密的密钥 建议每个项目都不一样 默认AES算法 密钥长度(128 256 512 位)
+        cookieRememberMeManager.setCipherKey(Base64.getDecoder().decode("3AvVhmFLUs0KTA3Kprsdag=="));
+        return cookieRememberMeManager;
+    }
+
+    /**
+     * cookie对象;
+     *
+     * @return
+     */
+    @Bean
+    public SimpleCookie rememberMeCookie() {
+        //这个参数是cookie的名称,对应前端的checkbox的name = rememberMe
+        SimpleCookie simpleCookie = new SimpleCookie("rememberMe");
+        //记住我cookie生效时间30天 ,单位秒
+        simpleCookie.setMaxAge(2592000);
+        return simpleCookie;
+    }
+
+    /////////////////////////urlPermissionsFilter//////////////////
     @Bean
     public FilterRegistrationBean urlPermissionsFilterRegistrationBean(UrlPermissionsFilter urlPermissionsFilter) {
         FilterRegistrationBean registration = new FilterRegistrationBean(urlPermissionsFilter);
@@ -205,9 +213,25 @@ public class ShiroConfig {
         return registration;
     }
 
-    @Bean(name = "urlPermissionsFilter")
+    @Bean
     public UrlPermissionsFilter urlPermissionsFilter() {
         return new UrlPermissionsFilter();
+    }
+
+    /////////////////////sessionFilter//////////////////////////////////////
+    @Bean(name = "sessionFilter")
+    public SessionFilter sessionFilter() {
+        return new SessionFilter();
+    }
+
+    /**
+     * 保证实现了Shiro内部lifecycle函数的bean执行 Shiro生命周期处理器
+     *
+     * @return
+     */
+    @Bean
+    public LifecycleBeanPostProcessor lifecycleBeanPostProcessor() {
+        return new LifecycleBeanPostProcessor();
     }
 
     /**
