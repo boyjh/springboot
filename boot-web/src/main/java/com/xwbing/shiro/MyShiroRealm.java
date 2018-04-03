@@ -1,10 +1,13 @@
 package com.xwbing.shiro;
 
+import com.xwbing.constant.CommonConstant;
+import com.xwbing.constant.CommonEnum;
 import com.xwbing.domain.entity.sys.SysAuthority;
-import com.xwbing.domain.entity.sys.SysRole;
 import com.xwbing.domain.entity.sys.SysUser;
+import com.xwbing.service.sys.SysAuthorityService;
 import com.xwbing.service.sys.SysRoleService;
 import com.xwbing.service.sys.SysUserService;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -34,6 +37,8 @@ public class MyShiroRealm extends AuthorizingRealm {
     private SysUserService sysUserService;
     @Resource
     private SysRoleService sysRoleService;
+    @Resource
+    private SysAuthorityService sysAuthorityService;
 
     /**
      * 授权用户权限(授权)
@@ -53,14 +58,21 @@ public class MyShiroRealm extends AuthorizingRealm {
             // 权限信息对象info,用来存放查出的用户的所有的角色（role）及权限（permission）
             SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
             // 用户的角色集合
-            List<SysRole> sysRoles = sysRoleService.listByUserIdEnable(user.getId(), "Y");
-            Set<String> roles = new HashSet<>();
-            sysRoles.forEach(sysRole -> roles.add(sysRole.getName()));
-            info.setRoles(roles);
+//            List<SysRole> sysRoles = sysRoleService.listByUserIdEnable(user.getId(), "Y");
+//            Set<String> roles = new HashSet<>();
+//            sysRoles.forEach(sysRole -> roles.add(sysRole.getName()));
+//            info.setRoles(roles);
             //用户的权限集合
             Set<String> permissions = new HashSet<>();
-            List<SysAuthority> sysAuthorities = sysUserService.listAuthorityByIdAndEnable(user.getId(), "Y");
-            sysAuthorities.forEach(sysAuthority -> permissions.add(sysAuthority.getUrl()));
+            List<SysAuthority> sysAuthorities;
+            if (CommonConstant.IS_ENABLE.equalsIgnoreCase(user.getAdmin())) {
+                sysAuthorities = sysAuthorityService.listByEnable(CommonEnum.YesOrNoEnum.YES.getCode());
+            } else {
+                sysAuthorities = sysUserService.listAuthorityByIdAndEnable(user.getId(), "Y");
+            }
+            if (CollectionUtils.isNotEmpty(sysAuthorities)) {
+                sysAuthorities.forEach(sysAuthority -> permissions.add(sysAuthority.getUrl()));
+            }
             info.setStringPermissions(permissions);
             return info;
         }

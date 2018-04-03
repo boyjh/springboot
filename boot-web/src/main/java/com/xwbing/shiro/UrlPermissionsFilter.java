@@ -27,7 +27,7 @@ public class UrlPermissionsFilter extends PermissionsAuthorizationFilter {
     private SysAuthorityService sysAuthorityService;
 
     /**
-     * @param mappedValue 指的是在声明url时指定的权限字符串，如 我们要动态产生这个权限字符串，
+     * @param mappedValue 指的是在声明url时指定的权限字符串,我们要动态产生这个权限字符串，
      */
     @Override
     public boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws IOException {

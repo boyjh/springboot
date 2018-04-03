@@ -198,19 +198,24 @@ public class ShiroConfig {
 //        return simpleCookie;
 //    }
     @Bean
-    public FilterRegistrationBean urlPermissionsFilterRegistrationBean() {
-        FilterRegistrationBean registration = new FilterRegistrationBean(urlPermissionsFilter());
+    public FilterRegistrationBean urlPermissionsFilterRegistrationBean(UrlPermissionsFilter urlPermissionsFilter) {
+        FilterRegistrationBean registration = new FilterRegistrationBean(urlPermissionsFilter);
         //设置不自动在在配置时执行,默认是true
         registration.setEnabled(false);
         return registration;
     }
 
-    @Bean
+    @Bean(name = "urlPermissionsFilter")
     public UrlPermissionsFilter urlPermissionsFilter() {
         return new UrlPermissionsFilter();
     }
 
-
+    /**
+     * AOP式方法级权限检查
+     *
+     * @param securityManager
+     * @return
+     */
     @Bean
     public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
         AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
