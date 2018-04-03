@@ -96,7 +96,6 @@ public class ShiroConfig {
         chains.put("/druid", "anon");
         //登录校验
         chains.put("/user/login", "anon");
-        chains.put("/login", "anon");
         //登出
         chains.put("/user/logout", "anon");
         //必须通过验证或者rememberMe
