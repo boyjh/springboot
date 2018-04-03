@@ -13,7 +13,7 @@ import java.io.Serializable;
  * 项目名称: boot-module-demo
  * 创建时间: 2018/3/29 16:29
  * 作者: xiangwb
- * 说明:
+ * 说明: 自定义sessionId获取
  */
 public class MySessionManager extends DefaultWebSessionManager {
     private static final String AUTHORIZATION = "Authorization";

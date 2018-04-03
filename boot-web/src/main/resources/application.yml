@@ -2,7 +2,7 @@
 server:
   port: 8088
   session:
-    timeout: 60
+    timeout: 3600 #单位秒
   context-path: /
 
 #spring
@@ -46,7 +46,6 @@ spring:
       charset: UTF-8
       enabled: true
       force: true
-
 
 #log
 logging:

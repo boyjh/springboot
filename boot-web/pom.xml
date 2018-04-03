@@ -81,6 +81,11 @@
             <artifactId>commons-fileupload</artifactId>
             <version>${fileUpLoad.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.crazycake</groupId>
+            <artifactId>shiro-redis</artifactId>
+            <version>1.1.0-RELEASE</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>boot-web</finalName>
