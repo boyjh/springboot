@@ -213,7 +213,6 @@ public class ShiroConfig {
         return new LifecycleBeanPostProcessor();
     }
 
-
     /**
      * AOP式方法级权限检查
      *
