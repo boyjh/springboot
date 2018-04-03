@@ -212,7 +212,7 @@ public class ShiroConfig {
     }
 
     /**
-     * AOP式方法级权限检查
+     * 利用aop使用shiro注解（使用cglib代理）
      *
      * @param securityManager
      * @return
