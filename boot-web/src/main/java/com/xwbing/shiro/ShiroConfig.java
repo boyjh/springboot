@@ -2,7 +2,6 @@ package com.xwbing.shiro;
 
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
-import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.filter.authc.AnonymousFilter;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
@@ -191,12 +190,16 @@ public class ShiroConfig {
         return new UrlPermissionsFilter();
     }
 
-    /**
-     * session超时过滤
-     *
-     * @return
-     */
-    @Bean(name = "sessionFilter")
+    ///////////////////////sessionFilter///////////////////
+    @Bean
+    public FilterRegistrationBean sessionFilterRegistrationBean(SessionFilter sessionFilter) {
+        FilterRegistrationBean registration = new FilterRegistrationBean(sessionFilter);
+        //设置不自动在在配置时执行,默认是true
+        registration.setEnabled(false);
+        return registration;
+    }
+
+    @Bean
     public SessionFilter sessionFilter() {
         return new SessionFilter();
     }
@@ -211,16 +214,16 @@ public class ShiroConfig {
         return new LifecycleBeanPostProcessor();
     }
 
-    /**
-     * 利用aop使用shiro注解（使用cglib代理）
-     *
-     * @param securityManager
-     * @return
-     */
-    @Bean
-    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
-        AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
-        authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
-        return authorizationAttributeSourceAdvisor;
-    }
+//    /**
+//     * 利用aop使用shiro注解（使用cglib代理,proxy-target-class:true）
+//     *
+//     * @param securityManager
+//     * @return
+//     */
+//    @Bean
+//    public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
+//        AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor = new AuthorizationAttributeSourceAdvisor();
+//        authorizationAttributeSourceAdvisor.setSecurityManager(securityManager);
+//        return authorizationAttributeSourceAdvisor;
+//    }
 }
