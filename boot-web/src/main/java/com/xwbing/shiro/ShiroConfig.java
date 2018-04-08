@@ -67,6 +67,7 @@ public class ShiroConfig {
 
         Map<String, Filter> filters = new HashMap<>();
         filters.put("sessionFilter", sessionFilter());
+        filters.put("kickout", kickoutSessionControlFilter());
         filters.put("authc", urlPermissionsFilter());
         filters.put("anon", new AnonymousFilter());
         shiroFilterFactoryBean.setFilters(filters);
@@ -95,7 +96,7 @@ public class ShiroConfig {
         //登出
         chains.put("/user/logout", "anon");
         //必须通过验证或者rememberMe
-        chains.put("/**", "user,authc,sessionFilter");
+        chains.put("/**", "user,authc,sessionFilter,kickout");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(chains);
         return shiroFilterFactoryBean;
     }
@@ -201,6 +202,26 @@ public class ShiroConfig {
     @Bean
     public SessionFilter sessionFilter() {
         return new SessionFilter();
+    }
+
+    ///////////////////////kickoutSessionControlFilter///////////////////
+    @Bean
+    public FilterRegistrationBean kickoutSessionControlFilterRegistrationBean(KickoutSessionControlFilter kickoutSessionControlFilter) {
+        FilterRegistrationBean registration = new FilterRegistrationBean(kickoutSessionControlFilter);
+        //设置不自动在在配置时执行,默认是true
+        registration.setEnabled(false);
+        return registration;
+    }
+
+    @Bean
+    public KickoutSessionControlFilter kickoutSessionControlFilter() {
+        KickoutSessionControlFilter kickoutSessionControlFilter = new KickoutSessionControlFilter();
+        kickoutSessionControlFilter.setCacheManager(cacheManager());
+        kickoutSessionControlFilter.setSessionManager(sessionManager());
+        kickoutSessionControlFilter.setKickoutAfter(false);
+        kickoutSessionControlFilter.setMaxSession(1);
+        kickoutSessionControlFilter.setKickoutUrl("/kickout.html");
+        return kickoutSessionControlFilter;
     }
 
     /**
