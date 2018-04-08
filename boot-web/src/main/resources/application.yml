@@ -1,6 +1,6 @@
 #server
 server:
-  port: 8080
+  port: 8088
   session:
     timeout: 3600 #单位秒
   context-path: /
@@ -26,7 +26,7 @@ spring:
   #aop
   aop:
     auto: true # Add @EnableAspectJAutoProxy
-    proxy-target-class: true
+    proxy-target-class: false
   #mail
   mail:
     host: smtp.163.com
