@@ -18,7 +18,7 @@ import java.util.LinkedList;
 
 /**
  * 项目名称: boot-module-demo
- * 创建时间: 2018/4/3 18:02
+ * 创建时间: 2018/2/3 18:02
  * 作者: xiangwb
  * 说明: 防止二次登陆的功能
  */
