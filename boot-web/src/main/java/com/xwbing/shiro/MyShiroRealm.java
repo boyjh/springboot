@@ -8,6 +8,8 @@ import com.xwbing.service.sys.SysAuthorityService;
 import com.xwbing.service.sys.SysRoleService;
 import com.xwbing.service.sys.SysUserService;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -90,11 +92,11 @@ public class MyShiroRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) {
         UsernamePasswordCaptchaToken captchaToken = (UsernamePasswordCaptchaToken) authenticationToken;
         //1.校验验证码
-//        String captcha = captchaToken.getCaptcha();
-//        String imgCode = (String) SecurityUtils.getSubject().getSession().getAttribute(CommonConstant.KEY_CAPTCHA);
-//        if (StringUtils.isEmpty(captcha) || !captcha.equalsIgnoreCase(imgCode)) {
-//            throw new AuthenticationException("验证码错误");
-//        }
+        String captcha = captchaToken.getCaptcha();
+        String imgCode = (String) SecurityUtils.getSubject().getSession().getAttribute(CommonConstant.KEY_CAPTCHA);
+        if (StringUtils.isEmpty(captcha) || !captcha.equalsIgnoreCase(imgCode)) {
+            throw new AuthenticationException("验证码错误");
+        }
         //2.查是否有此用户
         SysUser user = sysUserService.getByUserName(captchaToken.getUsername());
         if (user == null) {
