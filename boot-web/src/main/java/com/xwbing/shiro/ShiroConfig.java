@@ -51,7 +51,6 @@ public class ShiroConfig {
     public FilterRegistrationBean filterRegistrationBean() {
         FilterRegistrationBean filterRegistration = new FilterRegistrationBean();
         filterRegistration.setFilter(new DelegatingFilterProxy("shiroFilter"));
-        filterRegistration.setEnabled(true);
         filterRegistration.addUrlPatterns("/*");
         filterRegistration.setDispatcherTypes(DispatcherType.REQUEST);
         filterRegistration.setOrder(1);
