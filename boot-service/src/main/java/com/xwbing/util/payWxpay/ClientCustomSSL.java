@@ -44,15 +44,14 @@ import java.security.*;
  */
 public class ClientCustomSSL {
 
-    public static CloseableHttpClient getCloseableHttpClient(String mch_id) {
+    public static CloseableHttpClient getCloseableHttpClient(String mchId) {
         FileInputStream instream = null;
         KeyStore keyStore = null;
         try {
             keyStore = KeyStore.getInstance("PKCS12");
-            String path = ClientCustomSSL.class.getClassLoader().getResource("wx_apiclient_cert.p12")
-                    .getPath();
+            String path = ClientCustomSSL.class.getClassLoader().getResource("wx_apiclient_cert.p12").getPath();
             instream = new FileInputStream(new File(path));
-            keyStore.load(instream, mch_id.toCharArray());
+            keyStore.load(instream, mchId.toCharArray());
         } catch (Exception e) {
             throw new BusinessException("读取微信证书出错!");
         } finally {
@@ -67,7 +66,7 @@ public class ClientCustomSSL {
             SSLContext sslcontext = null;
             try {
                 sslcontext = SSLContexts.custom()
-                        .loadKeyMaterial(keyStore, mch_id.toCharArray())
+                        .loadKeyMaterial(keyStore, mchId.toCharArray())
                         .build();
             } catch (NoSuchAlgorithmException e) {
                 e.printStackTrace();

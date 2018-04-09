@@ -2,6 +2,7 @@ package com.xwbing.handler;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.exception.BusinessException;
+import com.xwbing.exception.PayException;
 import com.xwbing.exception.UtilException;
 import com.xwbing.util.JsonResult;
 import org.slf4j.Logger;
@@ -60,6 +61,20 @@ public class GlobalExceptionHandler {
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
     public JSONObject handlerUtilException(UtilException ex) {
+        logger.error(ex.getMessage());
+        return JsonResult.toJSONObj(ex.getMessage());
+    }
+
+    /**
+     * 线上支付异常
+     *
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler(value = PayException.class)
+    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
+    public JSONObject handlerPayException(PayException ex) {
         logger.error(ex.getMessage());
         return JsonResult.toJSONObj(ex.getMessage());
     }

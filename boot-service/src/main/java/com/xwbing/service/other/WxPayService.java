@@ -10,20 +10,17 @@ import com.xwbing.util.payWxpay.XmlUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.util.EntityUtils;
-import org.jdom2.JDOMException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -131,18 +128,9 @@ public class WxPayService {
                 result.setMessage("error response");
                 result.setSuccess(false);
             }
-        } catch (ClientProtocolException e) {
-            logger.error(e.getMessage());
-            throw new PayException(e);
-        } catch (IOException e) {
-            logger.error(e.getMessage());
-            throw new PayException(e);
-        } catch (JDOMException e) {
-            logger.error(e.getMessage());
-            throw new PayException(e);
         } catch (Exception e) {
             logger.error(e.getMessage());
-            throw new PayException(e);
+            throw new PayException("扫码支付异常");
         }
         return result;
     }
@@ -195,18 +183,9 @@ public class WxPayService {
                 result.setMessage("error response");
                 result.setSuccess(false);
             }
-        } catch (ClientProtocolException e) {
-            logger.error(e.getMessage());
-            throw new PayException(e);
-        } catch (IOException e) {
-            logger.error(e.getMessage());
-            throw new PayException(e);
-        } catch (JDOMException e) {
-            logger.error(e.getMessage());
-            throw new PayException(e);
-        } catch (Exception e1) {
-            logger.error(e1.getMessage());
-            throw new PayException(e1);
+        } catch (Exception ex) {
+            logger.error(ex.getMessage());
+            throw new PayException("退款异常");
         }
         return result;
     }
@@ -254,18 +233,9 @@ public class WxPayService {
                 result.setMessage("error response");
                 result.setSuccess(false);
             }
-        } catch (ClientProtocolException e) {
+        } catch (Exception e) {
             logger.error(e.getMessage());
-            throw new PayException(e);
-        } catch (IOException e) {
-            logger.error(e.getMessage());
-            throw new PayException(e);
-        } catch (JDOMException e) {
-            logger.error(e.getMessage());
-            throw new PayException(e);
-        } catch (Exception e1) {
-            logger.error(e1.getMessage());
-            throw new PayException(e1);
+            throw new PayException("查询订单异常");
         }
         return result;
     }
@@ -316,18 +286,9 @@ public class WxPayService {
                 result.setMessage("error response");
                 result.setSuccess(false);
             }
-        } catch (ClientProtocolException e) {
-            logger.error(e.getMessage());
-            throw new PayException(e);
-        } catch (IOException e) {
-            logger.error(e.getMessage());
-            throw new PayException(e);
-        } catch (JDOMException e) {
-            logger.error(e.getMessage());
-            throw new PayException(e);
         } catch (Exception e) {
             logger.error(e.getMessage());
-            throw new PayException(e);
+            throw new PayException("查询退款异常");
         }
         return result;
     }
