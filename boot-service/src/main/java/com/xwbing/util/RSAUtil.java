@@ -61,7 +61,6 @@ public class RSAUtil {
      * 从字符串中加载公钥
      *
      * @param publicKeyStr 公钥数据字符串
-     * @throws Exception 加载公钥时产生的异常
      */
     public static RSAPublicKey loadPublicKey(String publicKeyStr) {
         try {
@@ -110,11 +109,10 @@ public class RSAUtil {
     }
 
     /**
-     * 功能描述： 从字符串中加载私钥
+     * 功能描述:从字符串中加载私钥
      *
      * @param privateKeyStr
      * @return
-     * @throws Exception
      */
     public static RSAPrivateKey loadPrivateKey(String privateKeyStr) {
         try {
@@ -141,12 +139,22 @@ public class RSAUtil {
         }
     }
 
+    /***
+     * 默认加密方式
+     *
+     * @param data 明文数据
+     * @return 密文
+     */
+    public static String encrypt(String data) {
+        return encrypt(loadPublicKey(), data);
+    }
+
     /**
      * 加密过程
      *
-     * @param publicKey 公钥 明文数据
-     * @return
-     * @throws Exception 加密过程中的异常信息
+     * @param publicKey 公钥
+     * @param data      明文数据
+     * @return 密文
      */
     public static String encrypt(RSAPublicKey publicKey, String data) {
         if (publicKey == null) {
@@ -175,22 +183,22 @@ public class RSAUtil {
         }
     }
 
-    /***
-     * 默认加密方式
+    /**
+     * 功能描述:默认解密方式
      *
-     * @param data
-     * @return
+     * @param data 密文
+     * @return 明文
      */
-    public static String encrypt(String data) {
-        return encrypt(loadPublicKey(), data);
+    public static String decrypt(String data) {
+        return decrypt(loadPrivateKey(), data);
     }
 
     /**
      * 解密过程
      *
-     * @param privateKey 私钥 密文数据
+     * @param privateKey 私钥
+     * @param data       密文数据
      * @return 明文
-     * @throws Exception 解密过程中的异常信息
      */
     public static String decrypt(RSAPrivateKey privateKey, String data) {
         if (privateKey == null) {
@@ -220,16 +228,6 @@ public class RSAUtil {
             LOGGER.error(e.getMessage());
             throw new UtilException("解密数据读取失败");
         }
-    }
-
-    /**
-     * 功能描述： 默认解密方式
-     *
-     * @param data
-     * @return
-     */
-    public static String decrypt(String data) {
-        return decrypt(loadPrivateKey(), data);
     }
 
     public static void main(String[] args) {

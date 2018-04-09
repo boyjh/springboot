@@ -27,7 +27,7 @@ public class PassWordUtil {
     }
 
     /**
-     * 传入未加密密码，如果为空，随机生成, 传入盐值, 如果为空，随机生成。 返回密码，盐值，和加密后的密码
+     * 传入未加密密码，如果为空，随机生成。传入盐值, 如果为空，随机生成。返回密码，盐值，和加密后的密码
      *
      * @param password
      * @return
@@ -46,8 +46,7 @@ public class PassWordUtil {
             salt = EncodeUtils.hexDecode(pwdSalt);
         }
         // 密码加密
-        byte[] hashPassword = Digests.sha1(password.getBytes(), salt,
-                HASH_INTERATIONS);
+        byte[] hashPassword = Digests.sha1(password.getBytes(), salt, HASH_INTERATIONS);
         str[0] = password;
         str[1] = EncodeUtils.hexEncode(salt);
         str[2] = EncodeUtils.hexEncode(hashPassword);
