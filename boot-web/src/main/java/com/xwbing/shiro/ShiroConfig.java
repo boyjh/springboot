@@ -134,14 +134,6 @@ public class ShiroConfig {
         return redisManager;
     }
 
-    ///////////////////////sessionManager///////////////////
-    @Bean
-    public DefaultWebSessionManager sessionManager() {
-        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
-        sessionManager.setSessionDAO(redisSessionDAO());
-        return sessionManager;
-    }
-
     ///////////////////////cacheManager///////////////////
     @Bean
     @DependsOn("lifecycleBeanPostProcessor")
@@ -149,6 +141,14 @@ public class ShiroConfig {
         RedisCacheManager redisCacheManager = new RedisCacheManager();
         redisCacheManager.setRedisManager(redisManager());
         return redisCacheManager;
+    }
+
+    ///////////////////////sessionManager///////////////////
+    @Bean
+    public DefaultWebSessionManager sessionManager() {
+        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+        sessionManager.setSessionDAO(redisSessionDAO());
+        return sessionManager;
     }
 
     @Bean
