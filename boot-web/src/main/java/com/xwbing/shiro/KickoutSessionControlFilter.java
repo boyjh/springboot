@@ -91,6 +91,7 @@ public class KickoutSessionControlFilter extends AccessControlFilter {
         // 如果队列里没有此sessionId，且用户没有被踢出；放入队列
         if (!deque.contains(sessionId) && session.getAttribute("kickout") == null) {
             deque.push(sessionId);
+
         }
         // 如果队列里的sessionId数超出最大会话数，开始踢人
         while (deque.size() > maxSession) {

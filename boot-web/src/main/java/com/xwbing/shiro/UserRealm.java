@@ -34,7 +34,7 @@ import java.util.Set;
  * 说明: 自定义realm
  */
 @Component
-public class MyShiroRealm extends AuthorizingRealm {
+public class UserRealm extends AuthorizingRealm {
     @Resource
     private SysUserService sysUserService;
     @Resource
@@ -86,7 +86,6 @@ public class MyShiroRealm extends AuthorizingRealm {
      *
      * @param authenticationToken
      * @return
-     * @throws AuthenticationException
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) {

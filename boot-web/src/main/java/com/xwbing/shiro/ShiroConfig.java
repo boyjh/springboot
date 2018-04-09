@@ -115,8 +115,8 @@ public class ShiroConfig {
     ///////////////////////shiroRealm///////////////////
     @Bean
     @DependsOn("lifecycleBeanPostProcessor")
-    public MyShiroRealm shiroRealm() {
-        MyShiroRealm myShiroRealm = new MyShiroRealm();
+    public UserRealm shiroRealm() {
+        UserRealm myShiroRealm = new UserRealm();
         myShiroRealm.setCacheManager(cacheManager());
         myShiroRealm.setAuthorizationCachingEnabled(false);
         return myShiroRealm;
@@ -130,7 +130,16 @@ public class ShiroConfig {
         redisManager.setPort(6379);
         redisManager.setExpire(1800);//配置缓存过期时间
         redisManager.setTimeout(10000);
+//        redisManager.setPassword();
         return redisManager;
+    }
+
+    ///////////////////////sessionManager///////////////////
+    @Bean
+    public DefaultWebSessionManager sessionManager() {
+        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
+        sessionManager.setSessionDAO(redisSessionDAO());
+        return sessionManager;
     }
 
     ///////////////////////cacheManager///////////////////
@@ -140,14 +149,6 @@ public class ShiroConfig {
         RedisCacheManager redisCacheManager = new RedisCacheManager();
         redisCacheManager.setRedisManager(redisManager());
         return redisCacheManager;
-    }
-
-    ///////////////////////sessionManager///////////////////
-    @Bean
-    public DefaultWebSessionManager sessionManager() {
-        DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
-        sessionManager.setSessionDAO(redisSessionDAO());
-        return sessionManager;
     }
 
     @Bean
