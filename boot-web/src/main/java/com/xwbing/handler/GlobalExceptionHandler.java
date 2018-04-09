@@ -38,7 +38,7 @@ public class GlobalExceptionHandler {
     /**
      * 自定义业务异常
      *
-     * @param ex
+     * @param ex BusinessException
      * @return
      */
     // 拦截处理控制器里对应的异常。
@@ -54,7 +54,7 @@ public class GlobalExceptionHandler {
     /**
      * 自定义工具类异常
      *
-     * @param ex
+     * @param ex UtilException
      * @return
      */
     @ExceptionHandler(value = UtilException.class)
@@ -68,7 +68,7 @@ public class GlobalExceptionHandler {
     /**
      * 线上支付异常
      *
-     * @param ex
+     * @param ex PayException
      * @return
      */
     @ExceptionHandler(value = PayException.class)
@@ -82,7 +82,7 @@ public class GlobalExceptionHandler {
     /**
      * CompletableFuture完成结果或任务过程中出现的异常
      *
-     * @param ex
+     * @param ex CompletionException
      * @return
      */
     @ExceptionHandler(value = CompletionException.class)
@@ -104,7 +104,7 @@ public class GlobalExceptionHandler {
      *
      * @param request
      * @param response
-     * @param ex
+     * @param ex BindException
      * @return
      */
     @ExceptionHandler(value = BindException.class)
@@ -120,7 +120,7 @@ public class GlobalExceptionHandler {
     /**
      * 表单检验(validator) 异常 (@RequestBody)
      *
-     * @param ex
+     * @param ex MethodArgumentNotValidException
      * @return
      */
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
@@ -137,7 +137,7 @@ public class GlobalExceptionHandler {
     /**
      * 全部捕获
      *
-     * @param ex
+     * @param ex Exception
      * @return
      */
     @ExceptionHandler(value = Exception.class)
@@ -145,6 +145,6 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public JSONObject handlerException(Exception ex) {
         logger.error(ex.getMessage());
-        return JsonResult.toJSONObj("系统异常，请联系管理员");
+        return JsonResult.toJSONObj("系统异常,请联系管理员");
     }
 }
