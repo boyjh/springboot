@@ -83,7 +83,7 @@ public class DataDictionaryControl {
     @ApiOperation(value = "根据父id列表查询", response = ListDataDictionaryVo.class)
     @ApiImplicitParams({
             @ApiImplicitParam(name = "parentId", value = "父id", paramType = "query", dataType = "string"),
-            @ApiImplicitParam(name = "enable", value = "是否启用，格式为Y|N", paramType = "query", dataType = "string")
+            @ApiImplicitParam(name = "enable", value = "是否启用(Y|N)", paramType = "query", dataType = "string")
     })
     @PostMapping("findListByParent")
     public JSONObject findListByParent(String enable, String parentId) {
@@ -96,7 +96,7 @@ public class DataDictionaryControl {
 
     @LogInfo("根据编码查询字典列表")
     @ApiOperation(value = "根据编码查询字典列表", response = ListDataDictionaryVo.class)
-    @ApiImplicitParam(name = "enable", value = "是否启用，格式为Y|N", paramType = "query", dataType = "string")
+    @ApiImplicitParam(name = "enable", value = "是否启用(Y|N)", paramType = "query", dataType = "string")
     @PostMapping("findListByCode")
     public JSONObject findListByCode(@RequestParam String code, String enable) {
         if (StringUtils.isEmpty(code)) {

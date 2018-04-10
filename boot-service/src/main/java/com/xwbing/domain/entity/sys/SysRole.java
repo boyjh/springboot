@@ -1,5 +1,7 @@
 package com.xwbing.domain.entity.sys;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -14,23 +16,16 @@ import javax.persistence.Entity;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity(name = "sys_role")
+@ApiModel
 public class SysRole extends BaseEntity {
     private static final long serialVersionUID = -3048021197170624143L;
     public static String table = "sys_role";
-    /**
-     * 角色名称
-     */
+    @ApiModelProperty(value = "角色名称", required = true)
     private String name;
-    /**
-     * 角色编码
-     */
+    @ApiModelProperty(value = "角色编码", required = true)
     private String code;
-    /**
-     * 是否启用
-     */
+    @ApiModelProperty(value = "是否启用(Y|N)", example = "Y", required = true)
     private String enable;
-    /**
-     * 描述
-     */
+    @ApiModelProperty(value = "描述", required = true)
     private String remark;
 }

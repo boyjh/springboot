@@ -11,7 +11,6 @@ import com.xwbing.util.JsonResult;
 import com.xwbing.util.RestMessage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -38,12 +37,6 @@ public class SysConfigControl {
 
     @LogInfo("新增系统配置信息")
     @ApiOperation(value = "新增", notes = "新增系统配置信息", response = RestMessageVo.class)
-//    @ApiImplicitParams({
-//            @ApiImplicitParam(name = "code", value = "配置项的key，长度为1-50", paramType = "query", required = true, dataType = "string"),
-//            @ApiImplicitParam(name = "value", value = "配置项的值", paramType = "query", required = true, dataType = "string"),
-//            @ApiImplicitParam(name = "enable", value = "是否启用，格式为Y|N", paramType = "query", required = true, dataType = "string"),
-//            @ApiImplicitParam(name = "name", value = "配置名称，长度为1-10", paramType = "query", required = true, dataType = "string")
-//    })
     @PostMapping("save")
     public JSONObject save(@RequestBody @Valid SysConfig sysConfig) {
         String logMsg = "新增系统配置信息";
@@ -68,13 +61,8 @@ public class SysConfigControl {
 
     @LogInfo("修改系统配置信息")
     @ApiOperation(value = "修改", notes = "修改系统配置信息", response = RestMessageVo.class)
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "code", value = "配置项的key，长度为1-50", paramType = "query", required = true, dataType = "string"),
-            @ApiImplicitParam(name = "value", value = "配置项的值", paramType = "query", required = true, dataType = "string"),
-            @ApiImplicitParam(name = "enable", value = "是否启用，格式为Y|N", paramType = "query", required = true, dataType = "string"),
-    })
     @PostMapping("update")
-    public JSONObject update(SysConfig sysConfig) {
+    public JSONObject update(@RequestBody @Valid SysConfig sysConfig) {
         String logMsg = "修改系统配置信息";
         logger.info(logMsg);
         if (StringUtils.isEmpty(sysConfig.getCode())) {

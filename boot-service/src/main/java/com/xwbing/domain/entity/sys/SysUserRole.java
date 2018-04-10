@@ -17,15 +17,15 @@ import javax.persistence.Entity;
 @Entity(name = "sys_user_role")
 public class SysUserRole extends BaseEntity {
     private static final long serialVersionUID = 7340808603856635810L;
-    public static String table="sys_user_role";
+    public static String table = "sys_user_role";
     /**
      * 用户主键
      */
     @Column(name = "user_id")
-	private String userId;
+    private String userId;
     /**
      * 角色主键
      */
     @Column(name = "role_id")
-	private String roleId;
+    private String roleId;
 }

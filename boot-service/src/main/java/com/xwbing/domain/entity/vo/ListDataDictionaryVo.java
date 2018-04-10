@@ -15,7 +15,7 @@ import java.util.List;
  */
 @Data
 @ApiModel
-public class ListDataDictionaryVo extends RestMessageVo{
+public class ListDataDictionaryVo extends RestMessageVo {
     @ApiModelProperty(value = "返回数据")
     private List<DataDictionary> data;
 }

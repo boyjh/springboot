@@ -61,7 +61,7 @@ public class SysUserLoginInOutService {
         List<SysUserLoginInOut> list = loginInOutRepository.getByInoutType(inout);
         if (CollectionUtils.isNotEmpty(list)) {
             if (MapUtils.isNotEmpty(userMap)) {
-                list=list.stream().sorted((o1, o2) -> o2.getCreateTime().compareTo(o1.getCreateTime())).peek(inOut -> {
+                list = list.stream().sorted((o1, o2) -> o2.getCreateTime().compareTo(o1.getCreateTime())).peek(inOut -> {
                     inOut.setUserIdName(userMap.get(inOut.getUserId()).getName());//用户姓名
                     inOut.setRecordTime(DateUtil2.dateToStr(inOut.getCreateTime(), DateUtil2.YYYY_MM_DD_HH_MM_SS));//记录时间
                     CommonEnum.LoginInOutEnum inOutEnum = Arrays.stream(CommonEnum.LoginInOutEnum.values()).filter(obj -> obj.getValue() == inout).findFirst().get();//登录登出

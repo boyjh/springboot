@@ -1,5 +1,7 @@
 package com.xwbing.domain.entity.sys;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -15,28 +17,19 @@ import javax.persistence.Entity;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity(name = "data_dict")
+@ApiModel
 public class DataDictionary extends BaseEntity {
     private static final long serialVersionUID = -3409347240188002427L;
     public static String table = "data_dict";
-    /**
-     * 英文名称  编码 唯一
-     */
+    @ApiModelProperty(value = "编码", required = true)
     private String code;
-    /**
-     * 名称
-     */
+    @ApiModelProperty(value = "名称",  required = true)
     private String name;
-    /**
-     * 描述
-     */
+    @ApiModelProperty(value = "描述",  required = true)
     private String description;
-    /**
-     * 父键
-     */
+    @ApiModelProperty(value = "父键", required = true)
     @Column(name = "parent_id")
     private String parentId;
-    /**
-     * 是否启用
-     */
+    @ApiModelProperty(value = "是否启用(Y|N)", example = "Y", required = true)
     private String enable;
 }
