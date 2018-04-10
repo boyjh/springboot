@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * 说明: 统一servlet/filter配置
+ * 说明: servlet/filter配置
  * 项目名称: boot-module-demo
  * 创建时间: 2017/5/10 16:36
  * 作者:  xiangwb

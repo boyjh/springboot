@@ -24,7 +24,7 @@ import java.util.List;
  * 项目名称: boot-module-demo
  * 创建时间: 2018/2/26 14:09
  * 作者: xiangwb
- * 说明:
+ * 说明: 数据字典控制层
  */
 @Api(tags = "dictionaryApi", description = "数据字典相关接口")
 @RestController
