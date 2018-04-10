@@ -10,7 +10,6 @@ import com.xwbing.service.sys.SysConfigService;
 import com.xwbing.util.JsonResult;
 import com.xwbing.util.RestMessage;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -47,7 +46,6 @@ public class SysConfigControl {
 
     @LogInfo("根据code删除系统配置信息")
     @ApiOperation(value = "删除", notes = "根据code删除系统配置信息", response = RestMessageVo.class)
-    @ApiImplicitParam(name = "code", value = "配置项的code", paramType = "query", required = true, dataType = "string")
     @GetMapping("removeByCode")
     public JSONObject removeByCode(@RequestParam String code) {
         String logMsg = "删除系统配置信息";
@@ -74,7 +72,6 @@ public class SysConfigControl {
 
     @LogInfo("根据key查找系统配置信息")
     @ApiOperation(value = "查找", notes = "根据key查找系统配置信息", response = SysConfigVo.class)
-    @ApiImplicitParam(name = "code", value = "配置项的code", paramType = "query", required = true, dataType = "string")
     @GetMapping("getByCode")
     public JSONObject getByCode(@RequestParam String code) {
         String logMsg = "根据code查找系统配置信息";
@@ -91,7 +88,6 @@ public class SysConfigControl {
 
     @LogInfo("根据是否启用查找配置列表")
     @ApiOperation(value = "查找列表", notes = "根据是否启用查找配置列表", response = ListSysConfigVo.class)
-    @ApiImplicitParam(name = "enable", value = "是否启用，格式为Y|N", paramType = "query", required = true, dataType = "string")
     @GetMapping("listByEnable")
     public JSONObject listByEnable(@RequestParam String enable) {
         String logMsg = "根据是否启用查找配置列表";
