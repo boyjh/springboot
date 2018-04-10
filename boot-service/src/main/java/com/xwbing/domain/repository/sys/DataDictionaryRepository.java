@@ -9,7 +9,7 @@ import java.util.List;
  * 项目名称: boot-module-demo
  * 创建时间: 2018/2/26 10:43
  * 作者: xiangwb
- * 说明:
+ * 说明: 数据字典数据访问层
  */
 public interface DataDictionaryRepository extends JpaRepository<DataDictionary, String> {
     DataDictionary getByCode(String code);

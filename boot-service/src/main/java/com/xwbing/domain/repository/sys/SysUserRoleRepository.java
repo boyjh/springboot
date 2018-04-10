@@ -9,7 +9,7 @@ import java.util.List;
  * 项目名称: boot-module-demo
  * 创建时间: 2017/11/14 14:13
  * 作者: xiangwb
- * 说明:
+ * 说明: 用户角色数据访问层
  */
 public interface SysUserRoleRepository extends JpaRepository<SysUserRole, String> {
     List<SysUserRole> getByUserId(String userId);

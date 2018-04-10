@@ -9,7 +9,7 @@ import java.util.List;
  * 项目名称: boot-module-demo
  * 创建时间: 2017/11/7 9:58
  * 作者: xiangwb
- * 说明:
+ * 说明: 用户登录登出数据访问层
  */
 public interface SysUserLoginInOutRepository extends JpaRepository<SysUserLoginInOut, String> {
     List<SysUserLoginInOut> getByInoutType(int inout);
