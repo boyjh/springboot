@@ -23,18 +23,18 @@ public class SwaggerConfig {
     @Bean
     public Docket sysDocket() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .apiInfo(sysApiInf())
+                .apiInfo(sysApiInfo())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.xwbing.controller.sys"))
                 .paths(PathSelectors.any())
                 .build();
     }
 
-    private ApiInfo sysApiInf() {
+    private ApiInfo sysApiInfo() {
         return new ApiInfoBuilder()
                 .title("RESTful API Document")
                 .description("系统接口文档")
-                .termsOfServiceUrl("http://localhost:8080/swagger-ui.html")
+                .termsOfServiceUrl("http://localhost:8088/doc")
                 .contact(new Contact("项伟兵", "https://github.com/xiangwbs/boot-module-pro.git", "xiangwbs@163.com"))
                 .version("1.0.0")
                 .build();

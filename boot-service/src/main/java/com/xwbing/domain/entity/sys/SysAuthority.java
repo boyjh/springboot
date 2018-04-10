@@ -29,8 +29,8 @@ public class SysAuthority extends BaseEntity {
     private String enable;
     @ApiModelProperty(value = "url地址", required = true)
     private String url;
+    @ApiModelProperty(value = "父键", required = true)
     @Column(name = "parent_id")
-    @ApiModelProperty(value = "父ID", required = true)
     private String parentId;
     @ApiModelProperty(value = "类型(1菜单|2按钮)", example = "2", required = true)
     private Integer type;

@@ -31,8 +31,8 @@ public class SysConfig extends BaseEntity {
     @ApiModelProperty(value = "配置项的值", example = "{}", required = true)
     private String value;
     @NotBlank(message = "配置项的name不能为空")
-    @ApiModelProperty(value = "配置项的描述(名称)", example = "邮箱配置", required = true)
     @Length(min = 1, max = 20, message = "value长度为1-20")
+    @ApiModelProperty(value = "配置项的描述(名称)", example = "邮箱配置", required = true)
     private String name;
     @NotBlank(message = "是否启用不能为空")
     @Pattern(regexp = "[Y|N]", message = "是否启用格式为Y|N")
