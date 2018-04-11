@@ -13,7 +13,12 @@ import java.util.Date;
 @Data
 public class EmailModel {
     public EmailModel() {
-        //默认值
+        this.serverHost = "smtp.163.com";
+        this.serverPort = 25;
+        this.protocol = "smtp";
+        this.auth = true;
+        this.fromEmail="xwbing2009@163.com";
+        this.password = "xwbing900417";
     }
 
     /**
@@ -56,8 +61,8 @@ public class EmailModel {
      * 邮件内容
      */
     private String centent;
-    /**
-     * 邮件附件的文件名
-     */
-    private String[] attachFileNames;
+//    /**
+//     * 邮件附件的文件名
+//     */
+//    private String[] attachFileNames;
 }
