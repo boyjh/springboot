@@ -15,7 +15,7 @@ import javax.annotation.Resource;
  * 项目名称: boot-module-demo
  * 创建时间: 2018/4/10 17:58
  * 作者: xiangwb
- * 说明: 公共配置信息
+ * 说明: 公共信息配置
  */
 @Service
 public class CommonConfigService {

@@ -34,8 +34,8 @@ public class SysConfigControl {
         return JsonResult.toJSONObj(email, "");
     }
 
-    @LogInfo("添加修改邮箱配置信息")
-    @ApiOperation(value = "添加修改邮箱配置信息", response = RestMessageVo.class)
+    @LogInfo("添加/修改邮箱配置信息")
+    @ApiOperation(value = "添加/修改邮箱配置信息", response = RestMessageVo.class)
     @PostMapping("saveOrUpdateEmail")
     public JSONObject saveOrUpdateEmail(@RequestBody EmailModel emailModel) {
         RestMessage restMessage = commonConfigService.saveOrUpdateEmail(emailModel);
