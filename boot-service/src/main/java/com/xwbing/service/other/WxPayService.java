@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -77,60 +78,45 @@ public class WxPayService {
      * @param param
      * @return
      */
+
     public WxBarCodePayResult barCodePay(WxBarCodePayParam param) {
         WxBarCodePayResult result = new WxBarCodePayResult(false);
-        HttpPost post = new HttpPost(barCodePayUrl);
-        //输入参数为转为strXml
+        //输入参数转为strXml
         String reqBody = buildBarCodeRequestBody(param);
-        post.setEntity(new StringEntity(reqBody, "UTF-8"));
-        CloseableHttpClient httpclient;
-        try {
-            //根据mchId读取微信证书,SSL创建安全连接
-            httpclient = ClientCustomSSL.getCloseableHttpClient(mchId);
-            CloseableHttpResponse response = httpclient.execute(post);
-            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                HttpEntity entity = response.getEntity();
-                //返回结果为strXml
-                String content = EntityUtils.toString(entity, "UTF-8");
-                //解析返回值
-                Map<String, String> returnMap = XmlUtil.doXMLParse(content);
-                //返回状态码SUCCESS/FAIL
-                result.setResultCode(returnMap.get("return_code"));
+        Map<String, String> resultMap = getResult(barCodePayUrl, reqBody, "扫码支付异常");
+        if (!resultMap.isEmpty()) {
+            //返回状态码SUCCESS/FAIL
+            String returnCode = resultMap.get("return_code");
+            result.setResultCode(returnCode);
+            if ("FAIL".equalsIgnoreCase(returnCode)) {
+                logger.error("wx barCodePay failed!");
                 //返回信息:非空,为错误原因
-                result.setMessage(returnMap.get("return_msg"));
-                if ("FAIL".equalsIgnoreCase(returnMap.get("return_code"))) {
-                    logger.error("wx barCodePay failed!");
-                    result.setSuccess(false);
-                    return result;
-                }
-                logger.info("outRefundNo=" + param.getOutTradeNo() + ",err_code=" + returnMap.get("err_code") + ",result_code=" + returnMap.get("result_code") + ",err_code_des=" + returnMap.get("err_code_des"));
-                //业务结果SUCCESS/FAIL
-                if ("SUCCESS".equals(returnMap.get("result_code"))) {
-                    result.setSuccess(true);
-                    result.setAppid(returnMap.get("appid"));
-                    result.setMchId(returnMap.get("mch_id"));
-                    result.setNonceStr(returnMap.get("nonce_str"));
-                    result.setSign(returnMap.get("sign"));
-                    result.setOpenId(returnMap.get("openid"));
-                    result.setIsSubscribe(returnMap.get("is_subscribe"));
-                    result.setTradeType(returnMap.get("trade_type"));
-                    result.setBankType(returnMap.get("bank_type"));
-                    result.setTotalFee(Integer.valueOf(returnMap.get("total_fee")));
-                    result.setCashFee(Integer.valueOf(returnMap.get("cash_fee")));
-                    result.setTransactionId(returnMap.get("transaction_id"));
-                    result.setOutTradeNo(returnMap.get("out_trade_no"));
-                    result.setTimeEnd(returnMap.get("time_end"));
-                } else {
-                    result.setResultCode(returnMap.get("err_code"));
-                    result.setMessage(returnMap.get("err_code_des"));
-                }
-            } else {
-                result.setMessage("error response");
-                result.setSuccess(false);
+                result.setMessage(resultMap.get("return_msg"));
+                return result;
             }
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            throw new PayException("扫码支付异常");
+            logger.info("outRefundNo=" + param.getOutTradeNo() + ",err_code=" + resultMap.get("err_code") + ",result_code=" + resultMap.get("result_code") + ",err_code_des=" + resultMap.get("err_code_des"));
+            //业务结果SUCCESS/FAIL
+            if ("SUCCESS".equals(resultMap.get("result_code"))) {
+                result.setSuccess(true);
+                result.setAppid(resultMap.get("appid"));
+                result.setMchId(resultMap.get("mch_id"));
+                result.setNonceStr(resultMap.get("nonce_str"));
+                result.setSign(resultMap.get("sign"));
+                result.setOpenId(resultMap.get("openid"));
+                result.setIsSubscribe(resultMap.get("is_subscribe"));
+                result.setTradeType(resultMap.get("trade_type"));
+                result.setBankType(resultMap.get("bank_type"));
+                result.setTotalFee(Integer.valueOf(resultMap.get("total_fee")));
+                result.setCashFee(Integer.valueOf(resultMap.get("cash_fee")));
+                result.setTransactionId(resultMap.get("transaction_id"));
+                result.setOutTradeNo(resultMap.get("out_trade_no"));
+                result.setTimeEnd(resultMap.get("time_end"));
+            } else {
+                result.setResultCode(resultMap.get("err_code"));
+                result.setMessage(resultMap.get("err_code_des"));
+            }
+        } else {
+            result.setMessage("error response");
         }
         return result;
     }
@@ -143,49 +129,36 @@ public class WxPayService {
      */
     public WxRefundResult refund(WxRefundParam param) {
         WxRefundResult result = new WxRefundResult(false);
-        HttpPost post = new HttpPost(refundUrl);
         String reqBody = buildRefundBarCodeRequestBody(param);
-        post.setEntity(new StringEntity(reqBody, "UTF-8"));
-        CloseableHttpClient httpclient;
-        try {
-            httpclient = ClientCustomSSL.getCloseableHttpClient(mchId);
-            CloseableHttpResponse response = httpclient.execute(post);
-            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                HttpEntity entity = response.getEntity();
-                String content = EntityUtils.toString(entity, "UTF-8");
-                Map<String, String> returnMap = com.xwbing.util.payWxpay.XmlUtil.doXMLParse(content);
-                result.setResultCode(returnMap.get("return_code"));
-                result.setMessage(returnMap.get("return_msg"));
-                if ("FAIL".equalsIgnoreCase(returnMap.get("return_code"))) {
-                    logger.error("wx barCodePay failed!");
-                    result.setSuccess(false);
-                    return result;
-                }
-                logger.info("outRefundNo=" + param.getOutTradeNo() + ",err_code=" + returnMap.get("err_code") + ",result_code=" + returnMap.get("result_code") + ",err_code_des=" + returnMap.get("err_code_des"));
-                if ("SUCCESS".equals(returnMap.get("result_code"))) {
-                    result.setSuccess(true);
-                    result.setAppid(returnMap.get("appid"));
-                    result.setMchId(returnMap.get("mch_id"));
-                    result.setNonceStr(returnMap.get("nonce_str"));
-                    result.setSign(returnMap.get("sign"));
-                    result.setTransactionId(returnMap.get("transaction_id"));
-                    result.setOutTradeNo(returnMap.get("out_trade_no"));
-                    result.setOutRefundNo(returnMap.get("out_refund_no"));
-                    result.setRefundId(returnMap.get("refund_id"));
-                    result.setRefundFee(Integer.valueOf(returnMap.get("refund_fee")));
-                    result.setTotalFee(Integer.valueOf(returnMap.get("total_fee")));
-                    result.setCashFee(Integer.valueOf(returnMap.get("cash_fee")));
-                } else {
-                    result.setResultCode(returnMap.get("err_code"));
-                    result.setMessage(returnMap.get("err_code_des"));
-                }
-            } else {
-                result.setMessage("error response");
-                result.setSuccess(false);
+        Map<String, String> resultMap = getResult(refundUrl, reqBody, "退款异常");
+        if (!resultMap.isEmpty()) {
+            String returnCode = resultMap.get("return_code");
+            result.setResultCode(returnCode);
+            if ("FAIL".equalsIgnoreCase(returnCode)) {
+                logger.error("wx barCodePay failed!");
+                result.setMessage(resultMap.get("return_msg"));
+                return result;
             }
-        } catch (Exception ex) {
-            logger.error(ex.getMessage());
-            throw new PayException("退款异常");
+            logger.info("outRefundNo=" + param.getOutTradeNo() + ",err_code=" + resultMap.get("err_code") + ",result_code=" + resultMap.get("result_code") + ",err_code_des=" + resultMap.get("err_code_des"));
+            if ("SUCCESS".equals(resultMap.get("result_code"))) {
+                result.setSuccess(true);
+                result.setAppid(resultMap.get("appid"));
+                result.setMchId(resultMap.get("mch_id"));
+                result.setNonceStr(resultMap.get("nonce_str"));
+                result.setSign(resultMap.get("sign"));
+                result.setTransactionId(resultMap.get("transaction_id"));
+                result.setOutTradeNo(resultMap.get("out_trade_no"));
+                result.setOutRefundNo(resultMap.get("out_refund_no"));
+                result.setRefundId(resultMap.get("refund_id"));
+                result.setRefundFee(Integer.valueOf(resultMap.get("refund_fee")));
+                result.setTotalFee(Integer.valueOf(resultMap.get("total_fee")));
+                result.setCashFee(Integer.valueOf(resultMap.get("cash_fee")));
+            } else {
+                result.setResultCode(resultMap.get("err_code"));
+                result.setMessage(resultMap.get("err_code_des"));
+            }
+        } else {
+            result.setMessage("error response");
         }
         return result;
     }
@@ -201,41 +174,28 @@ public class WxPayService {
      */
     public WxQueryResult orderQuery(String outTradeNo, String transactionId) {
         WxQueryResult result = new WxQueryResult(false);
-        HttpPost post = new HttpPost(orderQueryUrl);
         String reqBody = buildQueryRequestBody(outTradeNo, transactionId);
-        post.setEntity(new StringEntity(reqBody, "UTF-8"));
-        CloseableHttpClient httpclient;
-        try {
-            httpclient = ClientCustomSSL.getCloseableHttpClient(mchId);
-            CloseableHttpResponse response = httpclient.execute(post);
-            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                HttpEntity entity = response.getEntity();
-                String content = EntityUtils.toString(entity, "UTF-8");
-                Map<String, String> returnMap = XmlUtil.doXMLParse(content);
-                result.setResultCode(returnMap.get("return_code"));
-                result.setMessage(returnMap.get("return_msg"));
-                if ("FAIL".equalsIgnoreCase(returnMap.get("return_code"))) {
-                    logger.error("wx barCodePay failed!");
-                    result.setSuccess(false);
-                    return result;
-                }
-                logger.info("outTradeNo=" + outTradeNo + ",transactionId=" + transactionId);
-                if ("SUCCESS".equals(returnMap.get("result_code"))) {
-                    result.setSuccess(true);
-                    //交易状态
-                    result.setTradeStatus(returnMap.get("trade_state"));
-                    return result;
-                } else {
-                    result.setResultCode(returnMap.get("err_code"));
-                    result.setMessage(returnMap.get("err_code_des"));
-                }
-            } else {
-                result.setMessage("error response");
-                result.setSuccess(false);
+        Map<String, String> resultMap = getResult(orderQueryUrl, reqBody, "查询订单异常");
+        if (!resultMap.isEmpty()) {
+            String returnCode = resultMap.get("return_code");
+            result.setResultCode(returnCode);
+            if ("FAIL".equalsIgnoreCase(returnCode)) {
+                logger.error("wx barCodePay failed!");
+                result.setMessage(resultMap.get("return_msg"));
+                return result;
             }
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            throw new PayException("查询订单异常");
+            logger.info("outTradeNo=" + outTradeNo + ",transactionId=" + transactionId);
+            if ("SUCCESS".equals(resultMap.get("result_code"))) {
+                result.setSuccess(true);
+                //交易状态
+                result.setTradeStatus(resultMap.get("trade_state"));
+                return result;
+            } else {
+                result.setResultCode(resultMap.get("err_code"));
+                result.setMessage(resultMap.get("err_code_des"));
+            }
+        } else {
+            result.setMessage("error response");
         }
         return result;
     }
@@ -253,44 +213,61 @@ public class WxPayService {
      */
     public WxQueryResult refundQuery(String outTradeNo, String transactionId, String ouRefundNo, String refundid) {
         WxQueryResult result = new WxQueryResult(false);
-        HttpPost post = new HttpPost(refundQueryUrl);
         String reqBody = buildRefundQueryRequestBody(outTradeNo, transactionId, ouRefundNo, refundid);
+        Map<String, String> resultMap = getResult(refundQueryUrl, reqBody, "查询退款异常");
+        if (!resultMap.isEmpty()) {
+            String returnCode = resultMap.get("return_code");
+            result.setResultCode(returnCode);
+            if ("FAIL".equalsIgnoreCase(returnCode)) {
+                logger.error("wx barCodePay failed!");
+                result.setMessage(resultMap.get("return_msg"));
+                return result;
+            }
+            logger.info("outTradeNo=" + outTradeNo + ",transactionId=" + transactionId + "ouRefundNo=" + ouRefundNo + "refundId=" + refundid);
+            //业务结果
+            if ("SUCCESS".equals(resultMap.get("result_code"))) {
+                result.setSuccess(true);
+                //第一笔退款状态
+                result.setRefundStatus(resultMap.get("refund_status_0"));
+                return result;
+            } else {
+                result.setResultCode(resultMap.get("err_code"));
+                result.setMessage(resultMap.get("err_code_des"));
+            }
+        } else {
+            result.setMessage("error response");
+        }
+        return result;
+    }
+
+    /**
+     * 获取请求结果
+     *
+     * @param url
+     * @param reqBody
+     * @param message
+     * @return
+     */
+    private Map<String, String> getResult(String url, String reqBody, String message) {
+        HttpPost post = new HttpPost(url);
         post.setEntity(new StringEntity(reqBody, "UTF-8"));
-        CloseableHttpClient httpclient;
+        //根据mchId读取微信证书,SSL创建安全连接
+        CloseableHttpClient httpclient = ClientCustomSSL.getCloseableHttpClient(mchId);
         try {
-            httpclient = ClientCustomSSL.getCloseableHttpClient(mchId);
             CloseableHttpResponse response = httpclient.execute(post);
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 HttpEntity entity = response.getEntity();
+                //返回结果为strXml
                 String content = EntityUtils.toString(entity, "UTF-8");
-                Map<String, String> returnMap = XmlUtil.doXMLParse(content);
-                result.setResultCode(returnMap.get("return_code"));
-                result.setMessage(returnMap.get("return_msg"));
-                if ("FAIL".equalsIgnoreCase(returnMap.get("return_code"))) {
-                    logger.error("wx barCodePay failed!");
-                    result.setSuccess(false);
-                    return result;
-                }
-                logger.info("outTradeNo=" + outTradeNo + ",transactionId=" + transactionId + "ouRefundNo=" + ouRefundNo + "refundId=" + refundid);
-                //业务结果
-                if ("SUCCESS".equals(returnMap.get("result_code"))) {
-                    result.setSuccess(true);
-                    //第一笔退款状态
-                    result.setRefundStatus(returnMap.get("refund_status_0"));
-                    return result;
-                } else {
-                    result.setResultCode(returnMap.get("err_code"));
-                    result.setMessage(returnMap.get("err_code_des"));
-                }
+                //解析返回值
+                return XmlUtil.doXMLParse(content);
             } else {
-                result.setMessage("error response");
-                result.setSuccess(false);
+                return Collections.EMPTY_MAP;
             }
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            throw new PayException("查询退款异常");
+        } catch (Exception ex) {
+            logger.error(ex.getMessage());
+            throw new PayException(message);
         }
-        return result;
     }
 
     /**

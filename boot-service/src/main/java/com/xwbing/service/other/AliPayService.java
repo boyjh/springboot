@@ -114,7 +114,7 @@ public class AliPayService {
      */
     public AliPayRefundResult refund(AliPayRefundParam param) {
         AliPayRefundResult result = new AliPayRefundResult(false);
-        AlipayClient alipayClient = new DefaultAlipayClient(requestUrl, appId, privateKey, "json", "UTF-8", publicKey, "RSA2");
+        AlipayClient alipayClient = new DefaultAlipayClient(requestUrl, appId, privateKey, "json", "UTF-8", publicKey, "RSA");
         AlipayTradeRefundRequest request = new AlipayTradeRefundRequest();
         request.setBizContent(JSONObject.toJSONString(param));
         AlipayTradeRefundResponse response;
@@ -158,7 +158,7 @@ public class AliPayService {
             throw new PayException("订单号和交易号不能同时为空!");
         }
         AliPayQueryResult result = new AliPayQueryResult(false);
-        AlipayClient alipayClient = new DefaultAlipayClient(requestUrl, appId, privateKey, "json", "UTF-8", publicKey, "RSA2");
+        AlipayClient alipayClient = new DefaultAlipayClient(requestUrl, appId, privateKey, "json", "UTF-8", publicKey, "RSA");
         AlipayTradeQueryRequest request = new AlipayTradeQueryRequest();
         JSONObject jsonObject = new JSONObject();
         if (StringUtils.isNotEmpty(outTradeNo)) {
@@ -197,7 +197,7 @@ public class AliPayService {
             throw new PayException("订单号和交易号不能同时为空!");
         }
         AliPayQueryResult result = new AliPayQueryResult(false);
-        AlipayClient alipayClient = new DefaultAlipayClient(requestUrl, appId, privateKey, "json", "UTF-8", publicKey, "RSA2");
+        AlipayClient alipayClient = new DefaultAlipayClient(requestUrl, appId, privateKey, "json", "UTF-8", publicKey, "RSA");
         AlipayTradeQueryRequest request = new AlipayTradeQueryRequest();
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("out_request_no", outRequestNo);
