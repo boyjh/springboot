@@ -83,6 +83,7 @@ public class WxPayService {
         WxBarCodePayResult result = new WxBarCodePayResult(false);
         //输入参数转为strXml
         String reqBody = buildBarCodeRequestBody(param);
+        ///获取请求结果
         Map<String, String> resultMap = getResult(barCodePayUrl, reqBody, "扫码支付异常");
         if (!resultMap.isEmpty()) {
             //返回状态码SUCCESS/FAIL
