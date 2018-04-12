@@ -69,7 +69,7 @@ public class AliPayService {
             return result;
         }
         //获得初始化的aliPayClient
-        AlipayClient alipayClient = new DefaultAlipayClient(requestUrl, appId, privateKey, "json", "UTF-8", publicKey, "RSA2");
+        AlipayClient alipayClient = new DefaultAlipayClient(requestUrl, appId, privateKey, "json", "UTF-8", publicKey, "RSA");
         //创建API对应的request类
         AlipayTradePayRequest request = new AlipayTradePayRequest();
         request.setBizContent(JSONObject.toJSONString(param));
@@ -252,6 +252,8 @@ public class AliPayService {
             message = "产品名称为空";
         } else if (0 >= param.getTotalAmount()) {
             message = "金额必须大于0";
+        } else if (StringUtils.isEmpty(param.getScene())) {
+            message = "支付方式不能为空";
         } else {
             message = StringUtils.EMPTY;
         }
