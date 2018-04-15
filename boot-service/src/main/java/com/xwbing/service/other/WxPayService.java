@@ -28,7 +28,7 @@ import java.util.Objects;
 
 /**
  * 说明: 微信支付接口实现
- * 项目名称: spring-demo
+ * 项目名称: boot-module-demo
  * 创建时间: 2017/5/10 17:30
  * 作者:  xiangwb
  */
