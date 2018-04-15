@@ -404,15 +404,15 @@ public class WxPayService {
     public static void main(String[] args) {
         WxPayService wxPayBuilder = new WxPayService();
         //刷卡支付
-        String authCode = "130203463134616871";
-        WxBarCodePayParam payParam = new WxBarCodePayParam("2017051200", "127.0.0.0", authCode, "test", 1);
+        String authCode = "130203463134616871";//二维码
+        String orderNo = "2017051200";//订单号
+        WxBarCodePayParam payParam = new WxBarCodePayParam(orderNo, "127.0.0.0", authCode, "test", 1);
         WxBarCodePayResult result = wxPayBuilder.barCodePay(payParam);
         System.out.println(result.isSuccess() + result.getMessage());
 
         //查询订单
-        String outTradeNo = "2017051200";
-        String transactionId = "4001082001201705120512385115";
-        WxQueryResult queryResult = wxPayBuilder.orderQuery(outTradeNo, transactionId);
+        String transactionId = result.getTransactionId();//微信的订单号
+        WxQueryResult queryResult = wxPayBuilder.orderQuery("", transactionId);
         if (!queryResult.isSuccess()) {
             throw new BusinessException(queryResult.getMessage());
         }
@@ -425,12 +425,13 @@ public class WxPayService {
         }
 
         //退款操作
-        WxRefundParam param = new WxRefundParam(transactionId, "2017051201", "xwbing", 1, 1);
-//        WxRefundResult refundResult = wxPayBuilder.refund(param);
-//        System.out.println(refundResult.isSuccess() + refundResult.getMessage());
+        String outRefundNo = "2017051201";//商户退款单号
+        WxRefundParam param = new WxRefundParam(transactionId, outRefundNo, "xwbing", 1, 1);
+        WxRefundResult refundResult = wxPayBuilder.refund(param);
+        System.out.println(refundResult.isSuccess() + refundResult.getMessage());
 
         //查询退款
-        WxQueryResult refundQueryResult = wxPayBuilder.refundQuery(outTradeNo, transactionId, "", "");
+        WxQueryResult refundQueryResult = wxPayBuilder.refundQuery("", "", "", refundResult.getRefundId());
         if (!refundQueryResult.isSuccess()) {
             throw new BusinessException(refundQueryResult.getMessage());
         }
