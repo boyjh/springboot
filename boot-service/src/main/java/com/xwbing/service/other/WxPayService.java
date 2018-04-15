@@ -278,28 +278,16 @@ public class WxPayService {
      * @return
      */
     private String buildBarCodeRequestBody(WxBarCodePayParam param) {
-        Map<String, String> params = new HashMap<>();
-        params.put("appid", appId);
-        params.put("mch_id", mchId);
-        String nonceStr = RandomKit.buildRandom(32);
-        params.put("nonce_str", nonceStr);
+        //获取基本参数
+        Map<String, String> params = buildBaseBody();
         params.put("body", param.getBody());
         params.put("out_trade_no", param.getOutTradeNo());
         //单位分
         params.put("total_fee", String.valueOf(param.getTotalFee()));
         params.put("spbill_create_ip", param.getSpblillCreateIp());
         params.put("auth_code", param.getAuthCode());
-        //签名放最后的
-        String sign = WxSignKit.buildSign(params, apiKey);
-        params.put("sign", sign);
-        StringBuilder reqBody = new StringBuilder();
-        reqBody.append("<xml>");
-        for (String key : params.keySet()) {
-            String value = params.get(key);
-            reqBody.append("<").append(key).append(">").append(value).append("</").append(key).append(">");
-        }
-        reqBody.append("</xml>");
-        return reqBody.toString();
+        //获取最终参数
+        return buildResultBody(params);
     }
 
     /**
@@ -309,35 +297,25 @@ public class WxPayService {
      * @return
      */
     private String buildRefundBarCodeRequestBody(WxRefundParam param) {
-        Map<String, String> params = new HashMap<>();
-        params.put("appid", appId);
-        params.put("mch_id", mchId);
-        String nonceStr = RandomKit.buildRandom(32);
-        params.put("nonce_str", nonceStr);
-        if (StringUtils.isEmpty(param.getTransactionId()) && StringUtils.isEmpty(param.getOutTradeNo())) {
+        Map<String, String> params = buildBaseBody();
+        //商户订单号
+        String transactionId = param.getTransactionId();
+        //微信订单号
+        String outTradeNo = param.getOutTradeNo();
+        if (StringUtils.isEmpty(transactionId) && StringUtils.isEmpty(outTradeNo)) {
             throw new PayException("商户订单号和微信订单号不能同时为空!");
         }
-        if (StringUtils.isNotEmpty(param.getTransactionId())) {
-            params.put("transaction_id", param.getTransactionId());
+        if (StringUtils.isNotEmpty(transactionId)) {
+            params.put("transaction_id", transactionId);
         }
-        if (StringUtils.isNotEmpty(param.getOutTradeNo())) {
-            params.put("out_trade_no", param.getOutTradeNo());
+        if (StringUtils.isNotEmpty(outTradeNo)) {
+            params.put("out_trade_no", outTradeNo);
         }
         params.put("out_refund_no", param.getOutRefundNo());
         params.put("total_fee", String.valueOf(param.getTotalFee()));
         params.put("refund_fee", String.valueOf(param.getRefundFee()));
         params.put("op_user_id", param.getOpUserId());
-        String sign = WxSignKit.buildSign(params, apiKey);
-        params.put("sign", sign);
-        //签名放最后的
-        StringBuilder reqBody = new StringBuilder();
-        reqBody.append("<xml>");
-        for (String key : params.keySet()) {
-            String value = params.get(key);
-            reqBody.append("<").append(key).append(">").append(value).append("</").append(key).append(">");
-        }
-        reqBody.append("</xml>");
-        return reqBody.toString();
+        return buildResultBody(params);
     }
 
     /**
@@ -348,9 +326,7 @@ public class WxPayService {
      * @return
      */
     private String buildQueryRequestBody(String outTradeNo, String transactionId) {
-        Map<String, String> params = new HashMap<>();
-        params.put("appid", appId);
-        params.put("mch_id", mchId);
+        Map<String, String> params = buildBaseBody();
         if (StringUtils.isEmpty(transactionId) && StringUtils.isEmpty(outTradeNo)) {
             throw new PayException("商户订单号和微信订单号不能同时为空!");
         }
@@ -360,19 +336,7 @@ public class WxPayService {
         if (StringUtils.isNotEmpty(outTradeNo)) {
             params.put("out_trade_no", outTradeNo);
         }
-        String nonceStr = RandomKit.buildRandom(32);
-        params.put("nonce_str", nonceStr);
-        //签名放最后的
-        String sign = WxSignKit.buildSign(params, apiKey);
-        params.put("sign", sign);
-        StringBuilder reqBody = new StringBuilder();
-        reqBody.append("<xml>");
-        for (String key : params.keySet()) {
-            String value = params.get(key);
-            reqBody.append("<").append(key).append(">").append(value).append("</").append(key).append(">");
-        }
-        reqBody.append("</xml>");
-        return reqBody.toString();
+        return buildResultBody(params);
     }
 
     /**
@@ -385,9 +349,7 @@ public class WxPayService {
      * @return
      */
     private String buildRefundQueryRequestBody(String outTradeNo, String transactionId, String ouRefundNo, String refundid) {
-        Map<String, String> params = new HashMap<>();
-        params.put("appid", appId);
-        params.put("mch_id", mchId);
+        Map<String, String> params = buildBaseBody();
         if (StringUtils.isEmpty(transactionId) && StringUtils.isEmpty(outTradeNo) && StringUtils.isEmpty(ouRefundNo) && StringUtils.isEmpty(refundid)) {
             throw new PayException("商户订单号,微信订单号,商户退款单号和微信退款单号不能同时为空!");
         }
@@ -403,8 +365,29 @@ public class WxPayService {
         if (StringUtils.isNotEmpty(refundid)) {
             params.put("refund_id", refundid);
         }
+        return buildResultBody(params);
+    }
+
+    /**
+     * 构建基本参数
+     *
+     * @return
+     */
+    private Map<String, String> buildBaseBody() {
+        Map<String, String> params = new HashMap<>();
+        params.put("appid", appId);
+        params.put("mch_id", mchId);
         String nonceStr = RandomKit.buildRandom(32);
         params.put("nonce_str", nonceStr);
+        return params;
+    }
+
+    /**
+     * 构建最终xmlStr参数
+     *
+     * @return
+     */
+    private String buildResultBody(Map<String, String> params) {
         //签名放最后的
         String sign = WxSignKit.buildSign(params, apiKey);
         params.put("sign", sign);
