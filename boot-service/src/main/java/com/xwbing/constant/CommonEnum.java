@@ -179,9 +179,7 @@ public class CommonEnum {
 //        }
         //不确定,先判断再取值
         Optional<YesOrNoEnum> optional = Arrays.stream(YesOrNoEnum.values()).filter(obj -> obj.getCode().equals(code)).findFirst();
-        if (optional.isPresent()) {
-            String code1 = optional.get().getCode();
-        }
+        optional.ifPresent(yesOrNoEnum -> System.out.println(yesOrNoEnum.getName()));
         //确定有值,直接取
         YesOrNoEnum yesOrNoEnum = Arrays.stream(YesOrNoEnum.values()).filter(obj -> obj.getCode().equals(code)).findFirst().get();
         System.out.println(yesOrNoEnum.getName());

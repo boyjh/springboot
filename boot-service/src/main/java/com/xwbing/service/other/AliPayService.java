@@ -11,7 +11,6 @@ import com.alipay.api.response.AlipayTradePayResponse;
 import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.alipay.api.response.AlipayTradeRefundResponse;
 import com.xwbing.domain.entity.pay.alipay.*;
-import com.xwbing.exception.BusinessException;
 import com.xwbing.exception.PayException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -20,7 +19,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
+import java.util.Arrays;
+import java.util.Optional;
 
 /**
  * 说明: 支付宝支付接口实现
@@ -222,22 +222,6 @@ public class AliPayService {
     }
 
     /**
-     * 查询接口校验subCode是否存在。如果subCode存在，代表调用接口失败。业务调用时只需判断result是否为success即可
-     *
-     * @return
-     */
-    private void checkSubCode(AliPayQueryResult result, AlipayTradeQueryResponse response) {
-        if (StringUtils.isNotEmpty(response.getSubCode())) {
-            result.setCode(response.getSubCode());
-            result.setMessage(response.getSubMsg());
-            logger.error(response.getSubMsg());
-        } else {
-            result.setCode(response.getCode());
-            result.setMessage(response.getMsg());
-        }
-    }
-
-    /**
      * 入参校验
      *
      * @return
@@ -260,36 +244,52 @@ public class AliPayService {
         return message;
     }
 
+    /**
+     * 查询接口校验subCode是否存在。如果subCode存在，代表调用接口失败。业务调用时只需判断result是否为success即可
+     *
+     * @return
+     */
+    private void checkSubCode(AliPayQueryResult result, AlipayTradeQueryResponse response) {
+        if (StringUtils.isNotEmpty(response.getSubCode())) {
+            result.setCode(response.getSubCode());
+            result.setMessage(response.getSubMsg());
+            logger.error(response.getSubMsg());
+        } else {
+            result.setCode(response.getCode());
+            result.setMessage(response.getMsg());
+        }
+    }
+
     public static void main(String[] args) {
         //刷卡支付
         AliPayService alipayBuilder = new AliPayService();
-        String orderNo = "201705180202";
-//        String authCode = "286796667181427987";
-//        AlipayBarCodePayParam codePayParam = new AlipayBarCodePayParam(orderNo, authCode, "test", 0.1f);
-//        AlipayBarCodePayResult codePayResult = alipayBuilder.barCodePay(codePayParam);
-//        System.out.println(codePayResult.isSuccess() + codePayResult.getMessage());
+        String orderNo = "201805180207";//订单号
+        String authCode = "285620814798006808";//二维码
+        AliPayBarCodePayParam codePayParam = new AliPayBarCodePayParam(orderNo, authCode, "test", 0.1f);
+        AliPayBarCodePayResult codePayResult = alipayBuilder.barCodePay(codePayParam);
+        boolean success = codePayResult.isSuccess();
+        if (!success) {
+            System.out.println(codePayResult.getMessage());
+        }
 
         //查询订单
-        String tradeNo = "2017051221001004630289850336";
-        AliPayQueryResult queryResult = alipayBuilder.queryOrder(orderNo, tradeNo);
+        String tradeNo = codePayResult.getTradeNo();//支付宝交易号
+        AliPayQueryResult queryResult = alipayBuilder.queryOrder("", tradeNo);
         if (!queryResult.isSuccess()) {
-            throw new BusinessException(queryResult.getMessage());
+            System.out.println(queryResult.getMessage());
         }
         String tradeStatus = queryResult.getTradeStatus();
-        for (AliPayTradeStatusEnum status : AliPayTradeStatusEnum.values()) {
-            if (Objects.equals(tradeStatus, status.getCode())) {
-                System.out.println(status.getName());
-                break;
-            }
-        }
+        Optional<AliPayTradeStatusEnum> first = Arrays.stream(AliPayTradeStatusEnum.values()).filter(aliPayTradeStatusEnum -> aliPayTradeStatusEnum.getCode().equals(tradeStatus)).findFirst();
+        first.ifPresent(aliPayTradeStatusEnum -> System.out.println(aliPayTradeStatusEnum.getName()));
 
 //        //退款操作
-        AliPayRefundParam refundParam = new AliPayRefundParam("201505129999", orderNo, 0.05f, "test");
-//        AlipayRefundResult refundResult = alipayBuilder.refund(refundParam);
-//        System.out.println(refundResult.getMessage());
+        String outRequestNo = "201805180202";//退款请求号
+        AliPayRefundParam refundParam = new AliPayRefundParam(outRequestNo, tradeNo, "test", 0.05f);
+        AliPayRefundResult refundResult = alipayBuilder.refund(refundParam);
+        System.out.println(refundResult.getMessage());
 
 //        //查询退款 只要success,即为成功
-//        AlipayQueryResult refund = alipayBuilder.queryRefund(orderNo, "", "201505129999");
-//        System.out.println(refund.isSuccess());
+        AliPayQueryResult refund = alipayBuilder.queryRefund("", tradeNo, outRequestNo);
+        System.out.println(refund.isSuccess());
     }
 }
