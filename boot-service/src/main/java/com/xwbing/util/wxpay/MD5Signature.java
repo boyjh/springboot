@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.xwbing.util.payWxpay;
+package com.xwbing.util.wxpay;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;

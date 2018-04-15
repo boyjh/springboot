@@ -1,4 +1,4 @@
-package com.xwbing.util.payWxpay;
+package com.xwbing.util.wxpay;
 
 import java.util.*;
 import java.util.logging.Logger;

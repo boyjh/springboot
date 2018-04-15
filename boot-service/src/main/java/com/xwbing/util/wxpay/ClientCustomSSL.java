@@ -24,7 +24,7 @@
  * <http://www.apache.org/>.
  *
  */
-package com.xwbing.util.payWxpay;
+package com.xwbing.util.wxpay;
 
 import com.xwbing.exception.BusinessException;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
