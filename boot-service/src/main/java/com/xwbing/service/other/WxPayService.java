@@ -206,12 +206,12 @@ public class WxPayService {
      * @param outTradeNo    商户订单号
      * @param transactionId 微信的订单号
      * @param ouRefundNo    商户退款单号(推荐)
-     * @param refundid      微信退款单号(推荐)
+     * @param refundId      微信退款单号(推荐)
      * @return
      */
-    public WxQueryResult refundQuery(String outTradeNo, String transactionId, String ouRefundNo, String refundid) {
+    public WxQueryResult refundQuery(String outTradeNo, String transactionId, String ouRefundNo, String refundId) {
         WxQueryResult result = new WxQueryResult(false);
-        String reqBody = buildRefundQueryRequestBody(outTradeNo, transactionId, ouRefundNo, refundid);
+        String reqBody = buildRefundQueryRequestBody(outTradeNo, transactionId, ouRefundNo, refundId);
         Map<String, String> resultMap = getResult(refundQueryUrl, reqBody, "查询退款异常");
         if (!resultMap.isEmpty()) {
             String returnCode = resultMap.get("return_code");
@@ -221,7 +221,7 @@ public class WxPayService {
                 result.setMessage(resultMap.get("return_msg"));
                 return result;
             }
-            logger.info("outTradeNo=" + outTradeNo + ",transactionId=" + transactionId + "ouRefundNo=" + ouRefundNo + "refundId=" + refundid);
+            logger.info("outTradeNo=" + outTradeNo + ",transactionId=" + transactionId + "ouRefundNo=" + ouRefundNo + "refundId=" + refundId);
             //业务结果
             if ("SUCCESS".equals(resultMap.get("result_code"))) {
                 result.setSuccess(true);
@@ -241,9 +241,9 @@ public class WxPayService {
     /**
      * 获取请求结果
      *
-     * @param url
-     * @param reqBody
-     * @param message
+     * @param url     对应操作url
+     * @param reqBody 参数
+     * @param message 异常时抛出的信息
      * @return
      */
     private Map<String, String> getResult(String url, String reqBody, String message) {
@@ -342,12 +342,12 @@ public class WxPayService {
      * @param outTradeNo    商户订单号
      * @param transactionId 微信订单号
      * @param ouRefundNo    商户退款单号
-     * @param refundid      微信退款单号
+     * @param refundId      微信退款单号
      * @return
      */
-    private String buildRefundQueryRequestBody(String outTradeNo, String transactionId, String ouRefundNo, String refundid) {
+    private String buildRefundQueryRequestBody(String outTradeNo, String transactionId, String ouRefundNo, String refundId) {
         Map<String, String> params = buildBaseBody();
-        if (StringUtils.isEmpty(transactionId) && StringUtils.isEmpty(outTradeNo) && StringUtils.isEmpty(ouRefundNo) && StringUtils.isEmpty(refundid)) {
+        if (StringUtils.isEmpty(transactionId) && StringUtils.isEmpty(outTradeNo) && StringUtils.isEmpty(ouRefundNo) && StringUtils.isEmpty(refundId)) {
             throw new PayException("商户订单号,微信订单号,商户退款单号和微信退款单号不能同时为空!");
         }
         if (StringUtils.isNotEmpty(transactionId)) {
@@ -359,8 +359,8 @@ public class WxPayService {
         if (StringUtils.isNotEmpty(ouRefundNo)) {
             params.put("out_refund_no", ouRefundNo);
         }
-        if (StringUtils.isNotEmpty(refundid)) {
-            params.put("refund_id", refundid);
+        if (StringUtils.isNotEmpty(refundId)) {
+            params.put("refund_id", refundId);
         }
         return buildResultBody(params);
     }
@@ -371,7 +371,7 @@ public class WxPayService {
      * @return
      */
     private Map<String, String> buildBaseBody() {
-        Map<String, String> params = new HashMap<>();
+        Map<String, String> params = new HashMap<>(20);
         params.put("appid", appId);
         params.put("mch_id", mchId);
         String nonceStr = RandomKit.buildRandom(32);
