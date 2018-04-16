@@ -1,5 +1,6 @@
 package com.xwbing.service.other;
 
+import com.xwbing.constant.CommonConstant;
 import com.xwbing.domain.entity.pay.wxpay.*;
 import com.xwbing.exception.BusinessException;
 import com.xwbing.exception.PayException;
@@ -86,7 +87,7 @@ public class WxPayService {
             //返回状态码SUCCESS/FAIL
             String returnCode = resultMap.get("return_code");
             result.setResultCode(returnCode);
-            if ("FAIL".equalsIgnoreCase(returnCode)) {
+            if (CommonConstant.FAIL.equalsIgnoreCase(returnCode)) {
                 logger.error("wx barCodePay failed!");
                 //返回信息:非空,为错误原因
                 result.setMessage(resultMap.get("return_msg"));
@@ -94,7 +95,7 @@ public class WxPayService {
             }
             logger.info("outRefundNo=" + param.getOutTradeNo() + ",err_code=" + resultMap.get("err_code") + ",result_code=" + resultMap.get("result_code") + ",err_code_des=" + resultMap.get("err_code_des"));
             //业务结果SUCCESS/FAIL
-            if ("SUCCESS".equals(resultMap.get("result_code"))) {
+            if (CommonConstant.SUCCESS.equalsIgnoreCase(resultMap.get("result_code"))) {
                 result.setSuccess(true);
                 result.setAppid(resultMap.get("appid"));
                 result.setMchId(resultMap.get("mch_id"));
@@ -132,13 +133,13 @@ public class WxPayService {
         if (!resultMap.isEmpty()) {
             String returnCode = resultMap.get("return_code");
             result.setResultCode(returnCode);
-            if ("FAIL".equalsIgnoreCase(returnCode)) {
+            if (CommonConstant.FAIL.equalsIgnoreCase(returnCode)) {
                 logger.error("wx barCodePay failed!");
                 result.setMessage(resultMap.get("return_msg"));
                 return result;
             }
             logger.info("outRefundNo=" + param.getOutTradeNo() + ",err_code=" + resultMap.get("err_code") + ",result_code=" + resultMap.get("result_code") + ",err_code_des=" + resultMap.get("err_code_des"));
-            if ("SUCCESS".equals(resultMap.get("result_code"))) {
+            if (CommonConstant.SUCCESS.equalsIgnoreCase(resultMap.get("result_code"))) {
                 result.setSuccess(true);
                 result.setAppid(resultMap.get("appid"));
                 result.setMchId(resultMap.get("mch_id"));
@@ -177,13 +178,13 @@ public class WxPayService {
         if (!resultMap.isEmpty()) {
             String returnCode = resultMap.get("return_code");
             result.setResultCode(returnCode);
-            if ("FAIL".equalsIgnoreCase(returnCode)) {
+            if (CommonConstant.FAIL.equalsIgnoreCase(returnCode)) {
                 logger.error("wx barCodePay failed!");
                 result.setMessage(resultMap.get("return_msg"));
                 return result;
             }
             logger.info("outTradeNo=" + outTradeNo + ",transactionId=" + transactionId);
-            if ("SUCCESS".equals(resultMap.get("result_code"))) {
+            if (CommonConstant.SUCCESS.equalsIgnoreCase(resultMap.get("result_code"))) {
                 result.setSuccess(true);
                 //交易状态
                 result.setTradeStatus(resultMap.get("trade_state"));
@@ -216,14 +217,14 @@ public class WxPayService {
         if (!resultMap.isEmpty()) {
             String returnCode = resultMap.get("return_code");
             result.setResultCode(returnCode);
-            if ("FAIL".equalsIgnoreCase(returnCode)) {
+            if (CommonConstant.FAIL.equalsIgnoreCase(returnCode)) {
                 logger.error("wx barCodePay failed!");
                 result.setMessage(resultMap.get("return_msg"));
                 return result;
             }
             logger.info("outTradeNo=" + outTradeNo + ",transactionId=" + transactionId + "ouRefundNo=" + ouRefundNo + "refundId=" + refundId);
             //业务结果
-            if ("SUCCESS".equals(resultMap.get("result_code"))) {
+            if (CommonConstant.SUCCESS.equalsIgnoreCase(resultMap.get("result_code"))) {
                 result.setSuccess(true);
                 //第一笔退款状态
                 result.setRefundStatus(resultMap.get("refund_status_0"));

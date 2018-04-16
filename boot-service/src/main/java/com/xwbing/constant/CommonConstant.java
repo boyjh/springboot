@@ -23,7 +23,14 @@ public class CommonConstant {
      * 禁用
      */
     public static final String IS_NOT_ENABLE = "N";
-
+    /**
+     * 失败
+     */
+    public static final String FAIL = "fail";
+    /**
+     * 成功
+     */
+    public static final String SUCCESS = "success";
     /**
      * 邮件服务器配置项
      */
