@@ -8,7 +8,7 @@ import java.util.*;
  */
 public class PageUtil {
     public static Map<String, Object> page(List list, int currentPage, int pageSize) {
-        Map<String, Object> pageMap = new HashMap<>();
+        Map<String, Object> pageMap = new HashMap<>(5);
         int size = list.size();
         pageMap.put("count", size);
         int totalPage;
