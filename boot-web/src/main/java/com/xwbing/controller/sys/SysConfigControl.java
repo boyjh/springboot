@@ -60,7 +60,7 @@ public class SysConfigControl {
     @LogInfo("修改系统配置信息")
     @ApiOperation(value = "修改", notes = "修改系统配置信息", response = RestMessageVo.class)
     @PostMapping("update")
-    public JSONObject update(SysConfig sysConfig) {
+    public JSONObject update(@RequestBody @Valid SysConfig sysConfig) {
         String logMsg = "修改系统配置信息";
         logger.info(logMsg);
         if (StringUtils.isEmpty(sysConfig.getCode())) {

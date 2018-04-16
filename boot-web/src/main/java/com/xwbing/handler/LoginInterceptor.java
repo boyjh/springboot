@@ -5,12 +5,14 @@ import com.xwbing.configuration.DispatcherServletConfig;
 import com.xwbing.util.CommonDataUtil;
 import com.xwbing.util.RestMessage;
 import com.xwbing.util.ThreadLocalUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashSet;
 import java.util.Set;
@@ -42,25 +44,38 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     }
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String servletPath = request.getServletPath();
         if (!set.contains(servletPath) && !servletPath.contains("login") && !servletPath.contains("test")) {
             String token = request.getHeader("token");
-            if (token != null && CommonDataUtil.getToken(token)!=null) {
-                ThreadLocalUtil.setToken(token);
-                return true;
-            } else {
-                logger.error("用户未登录");
-                OutputStream outputStream = response.getOutputStream();
-                RestMessage restMessage = new RestMessage();
-                restMessage.setMessage("请先登录");
-                outputStream.write(JSON.toJSONString(restMessage).getBytes("utf-8"));
-                outputStream.close();
-                //未登录，重定向到登录页面
-//                response.sendRedirect("/login.html");
+            if (StringUtils.isEmpty(token)) {
+                getOutputStream(response, "token不能为空");
                 return false;
+            } else {
+                if (CommonDataUtil.getToken(token) != null) {
+                    ThreadLocalUtil.setToken(token);
+                    return true;
+                } else {
+                    logger.error("用户未登录");
+                    getOutputStream(response, "请先登录");
+                    //未登录，重定向到登录页面
+//                response.sendRedirect("/login.html");
+                    return false;
+                }
             }
         }
         return true;
+    }
+
+    private void getOutputStream(HttpServletResponse response, String msg) {
+        try {
+            OutputStream outputStream = response.getOutputStream();
+            RestMessage restMessage = new RestMessage();
+            restMessage.setMessage(msg);
+            outputStream.write(JSON.toJSONString(restMessage).getBytes("utf-8"));
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
