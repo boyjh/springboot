@@ -74,6 +74,16 @@ public class SysConfigService {
     }
 
     /**
+     * 根据code查找配置
+     *
+     * @param code
+     * @return
+     */
+    public SysConfig getByCode(String code) {
+        return sysConfigRepository.getByCode(code);
+    }
+
+    /**
      * 修改
      *
      * @param sysConfig
@@ -86,6 +96,7 @@ public class SysConfigService {
             throw new BusinessException("该配置项不存在");
         }
         old.setValue(sysConfig.getValue());
+        old.setName(sysConfig.getName());
         old.setEnable(sysConfig.getEnable());
         old.setModifiedTime(new Date());
         SysConfig save = sysConfigRepository.save(old);
@@ -96,16 +107,6 @@ public class SysConfigService {
             result.setMessage("更新失败");
         }
         return result;
-    }
-
-    /**
-     * 根据code查找配置
-     *
-     * @param code
-     * @return
-     */
-    public SysConfig getByCode(String code) {
-        return sysConfigRepository.getByCode(code);
     }
 
     /**
