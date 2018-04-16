@@ -21,10 +21,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * 说明: 微信支付接口实现
@@ -417,12 +414,8 @@ public class WxPayService {
             throw new BusinessException(queryResult.getMessage());
         }
         String tradeStatus = queryResult.getTradeStatus();
-        for (WxTradeStatusEnum status : WxTradeStatusEnum.values()) {
-            if (Objects.equals(tradeStatus, status.getCode())) {
-                System.out.println(status.getName());
-                break;
-            }
-        }
+        Optional<WxTradeStatusEnum> wxTrade = Arrays.stream(WxTradeStatusEnum.values()).filter(wxTradeStatusEnum -> wxTradeStatusEnum.getCode().equals(tradeStatus)).findFirst();
+        wxTrade.ifPresent(wxTradeStatusEnum -> System.out.println(wxTradeStatusEnum.getName()));
 
         //退款操作
         String outRefundNo = "2017051201";//商户退款单号
@@ -436,11 +429,7 @@ public class WxPayService {
             throw new BusinessException(refundQueryResult.getMessage());
         }
         String refundStatus = refundQueryResult.getRefundStatus();
-        for (WxRefundStatusEnum status : WxRefundStatusEnum.values()) {
-            if (Objects.equals(refundStatus, status.getCode())) {
-                System.out.println(status.getName());
-                break;
-            }
-        }
+        Optional<WxRefundStatusEnum> wxRefund = Arrays.stream(WxRefundStatusEnum.values()).filter(wxRefundStatusEnum -> wxRefundStatusEnum.getCode().equals(refundStatus)).findFirst();
+        wxRefund.ifPresent(wxRefundStatusEnum -> System.out.println(wxRefundStatusEnum.getName()));
     }
 }

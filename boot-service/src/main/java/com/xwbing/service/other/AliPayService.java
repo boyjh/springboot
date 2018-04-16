@@ -184,7 +184,7 @@ public class AliPayService {
     }
 
     /**
-     * 退款查询  没有tradeStatus,isSuccess即为成功
+     * 退款查询,没有tradeStatus。isSuccess即为成功
      * 订单号和交易号2选1
      *
      * @param outTradeNo   订单号
@@ -277,10 +277,11 @@ public class AliPayService {
         AliPayQueryResult queryResult = alipayBuilder.queryOrder("", tradeNo);
         if (!queryResult.isSuccess()) {
             System.out.println(queryResult.getMessage());
+        } else {
+            String tradeStatus = queryResult.getTradeStatus();
+            Optional<AliPayTradeStatusEnum> first = Arrays.stream(AliPayTradeStatusEnum.values()).filter(aliPayTradeStatusEnum -> aliPayTradeStatusEnum.getCode().equals(tradeStatus)).findFirst();
+            first.ifPresent(aliPayTradeStatusEnum -> System.out.println(aliPayTradeStatusEnum.getName()));
         }
-        String tradeStatus = queryResult.getTradeStatus();
-        Optional<AliPayTradeStatusEnum> first = Arrays.stream(AliPayTradeStatusEnum.values()).filter(aliPayTradeStatusEnum -> aliPayTradeStatusEnum.getCode().equals(tradeStatus)).findFirst();
-        first.ifPresent(aliPayTradeStatusEnum -> System.out.println(aliPayTradeStatusEnum.getName()));
 
 //        //退款操作
         String outRequestNo = "201805180202";//退款请求号
