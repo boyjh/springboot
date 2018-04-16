@@ -86,6 +86,7 @@ public class SysConfigService {
             throw new BusinessException("该配置项不存在");
         }
         old.setValue(sysConfig.getValue());
+        old.setName(sysConfig.getName());
         old.setEnable(sysConfig.getEnable());
         old.setModifiedTime(new Date());
         SysConfig save = sysConfigRepository.save(old);
