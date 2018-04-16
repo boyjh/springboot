@@ -8,7 +8,7 @@ import java.util.Map;
  * 说明: 公共数据类
  */
 public class CommonDataUtil {
-    private static  Map<String, Object> token=new HashMap<>();
+    private static Map<String, Object> token = new HashMap<>();
 
     private CommonDataUtil() {
     }
@@ -19,6 +19,10 @@ public class CommonDataUtil {
 
     public static void setToken(String key, Object value) {
         token.put(key, value);
+    }
+
+    public static void removeToken(String key) {
+        token.remove(key);
     }
 
     public static void clearMap() {

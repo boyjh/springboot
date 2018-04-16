@@ -11,7 +11,7 @@ public class ThreadLocalUtil {
     }
 
     public static String getToken() {
-        return (String)token.get();
+        return token.get();
     }
 
     public static void setToken(String tokenVal) {

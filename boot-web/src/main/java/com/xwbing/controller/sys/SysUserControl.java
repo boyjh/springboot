@@ -2,7 +2,6 @@ package com.xwbing.controller.sys;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.annotation.LogInfo;
-import com.xwbing.constant.CommonConstant;
 import com.xwbing.constant.CommonEnum;
 import com.xwbing.domain.entity.sys.SysAuthority;
 import com.xwbing.domain.entity.sys.SysRole;
@@ -16,6 +15,7 @@ import com.xwbing.service.sys.SysUserService;
 import com.xwbing.util.CommonDataUtil;
 import com.xwbing.util.JsonResult;
 import com.xwbing.util.RestMessage;
+import com.xwbing.util.ThreadLocalUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -152,7 +152,9 @@ public class SysUserControl {
     @ApiOperation(value = "获取当前登录用户信息")
     @GetMapping("getLoginUserInfo")
     public JSONObject getLoginUserInfo() {
-        SysUser sysUser = sysUserService.getById((String) CommonDataUtil.getToken(CommonConstant.CURRENT_USER_ID));
+        String token = ThreadLocalUtil.getToken();
+        String userName = (String) CommonDataUtil.getToken(token);
+        SysUser sysUser = sysUserService.getByUserName(userName);
         if (sysUser == null) {
             return JsonResult.toJSONObj("未获取到当前登录用户信息");
         }

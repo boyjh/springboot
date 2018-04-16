@@ -95,7 +95,9 @@ public class SysUserService {
         if (old == null) {
             throw new BusinessException("该用户不存在");
         }
-        if (id.equals(CommonDataUtil.getToken(CommonConstant.CURRENT_USER_ID))) {
+        String token = ThreadLocalUtil.getToken();
+        String userName = (String) CommonDataUtil.getToken(token);
+        if (old.getUserName().equals(userName)) {
             throw new BusinessException("不能删除当前登录用户");
         }
         if (CommonEnum.YesOrNoEnum.YES.getCode().equals(old.getAdmin())) {
@@ -111,7 +113,6 @@ public class SysUserService {
         result.setMessage("删除成功");
         result.setSuccess(true);
         return result;
-
     }
 
     /**
@@ -127,7 +128,9 @@ public class SysUserService {
         if (old == null) {
             throw new BusinessException("该用户不存在");
         }
-        if (old.getId().equals(CommonDataUtil.getToken(CommonConstant.CURRENT_USER_ID))) {
+        String token = ThreadLocalUtil.getToken();
+        String userName = (String) CommonDataUtil.getToken(token);
+        if (old.getUserName().equals(userName)) {
             throw new BusinessException("不能修改当前登录用户");
         }
         if (CommonEnum.YesOrNoEnum.YES.getCode().equals(old.getAdmin())) {
@@ -158,6 +161,16 @@ public class SysUserService {
      */
     public SysUser getById(String id) {
         return sysUserRepository.findOne(id);
+    }
+
+    /**
+     * 根据用户名查找用户
+     *
+     * @param userName
+     * @return
+     */
+    public SysUser getByUserName(String userName) {
+        return sysUserRepository.getByUserName(userName);
     }
 
     /**
@@ -193,7 +206,9 @@ public class SysUserService {
         if (old == null) {
             throw new BusinessException("未查询到用户信息");
         }
-        if (CommonDataUtil.getToken(CommonConstant.CURRENT_USER_ID).equals(id)) {
+        String token = ThreadLocalUtil.getToken();
+        String userName = (String) CommonDataUtil.getToken(token);
+        if (old.getUserName().equals(userName)) {
             throw new BusinessException("不能重置当前登录用户");
         }
         if (CommonEnum.YesOrNoEnum.YES.getCode().equals(old.getAdmin())) {
@@ -259,7 +274,9 @@ public class SysUserService {
      */
     public RestMessage login(HttpServletRequest request, String userName, String passWord, String checkCode) {
         RestMessage restMessage = new RestMessage();
-        String imgCode = (String) CommonDataUtil.getToken(CommonConstant.KEY_CAPTCHA);
+//        String imgCode = (String) CommonDataUtil.getToken(CommonConstant.KEY_CAPTCHA);
+        HttpSession session = request.getSession();
+        String imgCode = (String) session.getAttribute(CommonConstant.KEY_CAPTCHA);
         //验证验证码
         if (!checkCode.equalsIgnoreCase(imgCode)) {
             throw new BusinessException("验证码错误");
@@ -273,22 +290,21 @@ public class SysUserService {
         if (!flag) {
             throw new BusinessException("密码错误");
         }
-        //保存登录数据
-        CommonDataUtil.setToken(CommonConstant.CURRENT_USER, userName);
-        CommonDataUtil.setToken(CommonConstant.CURRENT_USER_ID, user.getId());
-        //生成session
-        HttpSession session = request.getSession();
-        session.setAttribute(userName, userName);
         //保存登录信息
         SysUserLoginInOut loginInOut = new SysUserLoginInOut();
         loginInOut.setCreateTime(new Date());
         loginInOut.setUserId(user.getId());
         loginInOut.setInoutType(CommonEnum.LoginInOutEnum.IN.getValue());
-        loginInOut.setIp(IpUtil.getIpAddr(request));
+        String ip = IpUtil.getIpAddr(request);
+        loginInOut.setIp(ip);
         RestMessage save = loginInOutService.save(loginInOut);
         if (!save.isSuccess()) {
             throw new BusinessException("保存用户登录日志失败");
         }
+        //保存登录数据
+        String token = RSAUtil.decrypt(userName + ip);
+        CommonDataUtil.setToken(token, userName);
+        restMessage.setData(token);
         restMessage.setSuccess(true);
         restMessage.setMessage("登录成功");
         return restMessage;
@@ -302,14 +318,12 @@ public class SysUserService {
      */
     public RestMessage logout(HttpServletRequest request) {
         RestMessage restMessage = new RestMessage();
-        String userId = (String) CommonDataUtil.getToken(CommonConstant.CURRENT_USER_ID);
-        SysUser user = getById(userId);
+        String token = ThreadLocalUtil.getToken();
+        String userName = (String) CommonDataUtil.getToken(token);
+        SysUser user = getByUserName(userName);
         if (user != null) {
-            //清空公共数据
-            CommonDataUtil.clearMap();
-            //清除session参数
-            HttpSession session = request.getSession();
-            session.removeAttribute(user.getUserName());
+            //清空缓存数据
+            CommonDataUtil.removeToken(token);
             //保存登出信息
             SysUserLoginInOut loginInOut = new SysUserLoginInOut();
             loginInOut.setCreateTime(new Date());
@@ -409,16 +423,6 @@ public class SysUserService {
             }
         }
         return listDto;
-    }
-
-    /**
-     * 根据用户名查找用户
-     *
-     * @param userName
-     * @return
-     */
-    private SysUser getByUserName(String userName) {
-        return sysUserRepository.getByUserName(userName);
     }
 
     /**

@@ -2,9 +2,9 @@ package com.xwbing.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.xwbing.configuration.DispatcherServletConfig;
-import com.xwbing.constant.CommonConstant;
 import com.xwbing.util.CommonDataUtil;
 import com.xwbing.util.RestMessage;
+import com.xwbing.util.ThreadLocalUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -45,13 +45,9 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String servletPath = request.getServletPath();
         if (!set.contains(servletPath) && !servletPath.contains("login") && !servletPath.contains("test")) {
-//            HttpSession session = request.getSession();
-//            if (session.getAttribute(CommonConstant.CURRENT_USER)!=null) {
-//                return true;
-//            }else {
-//                return false;
-//            }
-            if (CommonDataUtil.getToken(CommonConstant.CURRENT_USER) != null) {
+            String token = request.getParameter("token");
+            if (token != null && CommonDataUtil.getToken(token)!=null) {
+                ThreadLocalUtil.setToken(token);
                 return true;
             } else {
                 logger.error("用户未登录");
