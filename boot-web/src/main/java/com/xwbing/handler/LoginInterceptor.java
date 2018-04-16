@@ -45,7 +45,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String servletPath = request.getServletPath();
         if (!set.contains(servletPath) && !servletPath.contains("login") && !servletPath.contains("test")) {
-            String token = request.getParameter("token");
+            String token = request.getHeader("token");
             if (token != null && CommonDataUtil.getToken(token)!=null) {
                 ThreadLocalUtil.setToken(token);
                 return true;
