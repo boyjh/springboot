@@ -13,6 +13,8 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import java.io.*;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
@@ -230,21 +232,23 @@ public class RSAUtil {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         String en = testJiami();// 密文
         String de = testJiemi(en);// 明文
         System.out.println(de);
     }
 
-    private static String testJiami() {
-        String plainText = encrypt(loadPublicKey(), "123456");
+    private static String testJiami() throws Exception {
+        String plainText = encrypt(loadPublicKey(), "123456");//加密后的密文有换行
         System.out.println("加密结果:" + plainText);
+        System.out.println("加密结果encode:" + URLEncoder.encode(plainText, "utf-8"));
         return plainText;
     }
 
-    private static String testJiemi(String str) {
+    private static String testJiemi(String str) throws Exception {
         String plainText = decrypt(loadPrivateKey(), str);
         System.out.println("解密结果:" + plainText);
+        System.out.println("加密结果encode:" + URLDecoder.decode(plainText, "utf-8"));
         return plainText;
     }
 }

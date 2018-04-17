@@ -19,10 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.BufferedOutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * 说明: 用户服务层
@@ -302,7 +299,9 @@ public class SysUserService {
             throw new BusinessException("保存用户登录日志失败");
         }
         //保存登录数据
-        String token = RSAUtil.decrypt(userName + ip);
+        String token = RSAUtil.encrypt(userName + "_" + ip);
+        //对有换行的token编码
+        token = EncodeUtils.urlEncode(token);
         CommonDataUtil.setToken(token, userName);
         restMessage.setData(token);
         restMessage.setSuccess(true);

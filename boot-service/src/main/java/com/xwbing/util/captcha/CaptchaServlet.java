@@ -34,7 +34,6 @@ public class CaptchaServlet extends HttpServlet {
             StringBuffer code = new StringBuffer();
             BufferedImage image = tool.genRandomCodeImage(code);
             HttpSession session = req.getSession();
-            session.setMaxInactiveInterval(60 * 60);//单位为秒,-1永不过期
             session.setAttribute(CommonConstant.KEY_CAPTCHA, code.toString());
 //            CommonDataUtil.setToken(CommonConstant.KEY_CAPTCHA, code.toString());
             // 将内存中的图片通过流形式输出到客户端

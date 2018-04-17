@@ -28,19 +28,15 @@ import java.util.List;
 public class SwaggerConfig {
     @Bean
     public Docket sysDocket() {
-        ParameterBuilder ticketPar = new ParameterBuilder();
-        List<Parameter> pars = new ArrayList<>();
-        ticketPar.name("token").description("令牌")
-                .modelRef(new ModelRef("string")).parameterType("header")
-                .required(false).build(); //header中的ticket参数非必填，传空也可以
-        pars.add(ticketPar.build());
+        List<Parameter> pars = addParams();
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName("system")
                 .apiInfo(sysApiInf())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.xwbing.controller.sys"))
                 .paths(PathSelectors.any())
-                .build();
+                .build()
+                .globalOperationParameters(pars);
     }
 
     private ApiInfo sysApiInf() {
@@ -55,19 +51,15 @@ public class SwaggerConfig {
 
     @Bean
     public Docket otherDocket() {
-        ParameterBuilder ticketPar = new ParameterBuilder();
-        List<Parameter> pars = new ArrayList<>();
-        ticketPar.name("token").description("令牌")
-                .modelRef(new ModelRef("string")).parameterType("header")
-                .required(false).build(); //header中的ticket参数非必填，传空也可以
-        pars.add(ticketPar.build());
+        List<Parameter> pars = addParams();
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName("other")
                 .apiInfo(otherApiInf())
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.xwbing.controller.other"))
                 .paths(PathSelectors.any())
-                .build();
+                .build()
+                .globalOperationParameters(pars);
     }
 
     private ApiInfo otherApiInf() {
@@ -78,5 +70,20 @@ public class SwaggerConfig {
                 .contact(new Contact("项伟兵", "https://github.com/xiangwbs/boot-module-pro.git", "xiangwbs@163.com"))
                 .version("1.0.0")
                 .build();
+    }
+
+    /**
+     * 添加参数
+     *
+     * @return
+     */
+    private List<Parameter> addParams() {
+        ParameterBuilder ticketPar = new ParameterBuilder();
+        List<Parameter> pars = new ArrayList<>();
+        ticketPar.name("token").description("令牌")
+                .modelRef(new ModelRef("string")).parameterType("header")
+                .required(false).build();
+        pars.add(ticketPar.build());
+        return pars;
     }
 }
