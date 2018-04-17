@@ -1,4 +1,4 @@
-package com.xwbing.service.other;
+package com.xwbing.service.rest;
 
 import com.xwbing.constant.CommonConstant;
 import com.xwbing.domain.entity.pay.wxpay.*;

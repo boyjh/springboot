@@ -1,4 +1,4 @@
-package com.xwbing.service.other;
+package com.xwbing.service.rest;
 
 import com.xwbing.exception.BusinessException;
 import com.xwbing.util.RestMessage;

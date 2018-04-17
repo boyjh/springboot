@@ -1,4 +1,4 @@
-package com.xwbing.service.other;
+package com.xwbing.service.rest;
 
 import com.xwbing.util.RestMessage;
 import org.springframework.stereotype.Service;

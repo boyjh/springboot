@@ -55,7 +55,7 @@ under the License.
 
   <!-- interactiveMode
    | This will determine whether maven prompts you when it needs input. If set to false,
-   | maven will use a sensible default value, perhaps based on some other setting, for
+   | maven will use a sensible default value, perhaps based on some rest setting, for
    | the parameter in question.
    |
    | Default: true

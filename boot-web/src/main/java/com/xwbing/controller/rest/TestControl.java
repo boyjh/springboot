@@ -1,13 +1,13 @@
-package com.xwbing.controller.other;
+package com.xwbing.controller.rest;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.annotation.LogInfo;
 import com.xwbing.domain.entity.ExpressInfo;
 import com.xwbing.domain.entity.vo.ExpressInfoVo;
 import com.xwbing.redis.RedisService;
-import com.xwbing.service.other.CookieSessionService;
-import com.xwbing.service.other.ExpressDeliveryService;
-import com.xwbing.service.other.QRCodeZipService;
+import com.xwbing.service.rest.CookieSessionService;
+import com.xwbing.service.rest.ExpressDeliveryService;
+import com.xwbing.service.rest.QRCodeZipService;
 import com.xwbing.util.HttpUtil;
 import com.xwbing.util.JsonResult;
 import com.xwbing.util.RSAUtil;
