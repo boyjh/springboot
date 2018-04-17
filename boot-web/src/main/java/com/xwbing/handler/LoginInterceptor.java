@@ -25,28 +25,28 @@ import java.util.Set;
  */
 public class LoginInterceptor extends HandlerInterceptorAdapter {
     private final Logger logger = LoggerFactory.getLogger(DispatcherServletConfig.class);
-    private static final Set<String> set = new HashSet<>();//拦截器白名单
+    private static final Set<String> SET = new HashSet<>();//拦截器白名单
 
     static {
         //映射到登录页面，不拦截
-        set.add("/");
+        SET.add("/");
         //映射swagger文档
-        set.add("/doc");
+        SET.add("/doc");
         //验证码
-        set.add("/captcha");
+        SET.add("/captcha");
         //swagger
-        set.add("/v2/api-docs");
-        set.add("/swagger-resources");
-        set.add("/configuration/ui");
-        set.add("/configuration/security");
+        SET.add("/v2/api-docs");
+        SET.add("/swagger-resources");
+        SET.add("/configuration/ui");
+        SET.add("/configuration/security");
         //德鲁伊监控
-        set.add("/druid");
+        SET.add("/druid");
     }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String servletPath = request.getServletPath();
-        if (!set.contains(servletPath) && !servletPath.contains("login") && !servletPath.contains("test")) {
+        if (!SET.contains(servletPath) && !servletPath.contains("login") && !servletPath.contains("test")) {
             String token = request.getHeader("token");
             if (StringUtils.isEmpty(token)) {
                 getOutputStream(response, "token不能为空");
