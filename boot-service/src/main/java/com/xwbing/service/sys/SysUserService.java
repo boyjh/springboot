@@ -298,10 +298,8 @@ public class SysUserService {
         if (!save.isSuccess()) {
             throw new BusinessException("保存用户登录日志失败");
         }
-        //保存登录数据
-        String token = RSAUtil.encrypt(userName + "_" + ip);
-        //对有换行的token编码
-        token = EncodeUtils.urlEncode(token);
+        //保存登录数据(rsa加密后密文会有换行，所以再次url编码)
+        String token = EncodeUtils.urlEncode(RSAUtil.encrypt(userName + "_" + ip));
         CommonDataUtil.setToken(token, userName);
         restMessage.setData(token);
         restMessage.setSuccess(true);
