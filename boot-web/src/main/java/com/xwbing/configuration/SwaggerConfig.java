@@ -53,11 +53,11 @@ public class SwaggerConfig {
     }
 
     @Bean
-    public Docket otherDocket() {
+    public Docket restDocket() {
         List<Parameter> pars = addParams();
         return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("other")
-                .apiInfo(otherApiInf())
+                .groupName("rest")
+                .apiInfo(restApiInf())
                 .useDefaultResponseMessages(false)
                 .globalResponseMessage(RequestMethod.GET, customerResponseMessage())
                 .globalResponseMessage(RequestMethod.POST, customerResponseMessage())
@@ -68,10 +68,10 @@ public class SwaggerConfig {
                 .build();
     }
 
-    private ApiInfo otherApiInf() {
+    private ApiInfo restApiInf() {
         return new ApiInfoBuilder()
                 .title("RESTful API Document")
-                .description("other接口文档")
+                .description("接口文档")
                 .termsOfServiceUrl("http://localhost:8080/swagger-ui.html")
                 .contact(new Contact("项伟兵", "https://github.com/xiangwbs/boot-module-pro.git", "xiangwbs@163.com"))
                 .version("1.0.0")
