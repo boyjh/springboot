@@ -105,6 +105,28 @@ public class CommonEnum {
         }
     }
 
+    public enum CodeEnum {
+        OK("成功", 200),
+        NOT_FOUND("服务器找不到请求的网页", 404),
+        ERROR("服务器遇到错误，无法完成请求", 500);
+        // 成员变量
+        private String name;
+        private int value;
+
+        CodeEnum(String name, int value) {
+            this.value = value;
+            this.name = name;
+        }
+
+        public int getValue() {
+            return value;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
+
     /**
      * 快递鸟物流状态
      */

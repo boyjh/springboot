@@ -1,15 +1,15 @@
 package com.xwbing.configuration;
 
+import com.xwbing.constant.CommonEnum;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.ParameterBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
+import org.springframework.web.bind.annotation.RequestMethod;
+import springfox.documentation.builders.*;
 import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.service.Parameter;
+import springfox.documentation.service.ResponseMessage;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -32,11 +32,14 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName("system")
                 .apiInfo(sysApiInf())
+                .useDefaultResponseMessages(false)
+                .globalResponseMessage(RequestMethod.GET, customerResponseMessage())
+                .globalResponseMessage(RequestMethod.POST, customerResponseMessage())
+                .globalOperationParameters(pars)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.xwbing.controller.sys"))
                 .paths(PathSelectors.any())
-                .build()
-                .globalOperationParameters(pars);
+                .build();
     }
 
     private ApiInfo sysApiInf() {
@@ -55,11 +58,14 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName("other")
                 .apiInfo(otherApiInf())
+                .useDefaultResponseMessages(false)
+                .globalResponseMessage(RequestMethod.GET, customerResponseMessage())
+                .globalResponseMessage(RequestMethod.POST, customerResponseMessage())
+                .globalOperationParameters(pars)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.xwbing.controller.other"))
                 .paths(PathSelectors.any())
-                .build()
-                .globalOperationParameters(pars);
+                .build();
     }
 
     private ApiInfo otherApiInf() {
@@ -73,7 +79,7 @@ public class SwaggerConfig {
     }
 
     /**
-     * 添加参数
+     * 添加消息头参数
      *
      * @return
      */
@@ -85,5 +91,27 @@ public class SwaggerConfig {
                 .required(false).build();
         pars.add(ticketPar.build());
         return pars;
+    }
+
+    /**
+     * 自定义返回信息
+     *
+     * @return
+     */
+    private ArrayList<ResponseMessage> customerResponseMessage() {
+        return new ArrayList<ResponseMessage>() {{
+            add(new ResponseMessageBuilder()
+                    .code(CommonEnum.CodeEnum.OK.getValue())
+                    .message(CommonEnum.CodeEnum.OK.getName())
+                    .build());
+            add(new ResponseMessageBuilder()
+                    .code(CommonEnum.CodeEnum.NOT_FOUND.getValue())
+                    .message(CommonEnum.CodeEnum.NOT_FOUND.getName())
+                    .build());
+            add(new ResponseMessageBuilder()
+                    .code(CommonEnum.CodeEnum.ERROR.getValue())
+                    .message(CommonEnum.CodeEnum.ERROR.getName())
+                    .build());
+        }};
     }
 }
