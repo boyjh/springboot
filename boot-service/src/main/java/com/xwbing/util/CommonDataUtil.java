@@ -13,19 +13,19 @@ public class CommonDataUtil {
     private CommonDataUtil() {
     }
 
-    public static Object getToken(String key) {
+    public static Object getData(String key) {
         return token.get(key);
     }
 
-    public static void setToken(String key, Object value) {
+    public static void setData(String key, Object value) {
         token.put(key, value);
     }
 
-    public static void removeToken(String key) {
+    public static void removeData(String key) {
         token.remove(key);
     }
 
-    public static void clearMap() {
+    public static void clearData() {
         token.clear();
     }
 }

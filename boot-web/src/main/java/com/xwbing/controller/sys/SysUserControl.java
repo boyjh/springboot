@@ -153,7 +153,7 @@ public class SysUserControl {
     @GetMapping("getLoginUserInfo")
     public JSONObject getLoginUserInfo() {
         String token = ThreadLocalUtil.getToken();
-        String userName = (String) CommonDataUtil.getToken(token);
+        String userName = (String) CommonDataUtil.getData(token);
         SysUser sysUser = sysUserService.getByUserName(userName);
         if (sysUser == null) {
             return JsonResult.toJSONObj("未获取到当前登录用户信息");

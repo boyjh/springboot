@@ -93,7 +93,7 @@ public class SysUserService {
             throw new BusinessException("该用户不存在");
         }
         String token = ThreadLocalUtil.getToken();
-        String userName = (String) CommonDataUtil.getToken(token);
+        String userName = (String) CommonDataUtil.getData(token);
         if (old.getUserName().equals(userName)) {
             throw new BusinessException("不能删除当前登录用户");
         }
@@ -126,7 +126,7 @@ public class SysUserService {
             throw new BusinessException("该用户不存在");
         }
         String token = ThreadLocalUtil.getToken();
-        String userName = (String) CommonDataUtil.getToken(token);
+        String userName = (String) CommonDataUtil.getData(token);
         if (old.getUserName().equals(userName)) {
             throw new BusinessException("不能修改当前登录用户");
         }
@@ -204,7 +204,7 @@ public class SysUserService {
             throw new BusinessException("未查询到用户信息");
         }
         String token = ThreadLocalUtil.getToken();
-        String userName = (String) CommonDataUtil.getToken(token);
+        String userName = (String) CommonDataUtil.getData(token);
         if (old.getUserName().equals(userName)) {
             throw new BusinessException("不能重置当前登录用户");
         }
@@ -271,7 +271,7 @@ public class SysUserService {
      */
     public RestMessage login(HttpServletRequest request, String userName, String passWord, String checkCode) {
         RestMessage restMessage = new RestMessage();
-//        String imgCode = (String) CommonDataUtil.getToken(CommonConstant.KEY_CAPTCHA);
+//        String imgCode = (String) CommonDataUtil.getData(CommonConstant.KEY_CAPTCHA);
         HttpSession session = request.getSession();
         String imgCode = (String) session.getAttribute(CommonConstant.KEY_CAPTCHA);
         //验证验证码
@@ -301,7 +301,7 @@ public class SysUserService {
         //保存登录数据
         //rsa加密后密文是多行的,所以再次url编码
         String token = EncodeUtils.urlEncode(RSAUtil.encrypt(userName + "_" + ip));
-        CommonDataUtil.setToken(token, userName);
+        CommonDataUtil.setData(token, userName);
         restMessage.setData(token);
         restMessage.setSuccess(true);
         restMessage.setMessage("登录成功");
@@ -317,11 +317,11 @@ public class SysUserService {
     public RestMessage logout(HttpServletRequest request) {
         RestMessage restMessage = new RestMessage();
         String token = ThreadLocalUtil.getToken();
-        String userName = (String) CommonDataUtil.getToken(token);
+        String userName = (String) CommonDataUtil.getData(token);
         SysUser user = getByUserName(userName);
         if (user != null) {
             //清空缓存数据
-            CommonDataUtil.removeToken(token);
+            CommonDataUtil.removeData(token);
             //保存登出信息
             SysUserLoginInOut loginInOut = new SysUserLoginInOut();
             loginInOut.setCreateTime(new Date());

@@ -52,14 +52,14 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
             String token = request.getHeader("token");
             if (session == null) {
                 getOutputStream(response, "登录超时,请重新登录");
-                CommonDataUtil.removeToken(token);
+                CommonDataUtil.removeData(token);
                 return false;
             } else {
                 if (StringUtils.isEmpty(token)) {
                     getOutputStream(response, "token不能为空");
                     return false;
                 } else {
-                    if (CommonDataUtil.getToken(token) != null) {
+                    if (CommonDataUtil.getData(token) != null) {
                         ThreadLocalUtil.setToken(token);
                         return true;
                     } else {

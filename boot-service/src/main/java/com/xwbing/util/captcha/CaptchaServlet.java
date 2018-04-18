@@ -35,7 +35,7 @@ public class CaptchaServlet extends HttpServlet {
             BufferedImage image = tool.genRandomCodeImage(code);
             HttpSession session = req.getSession();
             session.setAttribute(CommonConstant.KEY_CAPTCHA, code.toString());
-//            CommonDataUtil.setToken(CommonConstant.KEY_CAPTCHA, code.toString());
+//            CommonDataUtil.setData(CommonConstant.KEY_CAPTCHA, code.toString());
             // 将内存中的图片通过流形式输出到客户端
             OutputStream out = res.getOutputStream();
             ImageIO.write(image, "JPEG", out);
