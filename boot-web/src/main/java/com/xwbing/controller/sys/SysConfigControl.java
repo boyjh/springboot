@@ -1,7 +1,6 @@
 package com.xwbing.controller.sys;
 
 import com.alibaba.fastjson.JSONObject;
-import com.xwbing.annotation.LogInfo;
 import com.xwbing.domain.entity.sys.SysConfig;
 import com.xwbing.domain.entity.vo.ListSysConfigVo;
 import com.xwbing.domain.entity.vo.RestMessageVo;
@@ -34,7 +33,6 @@ public class SysConfigControl {
     @Resource
     private SysConfigService sysConfigService;
 
-    @LogInfo("新增系统配置信息")
     @ApiOperation(value = "新增", notes = "新增系统配置信息", response = RestMessageVo.class)
     @PostMapping("save")
     public JSONObject save(@RequestBody @Valid SysConfig sysConfig) {
@@ -44,11 +42,10 @@ public class SysConfigControl {
         return JsonResult.toJSONObj(result);
     }
 
-    @LogInfo("根据code删除系统配置信息")
     @ApiOperation(value = "删除", notes = "根据code删除系统配置信息", response = RestMessageVo.class)
     @GetMapping("removeByCode")
     public JSONObject removeByCode(@RequestParam String code) {
-        String logMsg = "删除系统配置信息";
+        String logMsg = "根据code删除系统配置信息";
         logger.info(logMsg + " code:{}", code);
         if (StringUtils.isEmpty(code)) {
             return JsonResult.toJSONObj("code不能为空");
@@ -57,7 +54,6 @@ public class SysConfigControl {
         return JsonResult.toJSONObj(result);
     }
 
-    @LogInfo("修改系统配置信息")
     @ApiOperation(value = "修改", notes = "修改系统配置信息", response = RestMessageVo.class)
     @PostMapping("update")
     public JSONObject update(@RequestBody @Valid SysConfig sysConfig) {
@@ -70,7 +66,6 @@ public class SysConfigControl {
         return JsonResult.toJSONObj(result);
     }
 
-    @LogInfo("根据key查找系统配置信息")
     @ApiOperation(value = "查找", notes = "根据key查找系统配置信息", response = SysConfigVo.class)
     @GetMapping("getByCode")
     public JSONObject getByCode(@RequestParam String code) {
@@ -86,7 +81,6 @@ public class SysConfigControl {
         return JsonResult.toJSONObj(one, "");
     }
 
-    @LogInfo("根据是否启用查找配置列表")
     @ApiOperation(value = "查找列表", notes = "根据是否启用查找配置列表", response = ListSysConfigVo.class)
     @GetMapping("listByEnable")
     public JSONObject listByEnable(@RequestParam String enable) {

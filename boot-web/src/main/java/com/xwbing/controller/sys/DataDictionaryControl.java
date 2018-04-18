@@ -71,11 +71,9 @@ public class DataDictionaryControl {
     @ApiImplicitParam(name = "id", value = "主键", paramType = "query", dataType = "string")
     @PostMapping("uniqueCode")
     public JSONObject uniqueCode(@RequestParam String code, String id) {
-        boolean b = dataDictionaryService.uniqueCode(code, id);
         RestMessage result = new RestMessage();
-        if (b) {
-            result.setSuccess(true);
-        }
+        boolean b = dataDictionaryService.uniqueCode(code, id);
+        result.setSuccess(b);
         return JsonResult.toJSONObj(result);
     }
 

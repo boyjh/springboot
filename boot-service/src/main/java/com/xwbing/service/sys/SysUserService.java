@@ -72,7 +72,7 @@ public class SysUserService {
         boolean send = sendEmail(sysUser, res[0]);
         // 发送邮件结束
         if (!send) {
-            throw new BusinessException("发送密码邮件错误");
+            throw new BusinessException("发送密码邮件失败");
         }
         result.setSuccess(true);
         result.setId(id);
@@ -222,7 +222,7 @@ public class SysUserService {
         }
         boolean send = sendEmail(old, str[0]);
         if (!send) {
-            throw new BusinessException("发送密码邮件错误");
+            throw new BusinessException("发送密码邮件失败");
         }
         result.setSuccess(true);
         result.setMessage("重置密码成功");
@@ -271,7 +271,6 @@ public class SysUserService {
      */
     public RestMessage login(HttpServletRequest request, String userName, String passWord, String checkCode) {
         RestMessage restMessage = new RestMessage();
-//        String imgCode = (String) CommonDataUtil.getData(CommonConstant.KEY_CAPTCHA);
         HttpSession session = request.getSession();
         String imgCode = (String) session.getAttribute(CommonConstant.KEY_CAPTCHA);
         //验证验证码
@@ -281,11 +280,11 @@ public class SysUserService {
         //验证账号,密码
         SysUser user = getByUserName(userName);
         if (user == null) {
-            throw new BusinessException("账号错误");
+            throw new BusinessException("账号或密码错误");
         }
         boolean flag = checkPassWord(passWord, user.getPassword(), user.getSalt());
         if (!flag) {
-            throw new BusinessException("密码错误");
+            throw new BusinessException("账号或密码错误");
         }
         //保存登录信息
         SysUserLoginInOut loginInOut = new SysUserLoginInOut();
@@ -299,11 +298,10 @@ public class SysUserService {
             throw new BusinessException("保存用户登录日志失败");
         }
         //保存登录数据
-        //rsa加密后密文是多行的,所以再次url编码
-        String token = EncodeUtils.urlEncode(RSAUtil.encrypt(userName + "_" + ip));
+        String token = EncodeUtils.urlEncode(RSAUtil.encrypt(userName + "_" + ip));//rsa加密后密文是多行的,所以再次url编码
         CommonDataUtil.setData(token, userName);
-        restMessage.setData(token);
         restMessage.setSuccess(true);
+        restMessage.setData(token);
         restMessage.setMessage("登录成功");
         return restMessage;
     }

@@ -60,22 +60,4 @@ public class ApplicationContextConfig {
         poolTaskExecutor.setQueueCapacity(200);//队列最大长度
         return poolTaskExecutor;
     }
-
-//    @Bean(name = "cloudQueryRunner")
-//    @Primary
-//    public CloudQueryRunner getCloudQueryRunner() {
-//        return getQueryRunner("y.drore.com", control_appId, control_appSecret);
-//
-//    }
-//
-//    private static CloudQueryRunner getQueryRunner(String cloud_host, String config_appId, String control_appSecret) {
-//        CloudBasicConnection cloudBasicConnection = new CloudBasicConnection(cloud_host, 80, config_appId, control_appSecret);
-//        CloudPoolingConnectionManager cloudPoolingConnectionManager = new CloudPoolingConnectionManager();
-//        cloudPoolingConnectionManager.setConnection(cloudBasicConnection);
-//        CloudBasicDataSource cloudBasicDataSource = new CloudBasicDataSource();
-//        cloudBasicDataSource.setCloudPoolingConnectionManager(cloudPoolingConnectionManager);
-//        CloudQueryRunner cloudQueryRunner = new CloudQueryRunner();
-//        cloudQueryRunner.setDataSource(cloudBasicDataSource);
-//        return cloudQueryRunner;
-//    }
 }
