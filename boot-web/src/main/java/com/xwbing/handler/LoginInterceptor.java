@@ -12,6 +12,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashSet;
@@ -47,20 +48,27 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String servletPath = request.getServletPath();
         if (!SET.contains(servletPath) && !servletPath.contains("login") && !servletPath.contains("test")) {
+            HttpSession session = request.getSession(false);
             String token = request.getHeader("token");
-            if (StringUtils.isEmpty(token)) {
-                getOutputStream(response, "token不能为空");
+            if (session == null) {
+                getOutputStream(response, "登录超时,请重新登录");
+                CommonDataUtil.removeToken(token);
                 return false;
             } else {
-                if (CommonDataUtil.getToken(token) != null) {
-                    ThreadLocalUtil.setToken(token);
-                    return true;
-                } else {
-                    logger.error("用户未登录");
-                    getOutputStream(response, "请先登录");
-                    //未登录，重定向到登录页面
-//                response.sendRedirect("/login.html");
+                if (StringUtils.isEmpty(token)) {
+                    getOutputStream(response, "token不能为空");
                     return false;
+                } else {
+                    if (CommonDataUtil.getToken(token) != null) {
+                        ThreadLocalUtil.setToken(token);
+                        return true;
+                    } else {
+                        logger.error("用户未登录");
+                        getOutputStream(response, "请先登录");
+                        //未登录，重定向到登录页面
+//                response.sendRedirect("/login.html");
+                        return false;
+                    }
                 }
             }
         }

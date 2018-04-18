@@ -298,7 +298,8 @@ public class SysUserService {
         if (!save.isSuccess()) {
             throw new BusinessException("保存用户登录日志失败");
         }
-        //保存登录数据(rsa加密后密文是多行的,所以再次url编码)
+        //保存登录数据
+        //rsa加密后密文是多行的,所以再次url编码
         String token = EncodeUtils.urlEncode(RSAUtil.encrypt(userName + "_" + ip));
         CommonDataUtil.setToken(token, userName);
         restMessage.setData(token);
