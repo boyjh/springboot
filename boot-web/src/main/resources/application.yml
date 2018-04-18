@@ -2,7 +2,7 @@
 server:
   port: 8088
   session:
-    timeout: 60 #单位秒
+    timeout: 3600 #单位秒
   context-path: /
 
 #spring
