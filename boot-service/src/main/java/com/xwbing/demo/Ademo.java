@@ -1,5 +1,7 @@
 package com.xwbing.demo;
 
+import com.alibaba.fastjson.JSONArray;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,9 +14,11 @@ import java.util.Map;
 public class Ademo {
     public static void main(String[] args) {
         Map<String, String> aa = new HashMap<>();
-        aa.put(null,"aa");
+        aa.put(null, "aa");
         String s = aa.get(null);
         System.out.println(s);
+        JSONArray jsonArray = JSONArray.parseArray("[1,2]");
+        System.out.println("");
 
     }
 
