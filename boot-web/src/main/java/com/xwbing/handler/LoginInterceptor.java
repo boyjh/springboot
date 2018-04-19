@@ -63,7 +63,6 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
                         ThreadLocalUtil.setToken(token);
                         return true;
                     } else {
-                        logger.error("用户未登录");
                         getOutputStream(response, "请先登录");
                         //未登录，重定向到登录页面
 //                response.sendRedirect("/login.html");
@@ -77,6 +76,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 
     private void getOutputStream(HttpServletResponse response, String msg) {
         try {
+            logger.error(msg);
             OutputStream outputStream = response.getOutputStream();
             RestMessage restMessage = new RestMessage();
             restMessage.setMessage(msg);
