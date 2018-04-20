@@ -14,7 +14,8 @@ import java.util.Set;
  * 遍历所有的key-value对
  * 遍历所有的value（相对不常用）
  * --------------------------------------------------------------------------------------------------------------------------------
- * 说明: HashMap初始容量capacity为16,加载因子loadFactor为0.75,临界值threshold=capacity*loadFactor,如果元素个数超过临界值,capacity*2
+ * 说明: HashMap初始容量capacity为16,加载因子loadFactor为0.75,临界值threshold=capacity*loadFactor,如果元素个数超过临界值,capacity<<1
+ * bucket地址:hash&(table.length-1)
  *
  * @author xiangwb
  */
@@ -22,6 +23,7 @@ public class ForEachMap {
     public static void main(String[] args) {
         Map<String, Integer> map = new HashMap<String, Integer>() {
             private static final long serialVersionUID = 2832423252566685445L;
+
             {
                 put("语文", 99);
                 put("数学", 98);
