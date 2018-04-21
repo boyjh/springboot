@@ -16,6 +16,7 @@ import java.util.Set;
  * --------------------------------------------------------------------------------------------------------------------------------
  * 说明: HashMap初始容量capacity为16,加载因子loadFactor为0.75,临界值threshold=capacity*loadFactor,如果元素个数超过临界值,capacity<<1
  * bucket地址:hash&(table.length-1)
+ * 数据结构:数组-链表-红黑树
  *
  * @author xiangwb
  */

@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONArray;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 项目名称: boot-module-demo
@@ -20,7 +19,7 @@ public class Ademo {
         System.out.println(s);
         JSONArray jsonArray = JSONArray.parseArray("[1,2]");
         System.out.println("");
-        ConcurrentHashMap
+
     }
 
 }
