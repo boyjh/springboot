@@ -28,7 +28,6 @@ public class DateUtil {
     /**
      * SimpleDateFormat是线程不安全,创建SimpleDateFormat实例需要耗费很大的代价
      * 使用ThreadLocal将共享变量变为独享，线程独享肯定能比方法独享在并发环境中能减少不少创建对象的开销。如果对性能要求比较高的情况下，一般推荐使用这种方法。
-     * 存放不同的日期模板格式的sdf的Map
      */
     private static Map<String, ThreadLocal<DateFormat>> sdfMap = new HashMap<>();
 
