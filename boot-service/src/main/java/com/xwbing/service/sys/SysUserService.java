@@ -282,8 +282,8 @@ public class SysUserService {
         if (user == null) {
             throw new BusinessException("账号或密码错误");
         }
-        boolean flag = checkPassWord(passWord, user.getPassword(), user.getSalt());
-        if (!flag) {
+        boolean check = checkPassWord(passWord, user.getPassword(), user.getSalt());
+        if (!check) {
             throw new BusinessException("账号或密码错误");
         }
         //保存登录信息
@@ -369,7 +369,7 @@ public class SysUserService {
     }
 
     /**
-     * 导出excel
+     * 导出用户信息Excel
      */
     public void exportReport(HttpServletResponse response) {
         String fileName = CommonConstant.USER_REPORT_FILE_NAME;//文件名
@@ -432,8 +432,7 @@ public class SysUserService {
     private boolean checkPassWord(String passWord, String realPassWord, String salt) {
         // 根据密码盐值 解码
         byte[] saltByte = EncodeUtils.hexDecode(salt);
-        byte[] hashPassword = Digests.sha1(passWord.getBytes(), saltByte,
-                PassWordUtil.HASH_INTERATIONS);
+        byte[] hashPassword = Digests.sha1(passWord.getBytes(), saltByte, PassWordUtil.HASH_INTERATIONS);
         // 密码 数据库中密码
         String validatePassWord = EncodeUtils.hexEncode(hashPassword);
         //判断密码是否相同

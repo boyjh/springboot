@@ -273,12 +273,12 @@ public class SysAuthorityService {
         //遍历子集
         List<SysAuthority> list = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(sysAuthoritys)) {
-            for (SysAuthority sysAuthority : sysAuthoritys) {
+            sysAuthoritys.forEach(sysAuthority -> {
                 sysAuthority.setEnable(CommonConstant.IS_NOT_ENABLE);
                 sysAuthority.setModifiedTime(new Date());
                 list.add(sysAuthority);
                 list.addAll(disableChildren(sysAuthority.getId()));
-            }
+            });
         }
         return list;
     }
@@ -295,10 +295,10 @@ public class SysAuthorityService {
         //遍历子集
         List<SysAuthority> list = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(sysAuthoritys)) {
-            for (SysAuthority sysAuthority : sysAuthoritys) {
+            sysAuthoritys.forEach(sysAuthority -> {
                 list.add(sysAuthority);
                 list.addAll(listChildrenForRemove(sysAuthority.getId()));
-            }
+            });
         }
         return list;
     }

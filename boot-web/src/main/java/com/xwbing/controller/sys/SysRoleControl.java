@@ -123,7 +123,7 @@ public class SysRoleControl {
         if (sysRole == null) {
             return JsonResult.toJSONObj("该角色不存在");
         }
-        String ids[] = authorityIds.split(",");
+        String[] ids = authorityIds.split(",");
         List<SysRoleAuthority> list = new ArrayList<>();
         SysRoleAuthority roleAuthority;
         for (String id : ids) {

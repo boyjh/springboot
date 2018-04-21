@@ -167,13 +167,13 @@ public class SysUserControl {
             list = sysUserService.listAuthorityByIdAndEnable(sysUser.getId(), CommonEnum.YesOrNoEnum.YES.getCode());
         }
         if (CollectionUtils.isNotEmpty(list)) {
-            for (SysAuthority sysAuthority : list) {
+            list.forEach(sysAuthority -> {
                 if (sysAuthority.getType() == CommonEnum.MenuOrButtonEnum.MENU.getCode()) {
                     menu.add(sysAuthority);
                 } else {
                     button.add(sysAuthority);
                 }
-            }
+            });
         }
         sysUser.setMenus(menu);
         sysUser.setButtons(button);
@@ -197,7 +197,7 @@ public class SysUserControl {
         if (CommonEnum.YesOrNoEnum.YES.getCode().equalsIgnoreCase(old.getAdmin())) {
             return JsonResult.toJSONObj("不能对管理员进行操作");
         }
-        String ids[] = roleIds.split(",");
+        String[] ids = roleIds.split(",");
         List<SysUserRole> list = new ArrayList<>();
         SysUserRole userRole;
         for (String id : ids) {
