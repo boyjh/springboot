@@ -397,12 +397,9 @@ public class DateUtil2 {
      * @param endDateTime   yyyy-MM-dd HH:mm:ss
      * @return
      */
-    public static Map<String, Integer> getDateTimePool(String startDateTime,
-                                                       String endDateTime) {
-        LocalDateTime sDateTime = LocalDateTime.parse(startDateTime,
-                getDateFormat(YYYY_MM_DD_HH_MM_SS));
-        LocalDateTime eDateTime = LocalDateTime.parse(endDateTime,
-                getDateFormat(YYYY_MM_DD_HH_MM_SS));
+    public static Map<String, Integer> getDateTimePool(String startDateTime, String endDateTime) {
+        LocalDateTime sDateTime = LocalDateTime.parse(startDateTime, getDateFormat(YYYY_MM_DD_HH_MM_SS));
+        LocalDateTime eDateTime = LocalDateTime.parse(endDateTime, getDateFormat(YYYY_MM_DD_HH_MM_SS));
         Duration duration = Duration.between(sDateTime, eDateTime);
         long diff = duration.toMillis();
         long diffSeconds = diff / SECOND % 60;
