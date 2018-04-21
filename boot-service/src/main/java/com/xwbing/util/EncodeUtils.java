@@ -50,14 +50,14 @@ public class EncodeUtils {
      * Base64编码, URL安全(将Base64中的URL非法字符如+,/=转为其他字符, 见RFC3548).
      */
     public static String base64UrlSafeEncode(byte[] input) {
-        return java.util.Base64.getUrlEncoder().encodeToString(input);
+        return Base64.getUrlEncoder().encodeToString(input);
     }
 
     /**
      * Base64解码.
      */
     public static byte[] base64Decode(String input) {
-        return java.util.Base64.getDecoder().decode(input);
+        return Base64.getDecoder().decode(input);
     }
 
     /**
