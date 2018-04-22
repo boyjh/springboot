@@ -1,5 +1,6 @@
 package com.xwbing.domain.entity.sys;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -18,33 +19,19 @@ import javax.persistence.Entity;
 public class SysAuthority extends BaseEntity {
     private static final long serialVersionUID = -6469518352117371987L;
     public static String table = "sys_authority";
-    /**
-     * 名称
-     */
+    @ApiModelProperty(value = "名称", required = true)
     private String name;
-    /**
-     * 编号
-     */
+    @ApiModelProperty(value = "编码", required = true)
     private String code;
-    /**
-     * 是否启用
-     */
+    @ApiModelProperty(value = "是否启用(Y|N)", example = "Y", required = true)
     private String enable;
-    /**
-     * url地址
-     */
+    @ApiModelProperty(value = "url地址", required = true)
     private String url;
-    /**
-     * 父ID
-     */
+    @ApiModelProperty(value = "父ID")
     @Column(name = "parent_id")
     private String parentId;
-    /**
-     * 类型 1菜单 2按钮
-     */
+    @ApiModelProperty(value = "类型(菜单:1|按钮:2)", example = "1", required = true)
     private Integer type;
-    /**
-     * 排序
-     */
+    @ApiModelProperty(value = "排序", required = true)
     private Integer sort;
 }
