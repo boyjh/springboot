@@ -64,13 +64,13 @@ public class StringDemo {
         /**
          * StringBuilder
          */
-        String sstr = "努力学习java";
+        String sstr = "不断学习";
         StringBuilder b = new StringBuilder(sstr);
-        b.append(",为了找好工作");
+        b.append("提升自己");
         System.out.println(b.toString());
-        b.replace(9, 16, "就是为了改变世界");
+        b.replace(5, 9, "就是为了改变世界");
         System.out.println(b.toString());
-        b.delete(0, 9);
+        b.delete(0, 5);
         System.out.println(b.toString());
         b.insert(0, "活着,");
         System.out.println(b.toString());
