@@ -19,7 +19,7 @@ public class IODemo {
          * 写
          */
         FileOutputStream fos = new FileOutputStream("fos.txt", true);//追加写模式
-        fos.write("你好".getBytes("gbk"));
+        fos.write("你好".getBytes("utf-8"));
         System.out.println("写出完毕");
         fos.close();//关闭流
 
@@ -29,10 +29,10 @@ public class IODemo {
         FileInputStream fis = new FileInputStream("fos.txt");
         byte[] data = new byte[fis.available()];
         int len = fis.read(data);//数据读入data里
-        String str = new String(data, 0, len, "gbk");
+        String str = new String(data, 0, len, "utf-8");
         fis.close();
 
-        InputStream is = new ByteArrayInputStream(str.getBytes("gbk"));
+        InputStream is = new ByteArrayInputStream(str.getBytes("utf-8"));
         byte[] da = new byte[is.available()];
         is.read(da);
         is.close();
@@ -49,7 +49,7 @@ public class IODemo {
          */
         BufferedInputStream bis1 = new BufferedInputStream(fis);
         BufferedOutputStream bos1 = new BufferedOutputStream(fos);
-        int d ;
+        int d;
         while ((d = bis1.read()) != -1) {
             bos1.write(d);
         }
@@ -61,8 +61,7 @@ public class IODemo {
          * 读写单位是字符
          * 可以按照指定的字符集，将写出的字符转换为对应的字节
          * 字符流只适合读写文本数据
-         * 转码
-         *uft-8转gbk
+         * 转码:uft-8转gbk
          */
         InputStreamReader isr = new InputStreamReader(fis, "utf-8");
         OutputStreamWriter osw = new OutputStreamWriter(fos, "gbk");
@@ -91,7 +90,7 @@ public class IODemo {
 
         FileOutputStream fos1 = new FileOutputStream("pw1.txt");
         OutputStreamWriter osw1 = new OutputStreamWriter(fos, "utf-8");//可以指定字符
-        PrintWriter pw1 = new PrintWriter(osw, true);///////当第一个参数为流，可以使用第二个参数来指定是否自动flush
+        PrintWriter pw1 = new PrintWriter(osw, true);//当第一个参数为流，可以使用第二个参数来指定是否自动flush
         pw1.println("......");
         pw1.close();
     }

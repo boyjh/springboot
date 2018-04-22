@@ -20,9 +20,9 @@ public class XmlDemo {
 
 	/**
 	 * 
-	 * 功能描述：将doc对象（xml）写到文件中 <br/>
-	 * 作 者：xwb <br/>
-	 * 创建时间：2017年2月16日 下午2:59:26 <br/>
+	 * 功能描述：将doc对象（xml）写到文件中
+	 * 作 者：xwb
+	 * 创建时间：2017年2月16日 下午2:59:26
 	 * 
 	 * @param doc
 	 * @param xml
@@ -39,9 +39,9 @@ public class XmlDemo {
 
 	/**
 	 * 
-	 * 功能描述： 读取XML文件到doc对象 <br/>
-	 * 作 者：xwb <br/>
-	 * 创建时间：2017年2月16日 下午3:01:33 <br/>
+	 * 功能描述： 读取XML文件到doc对象
+	 * 作 者：xwb
+	 * 创建时间：2017年2月16日 下午3:01:33
 	 * 
 	 * @return
 	 * @throws Exception
