@@ -1,7 +1,7 @@
 package com.xwbing.service.rest;
 
 import com.xwbing.exception.BusinessException;
-import com.xwbing.util.QRCodeUtils;
+import com.xwbing.util.QRCodeUtil;
 import com.xwbing.util.RestMessage;
 import com.xwbing.util.ZipUtil;
 import org.slf4j.Logger;
@@ -37,7 +37,7 @@ public class QRCodeZipService {
         RestMessage result = new RestMessage();
         String path = getPath();
         File output = new File(path + File.separator + name + ".png");
-        QRCodeUtils.createCode(text, output);
+        QRCodeUtil.createCode(text, output);
         result.setSuccess(true);
         result.setMessage("生成二维码成功");
         return result;
@@ -52,7 +52,7 @@ public class QRCodeZipService {
     public RestMessage decode(File file) {
         RestMessage result = new RestMessage();
         try {
-            String decode = QRCodeUtils.decode(file);
+            String decode = QRCodeUtil.decode(file);
             result.setData(decode);
             result.setSuccess(true);
             result.setMessage("解析二维码成功");

@@ -19,7 +19,7 @@ public class RestMessage implements Serializable {
     @ApiModelProperty(value = "成功、错误返回提示信息")
     private String message;
     @ApiModelProperty(value = "返回的数据")
-    private Object data;// 返回的数据
+    private Object data;
     @ApiModelProperty(value = "新增、修改主鍵返回id")
     private String id;
 }

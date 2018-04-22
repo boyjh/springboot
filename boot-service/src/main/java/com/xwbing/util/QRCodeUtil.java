@@ -26,9 +26,9 @@ import java.util.Map;
  * 作者: xiangwb
  * 说明: 二维码工具类
  */
-public class QRCodeUtils {
-    private static QRCodeUtils.Internal internal = new QRCodeUtils.Internal();
-    private static final Logger LOGGER = LoggerFactory.getLogger(QRCodeUtils.class);
+public class QRCodeUtil {
+    private static QRCodeUtil.Internal internal = new QRCodeUtil.Internal();
+    private static final Logger LOGGER = LoggerFactory.getLogger(QRCodeUtil.class);
 
     /***
      * 生成默认尺寸不带logo的二维码
