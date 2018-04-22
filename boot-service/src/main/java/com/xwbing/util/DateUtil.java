@@ -14,7 +14,8 @@ import java.util.*;
  */
 public class DateUtil {
     private static DecimalFormat df = new DecimalFormat("######0.00");
-    public static final long SECOND = 1000;
+    public static final long MILLIS = 1;
+    public static final long SECOND = MILLIS * 1000;
     public static final long MINUTE = SECOND * 60;
     public static final long HOUR = MINUTE * 60;
     public static final long DAY = 24 * HOUR;
@@ -230,10 +231,10 @@ public class DateUtil {
      */
     public static Map<String, Integer> getDatePoorHour(Date startDate, Date endDate) {
         long diff = startDate.getTime() - endDate.getTime();
-        long diffSeconds = diff / 1000 % 60;
-        long diffMinutes = diff / (60 * 1000) % 60;
-        long diffHours = diff / (60 * 60 * 1000) % 24;
-        long diffDays = diff / (24 * 60 * 60 * 1000);
+        long diffSeconds = diff / SECOND % 60;
+        long diffMinutes = diff / MINUTE % 60;
+        long diffHours = diff / HOUR % 24;
+        long diffDays = diff / DAY;
         Map<String, Integer> map = new HashMap<>();
         map.put("days", (int) diffDays);
         map.put("hours", (int) diffHours);
