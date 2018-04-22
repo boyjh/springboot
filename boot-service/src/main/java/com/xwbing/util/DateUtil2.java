@@ -13,7 +13,7 @@ import java.util.*;
 
 /**
  * 作者: xiangwb
- * 说明: 日期处理类
+ * 说明: 基于java8的日期处理类
  */
 public class DateUtil2 {
     public static final long SECOND = 1;
