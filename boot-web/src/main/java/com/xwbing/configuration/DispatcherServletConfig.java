@@ -82,8 +82,9 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("*")
                 .allowCredentials(true)
+                .allowedOrigins("*")
+                .allowedHeaders("*")
                 .allowedMethods("GET", "POST", "DELETE", "PUT", "OPTIONS")
                 .maxAge(3600);
         super.addCorsMappings(registry);
