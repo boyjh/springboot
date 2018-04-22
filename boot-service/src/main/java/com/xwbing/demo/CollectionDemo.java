@@ -147,16 +147,14 @@ public class CollectionDemo {
         };
         Collections.sort(list, com);
         System.out.println(list);
-        /**
-         * lambda表达式
-         */
+        //java8 lambda表达式
         list.sort(Comparator.comparingInt(o -> o));
 
         /*
          * 队列 队列也可以存放一组元素，但是存取元素必须 遵循：先进先出原则
          * linkedlist也实现类队列接口，因为它可以保存一组元素，并且首尾增删块快，正好符合队列特点
          */
-        Queue<String> queue = new LinkedList<String>();
+        Queue<String> queue = new LinkedList<>();
         queue.offer("one");// 入队操作，向队尾追加一个新元素
         queue.offer("two");
         queue.offer("three");
@@ -191,7 +189,7 @@ public class CollectionDemo {
          * java.util.Deque 双端队列，两端都可以进出队 当只调用从一端进出对操作时，就形成了栈结构 因此，双端队列为栈提供类两个方法：
          * push ，pop
          */
-        Deque<String> stack = new LinkedList<String>();
+        Deque<String> stack = new LinkedList<>();
         stack.push("one");// 入栈操作，最后入栈的元素在栈顶（第一个元素位置）
         stack.push("two");
         stack.push("three");
