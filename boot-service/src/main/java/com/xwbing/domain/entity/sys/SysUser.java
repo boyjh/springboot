@@ -33,7 +33,7 @@ public class SysUser extends BaseEntity {
     private String userName;
     @ApiModelProperty(value = "姓名",example = "xxx",required = true)
     @NotBlank(message = "姓名不能为空")
-    @Length(min = 1, max = 20, message = "姓名长度为1-5")
+    @Length(min = 1, max = 5, message = "姓名长度为1-5")
     private String name;
     @ApiModelProperty(value = "邮箱",example = "@163.com",required = true)
     @NotBlank(message = "邮箱不能为空")
