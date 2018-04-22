@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Set;
 
 
-
 /**
  * 说明:
  * 多线程并发安全问题
@@ -25,17 +24,9 @@ public class ThreadSyncDemo {
         /*
          * 同步代码块
          */
-        final Shop s=new Shop();//保证对象一致
-        Thread t1=new Thread(){
-            public void run(){
-                s.buy();
-            }
-        };
-        Thread t2=new Thread(){
-            public void run(){
-                s.buy();
-            }
-        };
+        final Shop s = new Shop();//保证对象一致
+        Thread t1 = new Thread(s::buy);
+        Thread t2 = new Thread(s::buy);
         t1.start();
         t2.start();
         
@@ -43,76 +34,62 @@ public class ThreadSyncDemo {
         /*
          * 静态方法锁
          */
-        Thread tt1=new Thread(){
-            public void run(){
-                dosome();
-            }
-        };
-        Thread tt2=new Thread(){
-            public void run(){
-                dosome();
-            }
-        };
+        Thread tt1 = new Thread(ThreadSyncDemo::doSome);
+        Thread tt2 = new Thread(ThreadSyncDemo::doSome);
         tt1.start();
         tt2.start();
         
         /*
          * 互斥
          */
-        final Foo f=new Foo();//保证对象一致
-        Thread ttt1=new Thread(){
-            public void run(){
-                f.methodA();
-            }
-        };
-        Thread ttt2=new Thread(){
-            public void run(){
-                f.methodB();
-            }
-        };
+        final Foo f = new Foo();//保证对象一致
+        Thread ttt1 = new Thread(f::methodA);
+        Thread ttt2 = new Thread(f::methodB);
         ttt1.start();
         ttt2.start();
-        
+
         /**
          * arraylist,linkedlist,hashset都不是线程安全的
          * 线程安全的list集合有一个vector
          * hashmap不是线程安全的，线程安全的是hashtable
          * collections提供类相应的静态方法，可以将现有的集合或map转换为线程安全的
          */
-        List<String> list=new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         list.add("one");
         list.add("two");
-        list=Collections.synchronizedList(list);//将现有的list集合转换为线程安全的集合
-        Set<String> set=new HashSet<String>(list);
-        set=Collections.synchronizedSet(set);   //转换为线程安全的set集合
-        Map<String,Integer> map=new HashMap<String,Integer>();
+        list = Collections.synchronizedList(list);//将现有的list集合转换为线程安全的集合
+        Set<String> set = new HashSet<>(list);
+        set = Collections.synchronizedSet(set);   //转换为线程安全的set集合
+        Map<String, Integer> map = new HashMap<>();
         map.put("语文", 99);
         map.put("数学", 95);
         map.put("英语文", 58);
-        map=Collections.synchronizedMap(map);//转换为线程安全的map
-        
+        map = Collections.synchronizedMap(map);//转换为线程安全的map
+
     }
+
     /*
      * 静态方法锁：
-     * synchronized修饰静态方法肯定同步，因为静态方法只有一份。<br/>
+     * synchronized修饰静态方法肯定同步，因为静态方法只有一份
      */
-    public synchronized static void dosome(){
-        Thread t=Thread.currentThread();
-        System.out.println(t+"正在执行dosome");
+    private synchronized static void doSome() {
+        Thread t = Thread.currentThread();
+        System.out.println(t + "正在执行doSome");
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println(t+"执行dosome完毕");
-    
+        System.out.println(t + "执行doSome完毕");
+
     }
 }
-class Shop{
-    public void buy(){
-        Thread t=Thread.currentThread();
+
+class Shop {
+    void buy() {
+        Thread t = Thread.currentThread();
         try {
-            System.out.println(t+"买");
+            System.out.println(t + "买");
             Thread.sleep(5000);
             /*
              * 同步代码块：
@@ -121,39 +98,41 @@ class Shop{
              * 通常使用this即可
              */
             synchronized (this) {
-                System.out.println(t+"试");
+                System.out.println(t + "试");
                 Thread.sleep(5000);
             }
-            System.out.println(t+"over");
+            System.out.println(t + "over");
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
 }
-class Foo{
+
+class Foo {
     /*
      * 互斥锁
      * synchronized修饰的是两段代码，但是锁对象相同
      * 那么这两端代码就是互斥的
      */
-    public synchronized  void methodA(){
-        Thread t=Thread.currentThread();
-        System.out.println(t+"开始执行a");
+    synchronized void methodA() {
+        Thread t = Thread.currentThread();
+        System.out.println(t + "开始执行a");
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
-                        e.printStackTrace();
+            e.printStackTrace();
         }
-        System.out.println(t+"a结束");
+        System.out.println(t + "a结束");
     }
-    public synchronized void methodB(){
-        Thread t=Thread.currentThread();
-        System.out.println(t+"开始执行B");
+
+    synchronized void methodB() {
+        Thread t = Thread.currentThread();
+        System.out.println(t + "开始执行B");
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
-                        e.printStackTrace();
+            e.printStackTrace();
         }
-        System.out.println(t+"B结束");
+        System.out.println(t + "B结束");
     }
 }

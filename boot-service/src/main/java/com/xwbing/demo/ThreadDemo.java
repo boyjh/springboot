@@ -8,6 +8,7 @@ import java.util.Date;
 /**
  * 创建日期: 2017年2月20日 上午11:32:55
  * 作者: xwb
+ * 说明：线程api demo
  */
 
 public class ThreadDemo {
@@ -34,31 +35,27 @@ public class ThreadDemo {
          * 使用匿名内部类实现两种创建线程的方式
          */
         // 方式一：
-        Thread thread1 = new Thread() {
+        Thread thread1 = new Thread() {//直接创建线程并重写run方法
             public void run() {
                 // TUDO
             }
         };
         // 方式二：
-        Runnable runnable = new Runnable() {
-            public void run() {
-                Thread.yield();////模拟cpu时间片耗尽，线程发生切换
-            }
+        Runnable runnable = () -> {//创建runable并重写run方法，创建线程并调用相应的runable
+            Thread.yield();//模拟cpu时间片耗尽，线程发生切换
         };
         Thread thread2 = new Thread(runnable);
-        // 方式三：匿名对象方式(推荐)
-        Thread thread3 = new Thread(new Runnable() {// 使用sleep阻塞，实现电子表功能
-                    public void run() {
-                        while (true) {
-                            System.out.println(DateUtil2.dateToStr(new Date(),DateUtil2.YYYY_MM_DD_HH_MM_SS));
-                            try {
-                                Thread.sleep(1000);// 线程进入n毫秒阻塞状态
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                });
+        // 方式三：匿名对象方式
+        Thread thread3 = new Thread(() -> {// 使用sleep阻塞，实现电子表功能
+            while (true) {
+                System.out.println(DateUtil2.dateToStr(new Date(), DateUtil2.YYYY_MM_DD_HH_MM_SS));
+                try {
+                    Thread.sleep(1000);// 线程进入n毫秒阻塞状态
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         /**
          * 获取线程相关信息的api
@@ -83,14 +80,12 @@ public class ThreadDemo {
          * 后台线程，又叫做守护线程 当一个进程中的所有前台线程都结束了，进程就会结束
          * 无论进程中的其他后台线程是否还在运行，都要被强制中断。
          */
-        Thread rose = new Thread() {// 前台线程
-            public void run() {
-            }
-        };
-        Thread jack = new Thread() {// 后台线程
-            public void run() {
-            }
-        };
+        // 前台线程
+        Thread rose = new Thread(() -> {
+        });
+        // 后台线程
+        Thread jack = new Thread(() -> {
+        });
         // 设置为后台线程，需要在start前调用
         jack.setDaemon(true);
         rose.start();
@@ -105,21 +100,17 @@ public class ThreadDemo {
  */
 class Join {
     public static void main(String[] args) {
-        final Thread t1 = new Thread() {
-            public void run() {
-              //一些耗时的操作
+        final Thread t1 = new Thread(() -> {
+            //一些耗时的操作
+        });
+        Thread t2 = new Thread(() -> {
+            try {
+                t1.join();//这里t2线程会开始阻塞，直到t1线程的run方法执行完毕
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        };
-        Thread t2 = new Thread() {
-            public void run() {
-                try {
-                    t1.join();//这里t2线程会开始阻塞，直到t1线程的run方法执行完毕
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                //以下是当前线程的任务代码,只有t1线程运行完毕才会运行。
-            }
-        };
+            //以下是当前线程的任务代码,只有t1线程运行完毕才会运行。
+        });
         t1.start();
         t2.start();
     }

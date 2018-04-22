@@ -22,7 +22,7 @@ class PublicResource {
     /**
      * 增加公共资源
      */
-    public synchronized void increace() {
+    synchronized void inCreace() {
         while (number != 0) {
             try {
                 wait();
@@ -38,7 +38,7 @@ class PublicResource {
     /**
      * 减少公共资源
      */
-    public synchronized void decreace() {
+    synchronized void deCreace() {
         while (number == 0) {
             try {
                 wait();
@@ -58,7 +58,7 @@ class PublicResource {
 class ProducerThread implements Runnable {
     private PublicResource resource;
 
-    public ProducerThread(PublicResource resource) {
+    ProducerThread(PublicResource resource) {
         this.resource = resource;
     }
 
@@ -70,7 +70,7 @@ class ProducerThread implements Runnable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            resource.increace();
+            resource.inCreace();
         }
     }
 }
@@ -81,7 +81,7 @@ class ProducerThread implements Runnable {
 class ConsumerThread implements Runnable {
     private PublicResource resource;
 
-    public ConsumerThread(PublicResource resource) {
+    ConsumerThread(PublicResource resource) {
         this.resource = resource;
     }
 
@@ -93,7 +93,7 @@ class ConsumerThread implements Runnable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            resource.decreace();
+            resource.deCreace();
         }
     }
 }
