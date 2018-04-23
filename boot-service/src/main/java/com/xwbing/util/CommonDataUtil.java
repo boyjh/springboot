@@ -82,7 +82,7 @@ public class CommonDataUtil {
     }
 
     /**
-     * 删除过期数据
+     * 删除所有过期数据
      */
     public static void clearExpiryData() {
         long currentTimeMillis = System.currentTimeMillis();
