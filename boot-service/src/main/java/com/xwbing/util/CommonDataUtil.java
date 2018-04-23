@@ -13,7 +13,7 @@ import java.util.Set;
  */
 public class CommonDataUtil {
     private static Map<String, Object> token = new HashMap<>();
-    private static final long EXPIRY = 1000 * 60;
+    private static final long MINUTE = 1000 * 60;
 
     private CommonDataUtil() {
     }
@@ -34,15 +34,15 @@ public class CommonDataUtil {
     /**
      * 存数据,带有效期
      *
-     * @param key     key
-     * @param value   value
-     * @param invalid 分钟
+     * @param key    key
+     * @param value  value
+     * @param minute 分钟
      */
-    public static void setData(String key, Object value, int invalid) {
+    public static void setData(String key, Object value, int minute) {
         JSONObject object = new JSONObject();
         long currentTimeMillis = System.currentTimeMillis();
         object.put("value", value);
-        object.put("expiry", currentTimeMillis + invalid * EXPIRY);
+        object.put("expiry", currentTimeMillis + minute * MINUTE);
         token.put(key, object);
     }
 

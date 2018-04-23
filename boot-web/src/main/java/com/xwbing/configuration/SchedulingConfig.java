@@ -1,5 +1,6 @@
 package com.xwbing.configuration;
 
+import com.xwbing.util.CommonDataUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
@@ -17,10 +18,9 @@ import org.springframework.scheduling.annotation.Scheduled;
 public class SchedulingConfig {
     private static final Logger logger = LoggerFactory.getLogger(SchedulingConfig.class);
 
-    @Scheduled(cron = "0 */30 * * * ?") // 每半小时执行一次
+    @Scheduled(cron = "0 0 6 * * ? ")//每天6点开启定时任务
     public void scheduler() {
-        logger.info("scheduled ==================");
-        //TODO
+        logger.info("清除公共数据类过期数据===================");
+        CommonDataUtil.clearExpiryData();
     }
-
 }
