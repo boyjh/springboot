@@ -38,8 +38,8 @@ public class SysAuthorityControl {
     private RedisService redisService;
 
     @LogInfo("添加权限")
-    @PostMapping("save")
     @ApiOperation(value = "添加权限", response = RestMessageVo.class)
+    @PostMapping("save")
     public JSONObject save(@RequestBody SysAuthority sysAuthority) {
         RestMessage save = sysAuthorityService.save(sysAuthority);
         //删除缓存
@@ -105,9 +105,9 @@ public class SysAuthorityControl {
     }
 
     @LogInfo("根据父节点查询子节点")
-    @GetMapping("listByParentId")
     @ApiOperation(value = "根据父节点查询子节点", response = ListSysAuthorityVo.class)
     @ApiImplicitParam(name = "parentId", value = "父id,可为空", paramType = "query", dataType = "string")
+    @GetMapping("listByParentId")
     public JSONObject listByParentId(String parentId) {
         if (StringUtils.isEmpty(parentId)) {
             parentId = CommonConstant.ROOT;

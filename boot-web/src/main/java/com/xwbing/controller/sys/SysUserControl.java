@@ -213,7 +213,7 @@ public class SysUserControl {
     @LogInfo("根据用户主键查找所拥有的角色")
     @ApiOperation(value = "根据用户主键查找所拥有的角色", response = ListSysRoleVo.class)
     @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query", dataType = "string")
-    @PostMapping("listRoleByUserId")
+    @GetMapping("listRoleByUserId")
     public JSONObject listRoleByUserId(@RequestParam String userId, String enable) {
         if (StringUtils.isEmpty(userId)) {
             return JsonResult.toJSONObj("用户主键不能为空");
@@ -225,7 +225,7 @@ public class SysUserControl {
     @LogInfo("根据用户主键查找所拥有的权限")
     @ApiOperation(value = "根据用户主键查找所拥有的权限", response = ListSysAuthorityVo.class)
     @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query", dataType = "string")
-    @PostMapping("listAuthorityByUserId")
+    @GetMapping("listAuthorityByUserId")
     public JSONObject listAuthorityByUserId(@RequestParam String userId, String enable) {
         if (StringUtils.isEmpty(userId)) {
             return JsonResult.toJSONObj("用户主键不能为空");

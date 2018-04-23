@@ -96,7 +96,7 @@ public class SysRoleControl {
     @LogInfo("根据角色主键查找权限")
     @ApiOperation(value = "根据角色主键查找权限", response = ListSysRoleVo.class)
     @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query", dataType = "string")
-    @PostMapping("listAuthorityByRoleId")
+    @GetMapping("listAuthorityByRoleId")
     public JSONObject listAuthorityByRoleId(@RequestParam String roleId, String enable) {
         if (StringUtils.isEmpty(roleId)) {
             return JsonResult.toJSONObj("角色主键不能为空");
