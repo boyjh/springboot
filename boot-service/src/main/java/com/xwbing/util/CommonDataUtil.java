@@ -92,10 +92,12 @@ public class CommonDataUtil {
         while (iterator.hasNext()) {
             Map.Entry<String, Object> next = iterator.next();
             JSONObject object = (JSONObject) next.getValue();
-            long expiry = object.getLongValue("expiry");
-            if (-1 != expiry) {
-                if (expiry < currentTimeMillis) {
-                    iterator.remove();
+            if (object != null) {
+                long expiry = object.getLongValue("expiry");
+                if (-1 != expiry) {
+                    if (expiry < currentTimeMillis) {
+                        iterator.remove();
+                    }
                 }
             }
         }
