@@ -111,7 +111,7 @@ public class RSAUtil {
     }
 
     /**
-     * 功能描述:从字符串中加载私钥
+     * 从字符串中加载私钥
      *
      * @param privateKeyStr
      * @return
@@ -186,7 +186,7 @@ public class RSAUtil {
     }
 
     /**
-     * 功能描述:默认解密方式
+     * 默认解密方式
      *
      * @param data 密文
      * @return 明文
@@ -232,6 +232,7 @@ public class RSAUtil {
         }
     }
 
+    //////////////////////////////////////////测试/////////////////////////////////////
     public static void main(String[] args) throws Exception {
         String en = testJiami();// 密文
         String de = testJiemi(en);// 明文
