@@ -319,7 +319,7 @@ public class SysUserService {
         SysUser user = getByUserName(userName);
         if (user != null) {
             //清空缓存数据
-            CommonDataUtil.removeData(token);
+            CommonDataUtil.clearData(token);
             //保存登出信息
             SysUserLoginInOut loginInOut = new SysUserLoginInOut();
             loginInOut.setCreateTime(new Date());

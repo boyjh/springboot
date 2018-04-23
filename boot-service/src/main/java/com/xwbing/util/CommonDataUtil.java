@@ -70,7 +70,6 @@ public class CommonDataUtil {
         } else {
             return null;
         }
-
     }
 
     /**
@@ -78,7 +77,7 @@ public class CommonDataUtil {
      *
      * @param key
      */
-    public static void removeData(String key) {
+    public static void clearData(String key) {
         token.remove(key);
     }
 
