@@ -39,8 +39,8 @@ public class CommonDataUtil {
      * @param minute 分钟
      */
     public static void setData(String key, Object value, int minute) {
-        JSONObject object = new JSONObject();
         long currentTimeMillis = System.currentTimeMillis();
+        JSONObject object = new JSONObject();
         object.put("value", value);
         object.put("expiry", currentTimeMillis + minute * MINUTE);
         token.put(key, object);
@@ -53,6 +53,7 @@ public class CommonDataUtil {
      * @return
      */
     public static Object getData(String key) {
+        long currentTimeMillis = System.currentTimeMillis();
         JSONObject object = (JSONObject) token.get(key);
         if (object != null) {
             Object value = object.get("value");
@@ -60,7 +61,6 @@ public class CommonDataUtil {
             if (-1 == expiry) {
                 return value;
             } else {
-                long currentTimeMillis = System.currentTimeMillis();
                 if (expiry >= currentTimeMillis) {
                     return value;
                 } else {

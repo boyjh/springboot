@@ -16,7 +16,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 @Configuration
 @EnableScheduling // 启用定时任务
 public class SchedulingConfig {
-    private static final Logger logger = LoggerFactory.getLogger(SchedulingConfig.class);
+    private final Logger logger = LoggerFactory.getLogger(SchedulingConfig.class);
 
     @Scheduled(cron = "0 0 6 * * ? ")//每天6点开启定时任务
     public void scheduler() {
