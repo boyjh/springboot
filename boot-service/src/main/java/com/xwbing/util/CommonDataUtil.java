@@ -13,7 +13,9 @@ import java.util.Set;
  */
 public class CommonDataUtil {
     private static Map<String, Object> token = new HashMap<>();
-    private static final long MINUTE = 1000 * 60;
+    public static final long MINUTE = 1000 * 60;
+    public static final int HOUR = 60;
+    public static final int DAY = HOUR * 24;
 
     private CommonDataUtil() {
     }

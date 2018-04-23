@@ -299,7 +299,7 @@ public class SysUserService {
         }
         //保存登录数据
         String token = EncodeUtils.urlEncode(RSAUtil.encrypt(userName + "_" + ip));//rsa加密后密文是多行的,所以再次url编码
-        CommonDataUtil.setData(token, userName);
+        CommonDataUtil.setData(token, userName, CommonDataUtil.DAY);
         restMessage.setSuccess(true);
         restMessage.setData(token);
         restMessage.setMessage("登录成功");
