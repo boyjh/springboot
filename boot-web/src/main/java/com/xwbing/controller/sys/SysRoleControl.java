@@ -50,8 +50,8 @@ public class SysRoleControl {
 
     @LogInfo("删除角色")
     @ApiOperation(value = "删除角色", response = RestMessageVo.class)
-    @GetMapping("removeById")
-    public JSONObject removeById(@RequestParam String id) {
+    @DeleteMapping("removeById/{id}")
+    public JSONObject removeById(@PathVariable String id) {
         if (StringUtils.isEmpty(id)) {
             return JsonResult.toJSONObj("主键不能为空");
         }
@@ -61,7 +61,7 @@ public class SysRoleControl {
 
     @LogInfo("修改角色")
     @ApiOperation(value = "修改角色", response = RestMessageVo.class)
-    @PostMapping("update")
+    @PutMapping("update")
     public JSONObject update(@RequestBody SysRole sysRole) {
         if (StringUtils.isEmpty(sysRole.getId())) {
             return JsonResult.toJSONObj("主键不能为空");

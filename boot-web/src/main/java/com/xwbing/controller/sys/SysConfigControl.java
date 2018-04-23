@@ -43,8 +43,8 @@ public class SysConfigControl {
     }
 
     @ApiOperation(value = "删除", notes = "根据code删除系统配置信息", response = RestMessageVo.class)
-    @GetMapping("removeByCode")
-    public JSONObject removeByCode(@RequestParam String code) {
+    @DeleteMapping("removeByCode/{code}")
+    public JSONObject removeByCode(@PathVariable String code) {
         String logMsg = "根据code删除系统配置信息";
         logger.info(logMsg + " code:{}", code);
         if (StringUtils.isEmpty(code)) {
@@ -55,7 +55,7 @@ public class SysConfigControl {
     }
 
     @ApiOperation(value = "修改", notes = "修改系统配置信息", response = RestMessageVo.class)
-    @PostMapping("update")
+    @PutMapping("update")
     public JSONObject update(@RequestBody @Valid SysConfig sysConfig) {
         String logMsg = "修改系统配置信息";
         logger.info(logMsg);

@@ -59,8 +59,8 @@ public class SysUserControl {
 
     @LogInfo("删除用户")
     @ApiOperation(value = "删除用户", response = RestMessageVo.class)
-    @GetMapping("removeById")
-    public JSONObject removeById(@RequestParam String id) {
+    @DeleteMapping("removeById/{id}")
+    public JSONObject removeById(@PathVariable String id) {
         if (StringUtils.isEmpty(id)) {
             return JsonResult.toJSONObj("主键不能为空");
         }
@@ -70,7 +70,7 @@ public class SysUserControl {
 
     @LogInfo("修改用户信息")
     @ApiOperation(value = "修改用户信息", response = RestMessageVo.class)
-    @PostMapping("update")
+    @PutMapping("update")
     public JSONObject update(@RequestBody @Valid SysUser sysUser) {
         if (StringUtils.isEmpty(sysUser.getId())) {
             return JsonResult.toJSONObj("主键不能为空");

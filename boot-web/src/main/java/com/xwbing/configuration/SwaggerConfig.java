@@ -94,7 +94,7 @@ public class SwaggerConfig {
     }
 
     /**
-     * 自定义返回信息
+     * 自定义返回状态信息描述
      *
      * @return
      */

@@ -51,8 +51,8 @@ public class SysAuthorityControl {
 
     @LogInfo("删除权限")
     @ApiOperation(value = "删除权限", response = RestMessageVo.class)
-    @GetMapping("removeById")
-    public JSONObject removeById(@RequestParam String id) {
+    @DeleteMapping("removeById/{id}")
+    public JSONObject removeById(@PathVariable String id) {
         if (StringUtils.isEmpty(id)) {
             return JsonResult.toJSONObj("主键不能为空");
         }
@@ -66,7 +66,7 @@ public class SysAuthorityControl {
 
     @LogInfo("修改权限")
     @ApiOperation(value = "修改权限", response = RestMessageVo.class)
-    @PostMapping("update")
+    @PutMapping("update")
     public JSONObject update(@RequestBody SysAuthority sysAuthority) {
         if (StringUtils.isEmpty(sysAuthority.getId())) {
             return JsonResult.toJSONObj("主键不能为空");

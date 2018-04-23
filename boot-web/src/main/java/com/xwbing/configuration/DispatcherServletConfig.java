@@ -55,6 +55,8 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 //        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
         //服务器部署的tomcat下html路径
 //        registry.addResourceHandler("/js/**").addResourceLocations("html/js/");
+//        registry.addResourceHandler("/css/**").addResourceLocations("html/css/");
+//        registry.addResourceHandler("/img/**").addResourceLocations("html/img/");
         super.addResourceHandlers(registry);
     }
 

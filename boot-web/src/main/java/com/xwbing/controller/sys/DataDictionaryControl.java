@@ -42,7 +42,7 @@ public class DataDictionaryControl {
     }
 
     @LogInfo("修改字典")
-    @PostMapping("update")
+    @PutMapping("update")
     @ApiOperation(value = "修改字典", response = RestMessageVo.class)
     public JSONObject update(@RequestBody DataDictionary dictionary) {
         if (StringUtils.isEmpty(dictionary.getId())) {
