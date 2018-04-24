@@ -13,7 +13,8 @@ import java.util.Set;
  */
 public class CommonDataUtil {
     private static Map<String, Object> token = new HashMap<>();
-    public static final long MINUTE = 1000 * 60;
+    private static final long MINUTES = 1000 * 60;
+    public static final int MINUTE = 1;
     public static final int HOUR = 60;
     public static final int DAY = HOUR * 24;
 
@@ -44,7 +45,7 @@ public class CommonDataUtil {
         long currentTimeMillis = System.currentTimeMillis();
         JSONObject object = new JSONObject();
         object.put("value", value);
-        object.put("expiry", currentTimeMillis + minute * MINUTE);
+        object.put("expiry", currentTimeMillis + minute * MINUTES);
         token.put(key, object);
     }
 
