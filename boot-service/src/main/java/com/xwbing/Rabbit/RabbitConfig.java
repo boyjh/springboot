@@ -26,7 +26,7 @@ public class RabbitConfig {
         return new Queue(RabbitConstant.HTTP_REQUEST_QUEUE, true);
     }
 
-    //声明交互器
+    //声明交换器
     @Bean
     public TopicExchange topicExchange() {
         return new TopicExchange(RabbitConstant.CONTROL_EXCHANGE);
