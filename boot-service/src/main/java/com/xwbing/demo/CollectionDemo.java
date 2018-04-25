@@ -142,6 +142,7 @@ public class CollectionDemo {
          * 自定义排序 推荐匿名内部类形式创建比较器
          */
         Comparator<Integer> com = new Comparator<Integer>() {// 返回正数，零，负数各代表大于，等于，小于
+            @Override
             public int compare(Integer o1, Integer o2) {
                 return o2 - o1;
             }
@@ -151,7 +152,7 @@ public class CollectionDemo {
         //java8 lambda表达式
         list.sort(Comparator.comparingInt(o -> o));
 
-        /*
+        /**
          * 队列 队列也可以存放一组元素，但是存取元素必须 遵循：先进先出原则
          * linkedlist也实现类队列接口，因为它可以保存一组元素，并且首尾增删块快，正好符合队列特点
          */
