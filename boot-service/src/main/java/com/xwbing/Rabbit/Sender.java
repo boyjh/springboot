@@ -15,7 +15,7 @@ import java.util.UUID;
  * 项目名称: boot-module-demo
  * 创建时间: 2018/4/25 14:48
  * 作者: xiangwb
- * 说明:
+ * 说明: 生产者
  */
 @Component
 public class Sender implements RabbitTemplate.ConfirmCallback, RabbitTemplate.ReturnCallback {
