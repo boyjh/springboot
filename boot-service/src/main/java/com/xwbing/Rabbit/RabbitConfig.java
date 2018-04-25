@@ -35,11 +35,11 @@ public class RabbitConfig {
     //绑定
     @Bean
     public Binding bindingExchangeMessage() {
-        return BindingBuilder.bind(serverInvokeQueue()).to(topicExchange()).with(RabbitConstant.SERVER_INVOKE_ROUTINGKEY);
+        return BindingBuilder.bind(serverInvokeQueue()).to(topicExchange()).with(RabbitConstant.SERVER_INVOKE_ROUTING_KEY);
     }
 
     @Bean
     public Binding bindingExchangeMessages() {
-        return BindingBuilder.bind(httpRequestQueue()).to(topicExchange()).with(RabbitConstant.HTTP_REQUEST_ROUTINGKEY);
+        return BindingBuilder.bind(httpRequestQueue()).to(topicExchange()).with(RabbitConstant.HTTP_REQUEST_ROUTING_KEY);
     }
 }

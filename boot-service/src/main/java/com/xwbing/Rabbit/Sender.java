@@ -25,29 +25,53 @@ public class Sender implements RabbitTemplate.ConfirmCallback, RabbitTemplate.Re
 
     @PostConstruct
     public void init() {
+        //用于实现消息发送到RabbitMQ交换器后接收ack回调。
         rabbitTemplate.setConfirmCallback(this);
+        //用于实现消息发送到RabbitMQ交换器，但无相应队列与交换器绑定时的回调。
         rabbitTemplate.setReturnCallback(this);
     }
 
+    /**
+     * 相应交换器接收后回调
+     */
     @Override
-    public void confirm(CorrelationData correlationData, boolean b, String cause) {
-        if (b) {
+    public void confirm(CorrelationData correlationData, boolean ack, String cause) {
+        if (ack) {
             logger.info("消息发送成功:{}", correlationData);
         } else {
             logger.info("消息发送失败:{}", cause);
         }
     }
 
+    /**
+     * 无交换器绑定回调
+     */
     @Override
     public void returnedMessage(Message message, int replyCode, String replyText, String exchange, String routingKey) {
         logger.info(message.getMessageProperties().getCorrelationIdString() + "发送失败");
     }
 
-    //发送消息，不需要实现任何接口，供外部调用。
-    public void send(String msg) {
+    public void sendServerInvoke(String msg) {
+        send(msg, RabbitConstant.CONTROL_EXCHANGE, RabbitConstant.SERVER_INVOKE_ROUTING_KEY);
+    }
+
+    public void sendHttpRequest(String msg) {
+        send(msg, RabbitConstant.CONTROL_EXCHANGE, RabbitConstant.HTTP_REQUEST_ROUTING_KEY);
+    }
+
+
+    /**
+     * 发送消息
+     *
+     * @param msg        消息
+     * @param exchange   交换器
+     * @param routingKey 路由键
+     */
+    private void send(String msg, String exchange, String routingKey) {
         CorrelationData correlationId = new CorrelationData(UUID.randomUUID().toString());
         logger.info("开始发送消息:{}", msg.toLowerCase());
-        String response = rabbitTemplate.convertSendAndReceive(RabbitConstant.CONTROL_EXCHANGE, RabbitConstant.SERVER_INVOKE_ROUTINGKEY, msg, correlationId).toString();
+        //转换并发送消息,且等待消息者返回响应消息。
+        String response = rabbitTemplate.convertSendAndReceive(exchange, routingKey, msg, correlationId).toString();
         logger.info("结束发送消息:{}", msg.toLowerCase());
         logger.info("消费者响应:{}消息处理完成", response);
     }

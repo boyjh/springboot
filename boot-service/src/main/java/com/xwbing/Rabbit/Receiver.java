@@ -20,12 +20,12 @@ public class Receiver {
 
     @RabbitListener(queues = SERVER_INVOKE_QUEUE)
     public String processServer(String msg) {
-        logger.info(Thread.currentThread().getName() + " 接收到来自{}队列的消息:{}", SERVER_INVOKE_QUEUE, msg);
+        logger.info("接收到来自{}队列的消息:{}", SERVER_INVOKE_QUEUE, msg);
         return msg.toUpperCase();
     }
 
     @RabbitListener(queues = HTTP_REQUEST_QUEUE)
     public void processHttp(String msg) {
-        logger.info(Thread.currentThread().getName() + " 接收到来自{}队列的消息:{}", HTTP_REQUEST_QUEUE, msg);
+        logger.info("接收到来自{}队列的消息:{}", HTTP_REQUEST_QUEUE, msg);
     }
 }

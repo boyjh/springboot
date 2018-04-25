@@ -7,9 +7,24 @@ package com.xwbing.Rabbit;
  * 说明:
  */
 public class RabbitConstant {
+    /**
+     * 服务器调用
+     */
     public static final String SERVER_INVOKE_QUEUE = "server_invoke";
+    /**
+     * http请求
+     */
     public static final String HTTP_REQUEST_QUEUE = "http_request";
-    public static final String SERVER_INVOKE_ROUTINGKEY = "server_invoke.key";
-    public static final String HTTP_REQUEST_ROUTINGKEY = "http_request.key";
+    /**
+     * 服务器调用路由键
+     */
+    public static final String SERVER_INVOKE_ROUTING_KEY = "server_invoke.key";
+    /**
+     * http请求路由键
+     */
+    public static final String HTTP_REQUEST_ROUTING_KEY = "http_request.key";
+    /**
+     * 交换器
+     */
     public static final String CONTROL_EXCHANGE = "control_exchange";
 }
