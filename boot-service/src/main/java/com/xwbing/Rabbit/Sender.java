@@ -59,7 +59,6 @@ public class Sender implements RabbitTemplate.ConfirmCallback, RabbitTemplate.Re
         send(msg, RabbitConstant.CONTROL_EXCHANGE, RabbitConstant.HTTP_REQUEST_ROUTING_KEY);
     }
 
-
     /**
      * 发送消息
      *
