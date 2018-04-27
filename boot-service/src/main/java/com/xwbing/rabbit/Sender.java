@@ -44,7 +44,7 @@ public class Sender implements RabbitTemplate.ConfirmCallback, RabbitTemplate.Re
     }
 
     /**
-     * 无相应队列与交换器绑定异步回调
+     * 无相应队列与交换机绑定异步回调
      */
     @Override
     public void returnedMessage(Message message, int replyCode, String replyText, String exchange, String routingKey) {
@@ -52,10 +52,20 @@ public class Sender implements RabbitTemplate.ConfirmCallback, RabbitTemplate.Re
         logger.info("消息发送失败:{}", msg);
     }
 
+    /**
+     * 发送信息到server队列
+     *
+     * @param msg
+     */
     public void sendServerInvoke(String msg) {
         send(msg, RabbitConstant.CONTROL_EXCHANGE, RabbitConstant.SERVER_INVOKE_ROUTING_KEY);
     }
 
+    /**
+     * 发送信息到http队列
+     *
+     * @param msg
+     */
     public void sendHttpRequest(String msg) {
         send(msg, RabbitConstant.CONTROL_EXCHANGE, RabbitConstant.HTTP_REQUEST_ROUTING_KEY);
     }

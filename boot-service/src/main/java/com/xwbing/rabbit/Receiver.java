@@ -21,7 +21,7 @@ public class Receiver {
     private final Logger logger = LoggerFactory.getLogger(Receiver.class);
 
     /**
-     * 处理消息并响应消息
+     * 处理server队列信息
      *
      * @param msg
      * @return
@@ -33,7 +33,7 @@ public class Receiver {
     }
 
     /**
-     * 处理消息
+     * 处理http队列消息
      *
      * @param msg
      */
