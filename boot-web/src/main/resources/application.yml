@@ -52,8 +52,10 @@ spring:
      port:
      username:
      password:
-     virtual-host:
+     virtual-host: /
      connection-timeout:
+     publisher-confirms: true
+     publisher-returns: true
 #log
 logging:
   config: classpath:log4j2.xml
