@@ -39,7 +39,7 @@ public class Sender implements RabbitTemplate.ConfirmCallback, RabbitTemplate.Re
         if (ack) {
             logger.info("交换机接收信息成功:{}", correlationData);
         } else {
-            logger.info("交换机接收信息失败:{}", cause);
+            logger.error("交换机接收信息失败:{}", cause);
         }
     }
 
@@ -49,7 +49,7 @@ public class Sender implements RabbitTemplate.ConfirmCallback, RabbitTemplate.Re
     @Override
     public void returnedMessage(Message message, int replyCode, String replyText, String exchange, String routingKey) {
         String msg = new String(message.getBody());
-        logger.info("消息发送失败:{}", msg);
+        logger.error("消息发送失败:{}", msg);
     }
 
     /**
