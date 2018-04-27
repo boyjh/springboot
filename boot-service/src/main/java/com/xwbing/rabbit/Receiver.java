@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
+import java.text.MessageFormat;
+
 import static com.xwbing.rabbit.RabbitConstant.HTTP_REQUEST_QUEUE;
 import static com.xwbing.rabbit.RabbitConstant.SERVER_INVOKE_QUEUE;
 
@@ -26,8 +28,8 @@ public class Receiver {
      */
     @RabbitListener(queues = SERVER_INVOKE_QUEUE)
     public String processServer(String msg) {
-        logger.info("接收到来自{}队列的消息:{}", SERVER_INVOKE_QUEUE, msg);
-        return msg.toUpperCase();
+        String response = MessageFormat.format("收到{0}队列的消息:{1}", SERVER_INVOKE_QUEUE, msg);
+        return response.toUpperCase();
     }
 
     /**
@@ -36,7 +38,8 @@ public class Receiver {
      * @param msg
      */
     @RabbitListener(queues = HTTP_REQUEST_QUEUE)
-    public void processHttp(String msg) {
-        logger.info("接收到来自{}队列的消息:{}", HTTP_REQUEST_QUEUE, msg);
+    public String processHttp(String msg) {
+        String response = MessageFormat.format("收到{0}队列的消息:{1}", HTTP_REQUEST_QUEUE, msg);
+        return response.toUpperCase();
     }
 }

@@ -42,7 +42,7 @@ public class RabbitConfig {
         connectionFactory.setPassword(password);
         connectionFactory.setVirtualHost(virtualHost);
         connectionFactory.setConnectionTimeout(timeout);
-        // 如果要进行消息回调，则这里必须要设置为true
+        //如果要进行消息回调,则这里必须要设置为true
         connectionFactory.setPublisherConfirms(publisherConfirms);
         connectionFactory.setPublisherReturns(publisherReturns);
         return connectionFactory;
@@ -54,6 +54,8 @@ public class RabbitConfig {
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     @Bean
     public RabbitTemplate rabbitTemplate() {
-        return new RabbitTemplate(connectionFactory());
+        RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory());
+        rabbitTemplate.setMandatory(true);
+        return rabbitTemplate;
     }
 }

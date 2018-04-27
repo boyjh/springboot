@@ -25,30 +25,31 @@ public class Sender implements RabbitTemplate.ConfirmCallback, RabbitTemplate.Re
 
     @PostConstruct
     public void init() {
-        //用于实现消息发送到RabbitMQ交换器后接收ack回调。
+        //用于实现消息发送到RabbitMQ交换机后接收ack回调。
         rabbitTemplate.setConfirmCallback(this);
-        //用于实现消息发送到RabbitMQ交换器，但无相应队列与交换器绑定时的回调。
+        //用于实现消息发送到RabbitMQ交换机，但无相应队列与交换器绑定时的回调。
         rabbitTemplate.setReturnCallback(this);
     }
 
     /**
-     * 相应交换器接收后回调
+     * 相应交换机接收后异步回调
      */
     @Override
     public void confirm(CorrelationData correlationData, boolean ack, String cause) {
         if (ack) {
-            logger.info("消息发送成功:{}", correlationData);
+            logger.info("交换机接收信息成功:{}", correlationData);
         } else {
-            logger.info("消息发送失败:{}", cause);
+            logger.info("交换机接收信息失败:{}", cause);
         }
     }
 
     /**
-     * 无交换器绑定回调
+     * 无相应队列与交换器绑定异步回调
      */
     @Override
     public void returnedMessage(Message message, int replyCode, String replyText, String exchange, String routingKey) {
-        logger.info(message.getMessageProperties().getCorrelationIdString() + "发送失败");
+        String msg = new String(message.getBody());
+        logger.info("消息发送失败:{}", msg);
     }
 
     public void sendServerInvoke(String msg) {
@@ -70,8 +71,10 @@ public class Sender implements RabbitTemplate.ConfirmCallback, RabbitTemplate.Re
         CorrelationData correlationId = new CorrelationData(UUID.randomUUID().toString());
         logger.info("开始发送消息:{}", msg.toLowerCase());
         //转换并发送消息,且等待消息者返回响应消息。
-        String response = rabbitTemplate.convertSendAndReceive(exchange, routingKey, msg, correlationId).toString();
+        Object response = rabbitTemplate.convertSendAndReceive(exchange, routingKey, msg, correlationId);
+        if (response != null) {
+            logger.info("消费者响应:{}", response.toString());
+        }
         logger.info("结束发送消息:{}", msg.toLowerCase());
-        logger.info("消费者响应:{}消息处理完成", response);
     }
 }

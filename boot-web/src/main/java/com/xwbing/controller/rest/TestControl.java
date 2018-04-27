@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.xwbing.annotation.LogInfo;
 import com.xwbing.domain.entity.ExpressInfo;
 import com.xwbing.domain.entity.vo.ExpressInfoVo;
+import com.xwbing.rabbit.Sender;
 import com.xwbing.redis.RedisService;
 import com.xwbing.service.rest.CookieSessionService;
 import com.xwbing.service.rest.ExpressDeliveryService;
@@ -43,7 +44,14 @@ public class TestControl {
     private QRCodeZipService qrCodeZipService;
     @Resource
     private CookieSessionService cookieSessionService;
+    @Resource
+    private Sender sender;
     private final Logger logger = LoggerFactory.getLogger(TestControl.class);
+
+    @GetMapping("send")
+    public void send(@RequestParam String msg) {
+        sender.sendHttpRequest(msg);
+    }
 
     @LogInfo("redis功能测试")
     @GetMapping("redis")

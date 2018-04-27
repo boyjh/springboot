@@ -48,12 +48,12 @@ spring:
       force: true
   #消息队列
   rabbitmq:
-     host:
-     port:
-     username:
-     password:
+     host: 127.0.0.1
+     port: 5672
+     username: guest
+     password: guest
      virtual-host: /
-     connection-timeout:
+     connection-timeout: 5
      publisher-confirms: true
      publisher-returns: true
 #log
