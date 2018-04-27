@@ -1,6 +1,5 @@
 package com.xwbing;
 
-import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -10,8 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * 作者: boot-module-demo
  * 说明: 启动类
  */
-//开启rabbitmq
-@EnableRabbit
+//@EnableRabbit
 @SpringBootApplication
 //@Configuration 定义为配置类,相当于xml文件中的<beans></beans>
 //@ComponentScan 组件扫描
