@@ -49,7 +49,7 @@ public class Sender implements RabbitTemplate.ConfirmCallback, RabbitTemplate.Re
     @Override
     public void returnedMessage(Message message, int replyCode, String replyText, String exchange, String routingKey) {
         String msg = new String(message.getBody());
-        logger.error("消息发送失败:{}", msg);
+        logger.error("field 无相应队列接收信息:{}", msg);
     }
 
     /**
