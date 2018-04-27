@@ -1,4 +1,4 @@
-package com.xwbing.Rabbit;
+package com.xwbing.rabbit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

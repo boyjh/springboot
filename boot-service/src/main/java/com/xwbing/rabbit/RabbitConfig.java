@@ -1,4 +1,4 @@
-package com.xwbing.Rabbit;
+package com.xwbing.rabbit;
 
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Scope;
  * 项目名称: boot-module-demo
  * 创建时间: 2018/4/27 13:42
  * 作者: xiangwb
- * 说明:
+ * 说明: 配置类
  */
 @Configuration
 public class RabbitConfig {

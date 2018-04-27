@@ -1,12 +1,12 @@
-package com.xwbing.Rabbit;
+package com.xwbing.rabbit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
-import static com.xwbing.Rabbit.RabbitConstant.HTTP_REQUEST_QUEUE;
-import static com.xwbing.Rabbit.RabbitConstant.SERVER_INVOKE_QUEUE;
+import static com.xwbing.rabbit.RabbitConstant.HTTP_REQUEST_QUEUE;
+import static com.xwbing.rabbit.RabbitConstant.SERVER_INVOKE_QUEUE;
 
 /**
  * 项目名称: boot-module-demo
