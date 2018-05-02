@@ -49,7 +49,7 @@ public class TestControl {
     private final Logger logger = LoggerFactory.getLogger(TestControl.class);
 
     @GetMapping("send")
-    public void send(@RequestParam String msg) {
+    public void send(@RequestParam String[] msg) {
         sender.sendHttpRequest(msg);
     }
 

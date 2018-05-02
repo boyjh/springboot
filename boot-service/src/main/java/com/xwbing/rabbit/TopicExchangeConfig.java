@@ -17,8 +17,8 @@ import org.springframework.context.annotation.Configuration;
 public class TopicExchangeConfig {
     //声明队列
     @Bean
-    public Queue serverInvokeQueue() {
-        return new Queue(RabbitConstant.SERVER_INVOKE_QUEUE, true);//true表示持久化该队列
+    public Queue emailQueue() {
+        return new Queue(RabbitConstant.EMAIL_QUEUE, true);//true表示持久化该队列
     }
 
     @Bean
@@ -34,12 +34,12 @@ public class TopicExchangeConfig {
 
     //绑定
     @Bean
-    public Binding bindingExchangeMessage() {
-        return BindingBuilder.bind(serverInvokeQueue()).to(topicExchange()).with(RabbitConstant.SERVER_INVOKE_ROUTING_KEY);//*表示一个词,#表示零个或多个词
+    public Binding bindingEmail() {
+        return BindingBuilder.bind(emailQueue()).to(topicExchange()).with(RabbitConstant.EMAIL_ROUTING_KEY);//*表示一个词,#表示零个或多个词
     }
 
     @Bean
-    public Binding bindingExchangeMessages() {
+    public Binding bindingHttpRequest() {
         return BindingBuilder.bind(httpRequestQueue()).to(topicExchange()).with(RabbitConstant.HTTP_REQUEST_ROUTING_KEY);
     }
 }

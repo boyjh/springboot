@@ -8,6 +8,7 @@ import com.xwbing.domain.entity.model.EmailModel;
 import com.xwbing.domain.entity.sys.*;
 import com.xwbing.domain.repository.sys.SysUserRepository;
 import com.xwbing.exception.BusinessException;
+import com.xwbing.rabbit.Sender;
 import com.xwbing.util.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -41,6 +42,8 @@ public class SysUserService {
     private SysAuthorityService sysAuthorityService;
     @Resource
     private SysUserRoleService sysUserRoleService;
+    @Resource
+    private Sender sender;
 
     /**
      * 增
@@ -51,7 +54,8 @@ public class SysUserService {
     public RestMessage save(SysUser sysUser) {
         RestMessage result = new RestMessage();
         //检查用户名是否存在
-        SysUser old = getByUserName(sysUser.getUserName());
+        String userName = sysUser.getUserName();
+        SysUser old = getByUserName(userName);
         if (old != null) {
             throw new BusinessException("已经存在此用户名");
         }
@@ -68,12 +72,14 @@ public class SysUserService {
         if (one == null) {
             throw new BusinessException("新增用户失败");
         }
+        String[] msg = {sysUser.getMail(), userName, res[0]};
         //发送邮件
-        boolean send = sendEmail(sysUser, res[0]);
-        // 发送邮件结束
-        if (!send) {
-            throw new BusinessException("发送密码邮件失败");
-        }
+        sender.sendEmail(msg);
+//        boolean send = sendEmail(sysUser, res[0]);
+//        // 发送邮件结束
+//        if (!send) {
+//            throw new BusinessException("发送密码邮件失败");
+//        }
         result.setSuccess(true);
         result.setId(id);
         return result;
@@ -220,10 +226,9 @@ public class SysUserService {
         if (save == null) {
             throw new BusinessException("重置密码失败");
         }
-        boolean send = sendEmail(old, str[0]);
-        if (!send) {
-            throw new BusinessException("发送密码邮件失败");
-        }
+        //发送邮件
+        String[] msg = {old.getMail(), userName, str[0]};
+        sender.sendEmail(msg);
         result.setSuccess(true);
         result.setMessage("重置密码成功");
         return result;
@@ -442,20 +447,21 @@ public class SysUserService {
     /**
      * 发送邮件
      *
-     * @param sysUser
+     * @param email
+     * @param userName
      * @param passWord
      * @return
      */
-    private boolean sendEmail(SysUser sysUser, String passWord) {
+    private boolean sendEmail(String email, String userName, String passWord) {
         SysConfig sysConfig = sysConfigService.getByCode(CommonConstant.EMAIL_KEY);
         if (sysConfig == null) {
             throw new BusinessException("没有查找到邮件配置项");
         }
         JSONObject jsonObject = JSONObject.parseObject(sysConfig.getValue());
         EmailModel emailModel = JSONObject.toJavaObject(jsonObject, EmailModel.class);
-        emailModel.setToEmail(sysUser.getMail());
+        emailModel.setToEmail(email);
         emailModel.setSubject(emailModel.getSubject());
-        emailModel.setCentent(emailModel.getCentent() + " 你的用户名是:" + sysUser.getUserName() + ",密码是:" + passWord);
+        emailModel.setCentent(emailModel.getCentent() + " 你的用户名是:" + userName + ",密码是:" + passWord);
         return EmailUtil.sendTextEmail(emailModel);
     }
 }

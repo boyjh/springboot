@@ -8,17 +8,17 @@ package com.xwbing.rabbit;
  */
 public class RabbitConstant {
     /**
-     * 服务器调用
+     * 邮件队列
      */
-    public static final String SERVER_INVOKE_QUEUE = "server.invoke";
+    public static final String EMAIL_QUEUE = "email";
     /**
-     * http请求
+     * http请求队列
      */
     public static final String HTTP_REQUEST_QUEUE = "http.request";
     /**
-     * 服务器调用路由键（*表示一个词,#表示零个或多个词）
+     * 邮件队列路由键（*表示一个词,#表示零个或多个词）
      */
-    public static final String SERVER_INVOKE_ROUTING_KEY = "server.invoke.key";
+    public static final String EMAIL_ROUTING_KEY = "email.key";
     /**
      * http请求路由键
      */

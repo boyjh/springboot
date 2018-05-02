@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
+import java.util.Arrays;
 import java.util.UUID;
 
 /**
@@ -53,12 +54,12 @@ public class Sender implements RabbitTemplate.ConfirmCallback, RabbitTemplate.Re
     }
 
     /**
-     * 发送信息到server队列
+     * 发送信息到email队列
      *
      * @param msg
      */
-    public void sendServerInvoke(String msg) {
-        send(msg, RabbitConstant.CONTROL_EXCHANGE, RabbitConstant.SERVER_INVOKE_ROUTING_KEY);
+    public void sendEmail(String[] msg) {
+        send(msg, RabbitConstant.CONTROL_EXCHANGE, RabbitConstant.EMAIL_ROUTING_KEY);
     }
 
     /**
@@ -66,7 +67,7 @@ public class Sender implements RabbitTemplate.ConfirmCallback, RabbitTemplate.Re
      *
      * @param msg
      */
-    public void sendHttpRequest(String msg) {
+    public void sendHttpRequest(String[] msg) {
         send(msg, RabbitConstant.CONTROL_EXCHANGE, RabbitConstant.HTTP_REQUEST_ROUTING_KEY);
     }
 
@@ -77,14 +78,14 @@ public class Sender implements RabbitTemplate.ConfirmCallback, RabbitTemplate.Re
      * @param exchange   交换器
      * @param routingKey 路由键
      */
-    private void send(String msg, String exchange, String routingKey) {
+    private void send(String[] msg, String exchange, String routingKey) {
         CorrelationData correlationId = new CorrelationData(UUID.randomUUID().toString());
-        logger.info("开始发送消息:{}", msg.toLowerCase());
+        logger.info("开始发送消息:{}", Arrays.toString(msg));
         //转换并发送消息,且等待消息者返回响应消息。
         Object response = rabbitTemplate.convertSendAndReceive(exchange, routingKey, msg, correlationId);
         if (response != null) {
             logger.info("消费者响应:{}", response.toString());
         }
-        logger.info("结束发送消息:{}", msg.toLowerCase());
+        logger.info("{}消息发送结束", Arrays.toString(msg));
     }
 }

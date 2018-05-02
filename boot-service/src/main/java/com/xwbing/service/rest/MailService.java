@@ -4,6 +4,7 @@ import com.xwbing.exception.BusinessException;
 import com.xwbing.util.RestMessage;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -41,7 +42,13 @@ public class MailService {
         message.setTo(to);
         message.setSubject(subject);
         message.setText(content);
-        mailSender.send(message);
+        try {
+            mailSender.send(message);
+        } catch (MailException e) {
+            restMessage.setSuccess(false);
+            restMessage.setMessage("发送邮件失败");
+            return restMessage;
+        }
         restMessage.setSuccess(true);
         restMessage.setMessage("纯文本邮件已经发送");
         return restMessage;
