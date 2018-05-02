@@ -63,12 +63,12 @@ public class Sender implements RabbitTemplate.ConfirmCallback, RabbitTemplate.Re
     }
 
     /**
-     * 发送信息到http队列
+     * 发送信息到message队列
      *
      * @param msg
      */
-    public void sendHttpRequest(String[] msg) {
-        send(msg, RabbitConstant.CONTROL_EXCHANGE, RabbitConstant.HTTP_REQUEST_ROUTING_KEY);
+    public void sendMessage(String[] msg) {
+        send(msg, RabbitConstant.CONTROL_EXCHANGE, RabbitConstant.MESSAGE_ROUTING_KEY);
     }
 
     /**

@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 import java.text.MessageFormat;
 
 import static com.xwbing.rabbit.RabbitConstant.EMAIL_QUEUE;
-import static com.xwbing.rabbit.RabbitConstant.HTTP_REQUEST_QUEUE;
+import static com.xwbing.rabbit.RabbitConstant.MESSAGE_QUEUE;
 
 /**
  * 项目名称: boot-module-demo
@@ -40,13 +40,13 @@ public class Receiver {
     }
 
     /**
-     * 处理http队列消息
+     * 处理短信队列消息
      *
      * @param msg
      */
-    @RabbitListener(queues = HTTP_REQUEST_QUEUE)
-    public String processHttp(String[] msg) {
-        String response = MessageFormat.format("收到{0}队列的消息:{1}", HTTP_REQUEST_QUEUE, msg);
+    @RabbitListener(queues = MESSAGE_QUEUE)
+    public String processMessage(String[] msg) {
+        String response = MessageFormat.format("收到{0}队列的消息:{1}", MESSAGE_QUEUE, msg);
         return response.toUpperCase();
     }
 }

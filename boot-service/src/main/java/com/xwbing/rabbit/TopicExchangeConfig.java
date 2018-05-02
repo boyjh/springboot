@@ -15,7 +15,11 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class TopicExchangeConfig {
-    //声明队列
+    /**
+     * 声明队列
+     *
+     * @return
+     */
     @Bean
     public Queue emailQueue() {
         return new Queue(RabbitConstant.EMAIL_QUEUE, true);//true表示持久化该队列
@@ -23,16 +27,24 @@ public class TopicExchangeConfig {
 
     @Bean
     public Queue httpRequestQueue() {
-        return new Queue(RabbitConstant.HTTP_REQUEST_QUEUE, true);
+        return new Queue(RabbitConstant.MESSAGE_QUEUE, true);
     }
 
-    //声明交换机
+    /**
+     * 声明交换机
+     *
+     * @return
+     */
     @Bean
     public TopicExchange topicExchange() {
         return new TopicExchange(RabbitConstant.CONTROL_EXCHANGE);
     }
 
-    //绑定
+    /**
+     * 绑定
+     *
+     * @return
+     */
     @Bean
     public Binding bindingEmail() {
         return BindingBuilder.bind(emailQueue()).to(topicExchange()).with(RabbitConstant.EMAIL_ROUTING_KEY);//*表示一个词,#表示零个或多个词
@@ -40,6 +52,6 @@ public class TopicExchangeConfig {
 
     @Bean
     public Binding bindingHttpRequest() {
-        return BindingBuilder.bind(httpRequestQueue()).to(topicExchange()).with(RabbitConstant.HTTP_REQUEST_ROUTING_KEY);
+        return BindingBuilder.bind(httpRequestQueue()).to(topicExchange()).with(RabbitConstant.MESSAGE_ROUTING_KEY);
     }
 }

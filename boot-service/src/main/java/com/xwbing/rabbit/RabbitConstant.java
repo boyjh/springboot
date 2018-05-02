@@ -12,17 +12,17 @@ public class RabbitConstant {
      */
     public static final String EMAIL_QUEUE = "email";
     /**
-     * http请求队列
+     * 短信队列
      */
-    public static final String HTTP_REQUEST_QUEUE = "http.request";
+    public static final String MESSAGE_QUEUE = "message";
     /**
      * 邮件队列路由键（*表示一个词,#表示零个或多个词）
      */
     public static final String EMAIL_ROUTING_KEY = "email.key";
     /**
-     * http请求路由键
+     * 短信队列路由键
      */
-    public static final String HTTP_REQUEST_ROUTING_KEY = "http.request.key";
+    public static final String MESSAGE_ROUTING_KEY = "message.key";
     /**
      * 交换机
      */

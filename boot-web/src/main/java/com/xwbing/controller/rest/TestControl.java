@@ -50,7 +50,7 @@ public class TestControl {
 
     @GetMapping("send")
     public void send(@RequestParam String[] msg) {
-        sender.sendHttpRequest(msg);
+        sender.sendMessage(msg);
     }
 
     @LogInfo("redis功能测试")
