@@ -4,7 +4,7 @@ package com.xwbing.rabbit;
  * 项目名称: boot-module-demo
  * 创建时间: 2018/4/25 14:34
  * 作者: xiangwb
- * 说明: 常量
+ * 说明: Rabbit常量
  */
 public class RabbitConstant {
     /**
