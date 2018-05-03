@@ -73,13 +73,8 @@ public class SysUserService {
             throw new BusinessException("新增用户失败");
         }
         String[] msg = {sysUser.getMail(), userName, res[0]};
-        //发送邮件
+        //使用mq发送邮件
         sender.sendEmail(msg);
-//        boolean send = sendEmail(sysUser, res[0]);
-//        // 发送邮件结束
-//        if (!send) {
-//            throw new BusinessException("发送密码邮件失败");
-//        }
         result.setSuccess(true);
         result.setId(id);
         return result;
@@ -226,7 +221,7 @@ public class SysUserService {
         if (save == null) {
             throw new BusinessException("重置密码失败");
         }
-        //发送邮件
+        //使用mq发送邮件
         String[] msg = {old.getMail(), userName, str[0]};
         sender.sendEmail(msg);
         result.setSuccess(true);
@@ -413,8 +408,9 @@ public class SysUserService {
         List<UserDto> listDto = new ArrayList<>();
         List<SysUser> list = sysUserRepository.findAll();
         if (CollectionUtils.isNotEmpty(list)) {
+            UserDto temp;
             for (SysUser info : list) {
-                UserDto temp = new UserDto();
+                temp = new UserDto();
                 temp.setIsAdmin(CommonEnum.YesOrNoEnum.YES.getCode().equals(info.getAdmin()) ? "是" : "否");
                 temp.setMail(info.getMail());
                 temp.setName(info.getName());
