@@ -75,7 +75,7 @@ public class Sender implements RabbitTemplate.ConfirmCallback, RabbitTemplate.Re
      * 发送消息
      *
      * @param msg        消息
-     * @param exchange   交换器
+     * @param exchange   交换机
      * @param routingKey 路由键
      */
     private void send(String[] msg, String exchange, String routingKey) {
