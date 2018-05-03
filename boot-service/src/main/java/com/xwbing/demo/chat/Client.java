@@ -43,7 +43,7 @@ public class Client {
             ServerHandler handler = new ServerHandler();
             Thread t = new Thread(handler);
             t.start();
-			/*
+            /*
 			 * outputstream getoutputstream（） 通过socket获取输出流，用来将数据发送至服务端
 			 */
             Scanner sc = new Scanner(System.in);
@@ -72,12 +72,13 @@ public class Client {
     /**
      * 该线程任务是用来接收服务端发送过来的消息并输出到客户端的控制台上
      */
-    class ServerHandler implements Runnable {
+    private class ServerHandler implements Runnable {
+        @Override
         public void run() {
             try {
                 BufferedReader br = new BufferedReader(new InputStreamReader(
                         socket.getInputStream(), "utf-8"));
-                String message = null;
+                String message;
                 while ((message = br.readLine()) != null) {
                     System.out.println(message);
                 }

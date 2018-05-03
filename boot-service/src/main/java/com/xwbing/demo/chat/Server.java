@@ -120,7 +120,7 @@ public class Server {
         //客户端地址信息
         private String host;
 
-        public ClientHandler(Socket socket) {
+        ClientHandler(Socket socket) {
             this.socket = socket;
 			/*
 			 * 通过socket可以获取远程计算机地址信息
@@ -131,6 +131,7 @@ public class Server {
             host = address.getHostAddress();
         }
 
+        @Override
         public void run() {
             PrintWriter pw = null;
             try {
