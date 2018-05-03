@@ -105,12 +105,28 @@ public class SwaggerConfig {
                     .message(CommonEnum.CodeEnum.OK.getName())
                     .build());
             add(new ResponseMessageBuilder()
+                    .code(CommonEnum.CodeEnum.UNAUTHORIZED.getValue())
+                    .message(CommonEnum.CodeEnum.UNAUTHORIZED.getName())
+                    .build());
+            add(new ResponseMessageBuilder()
+                    .code(CommonEnum.CodeEnum.FORBIDDEN.getValue())
+                    .message(CommonEnum.CodeEnum.FORBIDDEN.getName())
+                    .build());
+            add(new ResponseMessageBuilder()
                     .code(CommonEnum.CodeEnum.NOT_FOUND.getValue())
                     .message(CommonEnum.CodeEnum.NOT_FOUND.getName())
                     .build());
             add(new ResponseMessageBuilder()
                     .code(CommonEnum.CodeEnum.ERROR.getValue())
                     .message(CommonEnum.CodeEnum.ERROR.getName())
+                    .build());
+            add(new ResponseMessageBuilder()
+                    .code(CommonEnum.CodeEnum.SERVICE_UNAVAILABLE.getValue())
+                    .message(CommonEnum.CodeEnum.SERVICE_UNAVAILABLE.getName())
+                    .build());
+            add(new ResponseMessageBuilder()
+                    .code(CommonEnum.CodeEnum.GATEWAY_TIME_OUT.getValue())
+                    .message(CommonEnum.CodeEnum.GATEWAY_TIME_OUT.getName())
                     .build());
         }};
     }

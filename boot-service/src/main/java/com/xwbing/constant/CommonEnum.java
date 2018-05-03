@@ -107,8 +107,12 @@ public class CommonEnum {
 
     public enum CodeEnum {
         OK("成功", 200),
+        UNAUTHORIZED("请求要求身份验证", 401),
+        FORBIDDEN("服务器拒绝请求", 403),
         NOT_FOUND("服务器找不到请求的网页", 404),
-        ERROR("服务器遇到错误,无法完成请求", 500);
+        ERROR("服务器遇到错误,无法完成请求", 500),
+        SERVICE_UNAVAILABLE("服务器暂不可用", 503),
+        GATEWAY_TIME_OUT("网关超时", 504);
         // 成员变量
         private String name;
         private int value;

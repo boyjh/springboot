@@ -87,7 +87,7 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
                 .allowCredentials(true)
                 .allowedOrigins("*")
                 .allowedHeaders("*")
-                .allowedMethods("GET", "POST", "DELETE", "PUT", "OPTIONS")
+                .allowedMethods("GET", "POST", "DELETE", "PUT", "PATCH", "OPTIONS")
                 .maxAge(3600);
         super.addCorsMappings(registry);
     }

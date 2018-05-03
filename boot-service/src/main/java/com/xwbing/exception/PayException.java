@@ -8,6 +8,8 @@ package com.xwbing.exception;
  */
 
 public class PayException extends RuntimeException {
+    private static final long serialVersionUID = 584325238279858855L;
+
     public PayException(Throwable cause) {
         super(cause);
     }
