@@ -102,7 +102,7 @@ public class QRCodeZipService {
      *
      * @return
      */
-    public String getPath() {
+    private String getPath() {
         ClassPathResource pic = new ClassPathResource("pic");
         String absolutePath;
         try {
