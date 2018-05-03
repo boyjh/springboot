@@ -27,6 +27,7 @@ public class MailService {
     private JavaMailSender mailSender;
     @Value("${spring.mail.username}")
     private String from;
+    private MimeMessageHelper helper = null;
 
     /**
      * 发送纯文本的简单邮件
@@ -44,14 +45,12 @@ public class MailService {
         message.setText(content);
         try {
             mailSender.send(message);
-        } catch (MailException e) {
-            restMessage.setSuccess(false);
-            restMessage.setMessage("发送邮件失败");
+            restMessage.setSuccess(true);
+            restMessage.setMessage("纯文本邮件已经发送");
             return restMessage;
+        } catch (MailException e) {
+            throw new BusinessException("发送纯文本邮件异常");
         }
-        restMessage.setSuccess(true);
-        restMessage.setMessage("纯文本邮件已经发送");
-        return restMessage;
     }
 
     /**
@@ -64,45 +63,36 @@ public class MailService {
     public RestMessage sendHtmlMail(String to, String subject, String content) {
         RestMessage restMessage = new RestMessage();
         MimeMessage message = mailSender.createMimeMessage();
-        try {
-            //true表示需要创建一个multipart message
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            helper.setFrom(from);
-            helper.setTo(to);
-            helper.setSubject(subject);
-            helper.setText(content, true);//启用html
-            mailSender.send(message);
-            restMessage.setSuccess(true);
-            restMessage.setMessage("html邮件已经发送!");
-            return restMessage;
-        } catch (MessagingException e) {
-            throw new BusinessException("发送html邮件时发生异常");
-        }
+        //true表示需要创建一个multipart message
+        getHelper(message, to, subject, content);
+        mailSender.send(message);
+        restMessage.setSuccess(true);
+        restMessage.setMessage("html邮件已经发送!");
+        return restMessage;
     }
 
     /**
      * 发送带附件的邮件
      *
-     * @param to      收件人
-     * @param subject 主题
-     * @param content 文本内容
-     * @param rscPath 附件文件路径
+     * @param to       收件人
+     * @param subject  主题
+     * @param content  文本内容
+     * @param rscPaths 附件文件路径
      */
-    public RestMessage sendAttachmentsMail(String to, String subject, String content, String rscPath) {
+    public RestMessage sendAttachmentsMail(String to, String subject, String content, String... rscPaths) {
         RestMessage restMessage = new RestMessage();
         MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = getHelper(message, to, subject, content);
         try {
-            //true表示需要创建一个multipart message
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            helper.setFrom(from);
-            helper.setTo(to);
-            helper.setSubject(subject);
-            helper.setText(content, true);
-            //添加附件1
-            FileSystemResource file = new FileSystemResource(new File(rscPath));
-            String fileName = rscPath.substring(rscPath.lastIndexOf(File.separator) + 1);
-            helper.addAttachment(fileName, file);
-            // 可以继续添加附件。。。。。
+            //添加附件
+            if (rscPaths != null && rscPaths.length > 0) {
+                FileSystemResource file;
+                for (String rscPath : rscPaths) {
+                    file = new FileSystemResource(new File(rscPath));
+                    String fileName = rscPath.substring(rscPath.lastIndexOf(File.separator) + 1);
+                    helper.addAttachment(fileName, file);
+                }
+            }
             mailSender.send(message);//发送邮件
             restMessage.setSuccess(true);
             restMessage.setMessage("带附件的邮件已经发送!");
@@ -124,13 +114,8 @@ public class MailService {
     public RestMessage sendInlineResourceMail(String to, String subject, String content, String rscPath, String rscId) {
         RestMessage restMessage = new RestMessage();
         MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = getHelper(message, to, subject, content);
         try {
-            //true表示需要创建一个multipart message
-            MimeMessageHelper helper = new MimeMessageHelper(message, true);
-            helper.setFrom(from);
-            helper.setTo(to);
-            helper.setSubject(subject);
-            helper.setText(content, true);
             //添加多个图片可以使用多条 <img src='cid:" + rscId + "' > 和 helper.addInline(rscId, res) 来实现
             FileSystemResource res = new FileSystemResource(new File(rscPath));
             helper.addInline(rscId, res);
@@ -141,5 +126,26 @@ public class MailService {
         } catch (MessagingException e) {
             throw new BusinessException("发送嵌入静态资源的邮件时发生异常！");
         }
+    }
+
+    /**
+     * 获取邮件助手
+     *
+     * @param message
+     * @return
+     */
+    private MimeMessageHelper getHelper(MimeMessage message, String to, String subject, String content) {
+        if (helper == null) {
+            try {
+                helper = new MimeMessageHelper(message, true);
+                helper.setFrom(from);
+                helper.setTo(to);
+                helper.setSubject(subject);
+                helper.setText(content, true);//启用html
+            } catch (MessagingException e) {
+                throw new BusinessException("获取邮件助手失败");
+            }
+        }
+        return helper;
     }
 }

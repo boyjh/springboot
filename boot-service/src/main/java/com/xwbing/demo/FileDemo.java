@@ -63,7 +63,7 @@ public class FileDemo {
          * java resources 编译后在WEB-INF/classes下 同级
          */
         String tomcatHome = System.getProperty("catalina.home");//服务器tomcat路径
-        ClassPathResource pic = new ClassPathResource("file");//获取classes下file文件夹路径
+        ClassPathResource pic = new ClassPathResource("pic");//获取classes下file文件夹路径
         String absolutePath = pic.getFile().getAbsolutePath();
         //配置文件
         String filePath = IODemo.class.getResource("/redis.properties").getPath();

@@ -303,12 +303,12 @@ public class QRCodeUtil {
 //        String tomcatHome = System.getProperty("catalina.home");
 //        String name="QRcode";
 //        File output=new File(tomcatHome+File.separator+"file"+File.separator+name+".png");
-        ClassPathResource file = new ClassPathResource("file");
+        ClassPathResource file = new ClassPathResource("pic");
         String path = file.getFile().getAbsolutePath();
         File image = new File(path+File.separator+"logo.png");
         FileInputStream logo=new FileInputStream(image);
         File out = new File(path+File.separator+"QRCode.png");
-        createCodeLogo(out,"java生成的二維碼",logo,"");
+        createCodeLogo(out,"java生成的二維碼",logo,"logo");
     }
 }
 

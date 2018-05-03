@@ -59,7 +59,7 @@ public class FileUploadDemo {
     public void fileUpload(CommonsMultipartFile multipartFile) {
             if (!multipartFile.isEmpty()) {
                 String name = multipartFile.getOriginalFilename();//原始名字
-                ClassPathResource file = new ClassPathResource("file");
+                ClassPathResource file = new ClassPathResource("pic");
                 try {
                     String path = file.getFile().getAbsolutePath();
                     File targetFile = new File(path+ File.separator+name);
@@ -74,7 +74,7 @@ public class FileUploadDemo {
     }
 
     public static void main(String[] args) throws Exception{
-        ClassPathResource file = new ClassPathResource("file");
+        ClassPathResource file = new ClassPathResource("pic");
         String path = file.getFile().getAbsolutePath();
         File targetFile = new File(path+ File.separator+"test.txt");
         if(!targetFile.exists()){
