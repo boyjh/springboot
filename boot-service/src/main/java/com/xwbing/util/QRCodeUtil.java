@@ -300,9 +300,6 @@ public class QRCodeUtil {
     }
 
     public static void main(String[] args) throws Exception{
-//        String tomcatHome = System.getProperty("catalina.home");
-//        String name="QRcode";
-//        File output=new File(tomcatHome+File.separator+"file"+File.separator+name+".png");
         ClassPathResource file = new ClassPathResource("pic");
         String path = file.getFile().getAbsolutePath();
         File image = new File(path+File.separator+"logo.png");
