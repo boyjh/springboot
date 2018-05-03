@@ -15,7 +15,7 @@ public class CommonDataUtil {
     private static Map<String, Object> token = new HashMap<>();
     private static final long MINUTES = 1000 * 60;
     public static final int MINUTE = 1;
-    public static final int HOUR = 60;
+    public static final int HOUR = MINUTE * 60;
     public static final int DAY = HOUR * 24;
 
     private CommonDataUtil() {
