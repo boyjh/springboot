@@ -30,8 +30,8 @@ public class Receiver {
      */
     @RabbitListener(queues = EMAIL_QUEUE)
     public String processEmail(String[] msg) {
-        String format = MessageFormat.format("你的用户名是:{0},密码是:{1}", msg[1], msg[2]);
-        RestMessage restMessage = mailService.sendSimpleMail(msg[0], "注册成功", format);
+        String content = MessageFormat.format("你的用户名是:{0},密码是:{1}", msg[1], msg[2]);
+        RestMessage restMessage = mailService.sendSimpleMail(msg[0], "注册成功", content);
         boolean success = restMessage.isSuccess();
         return MessageFormat.format("成功发送邮件给{0}:{1}", msg[1], success);
     }
