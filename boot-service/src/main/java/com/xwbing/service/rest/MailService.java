@@ -44,6 +44,7 @@ public class MailService {
         message.setSubject(subject);
         message.setText(content);
         try {
+            //发送邮件
             mailSender.send(message);
             restMessage.setSuccess(true);
             restMessage.setMessage("纯文本邮件已经发送");
@@ -63,7 +64,6 @@ public class MailService {
     public RestMessage sendHtmlMail(String to, String subject, String content) {
         RestMessage restMessage = new RestMessage();
         MimeMessage message = mailSender.createMimeMessage();
-        //true表示需要创建一个multipart message
         getHelper(message, to, subject, content);
         mailSender.send(message);
         restMessage.setSuccess(true);
@@ -93,7 +93,7 @@ public class MailService {
                     helper.addAttachment(fileName, file);
                 }
             }
-            mailSender.send(message);//发送邮件
+            mailSender.send(message);
             restMessage.setSuccess(true);
             restMessage.setMessage("带附件的邮件已经发送!");
             return restMessage;
@@ -137,11 +137,13 @@ public class MailService {
     private MimeMessageHelper getHelper(MimeMessage message, String to, String subject, String content) {
         if (helper == null) {
             try {
+                //true表示需要创建一个multipart message
                 helper = new MimeMessageHelper(message, true);
                 helper.setFrom(from);
                 helper.setTo(to);
                 helper.setSubject(subject);
-                helper.setText(content, true);//启用html
+                //启用html
+                helper.setText(content, true);
             } catch (MessagingException e) {
                 throw new BusinessException("获取邮件助手失败");
             }
