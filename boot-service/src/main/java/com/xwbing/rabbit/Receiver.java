@@ -2,8 +2,6 @@ package com.xwbing.rabbit;
 
 import com.xwbing.service.rest.MailService;
 import com.xwbing.util.RestMessage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +21,6 @@ import static com.xwbing.rabbit.RabbitConstant.MESSAGE_QUEUE;
 public class Receiver {
     @Resource
     private MailService mailService;
-    private final Logger logger = LoggerFactory.getLogger(Receiver.class);
 
     /**
      * 处理邮件队列信息
