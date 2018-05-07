@@ -46,7 +46,8 @@ public class FormRepeatFilter implements Filter {
                 return;
             }
         }
-        if (path.contains("save")) {
+        path = path.substring(path.lastIndexOf("/")+1);
+        if ("save".equals(path)) {
             HttpSession session = request.getSession();
             Object sign = session.getAttribute("sign");
             String signValue = request.getHeader("sign");
