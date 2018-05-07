@@ -46,7 +46,7 @@ public class FormRepeatFilter implements Filter {
                 return;
             }
         }
-        path = path.substring(path.lastIndexOf("/")+1);
+        path = path.substring(path.lastIndexOf("/") + 1);
         if ("save".equals(path)) {
             HttpSession session = request.getSession();
             Object sign = session.getAttribute("sign");
@@ -57,7 +57,6 @@ public class FormRepeatFilter implements Filter {
             } else {
                 getOutputStream(response, "请不要重复提交");
             }
-
         } else {
             chain.doFilter(request, response);
         }
