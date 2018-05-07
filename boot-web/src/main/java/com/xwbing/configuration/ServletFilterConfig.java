@@ -2,7 +2,7 @@ package com.xwbing.configuration;
 
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
-import com.xwbing.handler.FormSaveFilter;
+import com.xwbing.handler.FormRepeatFilter;
 import com.xwbing.util.captcha.CaptchaServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,7 +57,8 @@ public class ServletFilterConfig {
 
     @Bean
     public FilterRegistrationBean formSaveFilter() {
-        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new FormSaveFilter());
+        logger.info("注册表单重复提交过滤器formSaveFilter ======================= ");
+        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new FormRepeatFilter());
         filterRegistrationBean.addUrlPatterns("/*");
         filterRegistrationBean.addInitParameter("excludePath", "/doc,/captcha,/v2/api-docs,/swagger-resources,/configuration/ui,/configuration/security,/druid");
         filterRegistrationBean.addInitParameter("excludeType", ".js,.css,.gif,.jpg,.png,.ico,.jsp,.html,/druid/");

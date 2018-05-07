@@ -14,9 +14,9 @@ import java.io.OutputStream;
  * 项目名称: boot-module-demo
  * 创建时间: 2018/5/7 10:11
  * 作者: xiangwb
- * 说明:
+ * 说明: 防止表单重复提交,新增数据时用
  */
-public class FormSaveFilter implements Filter {
+public class FormRepeatFilter implements Filter {
     private String[] paths;
     private String[] types;
 
@@ -32,6 +32,7 @@ public class FormSaveFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
+        request.setCharacterEncoding("utf-8");
         String path = request.getServletPath();
         for (String p : paths) {
             if (path.equals(p)) {
@@ -53,7 +54,7 @@ public class FormSaveFilter implements Filter {
                 session.removeAttribute("sign");
                 chain.doFilter(request, response);
             } else {
-                getOutputStream(response,"请不要重复提交");
+                getOutputStream(response, "请不要重复提交");
             }
 
         } else {
