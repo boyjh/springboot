@@ -2,3 +2,5 @@
 show variables like 'slow_query%';
 查询超过多少秒才记录
 show variables like 'long_query_time';
+
+show databases;
