@@ -1,7 +1,10 @@
 package com.xwbing.rabbit;
 
+import com.xwbing.exception.BusinessException;
 import com.xwbing.service.rest.MailService;
 import com.xwbing.util.RestMessage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +24,7 @@ import static com.xwbing.rabbit.RabbitConstant.MESSAGE_QUEUE;
 public class Receiver {
     @Resource
     private MailService mailService;
+    private final Logger logger = LoggerFactory.getLogger(Receiver.class);
 
     /**
      * 处理邮件队列信息
@@ -31,7 +35,12 @@ public class Receiver {
     @RabbitListener(queues = EMAIL_QUEUE)
     public String processEmail(String[] msg) {
         String content = MessageFormat.format("你的用户名是:{0},密码是:{1}", msg[1], msg[2]);
-        RestMessage restMessage = mailService.sendSimpleMail(msg[0], "注册成功", content);
+        RestMessage restMessage = new RestMessage();
+        try {
+            restMessage = mailService.sendSimpleMail(msg[0], "注册成功", content);
+        } catch (BusinessException e) {
+            logger.error("发送邮件给{}失败", msg[0]);
+        }
         boolean success = restMessage.isSuccess();
         return MessageFormat.format("成功发送邮件给{0}:{1}", msg[1], success);
     }
