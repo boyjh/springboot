@@ -41,12 +41,12 @@ public class PassWordUtil {
         byte[] salt;
         // 密码盐值 如果是为空，那么随机获取；不为空，解析pwdSalt
         if (StringUtils.isEmpty(pwdSalt)) {
-            salt = Digests.generateSalt(SALT_SIZE);
+            salt = DigestsUtil.generateSalt(SALT_SIZE);
         } else {
             salt = EncodeUtils.hexDecode(pwdSalt);
         }
         // 密码加密
-        byte[] hashPassword = Digests.sha1(password.getBytes(), salt, HASH_INTERATIONS);
+        byte[] hashPassword = DigestsUtil.sha1(password.getBytes(), salt, HASH_INTERATIONS);
         str[0] = password;
         str[1] = EncodeUtils.hexEncode(salt);
         str[2] = EncodeUtils.hexEncode(hashPassword);

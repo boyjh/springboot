@@ -39,6 +39,7 @@ public class SysAuthorityControl {
 
     @LogInfo("添加权限")
     @ApiOperation(value = "添加权限", response = RestMessageVo.class)
+    @ApiImplicitParam(name = "sign", value = "签名", paramType = "header", dataType = "string")
     @PostMapping("save")
     public JSONObject save(@RequestBody SysAuthority sysAuthority) {
         RestMessage save = sysAuthorityService.save(sysAuthority);

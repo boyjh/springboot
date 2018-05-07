@@ -2,6 +2,7 @@ package com.xwbing.configuration;
 
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
+import com.xwbing.handler.FormSaveFilter;
 import com.xwbing.util.captcha.CaptchaServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,6 +52,15 @@ public class ServletFilterConfig {
         filterRegistrationBean.addUrlPatterns("/*");
         filterRegistrationBean.addInitParameter("exclusions", "*.js,*.gif,*.jpg,*.png,*.css,*.ico,*.jsp,/druid/*");
         filterRegistrationBean.addInitParameter("profileEnable", "true");//监控单个url调用的sql列表
+        return filterRegistrationBean;
+    }
+
+    @Bean
+    public FilterRegistrationBean formSaveFilter() {
+        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new FormSaveFilter());
+        filterRegistrationBean.addUrlPatterns("/*");
+        filterRegistrationBean.addInitParameter("excludePath", "/doc,/captcha,/v2/api-docs,/swagger-resources,/configuration/ui,/configuration/security,/druid");
+        filterRegistrationBean.addInitParameter("excludeType", ".js,.css,.gif,.jpg,.png,.ico,.jsp,.html,/druid/");
         return filterRegistrationBean;
     }
 }

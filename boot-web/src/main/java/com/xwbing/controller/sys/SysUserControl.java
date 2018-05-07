@@ -51,6 +51,7 @@ public class SysUserControl {
 
     @LogInfo("添加用户")
     @ApiOperation(value = "添加用户", response = RestMessageVo.class)
+    @ApiImplicitParam(name = "sign", value = "签名", paramType = "header", dataType = "string")
     @PostMapping("save")
     public JSONObject save(@RequestBody @Valid SysUser sysUser) {
         RestMessage result = sysUserService.save(sysUser);

@@ -433,7 +433,7 @@ public class SysUserService {
     private boolean checkPassWord(String passWord, String realPassWord, String salt) {
         // 根据密码盐值 解码
         byte[] saltByte = EncodeUtils.hexDecode(salt);
-        byte[] hashPassword = Digests.sha1(passWord.getBytes(), saltByte, PassWordUtil.HASH_INTERATIONS);
+        byte[] hashPassword = DigestsUtil.sha1(passWord.getBytes(), saltByte, PassWordUtil.HASH_INTERATIONS);
         // 密码 数据库中密码
         String validatePassWord = EncodeUtils.hexEncode(hashPassword);
         //判断密码是否相同

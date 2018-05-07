@@ -8,17 +8,20 @@ import org.slf4j.LoggerFactory;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Base64;
+import java.util.Random;
 
 /**
  * 说明:散列算法/摘要算法
  * 作者: xiangwb
  */
-public class Digests {
+public class DigestsUtil {
     private static final String SHA1 = "SHA-1";
     private static final String MD5 = "MD5";
     private static SecureRandom random = new SecureRandom();
-    private static final Logger LOGGER = LoggerFactory.getLogger(Digests.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DigestsUtil.class);
 
     /**
      * 生成随机的Byte[]作为salt.
@@ -98,6 +101,23 @@ public class Digests {
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             throw new UtilException("加密失败");
+        }
+    }
+
+    /**
+     * 获取签名
+     *
+     * @return
+     */
+    public static String getSign() {
+        String sign = System.currentTimeMillis() + new Random().nextInt() + "";
+        try {
+            MessageDigest md = MessageDigest.getInstance(MD5);
+            byte[] md5 = md.digest(sign.getBytes());
+            return Base64.getEncoder().encodeToString(md5);
+        } catch (NoSuchAlgorithmException e) {
+            LOGGER.error(e.getMessage());
+            throw new UtilException("获取签名失败");
         }
     }
 }

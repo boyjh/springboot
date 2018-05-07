@@ -42,6 +42,7 @@ public class SysRoleControl {
 
     @LogInfo("添加角色")
     @ApiOperation(value = "添加角色", response = RestMessageVo.class)
+    @ApiImplicitParam(name = "sign", value = "签名", paramType = "header", dataType = "string")
     @PostMapping("save")
     public JSONObject save(@RequestBody SysRole sysRole) {
         RestMessage result = sysRoleService.save(sysRole);
