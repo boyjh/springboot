@@ -12,7 +12,7 @@ import java.util.Set;
  * 说明: 公共数据类
  */
 public class CommonDataUtil {
-    private static Map<String, Object> token = new HashMap<>();
+    private static Map<String, JSONObject> token = new HashMap<>();
     private static final long MINUTES = 1000 * 60;
     public static final int MINUTE = 1;
     public static final int HOUR = MINUTE * 60;
@@ -57,7 +57,7 @@ public class CommonDataUtil {
      */
     public static Object getData(String key) {
         long currentTimeMillis = System.currentTimeMillis();
-        JSONObject object = (JSONObject) token.get(key);
+        JSONObject object = token.get(key);
         if (object != null) {
             Object value = object.get("value");
             long expiry = object.getLongValue("expiry");
@@ -89,11 +89,11 @@ public class CommonDataUtil {
      */
     public static void clearExpiryData() {
         long currentTimeMillis = System.currentTimeMillis();
-        Set<Map.Entry<String, Object>> entries = token.entrySet();
-        Iterator<Map.Entry<String, Object>> iterator = entries.iterator();
+        Set<Map.Entry<String, JSONObject>> entries = token.entrySet();
+        Iterator<Map.Entry<String, JSONObject>> iterator = entries.iterator();
         while (iterator.hasNext()) {
-            Map.Entry<String, Object> next = iterator.next();
-            JSONObject object = (JSONObject) next.getValue();
+            Map.Entry<String, JSONObject> next = iterator.next();
+            JSONObject object = next.getValue();
             if (object != null) {
                 long expiry = object.getLongValue("expiry");
                 if (-1 != expiry) {
