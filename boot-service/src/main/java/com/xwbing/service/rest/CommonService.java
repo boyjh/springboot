@@ -14,6 +14,12 @@ import javax.servlet.http.HttpSession;
  */
 @Service
 public class CommonService {
+    /**
+     * 保存信息表单提交时获取校验签名
+     *
+     * @param request
+     * @return
+     */
     public String getSign(HttpServletRequest request) {
         HttpSession session = request.getSession();
         String sign = DigestsUtil.getSign();
