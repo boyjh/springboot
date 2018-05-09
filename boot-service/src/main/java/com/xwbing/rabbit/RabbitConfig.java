@@ -1,6 +1,5 @@
 package com.xwbing.rabbit;
 
-import com.alibaba.fastjson.JSONArray;
 import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,7 +55,7 @@ public class RabbitConfig {
     @Bean
     public RabbitTemplate rabbitTemplate() {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory());
-//        rabbitTemplate.setEncoding("UTF-8");
+        rabbitTemplate.setEncoding("UTF-8");
         rabbitTemplate.setMandatory(true);
         //相应交换机接收后异步回调
         rabbitTemplate.setConfirmCallback((correlationData, ack, cause) -> {
@@ -68,8 +67,6 @@ public class RabbitConfig {
         });
         //无相应队列与交换机绑定异步回调
         rabbitTemplate.setReturnCallback((message, replyCode, replyText, exchange, routingKey) -> {
-            byte[] body = message.getBody();
-            JSONArray jsonArray = new JSONArray();
             String msg = new String(message.getBody());
             logger.error("消息:{} 发送失败, 应答码:{} 原因:{} 交换机:{} 路由键:{}", msg, replyCode, replyText, exchange, routingKey);
         });
