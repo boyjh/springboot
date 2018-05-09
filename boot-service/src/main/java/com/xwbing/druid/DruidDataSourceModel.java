@@ -1,4 +1,4 @@
-package com.xwbing.domain.entity.model;
+package com.xwbing.druid;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

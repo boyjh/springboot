@@ -2,17 +2,17 @@ package com.xwbing.util;
 
 import com.alibaba.fastjson.JSONObject;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 作者: xiangwb
  * 说明: 公共数据类
  */
 public class CommonDataUtil {
-    private static Map<String, JSONObject> token = new HashMap<>();
+    private static Map<String, JSONObject> token = new ConcurrentHashMap<>();
     private static final long MINUTES = 1000 * 60;
     public static final int MINUTE = 1;
     public static final int HOUR = MINUTE * 60;

@@ -1,7 +1,6 @@
-package com.xwbing.configuration;
+package com.xwbing.druid;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.xwbing.domain.entity.model.DruidDataSourceModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -19,6 +18,7 @@ import java.sql.SQLException;
  * 作者:  xiangwb
  */
 @Configuration
+//@ConfigurationProperties(prefix = "spring.datasource")
 @EnableConfigurationProperties(DruidDataSourceModel.class)
 public class DruidDataSourceConfig {
     @Resource
