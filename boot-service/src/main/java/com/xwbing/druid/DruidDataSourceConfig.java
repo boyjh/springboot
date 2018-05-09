@@ -72,8 +72,6 @@ public class DruidDataSourceConfig {
         return registration;
     }
 
-    /*servlet*****************************************************filter*/
-
     @Bean
     public FilterRegistrationBean webStatFilter() {
         logger.info("注册druid监控信息采集webStatFilter ======================= ");

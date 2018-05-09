@@ -49,8 +49,8 @@ public class TestControl {
     private final Logger logger = LoggerFactory.getLogger(TestControl.class);
 
     @GetMapping("send")
-    public void send(@RequestParam String[] msg) {
-        sender.sendMessage(msg);
+    public void sendM(@RequestParam String[] msg) {
+        sender.sendM(msg);
     }
 
     @LogInfo("redis功能测试")

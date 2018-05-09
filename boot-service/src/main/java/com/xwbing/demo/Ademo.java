@@ -8,5 +8,6 @@ package com.xwbing.demo;
  */
 public class Ademo {
     public static void main(String[] args) {
+        String[] s={"a","b"};
     }
 }

@@ -54,8 +54,11 @@ spring:
      password: guest
      virtual-host: /
      connection-timeout: 60000 #毫秒
-     publisher-confirms: true
-     publisher-returns: true
+     publisher-confirms: true #支持发布确认
+     publisher-returns: true #支持发布返回
+     cache:
+       channel:
+         size: 1
 #log
 logging:
   config: classpath:log4j2.xml

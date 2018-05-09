@@ -1,6 +1,7 @@
 package com.xwbing.handler;
 
 import com.xwbing.annotation.LogInfo;
+import com.xwbing.util.IpUtil;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -10,8 +11,16 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 说明: web层日志记录切面
@@ -41,10 +50,24 @@ public class WebLogAspect {
     @Before(value = "pointCutWithMsg(logInfo)", argNames = "joinPoint,logInfo")
     public void before(JoinPoint joinPoint, LogInfo logInfo) {
         startTime.set(System.currentTimeMillis());
+        //接收到请求，记录请求内容
+        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpServletRequest request = attributes.getRequest();
+        //获取ip
+        String ip = IpUtil.getIpAddr(request);
+        //注解信息
         String info = logInfo.value();
+        //获取相应类名
         String targetName = joinPoint.getTarget().getClass().getName();
+        //获取方法名
         String methodName = joinPoint.getSignature().getName();
-        logger.info("{}/{}:{} started", targetName, methodName, info);
+        //获取参数
+        Object[] args = joinPoint.getArgs();
+        List<Object> params = new ArrayList<>();
+        if (args != null && args.length > 0) {
+            params = Arrays.stream(args).filter(o -> !(o instanceof HttpServletRequest || o instanceof HttpServletResponse)).collect(Collectors.toList());
+        }
+        logger.info("{}/{}:{} started 参数:{}", targetName, methodName, info, params);
     }
 
     /**
