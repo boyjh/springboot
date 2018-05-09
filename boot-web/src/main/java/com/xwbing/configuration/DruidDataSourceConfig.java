@@ -19,6 +19,7 @@ import java.sql.SQLException;
  * 作者:  xiangwb
  */
 @Configuration
+//@ConfigurationProperties(prefix = "spring.datasource")
 @EnableConfigurationProperties(DruidDataSourceModel.class)
 public class DruidDataSourceConfig {
     @Resource
