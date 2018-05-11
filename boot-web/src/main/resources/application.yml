@@ -50,9 +50,9 @@ spring:
   rabbitmq:
      host: 127.0.0.1
      port: 5672
-     username: guest
-     password: guest
-     virtual-host: /
+     username: root
+     password: xwbing
+     virtual-host: /xwbing
      connection-timeout: 60000 #毫秒
      publisher-confirms: true #支持发布确认
      publisher-returns: true #支持发布返回
