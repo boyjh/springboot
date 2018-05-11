@@ -52,7 +52,7 @@ spring:
      port: 5672
      username: root
      password: xwbing
-     virtual-host: /xwbing
+     virtual-host: /control
      connection-timeout: 60000 #毫秒
      publisher-confirms: true #支持发布确认
      publisher-returns: true #支持发布返回
