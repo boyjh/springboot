@@ -29,8 +29,6 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     private static final Set<String> SET = new HashSet<>();//拦截器白名单
 
     static {
-        //映射到登录页面，不拦截
-        SET.add("/");
         //映射swagger文档
         SET.add("/doc");
         //验证码
@@ -47,7 +45,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String servletPath = request.getServletPath();
-        if (!SET.contains(servletPath) && !servletPath.contains("login") && !servletPath.contains("test")) {
+        if (!SET.contains(servletPath) && !servletPath.contains("test")) {
             HttpSession session = request.getSession(false);
             String token = request.getHeader("token");
             if (session == null) {

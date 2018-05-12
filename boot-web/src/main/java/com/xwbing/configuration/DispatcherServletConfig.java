@@ -4,6 +4,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.xwbing.handler.LoginInterceptor;
+import com.xwbing.handler.UrlPermissionsInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -28,12 +29,21 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        //拦截器1:登录判断
-        registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**");
-//        registry.addInterceptor(new LoginInterceptor())
-//                .addPathPatterns("/**").excludePathPatterns("/user/login", "/servlet/captchaCode", "/swagger-ui.html");
-        //拦截器2...
+        //登录拦截器
+        registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**").excludePathPatterns("/user/login");
+        //权限拦截器
+        registry.addInterceptor(urlPermissionsInterceptor()).addPathPatterns("/**").excludePathPatterns("/user/login");
         super.addInterceptors(registry);
+    }
+
+    /**
+     * 权限拦截器
+     *
+     * @return
+     */
+    @Bean
+    public UrlPermissionsInterceptor urlPermissionsInterceptor() {
+        return new UrlPermissionsInterceptor();
     }
 
     /**
@@ -68,7 +78,6 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         //路由配置
-        registry.addViewController("/").setViewName("login.html");
         registry.addViewController("druid").setViewName("druid/index.html");
         //重定向
         registry.addRedirectViewController("doc", "swagger-ui.html");
