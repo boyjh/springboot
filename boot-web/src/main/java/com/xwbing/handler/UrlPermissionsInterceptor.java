@@ -10,6 +10,7 @@ import com.xwbing.service.sys.SysAuthorityService;
 import com.xwbing.service.sys.SysUserService;
 import com.xwbing.util.CommonDataUtil;
 import com.xwbing.util.RestMessage;
+import com.xwbing.util.ThreadLocalUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -53,7 +54,7 @@ public class UrlPermissionsInterceptor extends HandlerInterceptorAdapter {
         String servletPath = request.getServletPath().substring(1);
         if (!SET.contains(servletPath) && !servletPath.contains("test")) {
             if (checkUrlExit(servletPath)) {
-                List<String> permissionList = permissionList(request);
+                List<String> permissionList = permissionList();
                 if (CollectionUtils.isNotEmpty(permissionList) && permissionList.contains(servletPath)) {
                     return true;
                 } else {
@@ -79,8 +80,8 @@ public class UrlPermissionsInterceptor extends HandlerInterceptorAdapter {
      *
      * @return
      */
-    private List<String> permissionList(HttpServletRequest request) {
-        String token = request.getHeader("token");
+    private List<String> permissionList() {
+        String token = ThreadLocalUtil.getToken();
         String userName = (String) CommonDataUtil.getData(token);
         SysUser user = sysUserService.getByUserName(userName);
         List<SysAuthority> sysAuthorities;
@@ -99,7 +100,7 @@ public class UrlPermissionsInterceptor extends HandlerInterceptorAdapter {
      * @return
      */
     private boolean checkUrlExit(String perms) {
-        boolean exitTag = false;
+        boolean exit = false;
         List<SysAuthority> list = sysAuthorityService.listByEnable("");
         if (CollectionUtils.isNotEmpty(list)) {
             for (SysAuthority sysAuthority : list) {
@@ -108,11 +109,11 @@ public class UrlPermissionsInterceptor extends HandlerInterceptorAdapter {
                     continue;
                 }
                 if (validateUrl.equalsIgnoreCase(perms)) {
-                    exitTag = true;
+                    exit= true;
                     break;
                 }
             }
         }
-        return exitTag;
+        return exit;
     }
 }
