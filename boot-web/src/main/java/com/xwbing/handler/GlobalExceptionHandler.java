@@ -5,8 +5,7 @@ import com.xwbing.exception.BusinessException;
 import com.xwbing.exception.PayException;
 import com.xwbing.exception.UtilException;
 import com.xwbing.util.JsonResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
@@ -32,8 +31,8 @@ import java.util.stream.Collectors;
  */
 // 作用在所有注解了@RequestMapping的控制器的方法上
 @ControllerAdvice
+@Slf4j
 public class GlobalExceptionHandler {
-    private final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
     /**
      * 自定义业务异常
@@ -47,7 +46,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
     public JSONObject handlerBusinessException(BusinessException ex) {
-        logger.error(ex.getMessage());
+        log.error(ex.getMessage());
         return JsonResult.toJSONObj(ex.getMessage());
     }
 
@@ -61,7 +60,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
     public JSONObject handlerUtilException(UtilException ex) {
-        logger.error(ex.getMessage());
+        log.error(ex.getMessage());
         return JsonResult.toJSONObj(ex.getMessage());
     }
 
@@ -75,7 +74,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
     public JSONObject handlerPayException(PayException ex) {
-        logger.error(ex.getMessage());
+        log.error(ex.getMessage());
         return JsonResult.toJSONObj(ex.getMessage());
     }
 
@@ -91,7 +90,7 @@ public class GlobalExceptionHandler {
     public JSONObject handlerCompletionException(CompletionException ex) {
         Throwable cause = ex.getCause();
         String errorMessages = cause.getMessage();
-        logger.error(errorMessages);
+        log.error(errorMessages);
         String detail = cause.toString();
         if (!detail.contains("BusinessException")) {
             errorMessages = "异步获取数据出错";
@@ -112,7 +111,7 @@ public class GlobalExceptionHandler {
     public JSONObject handlerBindException(HttpServletRequest request, HttpServletResponse response, BindException ex) {
         List<ObjectError> list = ex.getAllErrors();
         String errorMessages = list.stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.joining("&&"));
-        logger.error(errorMessages);
+        log.error(errorMessages);
         response.setStatus(HttpStatus.OK.value());
         return JsonResult.toJSONObj(errorMessages);
     }
@@ -130,7 +129,7 @@ public class GlobalExceptionHandler {
         BindingResult bindingResult = ex.getBindingResult();
         List<ObjectError> allErrors = bindingResult.getAllErrors();
         String errorMessages = allErrors.stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.joining("&&"));
-        logger.error(errorMessages);
+        log.error(errorMessages);
         return JsonResult.toJSONObj(errorMessages);
     }
 
@@ -144,7 +143,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     @ResponseBody
     public JSONObject handlerException(Exception ex) {
-        logger.error(ex.getMessage());
+        log.error(ex.getMessage());
         return JsonResult.toJSONObj("系统异常,请联系管理员");
     }
 }

@@ -1,10 +1,6 @@
 package com.xwbing.demo;
 
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import lombok.extern.java.Log;
 
 /**
  * 项目名称: boot-module-demo
@@ -12,10 +8,10 @@ import java.util.stream.Collectors;
  * 作者: xiangwb
  * 说明: 测试用
  */
+@Log
 public class Ademo {
     public static void main(String[] args) {
-        List<String> list=new ArrayList<>();
-        List<String> collect = list.stream().filter(s -> StringUtils.isNotEmpty(s)).collect(Collectors.toList());
-        String[] s={"a","b"};
+
+
     }
 }

@@ -2,8 +2,7 @@ package com.xwbing.configuration;
 
 import com.xwbing.handler.FormRepeatFilter;
 import com.xwbing.util.captcha.CaptchaServlet;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -15,13 +14,12 @@ import org.springframework.context.annotation.Configuration;
  * 创建时间: 2017/5/10 16:36
  * 作者:  xiangwb
  */
+@Slf4j
 @Configuration
 public class ServletFilterConfig {
-    private final Logger logger = LoggerFactory.getLogger(ServletFilterConfig.class);
-
     @Bean
     public ServletRegistrationBean captchaServlet() {
-        logger.info("注册登陆验证码servlet ======================= ");
+        log.info("注册登陆验证码servlet ======================= ");
         ServletRegistrationBean registration = new ServletRegistrationBean(new CaptchaServlet());
         registration.addUrlMappings("/captcha");
         return registration;
@@ -31,7 +29,7 @@ public class ServletFilterConfig {
 
     @Bean
     public FilterRegistrationBean formSaveFilter() {
-        logger.info("注册表单重复提交过滤器formSaveFilter ======================= ");
+        log.info("注册表单重复提交过滤器formSaveFilter ======================= ");
         FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new FormRepeatFilter());
         filterRegistrationBean.addUrlPatterns("/*");
         filterRegistrationBean.addInitParameter("excludePath", "/doc,/captcha,/v2/api-docs,/swagger-resources,/configuration/ui,/configuration/security,/druid");

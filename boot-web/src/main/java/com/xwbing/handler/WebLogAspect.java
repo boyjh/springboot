@@ -2,14 +2,13 @@ package com.xwbing.handler;
 
 import com.xwbing.annotation.LogInfo;
 import com.xwbing.util.IpUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -28,10 +27,10 @@ import java.util.stream.Collectors;
  * 创建时间: 2017/5/10 16:34
  * 作者:  xiangwb
  */
+@Slf4j
 @Aspect
 @Component
 public class WebLogAspect {
-    private final Logger logger = LoggerFactory.getLogger(WebLogAspect.class);
     private final ThreadLocal<Long> startTime = new ThreadLocal<>();
 
     @Pointcut("within(com.xwbing.controller..*) && @annotation(logInfo)")
@@ -67,7 +66,7 @@ public class WebLogAspect {
         if (args != null && args.length > 0) {
             params = Arrays.stream(args).filter(o -> !(o instanceof HttpServletRequest || o instanceof HttpServletResponse)).collect(Collectors.toList());
         }
-        logger.info("{}/{}:{} started 参数:{}", targetName, methodName, info, params);
+        log.info("{}/{}:{} started 参数:{}", targetName, methodName, info, params);
     }
 
     /**
@@ -82,7 +81,7 @@ public class WebLogAspect {
         String info = logInfo.value();
         String targetName = joinPoint.getTarget().getClass().getName();
         String methodName = joinPoint.getSignature().getName();
-        logger.info("{}/{}:{} completed in {} ms", targetName, methodName, info, ms);
+        log.info("{}/{}:{} completed in {} ms", targetName, methodName, info, ms);
     }
 
     /**
@@ -92,7 +91,7 @@ public class WebLogAspect {
      */
     // @AfterThrowing(pointcut = "pointCut()", throwing = "e")
     public void afterThroing(Exception e) {
-        logger.error("异常信息:{}", e.getMessage());
+        log.error("异常信息:{}", e.getMessage());
     }
 
     /**
@@ -107,11 +106,11 @@ public class WebLogAspect {
         String info = logInfo.value();// 获取注解信息
         Object result = null;// 被代理对象方法返回的结果
         try {
-            logger.info("{} start", info);
+            log.info("{} start", info);
             result = pjp.proceed();
-            logger.info("{} end", info);
+            log.info("{} end", info);
         } catch (Throwable e) {
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
         }
         return result;
     }

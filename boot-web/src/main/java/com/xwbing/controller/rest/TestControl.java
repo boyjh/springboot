@@ -14,9 +14,8 @@ import com.xwbing.util.JsonResult;
 import com.xwbing.util.RSAUtil;
 import com.xwbing.util.RestMessage;
 import io.swagger.annotations.Api;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -32,6 +31,7 @@ import java.util.concurrent.CompletableFuture;
  * 创建时间: 2017/5/5 9:21
  * 作者:  xiangwb
  */
+@Slf4j
 @Api(tags = "testApi", description = "测试相关接口")
 @RestController
 @RequestMapping("/test/")
@@ -46,7 +46,6 @@ public class TestControl {
     private CookieSessionService cookieSessionService;
     @Resource
     private Sender sender;
-    private final Logger logger = LoggerFactory.getLogger(TestControl.class);
 
     @GetMapping("send")
     public void sendM(@RequestParam String[] msg) {
@@ -58,14 +57,14 @@ public class TestControl {
     public void redis() {
         redisService.set("redis", "xwbing");
         String s = redisService.get("redis");
-        logger.info("redis获取的数据为:" + s);
+        log.info("redis获取的数据为:" + s);
     }
 
     @LogInfo("log功能测试")
     @GetMapping("log")
     public void log() {
-        logger.info("info test");
-        logger.error("error test");
+        log.info("info test");
+        log.error("error test");
     }
 
     @LogInfo("获取快递列表")

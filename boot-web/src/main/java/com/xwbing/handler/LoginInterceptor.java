@@ -1,13 +1,11 @@
 package com.xwbing.handler;
 
 import com.alibaba.fastjson.JSON;
-import com.xwbing.configuration.DispatcherServletConfig;
 import com.xwbing.util.CommonDataUtil;
 import com.xwbing.util.RestMessage;
 import com.xwbing.util.ThreadLocalUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,8 +22,8 @@ import java.util.Set;
  * 创建时间: 2017/5/10 16:36
  * 作者:  xiangwb
  */
+@Slf4j
 public class LoginInterceptor extends HandlerInterceptorAdapter {
-    private final Logger logger = LoggerFactory.getLogger(DispatcherServletConfig.class);
     private static final Set<String> SET = new HashSet<>();//拦截器白名单
 
     static {
@@ -74,7 +72,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 
     private void getOutputStream(HttpServletResponse response, String msg) {
         try {
-            logger.error(msg);
+            log.error(msg);
             OutputStream outputStream = response.getOutputStream();
             RestMessage restMessage = new RestMessage();
             restMessage.setMessage(msg);
