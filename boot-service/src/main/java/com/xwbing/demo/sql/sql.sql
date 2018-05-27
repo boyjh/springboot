@@ -19,8 +19,8 @@ mysql -u用户名 -p密码
 mysql -hIP地址 -u用户名 -p密码
 修改密码
 mysqladmin -u用户名 -p旧密码 password 新密码
-导出数据库文件
-mysqldump -u用户名 -p密码 数据库名 > F:/file.sql
+导出数据库
+mysqldump -u用户名 -p密码 数据库名 > sql文件名
 
 status;
 show databases;
