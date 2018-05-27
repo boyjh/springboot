@@ -36,7 +36,7 @@ public class ReflectDemo {
          */
         //获取所有方法
 //        Method[] publicMethods = clazz.getMethods();//得到clazz对应的类中有哪些方法,不能获取private方法
-        Method[] declaredMethods = clazz.getDeclaredMethods();//获取所有的方法(且只获取当前类声明的方法，包括private方法）
+        Method[] allMethods = clazz.getDeclaredMethods();//获取所有的方法(且只获取当前类声明的方法，包括private方法）
         //获取指定方法
         Method privateMethod = clazz.getDeclaredMethod("privateMethod");
         Method method = clazz.getDeclaredMethod("setName", String.class, int.class);//第一个参数是方法名，后面的是方法里的参数
