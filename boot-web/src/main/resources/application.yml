@@ -59,6 +59,10 @@ spring:
      cache:
        channel:
          size: 1
+#mybatis
+mybatis:
+  mapper-locations:
+  config-location:
 #log
 logging:
   config: classpath:log4j2.xml
