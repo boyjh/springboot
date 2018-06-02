@@ -67,7 +67,7 @@ public class UserRealm extends AuthorizingRealm {
             //用户的权限集合
             Set<String> permissions = new HashSet<>();
             List<SysAuthority> sysAuthorities;
-            if (CommonConstant.IS_ENABLE.equalsIgnoreCase(user.getAdmin())) {
+            if (CommonConstant.IS_ENABLE.equalsIgnoreCase(user.getIsAdmin())) {
                 sysAuthorities = sysAuthorityService.listByEnable(CommonEnum.YesOrNoEnum.YES.getCode());
             } else {
                 sysAuthorities = sysUserService.listAuthorityByIdAndEnable(user.getId(), "Y");
