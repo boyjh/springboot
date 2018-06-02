@@ -3,7 +3,10 @@ package com.xwbing.controller.rest;
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.annotation.LogInfo;
 import com.xwbing.domain.entity.ExpressInfo;
+import com.xwbing.domain.entity.sys.SysUser;
 import com.xwbing.domain.entity.vo.ExpressInfoVo;
+import com.xwbing.domain.mapper.SysUserMapper;
+import com.xwbing.exception.BusinessException;
 import com.xwbing.rabbit.Sender;
 import com.xwbing.redis.RedisService;
 import com.xwbing.service.rest.CookieSessionService;
@@ -16,6 +19,7 @@ import com.xwbing.util.RestMessage;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -46,7 +50,14 @@ public class TestControl {
     private CookieSessionService cookieSessionService;
     @Resource
     private Sender sender;
-
+    @Resource
+    private SysUserMapper  sysUserMapper;
+    @Transactional
+    @PostMapping("save")
+    public void save(@RequestBody SysUser sysUser) {
+        int save = sysUserMapper.save(sysUser);
+        System.out.println("shiwi");
+    }
     @GetMapping("send")
     public void sendM(@RequestParam String[] msg) {
         sender.sendM(msg);

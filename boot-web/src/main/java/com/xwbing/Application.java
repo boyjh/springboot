@@ -2,7 +2,6 @@ package com.xwbing;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * 项目名称: boot-module-demo
@@ -10,9 +9,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * 作者: boot-module-demo
  * 说明: 启动类
  */
-//@EnableRabbit
 @SpringBootApplication
-@EnableTransactionManagement
 //@Configuration 定义为配置类,相当于xml文件中的<beans></beans>
 //@ComponentScan 组件扫描
 //@EnableAutoConfiguration 借助@Import的帮助,将所有符合自动配置条件的bean定义加载到IoC容器

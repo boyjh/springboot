@@ -4,31 +4,30 @@ import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import javax.sql.DataSource;
 
 /**
- * 说明: 德鲁伊数据源配置。监控地址:datasource/index.html
+ * 说明: MybatisDataSourceConfig
  * 项目名称: boot-module-demo
  * 创建时间: 2017/12/10 16:36
  * 作者:  xiangwb
  */
 @Configuration
-@MapperScan(basePackages = "", sqlSessionFactoryRef = "mybatisSqlSessionFactory")
+@MapperScan(basePackages = {"com.xwbing.domain.mapper"}, sqlSessionFactoryRef = "mybatisSqlSessionFactory")
 @PropertySource("classpath:druid.properties")
 public class MybatisDataSourceConfig {
-    private final Logger logger = LoggerFactory.getLogger(MybatisDataSourceConfig.class);
-
+    @Primary
     @Bean(name = "mybatisDatasource")
-    @ConfigurationProperties("db2")
+    @ConfigurationProperties("db1")
     public DataSource dataSource() {
         return DruidDataSourceBuilder.create().build();
     }
@@ -37,12 +36,15 @@ public class MybatisDataSourceConfig {
     public SqlSessionFactory sqlSessionFactory() throws Exception {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(dataSource());
-        sqlSessionFactoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:mapper/*.xml"));
+        sqlSessionFactoryBean.setTypeAliasesPackage("com.xwbing.domain.entity");
+        PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+        sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath:mapper/*.xml"));
         return sqlSessionFactoryBean.getObject();
     }
 
+    @Primary
     @Bean(name = "mybatisTransactionManager")
-    public DataSourceTransactionManager dataSourceTransactionManager() {
+    public PlatformTransactionManager dataSourceTransactionManager() {
         return new DataSourceTransactionManager(dataSource());
     }
 }

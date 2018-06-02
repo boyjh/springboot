@@ -7,7 +7,6 @@ server:
 
 #spring
 spring:
-  #datasource
 #  datasource:
 #    driver-class-name: com.mysql.jdbc.Driver
 #    url: jdbc:mysql://127.0.0.1:3306/springboot2?useUnicode=true&characterEncoding=utf8
@@ -61,8 +60,9 @@ spring:
          size: 1
 #mybatis
 mybatis:
-  mapper-locations:
-  config-location:
+  mapper-locations: #classpath:mapper/*.xml
+  type-aliases-package: #com.xwbing.domain.entity
+  config-location: # classpath:mybatisConfig.xml
 #log
 logging:
   config: classpath:log4j2.xml

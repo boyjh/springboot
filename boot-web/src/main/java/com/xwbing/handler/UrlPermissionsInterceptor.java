@@ -83,7 +83,7 @@ public class UrlPermissionsInterceptor extends HandlerInterceptorAdapter {
         String userName = (String) CommonDataUtil.getData(token);
         SysUser user = sysUserService.getByUserName(userName);
         List<SysAuthority> sysAuthorities;
-        if (CommonConstant.IS_ENABLE.equalsIgnoreCase(user.getAdmin())) {
+        if (CommonConstant.IS_ENABLE.equalsIgnoreCase(user.getIsAdmin())) {
             sysAuthorities = sysAuthorityService.listByEnable(CommonEnum.YesOrNoEnum.YES.getCode());
         } else {
             sysAuthorities = sysUserService.listAuthorityByIdAndEnable(user.getId(), "Y");

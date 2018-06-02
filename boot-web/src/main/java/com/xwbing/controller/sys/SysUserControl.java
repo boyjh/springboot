@@ -162,7 +162,7 @@ public class SysUserControl {
         List<SysAuthority> button = new ArrayList<>();
         List<SysAuthority> menu = new ArrayList<>();
         List<SysAuthority> list;
-        if (CommonEnum.YesOrNoEnum.YES.getCode().equalsIgnoreCase(sysUser.getAdmin())) {
+        if (CommonEnum.YesOrNoEnum.YES.getCode().equalsIgnoreCase(sysUser.getIsAdmin())) {
             list = sysAuthorityService.listByEnable(CommonEnum.YesOrNoEnum.YES.getCode());
         } else {
             list = sysUserService.listAuthorityByIdAndEnable(sysUser.getId(), CommonEnum.YesOrNoEnum.YES.getCode());
@@ -195,7 +195,7 @@ public class SysUserControl {
         if (old == null) {
             return JsonResult.toJSONObj("该用户不存在");
         }
-        if (CommonEnum.YesOrNoEnum.YES.getCode().equalsIgnoreCase(old.getAdmin())) {
+        if (CommonEnum.YesOrNoEnum.YES.getCode().equalsIgnoreCase(old.getIsAdmin())) {
             return JsonResult.toJSONObj("不能对管理员进行操作");
         }
         String[] ids = roleIds.split(",");

@@ -67,7 +67,7 @@ public class SysUserService {
         sysUser.setSalt(res[1]);
         sysUser.setPassword(res[2]);
         // 设置为非管理员
-        sysUser.setAdmin(CommonEnum.YesOrNoEnum.NO.getCode());
+        sysUser.setIsAdmin(CommonEnum.YesOrNoEnum.NO.getCode());
         SysUser one = sysUserRepository.save(sysUser);
         if (one == null) {
             throw new BusinessException("新增用户失败");
@@ -98,7 +98,7 @@ public class SysUserService {
         if (old.getUserName().equals(userName)) {
             throw new BusinessException("不能删除当前登录用户");
         }
-        if (CommonEnum.YesOrNoEnum.YES.getCode().equals(old.getAdmin())) {
+        if (CommonEnum.YesOrNoEnum.YES.getCode().equals(old.getIsAdmin())) {
             throw new BusinessException("不能对管理员进行删除操作");
         }
         //删除用户
@@ -131,7 +131,7 @@ public class SysUserService {
         if (old.getUserName().equals(userName)) {
             throw new BusinessException("不能修改当前登录用户");
         }
-        if (CommonEnum.YesOrNoEnum.YES.getCode().equals(old.getAdmin())) {
+        if (CommonEnum.YesOrNoEnum.YES.getCode().equals(old.getIsAdmin())) {
             throw new BusinessException("不能对管理员进行修改操作");
         }
         // 根据实际情况补充
@@ -209,7 +209,7 @@ public class SysUserService {
         if (old.getUserName().equals(userName)) {
             throw new BusinessException("不能重置当前登录用户");
         }
-        if (CommonEnum.YesOrNoEnum.YES.getCode().equals(old.getAdmin())) {
+        if (CommonEnum.YesOrNoEnum.YES.getCode().equals(old.getIsAdmin())) {
             throw new BusinessException("管理员密码不能重置");
         }
         //生成密码
@@ -411,7 +411,7 @@ public class SysUserService {
             UserDto temp;
             for (SysUser info : list) {
                 temp = new UserDto();
-                temp.setIsAdmin(CommonEnum.YesOrNoEnum.YES.getCode().equals(info.getAdmin()) ? "是" : "否");
+                temp.setIsAdmin(CommonEnum.YesOrNoEnum.YES.getCode().equals(info.getIsAdmin()) ? "是" : "否");
                 temp.setMail(info.getMail());
                 temp.setName(info.getName());
                 temp.setSex(Integer.valueOf(info.getSex()) == 1 ? "男" : "女");
