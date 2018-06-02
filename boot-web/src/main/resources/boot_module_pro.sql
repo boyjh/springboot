@@ -2,15 +2,15 @@
 Navicat MySQL Data Transfer
 
 Source Server         : localhost_3306
-Source Server Version : 50624
+Source Server Version : 50722
 Source Host           : localhost:3306
-Source Database       : springboot2
+Source Database       : xwbing
 
 Target Server Type    : MYSQL
-Target Server Version : 50624
+Target Server Version : 50722
 File Encoding         : 65001
 
-Date: 2018-02-26 17:50:29
+Date: 2018-06-02 10:15:53
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -61,7 +61,6 @@ CREATE TABLE `system_config` (
 -- Records of system_config
 -- ----------------------------
 INSERT INTO `system_config` VALUES ('20546fc269c84b1d9a2687a9f595fa01', '2017-11-06 16:04:17', null, '2018-01-18 15:50:10', null, 'email_config', 'Y', '邮箱配置', '{\'serverHost\':\'smtp.163.com\',\'serverPort\':25,\'serverHost\':\'smtp.163.com\',\'protocol\':\'smtp\',\'auth\':true,\'fromEmail\':\'xwbing2009@163.com\',\'password\':\'xwbing900417\',\'subject\':\'注册成功\',\'centent\':\'注册成功\'}');
-INSERT INTO `system_config` VALUES ('e3754c17af7f40de833e443dc9f47f50', '2017-11-06 16:27:58', null, '2017-11-13 16:19:33', null, '44', 'N', '3344', '44');
 
 -- ----------------------------
 -- Table structure for `sys_authority`
@@ -114,18 +113,17 @@ CREATE TABLE `sys_role` (
   `name` varchar(255) CHARACTER SET utf8 NOT NULL,
   `remark` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `enable` varchar(255) DEFAULT NULL,
-  `is_enable` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
-INSERT INTO `sys_role` VALUES ('491e0d8765ac43bfa017940bde47c90b', '2017-11-15 14:12:21', null, null, null, 'business', '业务员', '业务员', 'N', '');
-INSERT INTO `sys_role` VALUES ('72a50656b534436f89665bcb6cfdd620', '2017-11-14 11:30:21', null, null, null, 'admin', '管理员', '管理人员', 'Y', '');
-INSERT INTO `sys_role` VALUES ('76ff321b45404849ac2f04ce710b2e25', '2017-11-14 11:31:14', null, null, null, 'protector', '安保人员', '安保人员', 'Y', '');
-INSERT INTO `sys_role` VALUES ('c71040053f6a4728805f7a163b65129d', '2017-11-14 11:33:14', null, null, null, 'cleanner', '保洁人员', '保洁人员', 'Y', '');
-INSERT INTO `sys_role` VALUES ('e6cd98be7f384eba946a8895ece97d96', '2017-11-14 11:32:08', null, null, null, 'maintenance', '维修人员', '维修人员', 'Y', '');
+INSERT INTO `sys_role` VALUES ('491e0d8765ac43bfa017940bde47c90b', '2017-11-15 14:12:21', null, null, null, 'business', '业务员', '业务员', 'N');
+INSERT INTO `sys_role` VALUES ('72a50656b534436f89665bcb6cfdd620', '2017-11-14 11:30:21', null, null, null, 'admin', '管理员', '管理人员', 'Y');
+INSERT INTO `sys_role` VALUES ('76ff321b45404849ac2f04ce710b2e25', '2017-11-14 11:31:14', null, null, null, 'protector', '安保人员', '安保人员', 'Y');
+INSERT INTO `sys_role` VALUES ('c71040053f6a4728805f7a163b65129d', '2017-11-14 11:33:14', null, null, null, 'cleanner', '保洁人员', '保洁人员', 'Y');
+INSERT INTO `sys_role` VALUES ('e6cd98be7f384eba946a8895ece97d96', '2017-11-14 11:32:08', null, null, null, 'maintenance', '维修人员', '维修人员', 'Y');
 
 -- ----------------------------
 -- Table structure for `sys_role_authority`
@@ -171,23 +169,17 @@ CREATE TABLE `sys_user_info` (
   `salt` varchar(255) DEFAULT NULL,
   `sex` varchar(255) NOT NULL,
   `user_name` varchar(20) NOT NULL,
-  `admin` varchar(255) DEFAULT NULL,
+  `idd` int(11) DEFAULT NULL,
+  `is_admin` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of sys_user_info
 -- ----------------------------
-INSERT INTO `sys_user_info` VALUES ('0c5e88ea04de4a3d8db4099387f3bb77', '2017-11-21 15:42:05', null, null, null, '786461501@qq.com', 'httptest', '62f90411d4ba339c5a83409e179238aaf8841974', 'f9e85e7fd8ca7b5a073a', '1', 'httptest3', 'N');
-INSERT INTO `sys_user_info` VALUES ('44dad0e4f1934112bec0cff69b3f1cac', '2017-11-06 13:54:52', null, '2017-11-06 13:55:53', null, '786461501@qq.com', '王亚', '0ced021c7b7f16533dfef5a126c39418c1660d01', 'de9b2a362b490e051f3a', '0', 'wangy', 'N');
-INSERT INTO `sys_user_info` VALUES ('4adfaecc725843928eb8268a2b84f0f6', '2017-11-06 16:19:21', null, null, null, '785@145.com', 'sdfs', 'e86093432da2db2b9f5113acbf90ee92dfa0f517', 'ec8fb86d1b3d455e653c', '0', 'x', 'N');
-INSERT INTO `sys_user_info` VALUES ('78425d59a2d64e49abe563d4de013d22', '2017-11-06 13:25:19', null, '2017-11-06 14:02:08', null, '786461501@qq.com', '项伟兵', '31002bc701a94519b2eb68a6872f96597ea23d9e', '67b749c4c2b09675b9b4', '1', 'xwbing', 'Y');
-INSERT INTO `sys_user_info` VALUES ('87bf8d568dc64885abcdba8a4e6033d1', '2017-11-06 17:02:10', null, null, null, '786461501@qq.com', '临安', 'eaec849f61c5c9e3c46cf4e5c50842d85d1228af', '9645cd47d6bdcc72b364', '1', 'sdd', 'N');
-INSERT INTO `sys_user_info` VALUES ('9648cf32a75d4d1999a70e7749780ec1', '2017-11-06 13:27:01', null, '2017-11-07 09:33:03', null, '786461501@qq.com', '李涛', '710a5f73d6ea51ffda3e8aac89cc13c4347822ab', 'a4c9b6960b25ffdfa72e', '1', 'lit', 'N');
-INSERT INTO `sys_user_info` VALUES ('a12ac022515c47e6a878751bd51a7a95', '2017-11-06 16:51:41', null, '2017-11-07 09:34:27', null, '786461501@qq.com', '临安', '6701399fdf14aaa16084d61507ca252d5a3a2229', '8e0af0a7177a503902f6', '1', 'sgdd', 'N');
-INSERT INTO `sys_user_info` VALUES ('eef0743114434d6fbf83123431599296', '2017-11-21 15:40:01', null, null, null, '786461501@qq.com', 'httptest', 'ca5ed563423211ec615f20af3d60e48b96806835', 'd2e7d2fcbddf7ec72d39', '1', 'httptest1', 'N');
-INSERT INTO `sys_user_info` VALUES ('efbc60092762432dbaa40866f012d436', '2017-11-21 15:40:15', null, null, null, '786461501@qq.com', 'httptest', 'ee7959343885476491037a3f1985c6a5ada5edbe', '25483d5ce699c6489a2f', '1', 'httptest2', 'N');
-INSERT INTO `sys_user_info` VALUES ('f2ee3e6aee5b48dcb0b8350ccecad0ae', '2017-11-21 15:39:21', null, null, null, '786461501@qq.com', 'httptest', 'f8aa1331effc6a0b623ccfa019c34d2ebd311cce', '6878c5036f17983bfcff', '1', 'httptest', 'N');
+INSERT INTO `sys_user_info` VALUES ('44dad0e4f1934112bec0cff69b3f1cac', '2017-11-06 13:54:52', null, '2017-11-06 13:55:53', null, '786461501@qq.com', '王亚', '0ced021c7b7f16533dfef5a126c39418c1660d01', 'de9b2a362b490e051f3a', '0', 'wangy', null, 'N');
+INSERT INTO `sys_user_info` VALUES ('78425d59a2d64e49abe563d4de013d22', '2017-11-06 13:25:19', null, '2017-11-06 14:02:08', null, '786461501@qq.com', '项伟兵', '31002bc701a94519b2eb68a6872f96597ea23d9e', '67b749c4c2b09675b9b4', '1', 'xwbing', null, 'Y');
+INSERT INTO `sys_user_info` VALUES ('9648cf32a75d4d1999a70e7749780ec1', '2017-11-06 13:27:01', null, '2017-11-07 09:33:03', null, '786461501@qq.com', '李涛', '710a5f73d6ea51ffda3e8aac89cc13c4347822ab', 'a4c9b6960b25ffdfa72e', '1', 'lit', null, 'N');
 
 -- ----------------------------
 -- Table structure for `sys_user_login_in_out`
@@ -327,6 +319,7 @@ INSERT INTO `sys_user_login_in_out` VALUES ('cea2895a1c3f4e57b4db052dedc2e0c6', 
 INSERT INTO `sys_user_login_in_out` VALUES ('cf5c0f0fa1ee4aa79e14ed18563bf716', '2017-11-22 15:21:57', null, null, null, '1', '172.16.10.130', '78425d59a2d64e49abe563d4de013d22');
 INSERT INTO `sys_user_login_in_out` VALUES ('d1227ce63ee740b78c63d62087361e40', '2018-01-18 16:08:33', null, null, null, '1', '172.16.10.170', '78425d59a2d64e49abe563d4de013d22');
 INSERT INTO `sys_user_login_in_out` VALUES ('d36ba7987c094de39af274ede6867c8d', '2017-11-15 14:55:36', null, null, null, '1', '172.16.10.130', '78425d59a2d64e49abe563d4de013d22');
+INSERT INTO `sys_user_login_in_out` VALUES ('d3d1da46aaa549a3a213203f8a2b4415', '2018-05-27 20:22:11', null, null, null, '1', '192.168.1.8', '78425d59a2d64e49abe563d4de013d22');
 INSERT INTO `sys_user_login_in_out` VALUES ('d45908184e774e9e8cba4940a273c959', '2017-11-13 16:56:09', null, null, null, '1', '172.16.10.130', '78425d59a2d64e49abe563d4de013d22');
 INSERT INTO `sys_user_login_in_out` VALUES ('d4fd57e00a8a4ef7a8ed6c8c33e770e2', '2017-11-17 16:02:15', null, null, null, '1', '172.16.10.130', '78425d59a2d64e49abe563d4de013d22');
 INSERT INTO `sys_user_login_in_out` VALUES ('d84fbd0abb044d33b7a2942c817b0e8a', '2017-12-19 11:45:38', null, null, null, '1', '172.16.10.130', '78425d59a2d64e49abe563d4de013d22');
