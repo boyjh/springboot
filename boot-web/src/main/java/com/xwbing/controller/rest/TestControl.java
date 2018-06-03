@@ -5,8 +5,7 @@ import com.xwbing.annotation.LogInfo;
 import com.xwbing.domain.entity.ExpressInfo;
 import com.xwbing.domain.entity.sys.SysUser;
 import com.xwbing.domain.entity.vo.ExpressInfoVo;
-import com.xwbing.domain.mapper.SysUserMapper;
-import com.xwbing.exception.BusinessException;
+import com.xwbing.domain.mapper.sys.SysUserMapper;
 import com.xwbing.rabbit.Sender;
 import com.xwbing.redis.RedisService;
 import com.xwbing.service.rest.CookieSessionService;
@@ -56,6 +55,7 @@ public class TestControl {
     @PostMapping("save")
     public void save(@RequestBody SysUser sysUser) {
         int save = sysUserMapper.save(sysUser);
+        sysUserMapper.save(sysUser);
         System.out.println("shiwi");
     }
     @GetMapping("send")

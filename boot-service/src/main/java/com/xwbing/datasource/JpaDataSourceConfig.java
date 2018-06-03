@@ -1,18 +1,17 @@
 package com.xwbing.datasource;
 
-
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
@@ -20,12 +19,13 @@ import javax.sql.DataSource;
 import java.util.Map;
 
 /**
- * 项目名称: boot-module-demo
- * 创建时间: 2018/5/31 21:38
- * 作者: xiangwb
  * 说明: JpaDataSourceConfig
+ * 项目名称: boot-module-demo
+ * 创建时间: 2017/12/10 16:36
+ * 作者:  xiangwb
  */
 @Configuration
+@EnableTransactionManagement
 @PropertySource("classpath:druid.properties")
 @EnableJpaRepositories(
         entityManagerFactoryRef = "jpaEntityManagerFactory",
@@ -41,21 +41,39 @@ public class JpaDataSourceConfig {
         return DruidDataSourceBuilder.create().build();
     }
 
+    /**
+     * 配置entityManagerFactory
+     *
+     * @param builder
+     * @return
+     */
     @Bean(name = "jpaEntityManagerFactory")
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(EntityManagerFactoryBuilder builder) {
         return builder
                 .dataSource(dataSource())
-                .properties(getProperties(dataSource()))
+                .properties(getVendorProperties(dataSource()))
                 .packages("com.xwbing.domain.entity")
                 .persistenceUnit("jpaPersistenceUnit")
                 .build();
     }
 
+    /**
+     * 配置entityManager
+     *
+     * @param builder
+     * @return
+     */
     @Bean(name = "japEntityManager")
     public EntityManager entityManager(EntityManagerFactoryBuilder builder) {
         return entityManagerFactory(builder).getObject().createEntityManager();
     }
 
+    /**
+     * 配置事务
+     *
+     * @param builder
+     * @return
+     */
     @Bean(name = "jpaTransactionManager")
     public PlatformTransactionManager dataSourceTransactionManager(EntityManagerFactoryBuilder builder) {
         return new JpaTransactionManager(entityManagerFactory(builder).getObject());
@@ -67,7 +85,7 @@ public class JpaDataSourceConfig {
      * @param dataSource
      * @return
      */
-    private Map<String, String> getProperties(DataSource dataSource) {
+    private Map<String, String> getVendorProperties(DataSource dataSource) {
         return jpaProperties.getHibernateProperties(dataSource);
     }
 }
