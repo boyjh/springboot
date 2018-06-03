@@ -53,10 +53,10 @@ public class TestControl {
     private SysUserMapper  sysUserMapper;
     @Transactional
     @PostMapping("save")
-    public void save(@RequestBody SysUser sysUser) {
-        int save = sysUserMapper.save(sysUser);
-        sysUserMapper.save(sysUser);
-        System.out.println("shiwi");
+    public JSONObject save(@RequestBody SysUser sysUser) {
+        List<SysUser> findall = sysUserMapper.findall();
+        findall.forEach(sysUser1 -> sysUser1.setCreate("aaa"));
+       return JsonResult.toJSONObj(findall,"");
     }
     @GetMapping("send")
     public void sendM(@RequestParam String[] msg) {

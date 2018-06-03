@@ -26,8 +26,8 @@ import javax.sql.DataSource;
 @PropertySource("classpath:druid.properties")
 public class MybatisDataSourceConfig {
     @Primary
-    @Bean(name = "mybatisDatasource")
     @ConfigurationProperties("db1")
+    @Bean(name = "mybatisDatasource")
     public DataSource dataSource() {
         return DruidDataSourceBuilder.create().build();
     }
@@ -38,7 +38,7 @@ public class MybatisDataSourceConfig {
         sqlSessionFactoryBean.setDataSource(dataSource());
         sqlSessionFactoryBean.setTypeAliasesPackage("com.xwbing.domain.entity");
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-        sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath:mapper/*.xml"));
+        sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath:mapper/**/*.xml"));
         return sqlSessionFactoryBean.getObject();
     }
 
