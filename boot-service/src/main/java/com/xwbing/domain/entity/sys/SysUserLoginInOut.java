@@ -12,16 +12,12 @@ import javax.persistence.Entity;
  * 作者: xiangwb
  * 说明: 用户登录登出信息
  */
-@EqualsAndHashCode(callSuper = true)
 @Data
-@Entity(name = "sys_user_login_in_out")
 public class SysUserLoginInOut extends BaseEntity {
     private static final long serialVersionUID = -2719103095945780275L;
     public static String table = "sys_user_login_in_out";
     private String ip;
-    @Column(name = "inout_type")
     private int inoutType;
-    @Column(name = "user_id")
     private String userId;
     //临时字段
     private transient String userIdName;

@@ -12,9 +12,7 @@ import javax.persistence.Entity;
  * 创建时间: 2017/5/10 16:36
  * 作者:  xiangwb
  */
-@EqualsAndHashCode(callSuper = true)
 @Data
-@Entity(name = "sys_role")
 public class SysRole extends BaseEntity {
     private static final long serialVersionUID = -3048021197170624143L;
     public static String table = "sys_role";

@@ -13,9 +13,7 @@ import javax.persistence.Entity;
  * 创建时间: 2017/5/10 16:36
  * 作者:  xiangwb
  */
-@EqualsAndHashCode(callSuper = true)
 @Data
-@Entity(name = "sys_authority")
 public class SysAuthority extends BaseEntity {
     private static final long serialVersionUID = -6469518352117371987L;
     public static String table = "sys_authority";
@@ -28,7 +26,6 @@ public class SysAuthority extends BaseEntity {
     @ApiModelProperty(value = "url地址", required = true)
     private String url;
     @ApiModelProperty(value = "父ID")
-    @Column(name = "parent_id")
     private String parentId;
     @ApiModelProperty(value = "类型(菜单:1|按钮:2)", example = "1", required = true)
     private Integer type;

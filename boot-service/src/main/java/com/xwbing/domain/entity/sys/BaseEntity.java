@@ -17,12 +17,9 @@ import java.util.Date;
  * 作者:  xiangwb
  */
 @Data
-@MappedSuperclass
 @ApiModel
 public class BaseEntity implements Serializable {
     private static final long serialVersionUID = 8901948362657956187L;
-    @Id
-    @Column(length = 50)
     @ApiModelProperty(value = "主键")
     private String id;
     @ApiModelProperty(value = "创建者",hidden = true)
@@ -30,9 +27,7 @@ public class BaseEntity implements Serializable {
     @ApiModelProperty(value = "修改者",hidden = true)
     private String modifier;
     @ApiModelProperty(value = "创建时间",hidden = true)
-    @Column(name = "create_time")
     private Date createTime;
     @ApiModelProperty(value = "修改时间",hidden = true)
-    @Column(name = "modified_time")
     private Date modifiedTime;
 }

@@ -1,6 +1,6 @@
 package com.xwbing.domain.mapper.sys;
 
-import com.xwbing.domain.entity.sys.SysUser;
+import com.xwbing.domain.entity.sys.SysUserRole;
 import com.xwbing.domain.mapper.BaseMapper;
 
 import java.util.List;
@@ -11,8 +11,6 @@ import java.util.List;
  * 作者: xiangwb
  * 说明:
  */
-public interface SysUserMapper extends BaseMapper<SysUser> {
-//    @Select("select * from sys_user_info")
-    List<SysUser> findall();
-    int save(SysUser sysUser);
+public interface SysUserRoleMapper extends BaseMapper<SysUserRole> {
+    List<SysUserRole> findByUserId(String userId);
 }

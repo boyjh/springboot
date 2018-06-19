@@ -40,10 +40,10 @@ public class ApplicationContextConfig {
      *
      * @return
      */
-    @Bean
+    @Bean(name = "multipartResolver")
     public CommonsMultipartResolver getCommonsMultipartResolver() {
         CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-        multipartResolver.setMaxUploadSize(104857600);
+        multipartResolver.setMaxUploadSize(5 * 1024 * 1024);//5M
         multipartResolver.setDefaultEncoding("UTF-8");
         return multipartResolver;
     }
@@ -71,3 +71,4 @@ public class ApplicationContextConfig {
         return poolTaskExecutor;
     }
 }
+

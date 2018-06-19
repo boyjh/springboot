@@ -11,7 +11,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
@@ -25,7 +24,6 @@ import java.util.Map;
  * 作者:  xiangwb
  */
 @Configuration
-@EnableTransactionManagement
 @PropertySource("classpath:druid.properties")
 @EnableJpaRepositories(
         entityManagerFactoryRef = "jpaEntityManagerFactory",

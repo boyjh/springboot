@@ -4,29 +4,30 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 项目名称: boot-module-demo
- * 创建时间: 2018/6/2 10:32
- * 作者: xiangwb
- * 说明: 基础mapper
+ * @author xiangwb
+ * @version $Id: BaseMapper.java, v 0.1 2018年06月04日 11:05 wb-xwb402636 Exp $
  */
-public interface BaseMapper<T> {
-    int save(T t);
+public interface BaseMapper<M> {
+    int insert(M model);
 
-    int saveBatch(List<T> list);
+    int insertBatch(List<M> models);
 
     int deleteById(String id);
 
-    int deleteByIds(String[] ids);
+    int deleteByIds(List<String> ids);
 
-    int delete(Map<String, Object> map);
+    int delete(Map<String, Object> conditions);
 
-    int update(T t);
+    int update(M model);
 
-    int updateBatch(List<T> list);
+    int updateBatch(List<M> models);
 
-    T findById(String id);
+    M findById(String id);
 
-    List<T> find(Map<String, Object> map);
+    List<M> findByIds(List<String> ids);
 
-    List<T> findAll();
+    List<M> find(Map<String, Object> conditions);
+
+    List<M> findAll();
 }
+

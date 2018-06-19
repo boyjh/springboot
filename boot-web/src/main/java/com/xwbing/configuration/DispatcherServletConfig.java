@@ -5,8 +5,11 @@ import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.xwbing.handler.LoginInterceptor;
 import com.xwbing.handler.UrlPermissionsInterceptor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.Ordered;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -21,18 +24,28 @@ import java.util.List;
  * 创建时间: 2017/5/10 16:36
  * 作者:  xiangwb
  */
+@Slf4j
 @Configuration
+@PropertySource("classpath:config.properties")
 public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
+    @Value("${loginInterceptorEnable}")
+    private boolean loginInterceptorEnable;
+    @Value("${urlPermissionsInterceptorEnable}")
+    private boolean urlPermissionsInterceptorEnable;
     /***
      * 添加拦截器
      * @param registry
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        //登录拦截器
-        registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**").excludePathPatterns("/user/login");
-        //权限拦截器
-        registry.addInterceptor(urlPermissionsInterceptor()).addPathPatterns("/**").excludePathPatterns("/user/login");
+        if(loginInterceptorEnable){
+            log.info("注册登录拦截器LoginInterceptor ======================= ");
+            registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**").excludePathPatterns("/user/login");
+        }
+        if(urlPermissionsInterceptorEnable){
+            log.info("注册权限拦截器UrlPermissionsInterceptor ======================= ");
+            registry.addInterceptor(urlPermissionsInterceptor()).addPathPatterns("/**").excludePathPatterns("/user/login");
+        }
         super.addInterceptors(registry);
     }
 
@@ -124,6 +137,7 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
         List<MediaType> mediaTypes = new ArrayList<>();
         mediaTypes.add(MediaType.APPLICATION_JSON_UTF8);
         mediaTypes.add(MediaType.APPLICATION_FORM_URLENCODED);
+        mediaTypes.add(MediaType.MULTIPART_FORM_DATA);
         mediaTypes.add(MediaType.APPLICATION_OCTET_STREAM);
         mediaTypes.add(MediaType.TEXT_HTML);
         messageConverter.setSupportedMediaTypes(mediaTypes);
@@ -139,3 +153,4 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
         return messageConverter;
     }
 }
+

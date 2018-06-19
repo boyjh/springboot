@@ -5,11 +5,11 @@ import com.xwbing.annotation.LogInfo;
 import com.xwbing.domain.entity.vo.RestMessageVo;
 import com.xwbing.service.rest.CommonService;
 import com.xwbing.util.JsonResult;
+import com.xwbing.util.RestMessage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -34,4 +34,12 @@ public class CommonControl {
         String sign = commonService.getSign(request);
         return JsonResult.toJSONObj(sign, "");
     }
+
+    @LogInfo("上传文件")
+    @PostMapping("upload")
+    public JSONObject upload(@RequestParam(required = false) CommonsMultipartFile file) {
+        RestMessage restMessage = commonService.upload(file);
+        return JsonResult.toJSONObj(restMessage);
+    }
 }
+
