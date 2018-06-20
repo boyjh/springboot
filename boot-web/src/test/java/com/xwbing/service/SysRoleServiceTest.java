@@ -19,8 +19,6 @@ import javax.annotation.Resource;
 public class SysRoleServiceTest extends BaseTest {
     @Resource
     private SysRoleService sysRoleService;
-    @Resource
-    private SysRoleMapper sysRoleMapper;
 
     @Test
     public void all() {
