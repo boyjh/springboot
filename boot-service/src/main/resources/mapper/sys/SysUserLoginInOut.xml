@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xwbing.domain.mapper.sys.SysUserLoginInOutMapper">
+    <resultMap id="resultMap" type="sysUserLoginInOut">
+        <id column="id" property="id"/>
+        <result column="create_time" property="createTime"/>
+        <result column="modified_time" property="modifiedTime"/>
+        <result column="inout_type" property="inoutType"/>
+        <result column="user_id" property="userId"/>
+    </resultMap>
+    <sql id="table">
+        sys_user_login_in_out
+    </sql>
+    <sql id="columns">
+        id,
+        creator,
+        modifier,
+        create_time,
+        modified_time,
+        ip,
+        inout_type,
+        user_id
+    </sql>
+    <sql id="condition">
+        <where>
+        </where>
+    </sql>
+    <!-- 插入 -->
+    <insert id="insert">
+        <selectKey keyProperty="id" resultType="string" order="BEFORE">
+            SELECT REPLACE(UUID(), '-', '')
+        </selectKey>
+        INSERT INTO
+        <include refid="table"/>(
+        id,
+        creator,
+        create_time,
+        ip,
+        inout_type,
+        user_id
+        )
+        VALUES(
+        #{id},
+        #{creator},
+        now(),
+        #{ip},
+        #{inoutType},
+        #{userId}
+        )
+    </insert>
+    <select id="findByInoutType" resultMap="resultMap">
+        SELECT a.inout_type,a.ip,date_format(a.create_time,'%Y-%m-%d %h:%i:%s') recordTime,b.name userIdName
+        FROM sys_user_login_in_out a left join sys_user_info b on
+        (a.user_id=b.id)
+        where a.inout_type=#{inout}
+        <if test="startDate!=null">
+            and a.create_time>=#{startDate}
+        </if>
+        <if test="endDate!=null">
+            and a.create_time <![CDATA[ <= ]]> #{endDate}
+        </if>
+        ORDER BY a.create_time DESC
+    </select>
+</mapper>

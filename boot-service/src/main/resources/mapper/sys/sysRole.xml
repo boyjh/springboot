@@ -128,6 +128,11 @@
         UPDATE
         <include refid="table"/>
         <trim prefix="set" suffixOverrides=",">
+            <trim prefix="modified_time=case" suffix="end,">
+                <foreach collection="list" item="obj">
+                    when id=#{obj.id} then now()
+                </foreach>
+            </trim>
             <trim prefix="modifier=case" suffix="end,">
                 <foreach collection="list" item="obj">
                     <if test="obj.modifier!=null">

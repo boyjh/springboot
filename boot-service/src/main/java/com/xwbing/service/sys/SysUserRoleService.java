@@ -1,15 +1,17 @@
 package com.xwbing.service.sys;
 
 import com.xwbing.domain.entity.sys.SysUserRole;
-import com.xwbing.domain.repository.sys.SysUserRoleRepository;
-import com.xwbing.util.PassWordUtil;
+import com.xwbing.domain.mapper.sys.SysUserRoleMapper;
 import com.xwbing.util.RestMessage;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.Date;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 项目名称: boot-module-demo
@@ -20,7 +22,7 @@ import java.util.List;
 @Service
 public class SysUserRoleService {
     @Resource
-    private SysUserRoleRepository sysUserRoleRepository;
+    private SysUserRoleMapper sysUserRoleMapper;
 
     /**
      * 执行用户角色权限保存操作,保存之前先判断是否存在，存在删除
@@ -29,21 +31,19 @@ public class SysUserRoleService {
      * @param userId
      * @return
      */
+    @Transactional
     public RestMessage saveBatch(List<SysUserRole> list, String userId) {
         RestMessage result = new RestMessage();
         //获取用户原有角色
         List<SysUserRole> sysUserRoles = listByUserId(userId);
         //删除原有角色
         if (CollectionUtils.isNotEmpty(sysUserRoles)) {
-            sysUserRoleRepository.deleteInBatch(sysUserRoles);
+            List<String> ids = sysUserRoles.stream().map(SysUserRole::getId).collect(Collectors.toList());
+            sysUserRoleMapper.deleteByIds(ids);
         }
         //新增用户角色
-        list.forEach(sysUserRole -> {
-            sysUserRole.setId(PassWordUtil.createId());
-            sysUserRole.setCreateTime(new Date());
-        });
-        List<SysUserRole> save = sysUserRoleRepository.save(list);
-        if (CollectionUtils.isNotEmpty(save)) {
+        int save = sysUserRoleMapper.insertBatch(list);
+        if (save != 0) {
             result.setSuccess(true);
             result.setMessage("保存用户角色成功");
         } else {
@@ -59,20 +59,29 @@ public class SysUserRoleService {
      * @return
      */
     public List<SysUserRole> listByUserId(String userId) {
-        return sysUserRoleRepository.getByUserId(userId);
+        if (StringUtils.isEmpty(userId)) {
+            return Collections.EMPTY_LIST;
+        } else {
+            return sysUserRoleMapper.findByUserId(userId);
+        }
     }
 
     /**
      * 批量删除
      *
-     * @param userRoles
+     * @param ids
      * @return
      */
-    public RestMessage removeBatch(List<SysUserRole> userRoles) {
+    public RestMessage removeBatch(List<String> ids) {
         RestMessage result = new RestMessage();
-        sysUserRoleRepository.deleteInBatch(userRoles);
-        result.setSuccess(true);
-        result.setMessage("批量删除成功");
+        int deleteByIds = sysUserRoleMapper.deleteByIds(ids);
+        if (deleteByIds != 0) {
+            result.setSuccess(true);
+            result.setMessage("批量删除成功");
+        }else {
+            result.setMessage("批量删除失败");
+        }
         return result;
     }
 }
+

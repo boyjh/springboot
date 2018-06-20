@@ -1,15 +1,17 @@
 package com.xwbing.service.sys;
 
 import com.xwbing.domain.entity.sys.SysRoleAuthority;
-import com.xwbing.domain.repository.sys.SysRoleAuthorityRepository;
-import com.xwbing.util.PassWordUtil;
+import com.xwbing.domain.mapper.sys.SysRoleAuthorityMapper;
 import com.xwbing.util.RestMessage;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.Date;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 项目名称: boot-module-demo
@@ -20,7 +22,7 @@ import java.util.List;
 @Service
 public class SysRoleAuthorityService {
     @Resource
-    private SysRoleAuthorityRepository sysRoleAuthorityRepository;
+    private SysRoleAuthorityMapper sysRoleAuthorityMapper;
 
     /**
      * 执行用户角色权限保存操作,保存之前先判断是否存在，存在删除
@@ -29,21 +31,19 @@ public class SysRoleAuthorityService {
      * @param roleId
      * @return
      */
+    @Transactional
     public RestMessage saveBatch(List<SysRoleAuthority> list, String roleId) {
         RestMessage result = new RestMessage();
         //获取角色原有权限
         List<SysRoleAuthority> roleAuthorities = listByRoleId(roleId);
         //删除原有权限
         if (CollectionUtils.isNotEmpty(roleAuthorities)) {
-            sysRoleAuthorityRepository.deleteInBatch(roleAuthorities);
+            List<String> ids = roleAuthorities.stream().map(SysRoleAuthority::getId).collect(Collectors.toList());
+            sysRoleAuthorityMapper.deleteByIds(ids);
         }
         //新增角色权限
-        list.forEach(roleAuthority -> {
-            roleAuthority.setId(PassWordUtil.createId());
-            roleAuthority.setModifiedTime(new Date());
-        });
-        List<SysRoleAuthority> save = sysRoleAuthorityRepository.save(list);
-        if (CollectionUtils.isNotEmpty(save)) {
+        int save = sysRoleAuthorityMapper.insertBatch(list);
+        if (save != 0) {
             result.setSuccess(true);
             result.setMessage("保存角色权限成功");
         } else {
@@ -60,20 +60,29 @@ public class SysRoleAuthorityService {
      * @return
      */
     public List<SysRoleAuthority> listByRoleId(String roleId) {
-        return sysRoleAuthorityRepository.getByRoleId(roleId);
+        if (StringUtils.isEmpty(roleId)) {
+            return Collections.EMPTY_LIST;
+        } else {
+            return sysRoleAuthorityMapper.findByRoleId(roleId);
+        }
     }
 
     /**
      * 批量删除
      *
-     * @param roleAuthorities
+     * @param ids
      * @return
      */
-    public RestMessage removeBatch(List<SysRoleAuthority> roleAuthorities) {
+    public RestMessage removeBatch(List<String> ids) {
         RestMessage result = new RestMessage();
-        sysRoleAuthorityRepository.deleteInBatch(roleAuthorities);
-        result.setSuccess(true);
-        result.setMessage("批量删除成功");
+        int deleteByIds = sysRoleAuthorityMapper.deleteByIds(ids);
+        if (deleteByIds != 0) {
+            result.setSuccess(true);
+            result.setMessage("批量删除成功");
+        }else {
+            result.setMessage("批量删除失败");
+        }
         return result;
     }
 }
+

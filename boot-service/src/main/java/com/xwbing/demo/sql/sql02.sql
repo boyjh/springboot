@@ -111,6 +111,8 @@ TO_CHAR
 SELECT TO_CHAR(SYSDATE,'YYYY-MM-DD HH24:MI:SS') FROM DUAL;
 SELECT TO_DATE('1992-9-1 23:22:11','RR-mm-dd hh24:mi:ss') FROM dual;
 SELECT TO_CHAR(TO_DATE('99-09-01','RR-MM-DD'),'YYYY-MM-DD') FROM DUAL;
+SELECT date_format(now(),'%Y-%m-%d %h:%i:%s');//mysql--------------------------------------
+SELECT str_to_date('2016-01-02 11:11:11','%Y-%m-%d %h:%i:%s');//mysql--------------------------------------
 
 LAST_DAY(date) 该函数返回给定日期所在月的最后一天
 查看当月月底?
@@ -170,4 +172,3 @@ ISNULL(字段) true返回1
 IF(p1,p2,p3):如果p1是true,返回值为p2;否则返回值则为p3
 IF(ISNULL(p1),p2,p3) 若p1为null值为p2,p1不为null值为p3
 SELECT ENAME,SAL,IF(ISNULL(BOUNS),'无奖金','有奖金') FROM EMP_XWBING;
-

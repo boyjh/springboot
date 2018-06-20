@@ -59,7 +59,7 @@ SELECT * FROM emp_xwbing ORDER BY field(字段名,'','');//MYSQL----------------
 
 
 聚合函数又称多行函数:用来统计结果的
-MAX,MIN 统计最大值,最小值
+MAX,MIN 统计最大值,最小值,无值为null
 查看最高工资?
 SELECT MAX(sal),MIN(sal) FROM emp_xwbing;
 
@@ -139,6 +139,7 @@ SELECT  E.ENAME FROM EMP_XWBING E,EMP_XWBING M WHERE E.MGR=M.EMPNO(+) AND m.enam
 SELECT  COUNT(e.mgr),m.ename FROM EMP_XWBING E,EMP_XWBING M WHERE E.MGR=M.EMPNO GROUP BY m.ename;
 查看JONES的上司在哪个城市?
 SELECT  d.loc  FROM EMP_XWBING E,EMP_XWBING M , dept_xwbing d WHERE E.MGR=M.EMPNO AND m.deptno=d.deptno AND e.ename='JONES' ;
+
 
 
 

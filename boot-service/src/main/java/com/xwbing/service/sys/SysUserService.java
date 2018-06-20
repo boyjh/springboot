@@ -6,13 +6,15 @@ import com.xwbing.constant.CommonEnum;
 import com.xwbing.domain.entity.dto.UserDto;
 import com.xwbing.domain.entity.model.EmailModel;
 import com.xwbing.domain.entity.sys.*;
-import com.xwbing.domain.repository.sys.SysUserRepository;
+import com.xwbing.domain.mapper.sys.SysUserMapper;
 import com.xwbing.exception.BusinessException;
 import com.xwbing.rabbit.Sender;
 import com.xwbing.util.*;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
@@ -20,7 +22,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.BufferedOutputStream;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 说明: 用户服务层
@@ -31,8 +36,6 @@ import java.util.*;
 @Service
 public class SysUserService {
     @Resource
-    private SysUserRepository sysUserRepository;
-    @Resource
     private SysConfigService sysConfigService;
     @Resource
     private SysUserLoginInOutService loginInOutService;
@@ -42,6 +45,8 @@ public class SysUserService {
     private SysAuthorityService sysAuthorityService;
     @Resource
     private SysUserRoleService sysUserRoleService;
+    @Resource
+    private SysUserMapper userMapper;
     @Resource
     private Sender sender;
 
@@ -59,24 +64,20 @@ public class SysUserService {
         if (old != null) {
             throw new BusinessException("已经存在此用户名");
         }
-        String id = PassWordUtil.createId();
-        sysUser.setId(id);
-        sysUser.setCreateTime(new Date());
         // 获取初始密码
         String[] res = PassWordUtil.getUserSecret(null, null);
         sysUser.setSalt(res[1]);
         sysUser.setPassword(res[2]);
         // 设置为非管理员
         sysUser.setIsAdmin(CommonEnum.YesOrNoEnum.NO.getCode());
-        SysUser one = sysUserRepository.save(sysUser);
-        if (one == null) {
+        int save = userMapper.insert(sysUser);
+        if (save == 0) {
             throw new BusinessException("新增用户失败");
         }
         String[] msg = {sysUser.getMail(), userName, res[0]};
         //使用mq发送邮件
         sender.sendEmail(msg);
         result.setSuccess(true);
-        result.setId(id);
         return result;
     }
 
@@ -86,6 +87,7 @@ public class SysUserService {
      * @param id
      * @return
      */
+    @Transactional
     public RestMessage removeById(String id) {
         RestMessage result = new RestMessage();
         //检查该用户是否存在
@@ -102,11 +104,12 @@ public class SysUserService {
             throw new BusinessException("不能对管理员进行删除操作");
         }
         //删除用户
-        sysUserRepository.delete(id);
+        userMapper.deleteById(id);
         //删除用户角色
         List<SysUserRole> sysUserRoles = sysUserRoleService.listByUserId(id);
         if (CollectionUtils.isNotEmpty(sysUserRoles)) {
-            sysUserRoleService.removeBatch(sysUserRoles);
+            List<String> ids = sysUserRoles.stream().map(SysUserRole::getId).collect(Collectors.toList());
+            sysUserRoleService.removeBatch(ids);
         }
         result.setMessage("删除成功");
         result.setSuccess(true);
@@ -138,10 +141,9 @@ public class SysUserService {
         old.setName(sysUser.getName());
         old.setMail(sysUser.getMail());
         old.setSex(sysUser.getSex());
-        old.setModifiedTime(new Date());
 //        old.setUserName(sysUser.getUserName());//用户名不能修改
-        SysUser one = sysUserRepository.save(old);
-        if (one != null) {
+        int update = userMapper.update(old);
+        if (update == 1) {
             result.setMessage("更新成功");
             result.setId(sysUser.getId());
             result.setSuccess(true);
@@ -158,7 +160,11 @@ public class SysUserService {
      * @return
      */
     public SysUser getById(String id) {
-        return sysUserRepository.findOne(id);
+        if (StringUtils.isEmpty(id)) {
+            return null;
+        } else {
+            return userMapper.findById(id);
+        }
     }
 
     /**
@@ -168,7 +174,11 @@ public class SysUserService {
      * @return
      */
     public SysUser getByUserName(String userName) {
-        return sysUserRepository.getByUserName(userName);
+        if (StringUtils.isEmpty(userName)) {
+            return null;
+        } else {
+            return userMapper.findByUserName(userName);
+        }
     }
 
     /**
@@ -177,16 +187,12 @@ public class SysUserService {
      * @return
      */
     public List<SysUser> listAll() {
-        List<SysUser> all = sysUserRepository.findAll();
+        List<SysUser> all = userMapper.findAll();
         if (CollectionUtils.isNotEmpty(all)) {
             all.forEach(sysUser -> {
+                //性别
                 CommonEnum.SexEnum sexEnum = Arrays.stream(CommonEnum.SexEnum.values()).filter(obj -> obj.getCode().equals(sysUser.getSex())).findFirst().get();
                 sysUser.setSexName(sexEnum.getName());
-                sysUser.setCreate(DateUtil2.dateToStr(sysUser.getCreateTime(), DateUtil2.YYYY_MM_DD_HH_MM_SS));
-                Date modifiedTime = sysUser.getModifiedTime();
-                if (modifiedTime != null) {
-                    sysUser.setModified(DateUtil2.dateToStr(sysUser.getModifiedTime(), DateUtil2.YYYY_MM_DD_HH_MM_SS));
-                }
             });
         }
         return all;
@@ -216,9 +222,8 @@ public class SysUserService {
         String[] str = PassWordUtil.getUserSecret(null, null);
         old.setSalt(str[1]);
         old.setPassword(str[2]);
-        old.setModifiedTime(new Date());
-        SysUser save = sysUserRepository.save(old);
-        if (save == null) {
+        int update = userMapper.update(old);
+        if (update == 0) {
             throw new BusinessException("重置密码失败");
         }
         //使用mq发送邮件
@@ -250,9 +255,8 @@ public class SysUserService {
         String[] str = PassWordUtil.getUserSecret(newPassWord, null);
         sysUser.setSalt(str[1]);
         sysUser.setPassword(str[2]);
-        sysUser.setModifiedTime(new Date());
-        SysUser save = sysUserRepository.save(sysUser);
-        if (save != null) {
+        int update = userMapper.update(sysUser);
+        if (update == 1) {
             result.setMessage("修改密码成功");
             result.setSuccess(true);
         } else {
@@ -288,7 +292,6 @@ public class SysUserService {
         }
         //保存登录信息
         SysUserLoginInOut loginInOut = new SysUserLoginInOut();
-        loginInOut.setCreateTime(new Date());
         loginInOut.setUserId(user.getId());
         loginInOut.setInoutType(CommonEnum.LoginInOutEnum.IN.getValue());
         String ip = IpUtil.getIpAddr(request);
@@ -322,7 +325,6 @@ public class SysUserService {
             CommonDataUtil.clearData(token);
             //保存登出信息
             SysUserLoginInOut loginInOut = new SysUserLoginInOut();
-            loginInOut.setCreateTime(new Date());
             loginInOut.setUserId(user.getId());
             loginInOut.setInoutType(CommonEnum.LoginInOutEnum.OUT.getValue());
             loginInOut.setIp(IpUtil.getIpAddr(request));
@@ -406,7 +408,7 @@ public class SysUserService {
      */
     private List<UserDto> listReport() {
         List<UserDto> listDto = new ArrayList<>();
-        List<SysUser> list = sysUserRepository.findAll();
+        List<SysUser> list = userMapper.findAll();
         if (CollectionUtils.isNotEmpty(list)) {
             UserDto temp;
             for (SysUser info : list) {
@@ -461,3 +463,4 @@ public class SysUserService {
         return EmailUtil.sendTextEmail(emailModel);
     }
 }
+

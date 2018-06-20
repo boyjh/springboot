@@ -1,22 +1,18 @@
 package com.xwbing.service.sys;
 
 import com.xwbing.constant.CommonEnum;
-import com.xwbing.domain.entity.sys.SysUser;
 import com.xwbing.domain.entity.sys.SysUserLoginInOut;
-import com.xwbing.domain.repository.sys.SysUserLoginInOutRepository;
-import com.xwbing.util.DateUtil2;
-import com.xwbing.util.PassWordUtil;
+import com.xwbing.domain.mapper.sys.SysUserLoginInOutMapper;
 import com.xwbing.util.RestMessage;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * 项目名称: boot-module-demo
@@ -27,9 +23,7 @@ import java.util.stream.Collectors;
 @Service
 public class SysUserLoginInOutService {
     @Resource
-    private SysUserLoginInOutRepository loginInOutRepository;
-    @Resource
-    private SysUserService sysUserService;
+    private SysUserLoginInOutMapper loginInOutMapper;
 
     /**
      * 保存
@@ -39,9 +33,8 @@ public class SysUserLoginInOutService {
      */
     public RestMessage save(SysUserLoginInOut inOut) {
         RestMessage result = new RestMessage();
-        inOut.setId(PassWordUtil.createId());
-        SysUserLoginInOut save = loginInOutRepository.save(inOut);
-        if (save != null) {
+        int save = loginInOutMapper.insert(inOut);
+        if (save == 1) {
             result.setSuccess(true);
             result.setMessage("保存登录登出信息成功");
         } else {
@@ -56,19 +49,24 @@ public class SysUserLoginInOutService {
      * @param inout
      * @return
      */
-    public List<SysUserLoginInOut> listByType(int inout) {
-        Map<String, SysUser> userMap = sysUserService.listAll().stream().collect(Collectors.toMap(SysUser::getId, Function.identity()));
-        List<SysUserLoginInOut> list = loginInOutRepository.getByInoutType(inout);
+    public List<SysUserLoginInOut> listByType(int inout, String startDate, String endDate) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("inout", inout);
+        if (StringUtils.isNotEmpty(startDate)) {
+            map.put("startDate", startDate + " 00:00:00");
+        }
+        if (StringUtils.isNotEmpty(endDate)) {
+            map.put("endDate", endDate + " 23:59:59");
+        }
+        List<SysUserLoginInOut> list = loginInOutMapper.findByInoutType(map);
         if (CollectionUtils.isNotEmpty(list)) {
-            if (MapUtils.isNotEmpty(userMap)) {
-                list=list.stream().sorted((o1, o2) -> o2.getCreateTime().compareTo(o1.getCreateTime())).peek(inOut -> {
-                    inOut.setUserIdName(userMap.get(inOut.getUserId()).getName());//用户姓名
-                    inOut.setRecordTime(DateUtil2.dateToStr(inOut.getCreateTime(), DateUtil2.YYYY_MM_DD_HH_MM_SS));//记录时间
-                    CommonEnum.LoginInOutEnum inOutEnum = Arrays.stream(CommonEnum.LoginInOutEnum.values()).filter(obj -> obj.getValue() == inout).findFirst().get();//登录登出
-                    inOut.setInoutTypeName(inOutEnum.getName());
-                }).collect(Collectors.toList());
-            }
+            list.forEach(inOut -> {
+                //登录登出
+                CommonEnum.LoginInOutEnum inOutEnum = Arrays.stream(CommonEnum.LoginInOutEnum.values()).filter(obj -> obj.getValue() == inout).findFirst().get();
+                inOut.setInoutTypeName(inOutEnum.getName());
+            });
         }
         return list;
     }
 }
+

@@ -48,7 +48,7 @@ public class SysUser extends BaseEntity {
     private String isAdmin;
     //临时字段
     @ApiModelProperty(hidden = true)
-    private transient String create;
+    private transient String created;
     @ApiModelProperty(hidden = true)
     private transient String modified;
     @ApiModelProperty(hidden = true)
