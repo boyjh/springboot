@@ -15,8 +15,8 @@
         id,
         creator,
         modifier,
-        date_format(create_time,'%Y-%m-%d %h:%i:%s') created,
-        date_format(modified_time,'%Y-%m-%d %h:%i:%s') modified,
+        date_format(create_time,'%Y-%m-%d %H:%i:%s') created,
+        date_format(modified_time,'%Y-%m-%d %H:%i:%s') modified,
         user_name,
         name,
         sex,
@@ -31,9 +31,6 @@
     </sql>
     <!-- 插入 -->
     <insert id="insert">
-        <selectKey keyProperty="id" resultType="string" order="BEFORE">
-            SELECT REPLACE(UUID(), '-', '')
-        </selectKey>
         INSERT INTO
         <include refid="table"/>(
         id,

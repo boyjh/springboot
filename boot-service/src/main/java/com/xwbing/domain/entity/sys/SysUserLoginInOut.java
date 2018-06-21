@@ -12,6 +12,7 @@ import javax.persistence.Entity;
  * 作者: xiangwb
  * 说明: 用户登录登出信息
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class SysUserLoginInOut extends BaseEntity {
     private static final long serialVersionUID = -2719103095945780275L;

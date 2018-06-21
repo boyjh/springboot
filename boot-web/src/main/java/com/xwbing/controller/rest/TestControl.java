@@ -3,13 +3,14 @@ package com.xwbing.controller.rest;
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.annotation.LogInfo;
 import com.xwbing.domain.entity.rest.FilesUpload;
-import com.xwbing.domain.repository.FilesUploadRepository;
+import com.xwbing.domain.mapper.rest.FilesUploadMapper;
 import com.xwbing.service.rest.CookieSessionService;
 import com.xwbing.service.rest.QRCodeZipService;
 import com.xwbing.util.EncodeUtils;
 import com.xwbing.util.JsonResult;
 import com.xwbing.util.RestMessage;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -42,7 +43,7 @@ public class TestControl {
     @Resource
     private CookieSessionService cookieSessionService;
     @Resource
-    private FilesUploadRepository uploadRepository;
+    private FilesUploadMapper uploadMapper;
 
     @LogInfo("导出zip")
     @GetMapping("batchGetImage")
@@ -56,9 +57,10 @@ public class TestControl {
 
     @LogInfo("获取数据库图片")
     @GetMapping("getDbPic")
-    public void getDbPic(HttpServletResponse response, @RequestParam String name) throws IOException {
+    @ApiImplicitParam(name = "type", value = "图片类型", paramType = "query", dataType = "string")
+    public void getDbPic(HttpServletResponse response, @RequestParam String name, String type) throws IOException {
         if (StringUtils.isNotEmpty(name)) {
-            List<FilesUpload> files = uploadRepository.getByName(name, new Sort(Sort.Direction.DESC, "createTime"));
+            List<FilesUpload> files = uploadMapper.findByName(name, type);
             if (CollectionUtils.isNotEmpty(files)) {
                 String data = files.get(0).getData();
                 byte[] bytes = EncodeUtils.base64Decode(data);

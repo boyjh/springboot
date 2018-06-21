@@ -51,9 +51,6 @@
     </sql>
     <!-- 插入 -->
     <insert id="insert">
-        <selectKey keyProperty="id" resultType="string" order="BEFORE">
-            SELECT REPLACE(UUID(), '-', '')
-        </selectKey>
         INSERT INTO
         <include refid="table"/>(
         id,

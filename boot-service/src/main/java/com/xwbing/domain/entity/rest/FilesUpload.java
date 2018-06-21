@@ -1,10 +1,8 @@
 package com.xwbing.domain.entity.rest;
 
-import com.xwbing.domain.entity.sys.JpaBaseEntity;
+import com.xwbing.domain.entity.sys.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import javax.persistence.Entity;
 
 /**
  * @author xiangwb
@@ -12,8 +10,7 @@ import javax.persistence.Entity;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Entity(name = "file_upload")
-public class FilesUpload extends JpaBaseEntity {
+public class FilesUpload extends BaseEntity {
     private static final long serialVersionUID = 3284231281346882055L;
     public static String table = "file_upload";
     private String name;

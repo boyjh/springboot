@@ -1,4 +1,4 @@
-package com.xwbing.domain.repository.sys;
+package com.xwbing.domain.repository;
 
 import com.xwbing.domain.entity.sys.SysConfig;
 import org.springframework.data.jpa.repository.JpaRepository;

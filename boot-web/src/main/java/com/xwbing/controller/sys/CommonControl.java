@@ -8,7 +8,9 @@ import com.xwbing.util.JsonResult;
 import com.xwbing.util.RestMessage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.annotation.Resource;
@@ -37,7 +39,7 @@ public class CommonControl {
 
     @LogInfo("上传文件")
     @PostMapping("upload")
-    public JSONObject upload(@RequestParam(required = false) CommonsMultipartFile file) {
+    public JSONObject upload(@ApiParam(value = "文件",required = true) MultipartFile file) {
         RestMessage restMessage = commonService.upload(file);
         return JsonResult.toJSONObj(restMessage);
     }

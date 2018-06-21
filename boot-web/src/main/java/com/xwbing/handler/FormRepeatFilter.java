@@ -21,7 +21,7 @@ public class FormRepeatFilter implements Filter {
     private String[] types;
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
         String excludePath = filterConfig.getInitParameter("excludePath");
         paths = excludePath.split(",");
         String excludeType = filterConfig.getInitParameter("excludeType");

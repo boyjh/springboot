@@ -19,10 +19,9 @@ import javax.validation.constraints.Pattern;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity(name = "system_config")
-@ApiModel//swagger
+@ApiModel
 public class SysConfig extends BaseEntity {
     private static final long serialVersionUID = -7587016038432881980L;
-    public static String table = "system_config";
     @ApiModelProperty(value = "配置项的code",example = "email_config",required = true)
     @NotBlank(message = "配置项的code不能为空")
     @Length(min = 1, max = 50, message = "code长度为1-50")

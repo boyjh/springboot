@@ -2,7 +2,7 @@ package com.xwbing.service.sys;
 
 import com.xwbing.domain.entity.sys.SysConfig;
 import com.xwbing.exception.BusinessException;
-import com.xwbing.domain.repository.sys.SysConfigRepository;
+import com.xwbing.domain.repository.SysConfigRepository;
 import com.xwbing.util.PassWordUtil;
 import com.xwbing.util.RestMessage;
 import org.slf4j.Logger;
@@ -32,7 +32,6 @@ public class SysConfigService {
      * @return
      */
     public RestMessage save(SysConfig sysConfig) {
-        logger.info("保存配置信息");
         RestMessage result = new RestMessage();
         if (sysConfig == null) {
             throw new BusinessException("配置数据不能为空");
@@ -42,7 +41,6 @@ public class SysConfigService {
         if (old != null) {
             throw new BusinessException(sysConfig.getCode() + "已存在");
         }
-        sysConfig.setId(PassWordUtil.createId());
         sysConfig.setCreateTime(new Date());
         SysConfig one = sysConfigRepository.save(sysConfig);
         if (one != null) {
@@ -61,7 +59,6 @@ public class SysConfigService {
      * @return
      */
     public RestMessage removeByCode(String code) {
-        logger.info("删除配置信息");
         RestMessage result = new RestMessage();
         SysConfig old = getByCode(code);
         if (old == null) {

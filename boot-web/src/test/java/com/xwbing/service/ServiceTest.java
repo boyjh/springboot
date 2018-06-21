@@ -3,13 +3,14 @@ package com.xwbing.service;
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.BaseTest;
 import com.xwbing.domain.entity.ExpressInfo;
+import com.xwbing.domain.entity.sys.DataDictionary;
 import com.xwbing.domain.entity.sys.SysRole;
 import com.xwbing.domain.entity.vo.ExpressInfoVo;
-import com.xwbing.domain.mapper.sys.SysRoleMapper;
 import com.xwbing.rabbit.Sender;
 import com.xwbing.redis.RedisService;
 import com.xwbing.service.rest.ExpressDeliveryService;
 import com.xwbing.service.rest.QRCodeZipService;
+import com.xwbing.service.sys.DataDictionaryService;
 import com.xwbing.service.sys.SysRoleService;
 import com.xwbing.util.RSAUtil;
 import com.xwbing.util.RestMessage;
@@ -44,18 +45,20 @@ public class ServiceTest extends BaseTest {
     @Resource
     private SysRoleService sysRoleService;
     @Resource
-    private SysRoleMapper sysRoleMapper;
+    private DataDictionaryService dictionaryService;
 
     @Transactional("jpaTransactionManager")
     @Test
     public void jpaTransactionTest() {
         log.info("jpa数据源事务回滚");
-        SysRole sysRole = new SysRole();
-        sysRole.setName("serviceTest");
-        sysRole.setCode("serviceTest");
-        sysRole.setEnable("Y");
-        sysRole.setRemark("serviceTest");
-        Assert.assertTrue(sysRoleService.save(sysRole).isSuccess());
+        DataDictionary dictionary=new DataDictionary();
+        dictionary.setDescription("serviceTest");
+        dictionary.setEnable("Y");
+        dictionary.setCode("serviceTest");
+        dictionary.setName("serviceTest");
+        dictionary.setParentId("root");
+        RestMessage save = dictionaryService.save(dictionary);
+        Assert.assertTrue(save.isSuccess());
     }
 
     @Transactional
@@ -67,8 +70,8 @@ public class ServiceTest extends BaseTest {
         sysRole.setCode("serviceTest");
         sysRole.setEnable("Y");
         sysRole.setRemark("serviceTest");
-        int insert = sysRoleMapper.insert(sysRole);
-        Assert.assertEquals(1, insert);
+        RestMessage save = sysRoleService.save(sysRole);
+        Assert.assertTrue(save.isSuccess());
     }
 
     @Test
@@ -125,4 +128,3 @@ public class ServiceTest extends BaseTest {
         Assert.assertEquals("xwbing", s);
     }
 }
-

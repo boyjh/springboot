@@ -6,6 +6,7 @@ import com.xwbing.domain.entity.sys.SysRoleAuthority;
 import com.xwbing.domain.entity.vo.SysAuthVo;
 import com.xwbing.domain.mapper.sys.SysAuthorityMapper;
 import com.xwbing.exception.BusinessException;
+import com.xwbing.util.PassWordUtil;
 import com.xwbing.util.RestMessage;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -55,9 +56,12 @@ public class SysAuthorityService {
         if (StringUtils.isEmpty(sysAuthority.getParentId())) {
             sysAuthority.setParentId(CommonConstant.ROOT);
         }
+        String id = PassWordUtil.createId();
+        sysAuthority.setId(id);
         int save = authorityMapper.insert(sysAuthority);
         if (save == 1) {
             result.setSuccess(true);
+            result.setId(id);
             result.setMessage("保存权限成功");
         } else {
             result.setMessage("保存权限失败");

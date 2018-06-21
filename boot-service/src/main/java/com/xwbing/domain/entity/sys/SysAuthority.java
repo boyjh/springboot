@@ -13,6 +13,7 @@ import javax.persistence.Entity;
  * 创建时间: 2017/5/10 16:36
  * 作者:  xiangwb
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class SysAuthority extends BaseEntity {
     private static final long serialVersionUID = -6469518352117371987L;

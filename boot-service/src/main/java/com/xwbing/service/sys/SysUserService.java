@@ -70,6 +70,8 @@ public class SysUserService {
         sysUser.setPassword(res[2]);
         // 设置为非管理员
         sysUser.setIsAdmin(CommonEnum.YesOrNoEnum.NO.getCode());
+        String id = PassWordUtil.createId();
+        sysUser.setId(id);
         int save = userMapper.insert(sysUser);
         if (save == 0) {
             throw new BusinessException("新增用户失败");
@@ -77,6 +79,7 @@ public class SysUserService {
         String[] msg = {sysUser.getMail(), userName, res[0]};
         //使用mq发送邮件
         sender.sendEmail(msg);
+        result.setId(id);
         result.setSuccess(true);
         return result;
     }

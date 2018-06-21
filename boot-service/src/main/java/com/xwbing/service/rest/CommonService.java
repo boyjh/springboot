@@ -1,12 +1,12 @@
 package com.xwbing.service.rest;
 
 import com.xwbing.domain.entity.rest.FilesUpload;
-import com.xwbing.domain.repository.FilesUploadRepository;
+import com.xwbing.domain.mapper.rest.FilesUploadMapper;
 import com.xwbing.exception.BusinessException;
 import com.xwbing.util.DigestsUtil;
 import com.xwbing.util.RestMessage;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -14,7 +14,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Base64;
-import java.util.Date;
 
 /**
  * 项目名称: boot-module-demo
@@ -25,7 +24,7 @@ import java.util.Date;
 @Service
 public class CommonService {
     @Resource
-    private FilesUploadRepository uploadRepository;
+    private FilesUploadMapper uploadMapper;
 
     /**
      * 保存信息表单提交时获取校验签名
@@ -46,7 +45,7 @@ public class CommonService {
      * @param file
      * @return
      */
-    public RestMessage upload(CommonsMultipartFile file) {
+    public RestMessage upload(MultipartFile file) {
         RestMessage result = new RestMessage();
         if (file == null) {
             throw new BusinessException("请选择文件");
@@ -70,11 +69,9 @@ public class CommonService {
         //对数据字节进行base64编码
         String base64 = Base64.getEncoder().encodeToString(data);
         filesUpload.setData(base64);
-        filesUpload.setCreateTime(new Date());
-        FilesUpload save = uploadRepository.save(filesUpload);
-        if (save != null) {
+        int save = uploadMapper.insert(filesUpload);
+        if (save == 1) {
             result.setSuccess(true);
-            result.setId(save.getId());
             result.setMessage("保存文件成功");
         } else {
             result.setMessage("保存文件失败");

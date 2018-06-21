@@ -6,6 +6,7 @@ import com.xwbing.domain.entity.sys.SysRoleAuthority;
 import com.xwbing.domain.entity.sys.SysUserRole;
 import com.xwbing.domain.mapper.sys.SysRoleMapper;
 import com.xwbing.exception.BusinessException;
+import com.xwbing.util.PassWordUtil;
 import com.xwbing.util.RestMessage;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -47,9 +48,12 @@ public class SysRoleService {
         if (!b) {
             throw new BusinessException("该编码已存在");
         }
+        String id = PassWordUtil.createId();
+        sysRole.setId(id);
         int save = roleMapper.insert(sysRole);
         if (save == 1) {
             result.setSuccess(true);
+            result.setId(id);
             result.setMessage("保存角色成功");
         } else {
             result.setMessage("保存角色失败");

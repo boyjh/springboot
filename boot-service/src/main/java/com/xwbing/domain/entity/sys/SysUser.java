@@ -19,6 +19,7 @@ import java.util.List;
  * 创建时间: 2017/5/10 16:36
  * 作者:  xiangwb
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 @ApiModel
 public class SysUser extends BaseEntity {

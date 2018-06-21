@@ -16,9 +16,8 @@ import javax.persistence.Entity;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity(name = "data_dict")
-public class DataDictionary extends BaseEntity {
+public class DataDictionary extends JpaBaseEntity {
     private static final long serialVersionUID = -3409347240188002427L;
-    public static String table = "data_dict";
     @ApiModelProperty(value = "编码", required = true)
     private String code;
     @ApiModelProperty(value = "名称", required = true)

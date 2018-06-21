@@ -49,7 +49,7 @@
         )
     </insert>
     <select id="findByInoutType" resultMap="resultMap">
-        SELECT a.inout_type,a.ip,date_format(a.create_time,'%Y-%m-%d %h:%i:%s') recordTime,b.name userIdName
+        SELECT a.inout_type,a.ip,date_format(a.create_time,'%Y-%m-%d %H:%i:%s') recordTime,b.name userIdName
         FROM sys_user_login_in_out a left join sys_user_info b on
         (a.user_id=b.id)
         where a.inout_type=#{inout}

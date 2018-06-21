@@ -24,10 +24,6 @@ public class Sender {
     private RabbitTemplate rabbitTemplate;
     private final Logger logger = LoggerFactory.getLogger(Sender.class);
 
-    public void sendM(String[] msg) {
-        send(msg, RabbitConstant.CONTROL_EXCHANGE, "aa");
-    }
-
     /**
      * 发送信息到email队列
      *
