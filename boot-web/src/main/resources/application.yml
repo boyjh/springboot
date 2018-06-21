@@ -39,12 +39,15 @@ spring:
           starttls:
             enable: true
             required: true
-  #编码
   http:
-    encoding:
-      charset: UTF-8
-      enabled: true
-      force: true
+      #编码
+      encoding:
+        charset: UTF-8
+        enabled: true
+        force: true
+      #MultipartResolver
+      multipart:
+        enabled: false #关闭自带multipartResolver,否则commonsMultipartResolver解析会得不到数据
   #消息队列
   rabbitmq:
      host: 127.0.0.1
