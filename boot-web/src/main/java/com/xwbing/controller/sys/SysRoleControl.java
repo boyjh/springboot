@@ -5,19 +5,22 @@ import com.xwbing.annotation.LogInfo;
 import com.xwbing.domain.entity.sys.SysAuthority;
 import com.xwbing.domain.entity.sys.SysRole;
 import com.xwbing.domain.entity.sys.SysRoleAuthority;
-import com.xwbing.domain.entity.vo.ListSysRoleVo;
+import com.xwbing.domain.entity.vo.PageSysRoleVo;
 import com.xwbing.domain.entity.vo.RestMessageVo;
 import com.xwbing.domain.entity.vo.SysRoleVo;
 import com.xwbing.service.sys.SysAuthorityService;
 import com.xwbing.service.sys.SysRoleAuthorityService;
 import com.xwbing.service.sys.SysRoleService;
 import com.xwbing.util.JsonResult;
+import com.xwbing.util.Pagination;
 import com.xwbing.util.RestMessage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -85,17 +88,21 @@ public class SysRoleControl {
         return JsonResult.toJSONObj(sysRole, "");
     }
 
-    @LogInfo("根据是否启用查询所有角色")
-    @ApiOperation(value = "根据是否启用查询所有角色", response = ListSysRoleVo.class)
-    @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query", dataType = "string")
-    @GetMapping("listByEnable")
-    public JSONObject listByEnable(String enable) {
-        List<SysRole> sysRoles = sysRoleService.listAllByEnable(enable);
-        return JsonResult.toJSONObj(sysRoles, "");
+    @LogInfo("根据是否启用分页查询所有角色")
+    @ApiOperation(value = "根据是否启用分页查询所有角色", response = PageSysRoleVo.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = "currentPage", value = "当前页", paramType = "query", dataType = "int"),
+            @ApiImplicitParam(name = "pageSize", value = "页数", paramType = "query", dataType = "int")
+    })
+    @GetMapping("pageByEnable")
+    public JSONObject pageByEnable(String enable, @ApiIgnore Pagination page) {
+        Pagination pagination = sysRoleService.pageByEnable(enable, page);
+        return JsonResult.toJSONObj(pagination, "");
     }
 
     @LogInfo("根据角色主键查找权限")
-    @ApiOperation(value = "根据角色主键查找权限", response = ListSysRoleVo.class)
+    @ApiOperation(value = "根据角色主键查找权限", response = PageSysRoleVo.class)
     @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query", dataType = "string")
     @GetMapping("listAuthorityByRoleId")
     public JSONObject listAuthorityByRoleId(@RequestParam String roleId, String enable) {

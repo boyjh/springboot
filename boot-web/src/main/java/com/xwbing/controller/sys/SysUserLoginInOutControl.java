@@ -2,19 +2,21 @@ package com.xwbing.controller.sys;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.annotation.LogInfo;
-import com.xwbing.domain.entity.sys.SysUserLoginInOut;
-import com.xwbing.domain.entity.vo.ListSysUserLoginInOutVo;
+import com.xwbing.domain.entity.vo.PageSysUserLoginInOutVo;
 import com.xwbing.service.sys.SysUserLoginInOutService;
 import com.xwbing.util.JsonResult;
+import com.xwbing.util.Pagination;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * 项目名称: boot-module-demo
@@ -30,10 +32,14 @@ public class SysUserLoginInOutControl {
     private SysUserLoginInOutService inOutService;
 
     @LogInfo("获取登录或登出信息")
-    @ApiOperation(value = "获取登录或登出信息", response = ListSysUserLoginInOutVo.class)
-    @GetMapping("listByType")
-    public JSONObject listByType(@RequestParam int inout,@RequestParam String startDate,@RequestParam String endDate) {
-        List<SysUserLoginInOut> sysUserLoginInOuts = inOutService.listByType(inout,startDate,endDate);
-        return JsonResult.toJSONObj(sysUserLoginInOuts, "获取列表成功");
+    @ApiOperation(value = "获取登录或登出信息", response = PageSysUserLoginInOutVo.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "currentPage", value = "当前页", paramType = "query", dataType = "int"),
+            @ApiImplicitParam(name = "pageSize", value = "页数", paramType = "query", dataType = "int")
+    })
+    @GetMapping("pageByType")
+    public JSONObject pageByType(@RequestParam int inout, @RequestParam String startDate, @RequestParam String endDate, @ApiIgnore Pagination page) {
+        Pagination pagination = inOutService.pageByType(inout, startDate, endDate, page);
+        return JsonResult.toJSONObj(pagination, "获取列表成功");
     }
 }

@@ -7,17 +7,21 @@ import com.xwbing.constant.CommonConstant;
 import com.xwbing.constant.CommonEnum;
 import com.xwbing.domain.entity.sys.SysAuthority;
 import com.xwbing.domain.entity.vo.ListSysAuthorityVo;
+import com.xwbing.domain.entity.vo.PageSysAuthorityVo;
 import com.xwbing.domain.entity.vo.RestMessageVo;
 import com.xwbing.domain.entity.vo.SysAuthVo;
 import com.xwbing.redis.RedisService;
 import com.xwbing.service.sys.SysAuthorityService;
 import com.xwbing.util.JsonResult;
+import com.xwbing.util.Pagination;
 import com.xwbing.util.RestMessage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -96,13 +100,17 @@ public class SysAuthorityControl {
         return JsonResult.toJSONObj(result);
     }
 
-    @LogInfo("根据是否启用查询所有权限")
-    @ApiOperation(value = "根据是否启用查询所有权限", response = ListSysAuthorityVo.class)
-    @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query", dataType = "string")
-    @GetMapping("listByEnable")
-    public JSONObject listByEnable(String enable) {
-        List<SysAuthority> authoritys = sysAuthorityService.listByEnable(enable);
-        return JsonResult.toJSONObj(authoritys, "");
+    @LogInfo("根据是否启用分页查询所有权限")
+    @ApiOperation(value = "根据是否启用分页查询所有权限", response = PageSysAuthorityVo.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = "currentPage", value = "当前页", paramType = "query", dataType = "int"),
+            @ApiImplicitParam(name = "pageSize", value = "页数", paramType = "query", dataType = "int")
+    })
+    @GetMapping("pageByEnable")
+    public JSONObject pageByEnable(String enable, @ApiIgnore Pagination page) {
+        Pagination pagination = sysAuthorityService.pageByEnable(enable, page);
+        return JsonResult.toJSONObj(pagination, "");
     }
 
     @LogInfo("根据父节点查询子节点")

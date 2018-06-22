@@ -4,6 +4,7 @@ import com.xwbing.BaseTest;
 import com.xwbing.domain.entity.sys.SysRole;
 import com.xwbing.domain.mapper.sys.SysRoleMapper;
 import com.xwbing.service.sys.SysRoleService;
+import com.xwbing.util.Pagination;
 import com.xwbing.util.RestMessage;
 import org.junit.Assert;
 import org.junit.Test;
@@ -39,7 +40,7 @@ public class SysRoleServiceTest extends BaseTest {
         Assert.assertTrue(rest.getMessage(), rest.isSuccess());
         Assert.assertNotSame("修改失败", sysRole, sysRoleService.getById(rest.getId()));
         //listAllByEnable
-        Assert.assertNotNull(sysRoleService.listAllByEnable("Y"));
+        Assert.assertNotNull(sysRoleService.pageByEnable("Y", new Pagination<>()));
         //removeById
         Assert.assertTrue("删除失败", sysRoleService.removeById(rest.getId()).isSuccess());
         //............................

@@ -1,8 +1,11 @@
 package com.xwbing.service.sys;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.xwbing.constant.CommonEnum;
 import com.xwbing.domain.entity.sys.SysUserLoginInOut;
 import com.xwbing.domain.mapper.sys.SysUserLoginInOutMapper;
+import com.xwbing.util.Pagination;
 import com.xwbing.util.RestMessage;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -44,12 +47,12 @@ public class SysUserLoginInOutService {
     }
 
     /**
-     * 根据类型列表查询
+     * 根据类型分页查询
      *
      * @param inout
      * @return
      */
-    public List<SysUserLoginInOut> listByType(int inout, String startDate, String endDate) {
+    public Pagination pageByType(int inout, String startDate, String endDate, Pagination page) {
         Map<String, Object> map = new HashMap<>();
         map.put("inout", inout);
         if (StringUtils.isNotEmpty(startDate)) {
@@ -58,7 +61,8 @@ public class SysUserLoginInOutService {
         if (StringUtils.isNotEmpty(endDate)) {
             map.put("endDate", endDate + " 23:59:59");
         }
-        List<SysUserLoginInOut> list = loginInOutMapper.findByInoutType(map);
+        PageInfo<SysUserLoginInOut> pageInfo = PageHelper.startPage(page.getCurrentPage(), page.getPageSize()).doSelectPageInfo(() -> loginInOutMapper.findByInoutType(map));
+        List<SysUserLoginInOut> list = pageInfo.getList();
         if (CollectionUtils.isNotEmpty(list)) {
             list.forEach(inOut -> {
                 //登录登出
@@ -66,7 +70,6 @@ public class SysUserLoginInOutService {
                 inOut.setInoutTypeName(inOutEnum.getName());
             });
         }
-        return list;
+        return page.result(page, pageInfo);
     }
 }
-

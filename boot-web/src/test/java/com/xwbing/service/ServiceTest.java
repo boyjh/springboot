@@ -1,17 +1,23 @@
 package com.xwbing.service;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.xwbing.BaseTest;
 import com.xwbing.domain.entity.ExpressInfo;
 import com.xwbing.domain.entity.sys.DataDictionary;
 import com.xwbing.domain.entity.sys.SysRole;
+import com.xwbing.domain.entity.sys.SysUserLoginInOut;
 import com.xwbing.domain.entity.vo.ExpressInfoVo;
+import com.xwbing.domain.mapper.sys.SysUserLoginInOutMapper;
 import com.xwbing.rabbit.Sender;
 import com.xwbing.redis.RedisService;
 import com.xwbing.service.rest.ExpressDeliveryService;
 import com.xwbing.service.rest.QRCodeZipService;
 import com.xwbing.service.sys.DataDictionaryService;
 import com.xwbing.service.sys.SysRoleService;
+import com.xwbing.util.Pagination;
 import com.xwbing.util.RSAUtil;
 import com.xwbing.util.RestMessage;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +30,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 项目名称: boot-module-demo
@@ -46,12 +54,26 @@ public class ServiceTest extends BaseTest {
     private SysRoleService sysRoleService;
     @Resource
     private DataDictionaryService dictionaryService;
+    @Resource
+    private SysUserLoginInOutMapper loginInOutMapper;
+
+    @Test
+    public void page() {
+        log.info("分页功能测试");
+        Map<String, Object> map = new HashMap<>();
+        map.put("inout", 1);
+        Page<SysUserLoginInOut> page = PageHelper.startPage(1, 10).doSelectPage(() -> loginInOutMapper.findByInoutType(map));
+        PageInfo<SysUserLoginInOut> pageInfo = PageHelper.startPage(1, 10).doSelectPageInfo(() -> loginInOutMapper.findByInoutType(map));
+        Pagination page1 = new Pagination(pageInfo);
+        Pagination page2 = new Pagination(page);
+        long count = PageHelper.count(() -> loginInOutMapper.findByInoutType(map));
+    }
 
     @Transactional("jpaTransactionManager")
     @Test
     public void jpaTransactionTest() {
         log.info("jpa数据源事务回滚");
-        DataDictionary dictionary=new DataDictionary();
+        DataDictionary dictionary = new DataDictionary();
         dictionary.setDescription("serviceTest");
         dictionary.setEnable("Y");
         dictionary.setCode("serviceTest");

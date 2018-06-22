@@ -27,6 +27,12 @@
     </sql>
     <sql id="condition">
         <where>
+            <if test="name!=null">
+                name like CONCAT(#{name},'%')
+            </if>
+            <if test="sex!=null">
+                and sex=#{sex}
+            </if>
         </where>
     </sql>
     <!-- 插入 -->

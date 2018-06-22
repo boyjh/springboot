@@ -1,6 +1,5 @@
 package com.xwbing.domain.entity.sys;
 
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,7 +18,6 @@ import javax.validation.constraints.Pattern;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity(name = "system_config")
-@ApiModel
 public class SysConfig extends BaseEntity {
     private static final long serialVersionUID = -7587016038432881980L;
     @ApiModelProperty(value = "配置项的code",example = "email_config",required = true)

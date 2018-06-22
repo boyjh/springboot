@@ -1,11 +1,14 @@
 package com.xwbing.service.sys;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.xwbing.constant.CommonConstant;
 import com.xwbing.domain.entity.sys.SysAuthority;
 import com.xwbing.domain.entity.sys.SysRoleAuthority;
 import com.xwbing.domain.entity.vo.SysAuthVo;
 import com.xwbing.domain.mapper.sys.SysAuthorityMapper;
 import com.xwbing.exception.BusinessException;
+import com.xwbing.util.Pagination;
 import com.xwbing.util.PassWordUtil;
 import com.xwbing.util.RestMessage;
 import org.apache.commons.collections.CollectionUtils;
@@ -159,6 +162,21 @@ public class SysAuthorityService {
             map.put("enable", enable);
         }
         return authorityMapper.find(map);
+    }
+
+    /**
+     * 分页查询
+     *
+     * @param enable
+     * @return
+     */
+    public Pagination pageByEnable(String enable, Pagination page) {
+        Map<String, Object> map = new HashMap<>();
+        if (StringUtils.isNotEmpty(enable)) {
+            map.put("enable", enable);
+        }
+        PageInfo<SysAuthority> pageInfo = PageHelper.startPage(page.getCurrentPage(), page.getPageSize()).doSelectPageInfo(() -> authorityMapper.find(map));
+        return page.result(page, pageInfo);
     }
 
     /**
@@ -326,4 +344,3 @@ public class SysAuthorityService {
         return authorities.size() == 0;
     }
 }
-

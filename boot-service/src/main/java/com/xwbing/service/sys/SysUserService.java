@@ -1,6 +1,8 @@
 package com.xwbing.service.sys;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.xwbing.constant.CommonConstant;
 import com.xwbing.constant.CommonEnum;
 import com.xwbing.domain.entity.dto.UserDto;
@@ -22,9 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.BufferedOutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -185,20 +185,29 @@ public class SysUserService {
     }
 
     /**
-     * 列表查询
+     * 分页查询
      *
      * @return
      */
-    public List<SysUser> listAll() {
-        List<SysUser> all = userMapper.findAll();
+    public Pagination page(String name, String sex, Pagination page) {
+        Map<String, Object> map = new HashMap<>();
+        if (StringUtils.isNotEmpty(name)) {
+            map.put("name", name);
+        }
+        if (StringUtils.isNotEmpty(sex)) {
+            map.put("sex", sex);
+        }
+        PageInfo<SysUser> pageInfo = PageHelper.startPage(page.getCurrentPage(), page.getPageSize()).doSelectPageInfo(() -> userMapper.find(map));
+        List<SysUser> all = pageInfo.getList();
         if (CollectionUtils.isNotEmpty(all)) {
             all.forEach(sysUser -> {
                 //性别
                 CommonEnum.SexEnum sexEnum = Arrays.stream(CommonEnum.SexEnum.values()).filter(obj -> obj.getCode().equals(sysUser.getSex())).findFirst().get();
                 sysUser.setSexName(sexEnum.getName());
             });
+            pageInfo.setList(all);
         }
-        return all;
+        return page.result(page, pageInfo);
     }
 
     /**
@@ -466,4 +475,3 @@ public class SysUserService {
         return EmailUtil.sendTextEmail(emailModel);
     }
 }
-

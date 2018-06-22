@@ -1,11 +1,14 @@
 package com.xwbing.service.sys;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.xwbing.constant.CommonConstant;
 import com.xwbing.domain.entity.sys.SysRole;
 import com.xwbing.domain.entity.sys.SysRoleAuthority;
 import com.xwbing.domain.entity.sys.SysUserRole;
 import com.xwbing.domain.mapper.sys.SysRoleMapper;
 import com.xwbing.exception.BusinessException;
+import com.xwbing.util.Pagination;
 import com.xwbing.util.PassWordUtil;
 import com.xwbing.util.RestMessage;
 import org.apache.commons.collections.CollectionUtils;
@@ -135,15 +138,16 @@ public class SysRoleService {
     }
 
     /**
-     * 根据是否启用列表查询
+     * 根据是否启用查询
      *
      * @param enable
      * @return
      */
-    public List<SysRole> listAllByEnable(String enable) {
+    public Pagination pageByEnable(String enable, Pagination page) {
         Map<String, Object> map = new HashMap<>();
         map.put("enable", enable);
-        return roleMapper.find(map);
+        PageInfo<SysRole> pageInfo = PageHelper.startPage(page.getCurrentPage(), page.getPageSize()).doSelectPageInfo(() -> roleMapper.find(map));
+        return page.result(page, pageInfo);
     }
 
     /**
@@ -193,4 +197,3 @@ public class SysRoleService {
         return sysRoles.size() == 0;
     }
 }
-

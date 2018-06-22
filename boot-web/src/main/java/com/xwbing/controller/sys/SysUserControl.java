@@ -12,16 +12,12 @@ import com.xwbing.service.sys.SysAuthorityService;
 import com.xwbing.service.sys.SysRoleService;
 import com.xwbing.service.sys.SysUserRoleService;
 import com.xwbing.service.sys.SysUserService;
-import com.xwbing.util.CommonDataUtil;
-import com.xwbing.util.JsonResult;
-import com.xwbing.util.RestMessage;
-import com.xwbing.util.ThreadLocalUtil;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiOperation;
+import com.xwbing.util.*;
+import io.swagger.annotations.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -94,12 +90,18 @@ public class SysUserControl {
         return JsonResult.toJSONObj(sysUser, "");
     }
 
-    @LogInfo("列表查询所有用户")
-    @ApiOperation(value = "列表查询所有用户", response = ListSysUserVo.class)
-    @GetMapping("listAll")
-    public JSONObject listAll() {
-        List<SysUser> list = sysUserService.listAll();
-        return JsonResult.toJSONObj(list, "");
+    @LogInfo("查询所有用户")
+    @ApiOperation(value = "查询所有用户", response = PageSysUserVo.class)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "name", value = "名字", paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = "sex", value = "性别", paramType = "query", dataType = "string"),
+            @ApiImplicitParam(name = "currentPage", value = "当前页", paramType = "query", dataType = "int"),
+            @ApiImplicitParam(name = "pageSize", value = "页数", paramType = "query", dataType = "int")
+    })
+    @GetMapping("page")
+    public JSONObject page(String name, String sex, @ApiIgnore Pagination page) {
+        Pagination pagination = sysUserService.page(name, sex, page);
+        return JsonResult.toJSONObj(pagination, "");
     }
 
     @LogInfo("登录")
@@ -212,7 +214,7 @@ public class SysUserControl {
     }
 
     @LogInfo("根据用户主键查找所拥有的角色")
-    @ApiOperation(value = "根据用户主键查找所拥有的角色", response = ListSysRoleVo.class)
+    @ApiOperation(value = "根据用户主键查找所拥有的角色", response = PageSysRoleVo.class)
     @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query", dataType = "string")
     @GetMapping("listRoleByUserId")
     public JSONObject listRoleByUserId(@RequestParam String userId, String enable) {
@@ -224,7 +226,7 @@ public class SysUserControl {
     }
 
     @LogInfo("根据用户主键查找所拥有的权限")
-    @ApiOperation(value = "根据用户主键查找所拥有的权限", response = ListSysAuthorityVo.class)
+    @ApiOperation(value = "根据用户主键查找所拥有的权限", response = PageSysAuthorityVo.class)
     @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query", dataType = "string")
     @GetMapping("listAuthorityByUserId")
     public JSONObject listAuthorityByUserId(@RequestParam String userId, String enable) {

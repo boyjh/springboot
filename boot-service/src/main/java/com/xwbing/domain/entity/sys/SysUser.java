@@ -1,6 +1,5 @@
 package com.xwbing.domain.entity.sys;
 
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -8,8 +7,6 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.validation.constraints.Pattern;
 import java.util.List;
 
@@ -21,7 +18,6 @@ import java.util.List;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@ApiModel
 public class SysUser extends BaseEntity {
     private static final long serialVersionUID = -2447528751353457021L;
     public static String table = "sys_user_info";
