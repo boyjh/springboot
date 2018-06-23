@@ -210,20 +210,4 @@
         <include refid="table"/>
         ORDER BY create_time DESC
     </select>
-    <!--&lt;!&ndash; 统计 &ndash;&gt;-->
-    <!--<select id="countByPagin" parameterClass="java.util.Map" resultClass="java.lang.Integer">-->
-    <!--SELECT COUNT(1)-->
-    <!--FROM-->
-    <!--<include refid="table"/>-->
-    <!--<include refid="whereCondition"/>-->
-    <!--</select>-->
-    <!--&lt;!&ndash; 分页 &ndash;&gt;-->
-    <!--<select id="findByPagin" parameterClass="java.util.Map" resultMap="resultMap">-->
-    <!--SELECT-->
-    <!--<include refid="columns"/>-->
-    <!--FROM-->
-    <!--<include refid="table"/>-->
-    <!--<include refid="whereCondition"/>-->
-    <!--order by id desc LIMIT #fromRow#,#pageSize#-->
-    <!--</select>-->
 </mapper>

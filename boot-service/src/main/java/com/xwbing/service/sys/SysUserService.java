@@ -205,7 +205,6 @@ public class SysUserService {
                 CommonEnum.SexEnum sexEnum = Arrays.stream(CommonEnum.SexEnum.values()).filter(obj -> obj.getCode().equals(sysUser.getSex())).findFirst().get();
                 sysUser.setSexName(sexEnum.getName());
             });
-            pageInfo.setList(all);
         }
         return page.result(page, pageInfo);
     }
