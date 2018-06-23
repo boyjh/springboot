@@ -52,15 +52,15 @@ public class Java8DateDemo {
         LocalTime specificSecondTime = LocalTime.ofSecondOfDay(1);// 00:00:01
 
         LocalDateTime dateTime = date.atTime(time);// Create LocalDateTime from
-                                                   // LocalDate
+        // LocalDate
         LocalDateTime today = LocalDateTime.now();// Current Date
         today = LocalDateTime.of(LocalDate.now(), LocalTime.now());
         LocalDateTime specificDate = LocalDateTime.of(2014, Month.JANUARY, 1,
                 10, 10, 30);// 2014-01-01T10:10:30
         LocalDateTime todayKolkata1 = LocalDateTime.now(ZoneId
                 .of("Asia/Kolkata"));
-        int second=today.getSecond();//获取时间中的秒
-        int week=today.getDayOfWeek().getValue();//获取周几
+        int second = today.getSecond();//获取时间中的秒
+        int week = today.getDayOfWeek().getValue();//获取周几
 
         /*
          * 时钟
@@ -73,8 +73,8 @@ public class Java8DateDemo {
         /*
          *新旧日期转换
          */
-        Instant instant = new Date().toInstant();  
-        Date dateee = Date.from(instant);            
+        Instant instant = new Date().toInstant();
+        Date dateee = Date.from(instant);
 
         /*
          * 时间相差

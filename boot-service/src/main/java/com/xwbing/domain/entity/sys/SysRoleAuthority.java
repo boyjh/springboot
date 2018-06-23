@@ -3,9 +3,6 @@ package com.xwbing.domain.entity.sys;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-
 /**
  * 说明: 角色权限关系
  * 项目名称: boot-module-demo

@@ -39,7 +39,7 @@ public class CommonControl {
 
     @LogInfo("上传文件")
     @PostMapping("upload")
-    public JSONObject upload(@ApiParam(value = "文件",required = true) MultipartFile file) {
+    public JSONObject upload(@ApiParam(value = "文件", required = true) MultipartFile file) {
         RestMessage restMessage = commonService.upload(file);
         return JsonResult.toJSONObj(restMessage);
     }

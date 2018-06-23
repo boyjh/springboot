@@ -62,35 +62,37 @@ public class QRCodeUtil {
 
     /**
      * 生成默认尺寸带logo的二维码
+     *
      * @param output  图片文件
-     * @param text 二维码内容
+     * @param text    二维码内容
      * @param logoImg logo图片
-     * @param title 二维码图片描述
+     * @param title   二维码图片描述
      */
-    public static void createCodeLogo(File output,String text, InputStream logoImg, String title) {
-        createCodeLogo(output,text,  logoImg, title, 200, 200,14);
+    public static void createCodeLogo(File output, String text, InputStream logoImg, String title) {
+        createCodeLogo(output, text, logoImg, title, 200, 200, 14);
     }
 
     /**
      * 生成自定义尺寸带logo的二维码
-     * @param output 图片文件
-     * @param width 宽
-     * @param height 高
+     *
+     * @param output  图片文件
+     * @param width   宽
+     * @param height  高
      * @param logoImg logo图片
-     * @param text 二维码内容
-     * @param title 二维码图片描述
-     * @param size 字体大小
+     * @param text    二维码内容
+     * @param title   二维码图片描述
+     * @param size    字体大小
      */
-    public static void createCodeLogo(File output,String text,InputStream logoImg, String title, int width, int height,int size) {
+    public static void createCodeLogo(File output, String text, InputStream logoImg, String title, int width, int height, int size) {
         try {
             internal._codeHeight = height;
             internal._codeWidth = width;
             internal._logoImg = logoImg;
             internal._text = title;
             internal._fontSize = size;
-            internal._output=output;
-             BitMatrix bitMatrix = internal.createCode(text);
-             internal.addMaterial(bitMatrix);
+            internal._output = output;
+            BitMatrix bitMatrix = internal.createCode(text);
+            internal.addMaterial(bitMatrix);
         } catch (WriterException e) {
             LOGGER.error(e.getMessage());
             throw new UtilException("生成自定义尺寸带logo的二维码失败");
@@ -151,6 +153,7 @@ public class QRCodeUtil {
 
         /**
          * 根据内容生成二维码矩阵
+         *
          * @param text
          * @return
          * @throws WriterException
@@ -208,6 +211,7 @@ public class QRCodeUtil {
 
         /**
          * 定位文字
+         *
          * @param image
          * @return
          */
@@ -227,6 +231,7 @@ public class QRCodeUtil {
 
         /**
          * 定位logo
+         *
          * @param image
          * @return
          * @throws IOException
@@ -288,6 +293,7 @@ public class QRCodeUtil {
 
         /**
          * 二维码图片转化为输入流
+         *
          * @param image
          * @return
          * @throws IOException
@@ -299,13 +305,13 @@ public class QRCodeUtil {
         }
     }
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         ClassPathResource file = new ClassPathResource("pic");
         String path = file.getFile().getAbsolutePath();
-        File image = new File(path+File.separator+"logo.png");
-        FileInputStream logo=new FileInputStream(image);
-        File out = new File(path+File.separator+"QRCode.png");
-        createCodeLogo(out,"java生成的二維碼",logo,"logo");
+        File image = new File(path + File.separator + "logo.png");
+        FileInputStream logo = new FileInputStream(image);
+        File out = new File(path + File.separator + "QRCode.png");
+        createCodeLogo(out, "java生成的二維碼", logo, "logo");
     }
 }
 

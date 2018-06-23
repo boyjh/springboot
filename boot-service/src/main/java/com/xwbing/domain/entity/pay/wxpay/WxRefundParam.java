@@ -42,6 +42,7 @@ public class WxRefundParam {
         this.refundFee = refundFee;
         this.opUserId = opUserId;
     }
+
     public WxRefundParam(String transactionId, String outRefundNo, String opUserId, int totalFee, int refundFee) {
         this.transactionId = transactionId;
         this.outRefundNo = outRefundNo;

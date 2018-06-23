@@ -32,17 +32,18 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
     private boolean loginInterceptorEnable;
     @Value("${urlPermissionsInterceptorEnable}")
     private boolean urlPermissionsInterceptorEnable;
+
     /***
      * 添加拦截器
      * @param registry
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        if(loginInterceptorEnable){
+        if (loginInterceptorEnable) {
             log.info("注册登录拦截器LoginInterceptor ======================= ");
             registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**").excludePathPatterns("/user/login");
         }
-        if(urlPermissionsInterceptorEnable){
+        if (urlPermissionsInterceptorEnable) {
             log.info("注册权限拦截器UrlPermissionsInterceptor ======================= ");
             registry.addInterceptor(urlPermissionsInterceptor()).addPathPatterns("/**").excludePathPatterns("/user/login");
         }

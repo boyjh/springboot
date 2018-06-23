@@ -34,8 +34,8 @@ public class EmailUtil {
                 throw new UtilException("发送邮件主机不能为空");
             }
             String protocol = emailModel.getProtocol();
-            if(protocol==null || "".equals(protocol.trim())){
-                protocol="smtp";
+            if (protocol == null || "".equals(protocol.trim())) {
+                protocol = "smtp";
             }
             props.setProperty("mail.transport.protocol", protocol);// 使用的协议（JavaMail规范要求）
             props.setProperty("mail.smtp.host", serverHost); // 发件人的邮箱的
@@ -63,12 +63,12 @@ public class EmailUtil {
             message.setRecipients(Message.RecipientType.TO, toEmailList);
             /*
              * message.addRecipient(MimeMessage.RecipientType.TO,new
-			 * InternetAddress("xx@xx.com")); // To: 增加收件人（单个）（可选）
-			 * message.setRecipient(MimeMessage.RecipientType.CC,new
-			 * InternetAddress("xx@xx.com")); // Cc: 抄送（可选）
-			 * message.setRecipient(MimeMessage.RecipientType.BCC,new
-			 * InternetAddress("xx@xx.com"));// Bcc: 密送（可选）
-			 */
+             * InternetAddress("xx@xx.com")); // To: 增加收件人（单个）（可选）
+             * message.setRecipient(MimeMessage.RecipientType.CC,new
+             * InternetAddress("xx@xx.com")); // Cc: 抄送（可选）
+             * message.setRecipient(MimeMessage.RecipientType.BCC,new
+             * InternetAddress("xx@xx.com"));// Bcc: 密送（可选）
+             */
             // Subject: 邮件主题
             if (StringUtils.isEmpty(emailModel.getSubject())) {
                 throw new UtilException("邮件主题不能为空");
@@ -83,8 +83,8 @@ public class EmailUtil {
             multipart.addBodyPart(html);
             message.setContent(multipart);
             Date sendTime = emailModel.getSendTime();
-            if(sendTime==null){
-                sendTime=new Date();
+            if (sendTime == null) {
+                sendTime = new Date();
             }
             message.setSentDate(sendTime);// 设置显示的发件时间
             message.saveChanges();// 保存邮件

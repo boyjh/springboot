@@ -78,7 +78,7 @@ public class SysUserRoleService {
         if (deleteByIds != 0) {
             result.setSuccess(true);
             result.setMessage("批量删除成功");
-        }else {
+        } else {
             result.setMessage("批量删除失败");
         }
         return result;

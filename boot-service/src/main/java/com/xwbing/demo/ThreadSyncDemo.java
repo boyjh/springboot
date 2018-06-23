@@ -29,8 +29,8 @@ public class ThreadSyncDemo {
         Thread t2 = new Thread(s::buy);
         t1.start();
         t2.start();
-        
-        
+
+
         /*
          * 静态方法锁
          */
@@ -38,7 +38,7 @@ public class ThreadSyncDemo {
         Thread tt2 = new Thread(ThreadSyncDemo::doSome);
         tt1.start();
         tt2.start();
-        
+
         /*
          * 互斥
          */

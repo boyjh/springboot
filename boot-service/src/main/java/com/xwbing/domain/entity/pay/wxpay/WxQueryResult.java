@@ -20,6 +20,7 @@ public class WxQueryResult extends WxBaseResult {
      * 退款状态
      */
     private String refundStatus;
+
     public WxQueryResult(boolean success) {
         this.setSuccess(success);
     }

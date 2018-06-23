@@ -15,7 +15,7 @@ public class AliPayQueryResult extends AliPayBaseResult {
     /**
      * 交易支付状态
      */
-    private  String tradeStatus;
+    private String tradeStatus;
 
     public AliPayQueryResult(boolean success) {
         this.setSuccess(success);

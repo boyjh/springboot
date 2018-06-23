@@ -26,5 +26,6 @@ public class SysAuthVo extends SysAuthority {
             e.printStackTrace();
         }
     }
+
     private List<SysAuthVo> children;
 }

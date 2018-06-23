@@ -87,8 +87,8 @@ public class ExpressDeliveryService {
         if (infoVo != null) {
             boolean success = infoVo.isSuccess();
             logger.info("查询快递信息:{}", success);
-            if(success){
-                String status= StringUtils.isNotEmpty(infoVo.getState()) ? infoVo.getState() : "0";
+            if (success) {
+                String status = StringUtils.isNotEmpty(infoVo.getState()) ? infoVo.getState() : "0";
                 int statusValue = Integer.valueOf(status);
                 Optional<CommonEnum.ExpressStatusEnum> statusEnum = Arrays.stream(CommonEnum.ExpressStatusEnum.values()).filter(obj -> obj.getValue() == statusValue).findFirst();
                 statusEnum.ifPresent(expressStatusEnum -> infoVo.setDescribe(expressStatusEnum.getName()));

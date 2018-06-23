@@ -103,7 +103,7 @@ public class GlobalExceptionHandler {
      *
      * @param request
      * @param response
-     * @param ex BindException
+     * @param ex       BindException
      * @return
      */
     @ExceptionHandler(value = BindException.class)

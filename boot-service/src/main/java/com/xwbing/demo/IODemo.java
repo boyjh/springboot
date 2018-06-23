@@ -55,7 +55,7 @@ public class IODemo {
         }
         bis1.close();
         bos1.close();
-        
+
         /*
          * 字符流
          * 读写单位是字符

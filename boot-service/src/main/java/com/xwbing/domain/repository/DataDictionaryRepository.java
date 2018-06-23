@@ -14,7 +14,7 @@ import java.util.List;
 public interface DataDictionaryRepository extends JpaRepository<DataDictionary, String> {
     DataDictionary getByCode(String code);
 
-    DataDictionary getByCodeAndEnable(String code,String enable);
+    DataDictionary getByCodeAndEnable(String code, String enable);
 
     List<DataDictionary> getByParentIdAndEnable(String parentId, String enable);
 

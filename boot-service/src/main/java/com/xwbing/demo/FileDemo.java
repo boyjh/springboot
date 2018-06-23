@@ -16,7 +16,7 @@ import java.io.InputStream;
 public class FileDemo {
     public static void main(String[] args) throws IOException {
         /*
-         * 
+         *
          * 文件
          * 尽量使用相对路径
          * 在eclipse中，"."当前目录，指的是
@@ -24,35 +24,35 @@ public class FileDemo {
          */
         //创建文件对象
         File file = new File("." + File.separator + "demo.txt");//创建文件对象，并不创建文件
-        if(!file.exists()){
+        if (!file.exists()) {
             file.createNewFile(); //创建文件
         }
-        if(file.exists()){
+        if (file.exists()) {
             file.delete();//删除文件
         }
         String name = file.getName();//获取文件名
         long length = file.length();//获取文件大小
         long time = file.lastModified();//获取文件最后修改时间
         //查看文件是否具有可运行，可读，可写的权限
-        boolean b=file.canExecute();
-        boolean b1=file.canRead();
-        boolean b2=file.canWrite();
+        boolean b = file.canExecute();
+        boolean b1 = file.canRead();
+        boolean b2 = file.canWrite();
         boolean isDir = file.isDirectory();//是否为一个目录
         boolean isFile = file.isFile();//是否为一个文件
-        boolean isHidden=file.isHidden();//是否为一个隐藏文件
-        
+        boolean isHidden = file.isHidden();//是否为一个隐藏文件
+
         /**
          * 目录
          */
-        File dir=new File("demo");
-        File[] subs=dir.listFiles();//获取目录下的所有子项
-        if(!dir.exists()){
+        File dir = new File("demo");
+        File[] subs = dir.listFiles();//获取目录下的所有子项
+        if (!dir.exists()) {
             dir.mkdir();
-        }else {
+        } else {
             dir.delete();//空目录才能删除
         }
-        File dirs =new File("a"+File.separator+"b"+File.separator+"c");
-        if(!dirs.exists()){
+        File dirs = new File("a" + File.separator + "b" + File.separator + "c");
+        if (!dirs.exists()) {
             /*
              * 在创建当前目录的同时将不存在的父目录一并创建出来
              */

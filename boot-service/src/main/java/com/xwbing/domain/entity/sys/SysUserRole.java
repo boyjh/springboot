@@ -3,9 +3,6 @@ package com.xwbing.domain.entity.sys;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-
 /**
  * 说明: 用户角色关系
  * 项目名称: boot-module-demo
@@ -16,13 +13,13 @@ import javax.persistence.Entity;
 @Data
 public class SysUserRole extends BaseEntity {
     private static final long serialVersionUID = 7340808603856635810L;
-    public static String table="sys_user_role";
+    public static String table = "sys_user_role";
     /**
      * 用户主键
      */
-	private String userId;
+    private String userId;
     /**
      * 角色主键
      */
-	private String roleId;
+    private String roleId;
 }

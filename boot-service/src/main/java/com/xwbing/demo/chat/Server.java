@@ -35,9 +35,9 @@ public class Server {
     public Server() throws Exception {
         try {
             /*
-			 * 初始化serversocket并指定服务端口
-			 * 该端口不能与其他应用程序冲突，否则会抛出异常
-			 */
+             * 初始化serversocket并指定服务端口
+             * 该端口不能与其他应用程序冲突，否则会抛出异常
+             */
             server = new ServerSocket(7851);
             allOut = new ArrayList<>();
         } catch (Exception e) {
@@ -79,12 +79,12 @@ public class Server {
      */
     public void start() {
         try {
-			/*
-			 * scoket accept（）
-			 * serversocket提供了accept方法，该方法用于监听申请的服务端口，直到一个客户端连接
-			 * 然后返回一个socket实例用于与该客户端通讯
-			 * 这个方法是一个阻塞方法，直到客户端连接返回继续向下执行
-			 */
+            /*
+             * scoket accept（）
+             * serversocket提供了accept方法，该方法用于监听申请的服务端口，直到一个客户端连接
+             * 然后返回一个socket实例用于与该客户端通讯
+             * 这个方法是一个阻塞方法，直到客户端连接返回继续向下执行
+             */
             while (true) {
                 System.out.println("等待客户端连接");
                 Socket socket = server.accept();
@@ -122,10 +122,10 @@ public class Server {
 
         ClientHandler(Socket socket) {
             this.socket = socket;
-			/*
-			 * 通过socket可以获取远程计算机地址信息
-			 * 对于服务端这边而言，远程计算机即客户端
-			 */
+            /*
+             * 通过socket可以获取远程计算机地址信息
+             * 对于服务端这边而言，远程计算机即客户端
+             */
             InetAddress address = socket.getInetAddress();
             // 获取ip地址的字符串形式
             host = address.getHostAddress();
@@ -137,31 +137,31 @@ public class Server {
             try {
                 //通知所有客户该客户端上线了
                 sendMessage("[" + host + "]" + "上线了！");
-				/*
-				 * 通过Socket获取输出流，用于将消息发送
-				 * 给客户端
-				 */
+                /*
+                 * 通过Socket获取输出流，用于将消息发送
+                 * 给客户端
+                 */
                 OutputStream out = socket.getOutputStream();
                 OutputStreamWriter osw = new OutputStreamWriter(out, "utf-8");
                 pw = new PrintWriter(osw, true);
                 //将该客户端的输出流存入共享集合
                 addOut(pw);
-				/*
-				 * inputstream getinputstream() 
-				 * socket提供的该方法用来获取一个输入流
-				 * 通过该输入流可以读取远端计算机发送过来的数据
-				 */
+                /*
+                 * inputstream getinputstream()
+                 * socket提供的该方法用来获取一个输入流
+                 * 通过该输入流可以读取远端计算机发送过来的数据
+                 */
                 InputStream in = socket.getInputStream();
                 InputStreamReader isr = new InputStreamReader(in, "utf-8");
                 BufferedReader br = new BufferedReader(isr);
                 //读取客户端发送过来的消息
                 String message;
-				/*
-				 * 服务端接受客户端发送过来的消息时，由于客户端操作系统不同，
-				 * 那么当客户端断开连接时的效果也不相同，
-				 * 当windows的客户端断开连接后，br.readline方法会抛出异常
-				 * 当linux的客户端断开连接后，br.readline会返回null
-				 */
+                /*
+                 * 服务端接受客户端发送过来的消息时，由于客户端操作系统不同，
+                 * 那么当客户端断开连接时的效果也不相同，
+                 * 当windows的客户端断开连接后，br.readline方法会抛出异常
+                 * 当linux的客户端断开连接后，br.readline会返回null
+                 */
                 while ((message = br.readLine()) != null) {
 //					System.out.println(host+"说:"+message);
 //					pw.println(host+"说:"+message);
@@ -169,17 +169,17 @@ public class Server {
                 }
             } catch (Exception e) {
             } finally {
-				/*
-				 * 客户端与服务端断开后
-				 */
+                /*
+                 * 客户端与服务端断开后
+                 */
                 try {
                     //将该客户端的输出流从共享集合中删除
                     removeOut(pw);
                     //下线
                     sendMessage("[" + host + "]" + "下线了！");
-					/*
-					 * 通讯完毕后，应当socekt关闭，以释放底层资源
-					 */
+                    /*
+                     * 通讯完毕后，应当socekt关闭，以释放底层资源
+                     */
                     socket.close();
                 } catch (Exception e) {
                     e.printStackTrace();

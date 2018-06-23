@@ -27,10 +27,10 @@ public class Client {
         try {
             /*
              * 初始化socket需要传入两个参数： 1：远程计算机的ip地址 2：服务端应用程序在服务器上申请的端口
-			 * 我们是通过ip地址找到服务器的计算机，在通过端口找到该机器上的服务端应用 程序，这个端口不是客户端决定的，而是服务端决定的
-			 * 
-			 * 实例化socket的过程就是连接的过程 若服务端没有响应，这里会抛出异常
-			 */
+             * 我们是通过ip地址找到服务器的计算机，在通过端口找到该机器上的服务端应用 程序，这个端口不是客户端决定的，而是服务端决定的
+             *
+             * 实例化socket的过程就是连接的过程 若服务端没有响应，这里会抛出异常
+             */
             socket = new Socket("localhost", 7851);
         } catch (Exception e) {
             throw e;
@@ -44,8 +44,8 @@ public class Client {
             Thread t = new Thread(handler);
             t.start();
             /*
-			 * outputstream getoutputstream（） 通过socket获取输出流，用来将数据发送至服务端
-			 */
+             * outputstream getoutputstream（） 通过socket获取输出流，用来将数据发送至服务端
+             */
             Scanner sc = new Scanner(System.in);
             OutputStream out = socket.getOutputStream();
             OutputStreamWriter osw = new OutputStreamWriter(out, "utf-8");

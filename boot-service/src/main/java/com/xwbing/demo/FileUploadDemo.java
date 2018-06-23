@@ -22,6 +22,7 @@ import java.util.List;
 public class FileUploadDemo {
     /**
      * 获取文件数据
+     *
      * @param multipartFiles
      * @return
      */
@@ -30,11 +31,11 @@ public class FileUploadDemo {
         JSONObject materialInfo;
         for (MultipartFile multipartFile : multipartFiles) {
             if (!multipartFile.isEmpty()) {
-                materialInfo=new JSONObject();
+                materialInfo = new JSONObject();
                 String originName = multipartFile.getOriginalFilename();//原始名字
-                materialInfo.put("name",originName);
+                materialInfo.put("name", originName);
                 String fileType = originName.substring(originName.lastIndexOf(".") + 1);//获取文件后缀名
-                materialInfo.put("type",fileType);
+                materialInfo.put("type", fileType);
                 byte[] data;
                 try {
                     InputStream is = multipartFile.getInputStream();//文件输入流
@@ -45,7 +46,7 @@ public class FileUploadDemo {
                     throw new UtilException("读取数据错误");
                 }
                 String base64 = Base64.getEncoder().encodeToString(data);//对数据字节进行base64编码
-                materialInfo.put("data",base64);
+                materialInfo.put("data", base64);
                 list.add(materialInfo);
             }
         }
@@ -54,30 +55,31 @@ public class FileUploadDemo {
 
     /**
      * 采用file.Transto 来保存上传的文件
+     *
      * @param multipartFile
      */
     public void fileUpload(CommonsMultipartFile multipartFile) {
-            if (!multipartFile.isEmpty()) {
-                String name = multipartFile.getOriginalFilename();//原始名字
-                ClassPathResource file = new ClassPathResource("pic");
-                try {
-                    String path = file.getFile().getAbsolutePath();
-                    File targetFile = new File(path+ File.separator+name);
-                    if (!targetFile.exists()) {
-                        targetFile.createNewFile();
-                    }
-                    multipartFile.transferTo(targetFile);
-                } catch (IOException e) {
-                    throw new UtilException("读取数据错误");
+        if (!multipartFile.isEmpty()) {
+            String name = multipartFile.getOriginalFilename();//原始名字
+            ClassPathResource file = new ClassPathResource("pic");
+            try {
+                String path = file.getFile().getAbsolutePath();
+                File targetFile = new File(path + File.separator + name);
+                if (!targetFile.exists()) {
+                    targetFile.createNewFile();
                 }
+                multipartFile.transferTo(targetFile);
+            } catch (IOException e) {
+                throw new UtilException("读取数据错误");
             }
+        }
     }
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         ClassPathResource file = new ClassPathResource("pic");
         String path = file.getFile().getAbsolutePath();
-        File targetFile = new File(path+ File.separator+"test.txt");
-        if(!targetFile.exists()){
+        File targetFile = new File(path + File.separator + "test.txt");
+        if (!targetFile.exists()) {
             targetFile.createNewFile(); //创建文件
         }
         System.out.println("");

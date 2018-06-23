@@ -4,9 +4,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-
 /**
  * 说明: 权限
  * 项目名称: boot-module-demo

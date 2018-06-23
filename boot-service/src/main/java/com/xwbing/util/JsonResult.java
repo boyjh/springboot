@@ -31,7 +31,8 @@ public class JsonResult {
 
     /**
      * 查询返回值为Object
-     * @param o Object/List
+     *
+     * @param o       Object/List
      * @param message
      * @return
      */
@@ -47,6 +48,7 @@ public class JsonResult {
 
     /**
      * 增删改返回值为RestMessage
+     *
      * @param rest
      * @return
      */
@@ -61,6 +63,7 @@ public class JsonResult {
 
     /**
      * 直接返回错误提示
+     *
      * @param error
      * @return
      */
