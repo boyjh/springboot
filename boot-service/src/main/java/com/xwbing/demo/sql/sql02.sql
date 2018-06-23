@@ -1,22 +1,7 @@
-SELECT语句
-SELECT是用来查询数据的语句DQL
-查询某张表中的所有字段的记录:
-SELECT * FROM EMP_XWBING;
-查看指定字段的值:
-SELECT ename,sal,job FROM EMP_XWBING;
-
-DQL必须包含的部分是SELECT子句与FROM子句
-SELCET用来确定查询的字段,可以使用的有:表的字段,函数,表达式FROM子句来确定查询的表
-
-SELECT中使用表达式
-查看每个员工的年薪
-SELECT ename,sal*12 FROM emp_xwbing;
-
-
 字符串函数
 1:concat(p1,p2) 连接字符串
 SELECT concat(ename,sal) FROM emp_xwbing;
-2:连接字符串简便方式:||,相当与java里的-+号,拼接作用
+2:连接字符串简便方式:||,相当与java里的+号,拼接作用
 SELECT ename||':'||sal FROM emp_xwbing;
 
 LENGTH(p)函数,获取字符串长度
