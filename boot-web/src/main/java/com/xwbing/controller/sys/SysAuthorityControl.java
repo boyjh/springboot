@@ -103,21 +103,19 @@ public class SysAuthorityControl {
     @LogInfo("根据是否启用分页查询所有权限")
     @ApiOperation(value = "根据是否启用分页查询所有权限", response = PageSysAuthorityVo.class)
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query", dataType = "string"),
-            @ApiImplicitParam(name = "currentPage", value = "当前页", paramType = "query", dataType = "int"),
-            @ApiImplicitParam(name = "pageSize", value = "页数", paramType = "query", dataType = "int")
+            @ApiImplicitParam(name = "currentPage", value = "当前页", example = "1", paramType = "query", dataType = "int"),
+            @ApiImplicitParam(name = "pageSize", value = "页数", example = "10", paramType = "query", dataType = "int")
     })
     @GetMapping("pageByEnable")
-    public JSONObject pageByEnable(String enable, @ApiIgnore Pagination page) {
+    public JSONObject pageByEnable(@RequestParam(required = false, defaultValue = "Y") String enable, @ApiIgnore Pagination page) {
         Pagination pagination = sysAuthorityService.pageByEnable(enable, page);
         return JsonResult.toJSONObj(pagination, "");
     }
 
     @LogInfo("根据父节点查询子节点")
     @ApiOperation(value = "根据父节点查询子节点", response = ListSysAuthorityVo.class)
-    @ApiImplicitParam(name = "parentId", value = "父id,可为空", paramType = "query", dataType = "string")
     @GetMapping("listByParentId")
-    public JSONObject listByParentId(String parentId) {
+    public JSONObject listByParentId(@RequestParam(required = false) String parentId) {
         if (StringUtils.isEmpty(parentId)) {
             parentId = CommonConstant.ROOT;
         }
@@ -130,20 +128,19 @@ public class SysAuthorityControl {
 
     @LogInfo("递归查询所有权限")
     @ApiOperation(value = "递归查询所有权限", response = ListSysAuthorityVo.class)
-    @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query", dataType = "string")
     @GetMapping("listTree")
-    public JSONObject listTree(String enable) {
-        List<SysAuthVo> authoritys;
+    public JSONObject listTree(@RequestParam(required = false, defaultValue = "Y") String enable) {
+        List<SysAuthVo> authVos;
         //先去缓存里拿
         boolean exists = redisService.exists(CommonConstant.AUTHORITY_THREE);
         if (exists) {
             String result = redisService.get(CommonConstant.AUTHORITY_THREE);
-            authoritys = JSONArray.parseArray(result, SysAuthVo.class);
+            authVos = JSONArray.parseArray(result, SysAuthVo.class);
         } else {
-            authoritys = sysAuthorityService.listChildren(CommonConstant.ROOT, enable);
+            authVos = sysAuthorityService.listChildren(CommonConstant.ROOT, enable);
             // 设置缓存
-            redisService.set(CommonConstant.AUTHORITY_THREE, JSONArray.toJSONString(authoritys));
+            redisService.set(CommonConstant.AUTHORITY_THREE, JSONArray.toJSONString(authVos));
         }
-        return JsonResult.toJSONObj(authoritys, "");
+        return JsonResult.toJSONObj(authVos, "");
     }
 }

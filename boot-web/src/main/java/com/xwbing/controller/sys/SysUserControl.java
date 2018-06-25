@@ -93,13 +93,11 @@ public class SysUserControl {
     @LogInfo("查询所有用户")
     @ApiOperation(value = "查询所有用户", response = PageSysUserVo.class)
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "name", value = "名字", paramType = "query", dataType = "string"),
-            @ApiImplicitParam(name = "sex", value = "性别", paramType = "query", dataType = "string"),
-            @ApiImplicitParam(name = "currentPage", value = "当前页", paramType = "query", dataType = "int"),
-            @ApiImplicitParam(name = "pageSize", value = "页数", paramType = "query", dataType = "int")
+            @ApiImplicitParam(name = "currentPage", value = "当前页", example = "1", paramType = "query", dataType = "int"),
+            @ApiImplicitParam(name = "pageSize", value = "页数", example = "10", paramType = "query", dataType = "int")
     })
     @GetMapping("page")
-    public JSONObject page(String name, String sex, @ApiIgnore Pagination page) {
+    public JSONObject page(@RequestParam(required = false) String name, @RequestParam(required = false, defaultValue = "0") String sex, @ApiIgnore Pagination page) {
         Pagination pagination = sysUserService.page(name, sex, page);
         return JsonResult.toJSONObj(pagination, "");
     }
@@ -215,9 +213,8 @@ public class SysUserControl {
 
     @LogInfo("根据用户主键查找所拥有的角色")
     @ApiOperation(value = "根据用户主键查找所拥有的角色", response = PageSysRoleVo.class)
-    @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query", dataType = "string")
     @GetMapping("listRoleByUserId")
-    public JSONObject listRoleByUserId(@RequestParam String userId, String enable) {
+    public JSONObject listRoleByUserId(@RequestParam String userId, @RequestParam(required = false, defaultValue = "Y") String enable) {
         if (StringUtils.isEmpty(userId)) {
             return JsonResult.toJSONObj("用户主键不能为空");
         }
@@ -227,9 +224,8 @@ public class SysUserControl {
 
     @LogInfo("根据用户主键查找所拥有的权限")
     @ApiOperation(value = "根据用户主键查找所拥有的权限", response = PageSysAuthorityVo.class)
-    @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query", dataType = "string")
     @GetMapping("listAuthorityByUserId")
-    public JSONObject listAuthorityByUserId(@RequestParam String userId, String enable) {
+    public JSONObject listAuthorityByUserId(@RequestParam String userId, @RequestParam(required = false, defaultValue = "Y") String enable) {
         if (StringUtils.isEmpty(userId)) {
             return JsonResult.toJSONObj("用户主键不能为空");
         }

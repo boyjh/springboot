@@ -91,21 +91,19 @@ public class SysRoleControl {
     @LogInfo("根据是否启用分页查询所有角色")
     @ApiOperation(value = "根据是否启用分页查询所有角色", response = PageSysRoleVo.class)
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query", dataType = "string"),
-            @ApiImplicitParam(name = "currentPage", value = "当前页", paramType = "query", dataType = "int"),
-            @ApiImplicitParam(name = "pageSize", value = "页数", paramType = "query", dataType = "int")
+            @ApiImplicitParam(name = "currentPage", value = "当前页", example = "1", paramType = "query", dataType = "int"),
+            @ApiImplicitParam(name = "pageSize", value = "页数", example = "10", paramType = "query", dataType = "int")
     })
     @GetMapping("pageByEnable")
-    public JSONObject pageByEnable(String enable, @ApiIgnore Pagination page) {
+    public JSONObject pageByEnable(@RequestParam(required = false, defaultValue = "Y") String enable, @ApiIgnore Pagination page) {
         Pagination pagination = sysRoleService.pageByEnable(enable, page);
         return JsonResult.toJSONObj(pagination, "");
     }
 
     @LogInfo("根据角色主键查找权限")
     @ApiOperation(value = "根据角色主键查找权限", response = PageSysRoleVo.class)
-    @ApiImplicitParam(name = "enable", value = "是否启用,格式Y|N", paramType = "query", dataType = "string")
     @GetMapping("listAuthorityByRoleId")
-    public JSONObject listAuthorityByRoleId(@RequestParam String roleId, String enable) {
+    public JSONObject listAuthorityByRoleId(@RequestParam String roleId, @RequestParam(required = false, defaultValue = "Y") String enable) {
         if (StringUtils.isEmpty(roleId)) {
             return JsonResult.toJSONObj("角色主键不能为空");
         }

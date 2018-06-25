@@ -34,8 +34,8 @@ public class SysUserLoginInOutControl {
     @LogInfo("获取登录或登出信息")
     @ApiOperation(value = "获取登录或登出信息", response = PageSysUserLoginInOutVo.class)
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "currentPage", value = "当前页", paramType = "query", dataType = "int"),
-            @ApiImplicitParam(name = "pageSize", value = "页数", paramType = "query", dataType = "int")
+            @ApiImplicitParam(name = "currentPage", value = "当前页", example = "1", paramType = "query", dataType = "int"),
+            @ApiImplicitParam(name = "pageSize", value = "页数", example = "10", paramType = "query", dataType = "int")
     })
     @GetMapping("pageByType")
     public JSONObject pageByType(@RequestParam int inout, @RequestParam String startDate, @RequestParam String endDate, @ApiIgnore Pagination page) {

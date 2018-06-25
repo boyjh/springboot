@@ -56,8 +56,7 @@ public class TestControl {
 
     @LogInfo("获取数据库图片")
     @GetMapping("getDbPic")
-    @ApiImplicitParam(name = "type", value = "图片类型", paramType = "query", dataType = "string")
-    public void getDbPic(HttpServletResponse response, @RequestParam String name, String type) throws IOException {
+    public void getDbPic(HttpServletResponse response, @RequestParam String name, @RequestParam(required = false) String type) throws IOException {
         if (StringUtils.isNotEmpty(name)) {
             List<FilesUpload> files = uploadMapper.findByName(name, type);
             if (CollectionUtils.isNotEmpty(files)) {

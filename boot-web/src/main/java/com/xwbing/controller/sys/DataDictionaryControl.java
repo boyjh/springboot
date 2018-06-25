@@ -68,9 +68,8 @@ public class DataDictionaryControl {
 
     @LogInfo("校验编码")
     @ApiOperation(value = "校验编码", response = RestMessageVo.class)
-    @ApiImplicitParam(name = "id", value = "主键", paramType = "query", dataType = "string")
     @PostMapping("uniqueCode")
-    public JSONObject uniqueCode(@RequestParam String code, String id) {
+    public JSONObject uniqueCode(@RequestParam String code, @RequestParam(required = false) String id) {
         RestMessage result = new RestMessage();
         boolean b = dataDictionaryService.uniqueCode(code, id);
         result.setSuccess(b);
@@ -79,12 +78,8 @@ public class DataDictionaryControl {
 
     @LogInfo("根据父id列表查询")
     @ApiOperation(value = "根据父id列表查询", response = ListDataDictionaryVo.class)
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "parentId", value = "父id", paramType = "query", dataType = "string"),
-            @ApiImplicitParam(name = "enable", value = "是否启用，格式为Y|N", paramType = "query", dataType = "string")
-    })
     @GetMapping("findListByParent")
-    public JSONObject findListByParent(String enable, String parentId) {
+    public JSONObject findListByParent(@RequestParam(required = false, defaultValue = "Y") String enable, @RequestParam(required = false) String parentId) {
         if (StringUtils.isEmpty(parentId)) {
             parentId = CommonConstant.ROOT;
         }
@@ -94,9 +89,8 @@ public class DataDictionaryControl {
 
     @LogInfo("根据编码查询字典列表")
     @ApiOperation(value = "根据编码查询字典列表", response = ListDataDictionaryVo.class)
-    @ApiImplicitParam(name = "enable", value = "是否启用，格式为Y|N", paramType = "query", dataType = "string")
     @GetMapping("findListByCode")
-    public JSONObject findListByCode(@RequestParam String code, String enable) {
+    public JSONObject findListByCode(@RequestParam String code, @RequestParam(required = false, defaultValue = "Y") String enable) {
         if (StringUtils.isEmpty(code)) {
             return JsonResult.toJSONObj("编码不能为空");
         }
