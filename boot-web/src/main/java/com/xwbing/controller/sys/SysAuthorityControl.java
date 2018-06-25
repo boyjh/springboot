@@ -104,7 +104,7 @@ public class SysAuthorityControl {
     @ApiOperation(value = "根据是否启用分页查询所有权限", response = PageSysAuthorityVo.class)
     @ApiImplicitParams({
             @ApiImplicitParam(name = "currentPage", value = "当前页", example = "1", paramType = "query", dataType = "int"),
-            @ApiImplicitParam(name = "pageSize", value = "页数", example = "10", paramType = "query", dataType = "int")
+            @ApiImplicitParam(name = "pageSize", value = "每页显示的条数", example = "10", paramType = "query", dataType = "int")
     })
     @GetMapping("pageByEnable")
     public JSONObject pageByEnable(@RequestParam(required = false, defaultValue = "Y") String enable, @ApiIgnore Pagination page) {

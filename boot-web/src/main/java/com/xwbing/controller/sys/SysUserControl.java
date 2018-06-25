@@ -94,7 +94,7 @@ public class SysUserControl {
     @ApiOperation(value = "查询所有用户", response = PageSysUserVo.class)
     @ApiImplicitParams({
             @ApiImplicitParam(name = "currentPage", value = "当前页", example = "1", paramType = "query", dataType = "int"),
-            @ApiImplicitParam(name = "pageSize", value = "页数", example = "10", paramType = "query", dataType = "int")
+            @ApiImplicitParam(name = "pageSize", value = "每页显示的条数", example = "10", paramType = "query", dataType = "int")
     })
     @GetMapping("page")
     public JSONObject page(@RequestParam(required = false) String name, @RequestParam(required = false, defaultValue = "0") String sex, @ApiIgnore Pagination page) {
