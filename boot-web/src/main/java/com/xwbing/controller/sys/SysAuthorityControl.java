@@ -103,11 +103,11 @@ public class SysAuthorityControl {
     @LogInfo("根据是否启用分页查询所有权限")
     @ApiOperation(value = "根据是否启用分页查询所有权限", response = PageSysAuthorityVo.class)
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "currentPage", value = "当前页", example = "1", paramType = "query", dataType = "int"),
-            @ApiImplicitParam(name = "pageSize", value = "每页显示的条数", example = "10", paramType = "query", dataType = "int")
+            @ApiImplicitParam(name = "currentPage", value = "当前页", defaultValue = "1", paramType = "query", dataType = "int"),
+            @ApiImplicitParam(name = "pageSize", value = "每页显示的条数", defaultValue = "10", paramType = "query", dataType = "int")
     })
     @GetMapping("pageByEnable")
-    public JSONObject pageByEnable(@RequestParam(required = false, defaultValue = "Y") String enable, @ApiIgnore Pagination page) {
+    public JSONObject pageByEnable(@RequestParam(required = false) String enable, @ApiIgnore Pagination page) {
         Pagination pagination = sysAuthorityService.pageByEnable(enable, page);
         return JsonResult.toJSONObj(pagination, "");
     }
@@ -129,7 +129,7 @@ public class SysAuthorityControl {
     @LogInfo("递归查询所有权限")
     @ApiOperation(value = "递归查询所有权限", response = ListSysAuthorityVo.class)
     @GetMapping("listTree")
-    public JSONObject listTree(@RequestParam(required = false, defaultValue = "Y") String enable) {
+    public JSONObject listTree(@RequestParam(required = false) String enable) {
         List<SysAuthVo> authVos;
         //先去缓存里拿
         boolean exists = redisService.exists(CommonConstant.AUTHORITY_THREE);

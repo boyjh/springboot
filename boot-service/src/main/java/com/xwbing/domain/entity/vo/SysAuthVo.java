@@ -2,7 +2,7 @@ package com.xwbing.domain.entity.vo;
 
 import com.xwbing.domain.entity.sys.SysAuthority;
 import lombok.Data;
-import org.apache.commons.beanutils.BeanUtils;
+import org.springframework.beans.BeanUtils;
 
 import java.util.List;
 
@@ -20,11 +20,7 @@ public class SysAuthVo extends SysAuthority {
     }
 
     public SysAuthVo(SysAuthority orig) {
-        try {
-            BeanUtils.copyProperties(this, orig);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        BeanUtils.copyProperties(orig, this);
     }
 
     private List<SysAuthVo> children;

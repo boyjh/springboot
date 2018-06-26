@@ -1,4 +1,4 @@
-package com.xwbing.controller.sys;
+package com.xwbing.controller.rest;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.annotation.LogInfo;

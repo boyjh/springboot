@@ -52,9 +52,11 @@ public class SysUserLoginInOutService {
      * @param inout
      * @return
      */
-    public Pagination pageByType(int inout, String startDate, String endDate, Pagination page) {
+    public Pagination page(Integer inout, String startDate, String endDate, Pagination page) {
         Map<String, Object> map = new HashMap<>();
-        map.put("inout", inout);
+        if (inout != null) {
+            map.put("inout", inout);
+        }
         if (StringUtils.isNotEmpty(startDate)) {
             map.put("startDate", startDate + " 00:00:00");
         }
@@ -64,12 +66,13 @@ public class SysUserLoginInOutService {
         PageInfo<SysUserLoginInOut> pageInfo = PageHelper.startPage(page.getCurrentPage(), page.getPageSize()).doSelectPageInfo(() -> loginInOutMapper.findByInoutType(map));
         List<SysUserLoginInOut> list = pageInfo.getList();
         if (CollectionUtils.isNotEmpty(list)) {
-            list.forEach(inOut -> {
+            list.forEach(loginInOut -> {
                 //登录登出
-                CommonEnum.LoginInOutEnum inOutEnum = Arrays.stream(CommonEnum.LoginInOutEnum.values()).filter(obj -> obj.getValue() == inout).findFirst().get();
-                inOut.setInoutTypeName(inOutEnum.getName());
+                CommonEnum.LoginInOutEnum inOutEnum = Arrays.stream(CommonEnum.LoginInOutEnum.values()).filter(obj -> obj.getValue() == loginInOut.getInoutType()).findFirst().get();
+                loginInOut.setInoutTypeName(inOutEnum.getName());
             });
         }
         return page.result(page, pageInfo);
     }
+
 }
