@@ -1,10 +1,17 @@
 package com.xwbing.service.rest;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.xwbing.constant.CommonConstant;
+import com.xwbing.domain.entity.model.EmailModel;
 import com.xwbing.domain.entity.rest.FilesUpload;
+import com.xwbing.domain.entity.sys.SysConfig;
 import com.xwbing.domain.mapper.rest.FilesUploadMapper;
 import com.xwbing.exception.BusinessException;
+import com.xwbing.service.sys.SysConfigService;
 import com.xwbing.util.DigestsUtil;
 import com.xwbing.util.RestMessage;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,6 +32,8 @@ import java.util.Base64;
 public class CommonService {
     @Resource
     private FilesUploadMapper uploadMapper;
+    @Resource
+    private SysConfigService sysConfigService;
 
     /**
      * 保存信息表单提交时获取校验签名
@@ -78,4 +87,45 @@ public class CommonService {
         }
         return result;
     }
+
+    /**
+     * 添加邮箱配置
+     *
+     * @param emailModel
+     * @return
+     */
+    public RestMessage saveOrUpdateEmail(EmailModel emailModel) {
+        SysConfig sysConfig = sysConfigService.getByCode(CommonConstant.EMAIL_KEY);
+        if (sysConfig == null) {
+            sysConfig = new SysConfig();
+            sysConfig.setName("邮箱配置");
+            sysConfig.setCode(CommonConstant.EMAIL_KEY);
+            sysConfig.setEnable(CommonConstant.IS_ENABLE);
+            sysConfig.setValue(JSON.toJSONString(emailModel));
+            return sysConfigService.save(sysConfig);
+        } else {
+            sysConfig.setValue(JSON.toJSONString(emailModel));
+            return sysConfigService.update(sysConfig);
+        }
+    }
+
+    /**
+     * 获取邮箱信息
+     *
+     * @return
+     */
+    public EmailModel getEmail() {
+        SysConfig sysConfig = sysConfigService.getByCode(CommonConstant.EMAIL_KEY);
+        if (sysConfig == null) {
+            return new EmailModel();
+        } else {
+            String value = sysConfig.getValue();
+            if (StringUtils.isEmpty(value)) {
+                return new EmailModel();
+            } else {
+                return JSONObject.parseObject(value, EmailModel.class);
+            }
+        }
+    }
+
 }

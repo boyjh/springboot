@@ -1,5 +1,6 @@
 package com.xwbing.domain.entity.model;
 
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import java.util.Date;
