@@ -31,13 +31,19 @@ public class CountDemo {
         JSONArray result = new JSONArray();
         if (CollectionUtils.isNotEmpty(list)) {
             Map<String, List<JSONObject>> collect = list.stream().collect(Collectors.groupingBy(obj -> obj.getString("item")));
-            collect.forEach((k, v) -> {
-                JSONObject obj = new JSONObject();
-                obj.put("name", k);
-                int sum = v.stream().mapToInt(item -> item.getInteger("value")).sum();
-                obj.put("value", sum);
+            JSONObject obj;
+            for (String item : ITEM.split(",")) {
+                obj = new JSONObject();
+                obj.put("name", item);
+                List<JSONObject> sample = collect.get(item);
+                if (sample != null) {
+                    int sum = sample.stream().mapToInt(value -> value.getInteger("value")).sum();
+                    obj.put("value", sum);
+                } else {
+                    obj.put("value", 0);
+                }
                 result.add(obj);
-            });
+            }
         } else {
             JSONObject obj;
             for (String item : ITEM.split(",")) {
@@ -141,9 +147,9 @@ public class CountDemo {
     }
 
     public static void main(String[] args) {
-        List<JSONObject> list = listByDate("2018-01-01", "2018-01-10");
+        List<JSONObject> list = listByDate("2018-01-01", "2018-01-02");
 //        List<JSONObject> list = new ArrayList<>();
         log.info(JSON.toJSONString(pie(list), SerializerFeature.PrettyFormat));
-        log.info(JSON.toJSONString(barOrLine("2018-01-01", "2018-01-10", list), SerializerFeature.PrettyFormat));
+        log.info(JSON.toJSONString(barOrLine("2018-01-01", "2018-01-02", list), SerializerFeature.PrettyFormat));
     }
 }
