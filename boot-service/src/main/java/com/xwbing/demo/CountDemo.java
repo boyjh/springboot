@@ -62,7 +62,6 @@ public class CountDemo {
      * @param startDate
      * @param endDate
      * @return
-     * @throws Exception
      */
     public static Map<String, Object> barOrLine(String startDate, String endDate, List<JSONObject> list) {
         Map<String, Object> result = new HashMap<>();

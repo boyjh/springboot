@@ -1,10 +1,13 @@
 package com.xwbing.service.sys;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.xwbing.constant.CommonEnum;
 import com.xwbing.domain.entity.sys.SysUserLoginInOut;
 import com.xwbing.domain.mapper.sys.SysUserLoginInOutMapper;
+import com.xwbing.util.DateUtil2;
 import com.xwbing.util.Pagination;
 import com.xwbing.util.RestMessage;
 import org.apache.commons.collections.CollectionUtils;
@@ -16,6 +19,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * 项目名称: boot-module-demo
@@ -73,6 +77,99 @@ public class SysUserLoginInOutService {
             });
         }
         return page.result(page, pageInfo);
+    }
+
+    /**
+     * 登录登出饼图
+     *
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    public JSONArray pie(String startDate, String endDate) {
+        Map<String, Object> map = new HashMap<>();
+        if (StringUtils.isNotEmpty(startDate)) {
+            map.put("startDate", startDate + " 00:00:00");
+        }
+        if (StringUtils.isNotEmpty(endDate)) {
+            map.put("endDate", endDate + " 23:59:59");
+        }
+        List<SysUserLoginInOut> list = loginInOutMapper.countByType(map);
+        int in = 0;
+        int out = 0;
+        for (SysUserLoginInOut inOut : list) {
+            if (inOut.getInoutType() == 1) {
+                in = inOut.getCount();
+            } else {
+                out = inOut.getCount();
+            }
+        }
+        JSONArray result = new JSONArray();
+        JSONObject obj = new JSONObject();
+        obj.put("name", "in");
+        obj.put("value", in);
+        result.add(obj);
+        obj = new JSONObject();
+        obj.put("name", out);
+        obj.put("value", out);
+        return result;
+    }
+
+    /**
+     * 登录登出柱状图
+     *
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    public Map<String, Object> bar(String startDate, String endDate) {
+        Map<String, Object> result = new HashMap<>();
+        //统计时间
+        List<String> days = DateUtil2.listDate(startDate, endDate);
+        result.put("xAxis", days);
+        //统计数据
+        Map<String, Object> map = new HashMap<>();
+        if (StringUtils.isNotEmpty(startDate)) {
+            map.put("startDate", startDate + " 00:00:00");
+        }
+        if (StringUtils.isNotEmpty(endDate)) {
+            map.put("endDate", endDate + " 23:59:59");
+        }
+        List<SysUserLoginInOut> list = loginInOutMapper.findByInoutType(map);
+        JSONArray in = new JSONArray();
+        JSONArray out = new JSONArray();
+        if (CollectionUtils.isNotEmpty(list)) {
+            Map<String, List<SysUserLoginInOut>> collect = list.stream().peek(obj -> obj.setRecordTime(obj.getRecordTime().substring(0, 10))).collect(Collectors.groupingBy(SysUserLoginInOut::getRecordTime));
+            days.forEach(day -> {
+                List<SysUserLoginInOut> sample = collect.get(day);
+                if (CollectionUtils.isNotEmpty(sample)) {
+                    int sumIn = sample.stream().filter(obj -> obj.getInoutType() == 1).mapToInt(SysUserLoginInOut::getCount).sum();
+                    int sumOut = sample.stream().filter(obj -> obj.getInoutType() == 2).mapToInt(SysUserLoginInOut::getCount).sum();
+                    in.add(sumIn);
+                    out.add(sumOut);
+                } else {
+                    in.add(0);
+                    out.add(0);
+                }
+            });
+
+        } else {
+            days.forEach(day -> {
+                in.add(0);
+                out.add(0);
+            });
+        }
+        JSONArray series = new JSONArray();
+        JSONObject obj = new JSONObject();
+        obj.put("name", "in");
+        obj.put("data", in);
+        series.add(obj);
+        obj = new JSONObject();
+        obj.put("name", "out");
+        obj.put("data", out);
+        series.add(obj);
+        result.put("series", series);
+        return result;
     }
 
 }

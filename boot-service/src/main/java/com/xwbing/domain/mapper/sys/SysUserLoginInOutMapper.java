@@ -14,4 +14,6 @@ import java.util.Map;
  */
 public interface SysUserLoginInOutMapper extends BaseMapper<SysUserLoginInOut> {
     List<SysUserLoginInOut> findByInoutType(Map<String, Object> map);
+
+    List<SysUserLoginInOut> countByType(Map<String, Object> map);
 }

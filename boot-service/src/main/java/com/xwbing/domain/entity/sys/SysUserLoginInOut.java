@@ -28,4 +28,5 @@ public class SysUserLoginInOut extends BaseEntity {
     private transient String inoutTypeName;
     private transient String startDate;
     private transient String endDate;
+    private transient int count;
 }

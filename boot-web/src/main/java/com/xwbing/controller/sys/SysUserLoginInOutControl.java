@@ -1,5 +1,6 @@
 package com.xwbing.controller.sys;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.annotation.LogInfo;
 import com.xwbing.domain.entity.vo.PageSysUserLoginInOutVo;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
+import java.util.Map;
 
 /**
  * 项目名称: boot-module-demo
@@ -41,5 +43,19 @@ public class SysUserLoginInOutControl {
     public JSONObject page(@RequestParam(required = false) Integer inout, @RequestParam(required = false) String startDate, @RequestParam(required = false) String endDate, @ApiIgnore Pagination page) {
         Pagination pagination = inOutService.page(inout, startDate, endDate, page);
         return JsonResult.toJSONObj(pagination, "获取列表成功");
+    }
+
+    @LogInfo("获取饼图数据")
+    @GetMapping("pie")
+    public JSONObject pie(@RequestParam(required = false) String startDate, @RequestParam(required = false) String endDate) {
+        JSONArray pie = inOutService.pie(startDate, endDate);
+        return JsonResult.toJSONObj(pie, "");
+    }
+
+    @LogInfo("获取柱状图数据")
+    @GetMapping("bar")
+    public JSONObject bar(@RequestParam(required = false) String startDate, @RequestParam(required = false) String endDate) {
+        Map<String, Object> bar = inOutService.bar(startDate, endDate);
+        return JsonResult.toJSONObj(bar, "");
     }
 }
