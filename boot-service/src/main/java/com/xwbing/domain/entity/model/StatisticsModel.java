@@ -5,7 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 
 /**
  * 说明: 统计属性信息完善程度
- * 项目名称: boot-module-demo
+ * 项目名称: boot-module-pro
  * 创建时间: 2018/4/10 16:36
  * 作者:  xiangwb
  */

@@ -9,7 +9,7 @@ import java.util.Optional;
 
 /**
  * 说明: 公共枚举
- * 项目名称: boot-module-demo
+ * 项目名称: boot-module-pro
  * 创建日期: 2016年12月9日 上午9:50:30
  * 作者: xiangwb
  */

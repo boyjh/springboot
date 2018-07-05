@@ -3,7 +3,7 @@ package com.xwbing.demo;
 import java.util.Scanner;
 
 /**
- * 项目名称: boot-module-demo
+ * 项目名称: boot-module-pro
  * 创建时间: 2017/4/16 14:10
  * 作者: xiangwb
  * 说明: 猜字谜游戏

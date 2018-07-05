@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * 项目名称: boot-module-demo
+ * 项目名称: boot-module-pro
  * 创建时间: 2018/5/7 9:57
  * 作者: xiangwb
  * 说明:

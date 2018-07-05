@@ -5,7 +5,7 @@ import lombok.Data;
 
 /**
  * 说明: 支付宝扫码支付参数
- * 项目名称: boot-module-demo
+ * 项目名称: boot-module-pro
  * 创建时间: 2017/5/10 17:34
  * 作者:  xiangwb
  */

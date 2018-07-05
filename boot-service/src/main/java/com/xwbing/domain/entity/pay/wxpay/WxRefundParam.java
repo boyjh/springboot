@@ -4,7 +4,7 @@ import lombok.Data;
 
 /**
  * 说明: 微信退款参数
- * 项目名称: boot-module-demo
+ * 项目名称: boot-module-pro
  * 创建时间: 2017/5/10 17:43
  * 作者:  xiangwb
  */

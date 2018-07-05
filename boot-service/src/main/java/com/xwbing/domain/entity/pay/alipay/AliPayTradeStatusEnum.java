@@ -2,7 +2,7 @@ package com.xwbing.domain.entity.pay.alipay;
 
 /**
  * 说明: 支付宝交易状态
- * 项目名称: boot-module-demo
+ * 项目名称: boot-module-pro
  * 创建时间: 2017/5/10 17:39
  * 作者:  xiangwb
  */

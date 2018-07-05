@@ -21,7 +21,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * 项目名称: boot-module-demo
+ * 项目名称: boot-module-pro
  * 创建时间: 2018/2/26 14:09
  * 作者: xiangwb
  * 说明:

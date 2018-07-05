@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 项目名称: boot-module-demo
+ * 项目名称: boot-module-pro
  * 创建时间: 2018/6/1 13:20
  * 作者: xiangwb
  * 说明: 服务层功能测试

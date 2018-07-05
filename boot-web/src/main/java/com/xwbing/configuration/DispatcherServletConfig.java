@@ -20,7 +20,7 @@ import java.util.List;
 
 /**
  * 说明: servlet上下文配置
- * 项目名称: boot-module-demo
+ * 项目名称: boot-module-pro
  * 创建时间: 2017/5/10 16:36
  * 作者:  xiangwb
  */

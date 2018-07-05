@@ -1,7 +1,7 @@
 package com.xwbing.exception;
 
 /**
- * 项目名称: boot-module-demo
+ * 项目名称: boot-module-pro
  * 创建时间: 2017/11/22 15:08
  * 作者: xiangwb
  * 说明: 工具类异常

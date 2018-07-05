@@ -7,7 +7,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 /**
- * 项目名称: boot-module-demo
+ * 项目名称: boot-module-pro
  * 创建时间: 2018/5/27 20:37
  * 作者: xiangwb
  * 说明: Java反射机制是在运行状态中，对于任意一个类，都能够知道这个类的所有属性和方法；

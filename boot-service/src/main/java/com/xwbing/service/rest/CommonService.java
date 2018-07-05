@@ -23,7 +23,7 @@ import java.io.InputStream;
 import java.util.Base64;
 
 /**
- * 项目名称: boot-module-demo
+ * 项目名称: boot-module-pro
  * 创建时间: 2018/5/7 8:59
  * 作者: xiangwb
  * 说明:

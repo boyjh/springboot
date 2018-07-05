@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * 说明: 条形码支付结果
- * 项目名称: boot-module-demo
+ * 项目名称: boot-module-pro
  * 创建时间: 2017/5/10 17:36
  * 作者:  xiangwb
  */

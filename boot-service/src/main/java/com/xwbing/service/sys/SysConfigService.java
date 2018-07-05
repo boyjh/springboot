@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  * 说明: 系统配置服务层
- * 项目名称: boot-module-demo
+ * 项目名称: boot-module-pro
  * 创建时间: 2017/5/5 16:44
  * 作者:  xiangwb
  */

@@ -7,7 +7,7 @@ import org.springframework.beans.BeanUtils;
 import java.util.List;
 
 /**
- * 项目名称: boot-module-demo
+ * 项目名称: boot-module-pro
  * 创建时间: 2017/11/14 15:43
  * 作者: xiangwb
  * 说明: 权限树信息

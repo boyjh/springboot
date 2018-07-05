@@ -2,7 +2,7 @@ package com.xwbing.domain.entity.pay.wxpay;
 
 /**
  * 说明: 微信支付结果状态
- * 项目名称: boot-module-demo
+ * 项目名称: boot-module-pro
  * 创建时间: 2017/5/10 17:44
  * 作者:  xiangwb
  */

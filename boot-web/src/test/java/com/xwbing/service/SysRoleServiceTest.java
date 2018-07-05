@@ -12,7 +12,7 @@ import org.junit.Test;
 import javax.annotation.Resource;
 
 /**
- * 项目名称: boot-module-demo
+ * 项目名称: boot-module-pro
  * 创建时间: 2018/6/1 13:20
  * 作者: xiangwb
  * 说明: 权限服务层测试

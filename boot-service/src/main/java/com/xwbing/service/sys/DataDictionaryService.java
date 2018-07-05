@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 项目名称: boot-module-demo
+ * 项目名称: boot-module-pro
  * 创建时间: 2018/2/26 10:29
  * 作者: xiangwb
  * 说明: 数据字典服务层

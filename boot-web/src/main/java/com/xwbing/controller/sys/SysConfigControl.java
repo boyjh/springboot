@@ -16,7 +16,7 @@ import javax.annotation.Resource;
 
 /**
  * 说明: 系统配置控制层
- * 项目名称: boot-module-demo
+ * 项目名称: boot-module-pro
  * 创建时间: 2017/5/10 16:36
  * 作者:  xiangwb
  */

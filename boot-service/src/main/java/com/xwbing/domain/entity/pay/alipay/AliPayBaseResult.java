@@ -4,7 +4,7 @@ import lombok.Data;
 
 /**
  * 说明: 支付宝接口基础类
- * 项目名称: boot-module-demo
+ * 项目名称: boot-module-pro
  * 创建时间: 2017/5/10 17:35
  * 作者:  xiangwb
  */

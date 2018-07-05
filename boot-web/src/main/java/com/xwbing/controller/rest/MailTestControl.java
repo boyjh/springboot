@@ -16,7 +16,7 @@ import javax.annotation.Resource;
 import java.io.IOException;
 
 /**
- * 项目名称: sb-boot-module-demo
+ * 项目名称: sb-boot-module-pro
  * 创建时间: 2017/9/18 13:42
  * 作者: xiangwb
  * 说明:邮件测试控制层

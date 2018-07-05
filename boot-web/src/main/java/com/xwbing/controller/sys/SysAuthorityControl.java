@@ -26,7 +26,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * 项目名称: boot-module-demo
+ * 项目名称: boot-module-pro
  * 创建时间: 2017/11/15 10:36
  * 作者: xiangwb
  * 说明: 权限控制层

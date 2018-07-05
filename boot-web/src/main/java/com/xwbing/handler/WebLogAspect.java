@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 /**
  * 说明: web层日志记录切面
- * 项目名称: boot-module-demo
+ * 项目名称: boot-module-pro
  * 创建时间: 2017/5/10 16:34
  * 作者:  xiangwb
  */

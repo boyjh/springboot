@@ -21,7 +21,7 @@ import javax.annotation.Resource;
 import java.util.Map;
 
 /**
- * 项目名称: boot-module-demo
+ * 项目名称: boot-module-pro
  * 创建时间: 2017/11/7 11:16
  * 作者: xiangwb
  * 说明: 用户登录登出控制层

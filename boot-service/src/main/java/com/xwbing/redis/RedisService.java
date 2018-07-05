@@ -16,7 +16,7 @@ import java.util.Set;
 
 /**
  * 说明: 封装redis 缓存服务器服务接口
- * 项目名称: boot-module-demo
+ * 项目名称: boot-module-pro
  * 创建时间: 2017/5/5 16:44
  * 作者:  xiangwb
  */

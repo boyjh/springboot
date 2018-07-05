@@ -28,7 +28,7 @@ import java.util.List;
 
 /**
  * 说明: 测试控制层
- * 项目名称: boot-module-demo
+ * 项目名称: boot-module-pro
  * 创建时间: 2017/5/5 9:21
  * 作者:  xiangwb
  */

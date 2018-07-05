@@ -19,7 +19,7 @@ import java.util.Map;
 
 /**
  * 说明: JpaDataSourceConfig
- * 项目名称: boot-module-demo
+ * 项目名称: boot-module-pro
  * 创建时间: 2017/12/10 16:36
  * 作者:  xiangwb
  */

@@ -8,7 +8,7 @@ import java.util.Date;
 
 /**
  * 说明: 支付宝退款结果
- * 项目名称: boot-module-demo
+ * 项目名称: boot-module-pro
  * 创建时间: 2017/5/10 17:39
  * 作者:  xiangwb
  */

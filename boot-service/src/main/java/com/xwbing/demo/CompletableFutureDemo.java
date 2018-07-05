@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 /**
- * 项目名称: boot-module-demo
+ * 项目名称: boot-module-pro
  * 创建时间: 2018/2/6 10:54
  * 作者: xiangwb
  * 说明: apply进行转换，有返回值。accept进行消耗，无返回值

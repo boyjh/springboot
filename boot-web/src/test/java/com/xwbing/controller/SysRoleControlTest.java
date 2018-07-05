@@ -13,7 +13,7 @@ import java.text.MessageFormat;
 
 /**
  * 说明:
- * 项目名称: boot-module-demo
+ * 项目名称: boot-module-pro
  * 创建时间: 2018/5/10 16:36
  * 作者:  xiangwb
  */
