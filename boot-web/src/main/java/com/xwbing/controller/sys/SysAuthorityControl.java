@@ -1,6 +1,5 @@
 package com.xwbing.controller.sys;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.annotation.LogInfo;
 import com.xwbing.constant.CommonConstant;
@@ -10,8 +9,8 @@ import com.xwbing.domain.entity.vo.ListSysAuthorityVo;
 import com.xwbing.domain.entity.vo.PageSysAuthorityVo;
 import com.xwbing.domain.entity.vo.RestMessageVo;
 import com.xwbing.domain.entity.vo.SysAuthVo;
-import com.xwbing.redis.RedisService;
 import com.xwbing.service.sys.SysAuthorityService;
+import com.xwbing.util.CommonDataUtil;
 import com.xwbing.util.JsonResult;
 import com.xwbing.util.Pagination;
 import com.xwbing.util.RestMessage;
@@ -38,8 +37,6 @@ import java.util.List;
 public class SysAuthorityControl {
     @Resource
     private SysAuthorityService sysAuthorityService;
-    @Resource
-    private RedisService redisService;
 
     @LogInfo("添加权限")
     @ApiOperation(value = "添加权限", response = RestMessageVo.class)
@@ -49,7 +46,8 @@ public class SysAuthorityControl {
         RestMessage save = sysAuthorityService.save(sysAuthority);
         //删除缓存
         if (save.isSuccess()) {
-            redisService.del(CommonConstant.AUTHORITY_THREE);
+            CommonDataUtil.clearData(CommonConstant.AUTHORITY_THREE);
+//            redisService.del(CommonConstant.AUTHORITY_THREE);
         }
         return JsonResult.toJSONObj(save);
     }
@@ -64,7 +62,8 @@ public class SysAuthorityControl {
         RestMessage result = sysAuthorityService.removeById(id);
         //删除缓存
         if (result.isSuccess()) {
-            redisService.del(CommonConstant.AUTHORITY_THREE);
+            CommonDataUtil.clearData(CommonConstant.AUTHORITY_THREE);
+//            redisService.del(CommonConstant.AUTHORITY_THREE);
         }
         return JsonResult.toJSONObj(result);
     }
@@ -95,7 +94,8 @@ public class SysAuthorityControl {
         RestMessage result = sysAuthorityService.update(sysAuthority);
         //删除缓存
         if (result.isSuccess()) {
-            redisService.del(CommonConstant.AUTHORITY_THREE);
+            CommonDataUtil.clearData(CommonConstant.AUTHORITY_THREE);
+//            redisService.del(CommonConstant.AUTHORITY_THREE);
         }
         return JsonResult.toJSONObj(result);
     }
@@ -130,16 +130,12 @@ public class SysAuthorityControl {
     @ApiOperation(value = "递归查询所有权限", response = ListSysAuthorityVo.class)
     @GetMapping("listTree")
     public JSONObject listTree(@RequestParam(required = false) String enable) {
-        List<SysAuthVo> authVos;
         //先去缓存里拿
-        boolean exists = redisService.exists(CommonConstant.AUTHORITY_THREE);
-        if (exists) {
-            String result = redisService.get(CommonConstant.AUTHORITY_THREE);
-            authVos = JSONArray.parseArray(result, SysAuthVo.class);
-        } else {
+        List<SysAuthVo> authVos = (List<SysAuthVo>) CommonDataUtil.getData(CommonConstant.AUTHORITY_THREE);
+        if (authVos == null) {
             authVos = sysAuthorityService.listChildren(CommonConstant.ROOT, enable);
             // 设置缓存
-            redisService.set(CommonConstant.AUTHORITY_THREE, JSONArray.toJSONString(authVos));
+            CommonDataUtil.setData(CommonConstant.AUTHORITY_THREE, authVos);
         }
         return JsonResult.toJSONObj(authVos, "");
     }
