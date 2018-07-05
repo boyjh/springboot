@@ -60,34 +60,30 @@ public class CountDemo {
         //统计时间
         List<String> days = listDate(startDate, endDate);
         result.put("xAxis", days);
-        //统计数据
-        JSONArray aa = new JSONArray();
-        JSONArray bb = new JSONArray();
         if (list == null) {
             list = Collections.EMPTY_LIST;
         }
         Map<String, List<JSONObject>> collect = list.stream().collect(Collectors.groupingBy(obj -> obj.getString("day")));
-        days.forEach(day -> {
-            List<JSONObject> sample = collect.get(day);
-            if (sample != null) {
-                int sumA = sample.stream().filter(obj -> "aa".equals(obj.getString("item"))).mapToInt(obj -> obj.getInteger("value")).sum();
-                int sumB = sample.stream().filter(obj -> "bb".equals(obj.getString("item"))).mapToInt(obj -> obj.getInteger("value")).sum();
-                aa.add(sumA);
-                bb.add(sumB);
-            } else {
-                aa.add(0);
-                bb.add(0);
-            }
-        });
+        JSONObject obj;
+        JSONArray array;
         JSONArray series = new JSONArray();
-        JSONObject obj = new JSONObject();
-        obj.put("name", "aa");
-        obj.put("data", aa);
-        series.add(obj);
-        obj = new JSONObject();
-        obj.put("name", "bb");
-        obj.put("data", bb);
-        series.add(obj);
+        //统计数据
+        for (String item : ITEM.split(",")) {
+            obj = new JSONObject();
+            obj.put("name", item);
+            array = new JSONArray();
+            for (String day : days) {
+                List<JSONObject> sample = collect.get(day);
+                if (sample != null) {
+                    int sum = sample.stream().filter(it -> item.equals(it.getString("item"))).mapToInt(it -> it.getInteger("value")).sum();
+                    array.add(sum);
+                } else {
+                    array.add(0);
+                }
+            }
+            obj.put("data", array);
+            series.add(obj);
+        }
         result.put("series", series);
         return result;
     }
@@ -106,31 +102,18 @@ public class CountDemo {
         if (list == null) {
             list = Collections.EMPTY_LIST;
         }
-        Map<String, List<JSONObject>> collect = list.stream().collect(Collectors.groupingBy(obj -> obj.getString("item")));
+        Map<String, List<JSONObject>> collect = list.stream().collect(Collectors.groupingBy(obj -> obj.getString("day")));
         JSONObject obj;
-        for (String name : ITEM.split(",")) {
+        for (String item : ITEM.split(",")) {
             obj = new JSONObject();
-            obj.put("name", name);
-            List<JSONObject> sample = collect.get(name);
-            if (sample != null) {
-                Iterator<JSONObject> it;
-                for (String day : days) {
-                    int sum = 0;
-                    it = sample.iterator();
-                    JSONObject next;
-                    while (it.hasNext()) {
-                        next = it.next();
-                        String date = next.getString("day");
-                        int value = next.getInteger("value");
-                        if (day.equals(date)) {
-                            sum += value;
-                            it.remove();
-                        }
-                    }
+            obj.put("name", item);
+            for (String day : days) {
+                List<JSONObject> sample = collect.get(day);
+                if (sample != null) {
+                    int sum = sample.stream().filter(it -> item.equals(it.getString("item"))).mapToInt(it -> it.getInteger("value")).sum();
                     obj.put(day, sum);
-                }
-            } else {
-                for (String day : days) {
+
+                } else {
                     obj.put(day, 0);
                 }
             }
@@ -173,7 +156,7 @@ public class CountDemo {
     }
 
     /**
-     * 获取数据列表
+     * 模拟数据列表
      *
      * @param startDate
      * @param endDate
@@ -188,7 +171,8 @@ public class CountDemo {
             obj = new JSONObject();
             obj.put("day", object);
             obj.put("value", ++i);
-            obj.put("item", ITEM.split(",")[new Random().nextInt(2)]);
+            String[] array = ITEM.split(",");
+            obj.put("item", array[new Random().nextInt(array.length)]);
             result.add(obj);
         }
         return result;
@@ -213,12 +197,14 @@ public class CountDemo {
     }
 
     public static void main(String[] args) {
-        List<JSONObject> list = listByDate("2018-01-01", "2018-01-02");
+        String startDate = "2018-01-01";
+        String endDate = "2018-01-03";
+        List<JSONObject> list = listByDate(startDate, endDate);
 //        List<JSONObject> list = new ArrayList<>();
 //        List<JSONObject> list = null;
-        log.info(JSON.toJSONString(pie(list), SerializerFeature.PrettyFormat));
-        log.info(JSON.toJSONString(eChartsBarOrLine("2018-01-01", "2018-01-02", list), SerializerFeature.PrettyFormat));
-        log.info(JSON.toJSONString(g2Bar("2018-01-01", "2018-01-02", list), SerializerFeature.PrettyFormat));
-        log.info(JSON.toJSONString(g2Line("2018-01-01", "2018-01-02", list), SerializerFeature.PrettyFormat));
+        log.info("pie:{}", JSON.toJSONString(pie(list), SerializerFeature.PrettyFormat));
+        log.info("eChartsBarOrLine{}", JSON.toJSONString(eChartsBarOrLine(startDate, endDate, list), SerializerFeature.PrettyFormat));
+        log.info("g2Bar{}" + JSON.toJSONString(g2Bar(startDate, endDate, list), SerializerFeature.PrettyFormat));
+        log.info("g2Line{}", JSON.toJSONString(g2Line(startDate, endDate, list), SerializerFeature.PrettyFormat));
     }
 }

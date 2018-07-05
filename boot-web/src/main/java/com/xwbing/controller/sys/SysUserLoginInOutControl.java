@@ -46,6 +46,7 @@ public class SysUserLoginInOutControl {
     }
 
     @LogInfo("获取饼图数据")
+    @ApiOperation(value = "获取饼图数据")
     @GetMapping("pie")
     public JSONObject pie(@RequestParam(required = false) String startDate, @RequestParam(required = false) String endDate) {
         JSONArray pie = inOutService.pie(startDate, endDate);
@@ -53,6 +54,7 @@ public class SysUserLoginInOutControl {
     }
 
     @LogInfo("获取柱状图数据")
+    @ApiOperation(value = "获取柱状图数据")
     @GetMapping("bar")
     public JSONObject bar(@RequestParam(required = false) String startDate, @RequestParam(required = false) String endDate) {
         Map<String, Object> bar = inOutService.bar(startDate, endDate);

@@ -15,10 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -29,6 +26,7 @@ import java.util.stream.Collectors;
  */
 @Service
 public class SysUserLoginInOutService {
+    public static final int[] ITEM = {1, 2};
     @Resource
     private SysUserLoginInOutMapper loginInOutMapper;
 
@@ -87,6 +85,8 @@ public class SysUserLoginInOutService {
      * @return
      */
     public JSONArray pie(String startDate, String endDate) {
+        JSONArray result = new JSONArray();
+        //获取数据
         Map<String, Object> map = new HashMap<>();
         if (StringUtils.isNotEmpty(startDate)) {
             map.put("startDate", startDate + " 00:00:00");
@@ -95,23 +95,22 @@ public class SysUserLoginInOutService {
             map.put("endDate", endDate + " 23:59:59");
         }
         List<SysUserLoginInOut> list = loginInOutMapper.countByType(map);
-        int in = 0;
-        int out = 0;
-        for (SysUserLoginInOut inOut : list) {
-            if (inOut.getInoutType() == 1) {
-                in = inOut.getCount();
+        //统计数据
+        Map<Integer, List<SysUserLoginInOut>> collect = list.stream().collect(Collectors.groupingBy(SysUserLoginInOut::getInoutType));
+        JSONObject obj;
+        for (int item : ITEM) {
+            obj = new JSONObject();
+            String name = Arrays.stream(CommonEnum.LoginInOutEnum.values()).filter(login -> login.getValue() == item).findFirst().get().getName();
+            obj.put("name", name);
+            List<SysUserLoginInOut> sample = collect.get(item);
+            if (sample != null) {
+                int sum = sample.get(0).getCount();
+                obj.put("value", sum);
             } else {
-                out = inOut.getCount();
+                obj.put("value", 0);
             }
+            result.add(obj);
         }
-        JSONArray result = new JSONArray();
-        JSONObject obj = new JSONObject();
-        obj.put("name", "in");
-        obj.put("value", in);
-        result.add(obj);
-        obj = new JSONObject();
-        obj.put("name", out);
-        obj.put("value", out);
         return result;
     }
 
@@ -124,10 +123,10 @@ public class SysUserLoginInOutService {
      */
     public Map<String, Object> bar(String startDate, String endDate) {
         Map<String, Object> result = new HashMap<>();
-        //统计时间
+        //统计日期
         List<String> days = DateUtil2.listDate(startDate, endDate);
         result.put("xAxis", days);
-        //统计数据
+        //获取数据
         Map<String, Object> map = new HashMap<>();
         if (StringUtils.isNotEmpty(startDate)) {
             map.put("startDate", startDate + " 00:00:00");
@@ -136,40 +135,29 @@ public class SysUserLoginInOutService {
             map.put("endDate", endDate + " 23:59:59");
         }
         List<SysUserLoginInOut> list = loginInOutMapper.findByInoutType(map);
-        JSONArray in = new JSONArray();
-        JSONArray out = new JSONArray();
-        if (CollectionUtils.isNotEmpty(list)) {
-            Map<String, List<SysUserLoginInOut>> collect = list.stream().peek(obj -> obj.setRecordTime(obj.getRecordTime().substring(0, 10))).collect(Collectors.groupingBy(SysUserLoginInOut::getRecordTime));
-            days.forEach(day -> {
-                List<SysUserLoginInOut> sample = collect.get(day);
-                if (CollectionUtils.isNotEmpty(sample)) {
-                    int sumIn = sample.stream().filter(obj -> obj.getInoutType() == 1).mapToInt(SysUserLoginInOut::getCount).sum();
-                    int sumOut = sample.stream().filter(obj -> obj.getInoutType() == 2).mapToInt(SysUserLoginInOut::getCount).sum();
-                    in.add(sumIn);
-                    out.add(sumOut);
-                } else {
-                    in.add(0);
-                    out.add(0);
-                }
-            });
-
-        } else {
-            days.forEach(day -> {
-                in.add(0);
-                out.add(0);
-            });
-        }
+        //统计数据
+        Map<String, List<SysUserLoginInOut>> collect = list.stream().peek(loginInOut -> loginInOut.setRecordTime(loginInOut.getRecordTime().substring(0, 10))).collect(Collectors.groupingBy(SysUserLoginInOut::getRecordTime));
+        JSONObject obj;
+        JSONArray array;
         JSONArray series = new JSONArray();
-        JSONObject obj = new JSONObject();
-        obj.put("name", "in");
-        obj.put("data", in);
-        series.add(obj);
-        obj = new JSONObject();
-        obj.put("name", "out");
-        obj.put("data", out);
-        series.add(obj);
+        for (int item : ITEM) {
+            obj = new JSONObject();
+            String name = Arrays.stream(CommonEnum.LoginInOutEnum.values()).filter(login -> login.getValue() == item).findFirst().get().getName();
+            obj.put("name", name);
+            array = new JSONArray();
+            for (String day : days) {
+                List<SysUserLoginInOut> sample = collect.get(day);
+                if (sample != null) {
+                    int sum = (int) sample.stream().filter(it -> item == it.getInoutType()).count();
+                    array.add(sum);
+                } else {
+                    array.add(0);
+                }
+            }
+            obj.put("data", array);
+            series.add(obj);
+        }
         result.put("series", series);
         return result;
     }
-
 }
