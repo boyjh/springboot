@@ -2,8 +2,7 @@
 package com.xwbing.util;
 
 import com.xwbing.exception.UtilException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
@@ -17,11 +16,11 @@ import java.util.Random;
  * 说明:散列算法/摘要算法
  * 作者: xiangwb
  */
+@Slf4j
 public class DigestsUtil {
     private static final String SHA1 = "SHA-1";
     private static final String MD5 = "MD5";
     private static SecureRandom random = new SecureRandom();
-    private static final Logger LOGGER = LoggerFactory.getLogger(DigestsUtil.class);
 
     /**
      * 生成随机的Byte[]作为salt.
@@ -68,7 +67,7 @@ public class DigestsUtil {
             }
             return result;
         } catch (GeneralSecurityException e) {
-            LOGGER.error(e.getMessage());
+            log.error(e.getMessage());
             throw new UtilException("加密失败");
         }
     }
@@ -99,7 +98,7 @@ public class DigestsUtil {
             }
             return messageDigest.digest();
         } catch (Exception e) {
-            LOGGER.error(e.getMessage());
+            log.error(e.getMessage());
             throw new UtilException("加密失败");
         }
     }
@@ -116,7 +115,7 @@ public class DigestsUtil {
             byte[] md5 = md.digest(sign.getBytes());
             return Base64.getEncoder().encodeToString(md5);
         } catch (NoSuchAlgorithmException e) {
-            LOGGER.error(e.getMessage());
+            log.error(e.getMessage());
             throw new UtilException("获取签名失败");
         }
     }

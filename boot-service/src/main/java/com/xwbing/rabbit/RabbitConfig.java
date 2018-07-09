@@ -1,8 +1,7 @@
 package com.xwbing.rabbit;
 
 import lombok.Data;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -18,6 +17,7 @@ import org.springframework.context.annotation.Scope;
  * 作者: xiangwb
  * 说明: 配置类
  */
+@Slf4j
 @Data
 @Configuration
 @ConfigurationProperties(prefix = "spring.rabbitmq")
@@ -30,7 +30,6 @@ public class RabbitConfig {
     private int connectionTimeout;
     private boolean publisherConfirms;
     private boolean publisherReturns;
-    private final Logger logger = LoggerFactory.getLogger(RabbitConfig.class);
 
     @Bean
     public ConnectionFactory connectionFactory() {
@@ -60,15 +59,15 @@ public class RabbitConfig {
         //相应交换机接收后异步回调
         rabbitTemplate.setConfirmCallback((correlationData, ack, cause) -> {
             if (ack) {
-                logger.info("交换机接收信息成功,id:{}", correlationData.getId());
+                log.info("交换机接收信息成功,id:{}", correlationData.getId());
             } else {
-                logger.error("交换机接收信息失败:{}", cause);
+                log.error("交换机接收信息失败:{}", cause);
             }
         });
         //无相应队列与交换机绑定异步回调
         rabbitTemplate.setReturnCallback((message, replyCode, replyText, exchange, routingKey) -> {
             String msg = new String(message.getBody());
-            logger.error("消息:{} 发送失败, 应答码:{} 原因:{} 交换机:{} 路由键:{}", msg, replyCode, replyText, exchange, routingKey);
+            log.error("消息:{} 发送失败, 应答码:{} 原因:{} 交换机:{} 路由键:{}", msg, replyCode, replyText, exchange, routingKey);
         });
         return rabbitTemplate;
     }

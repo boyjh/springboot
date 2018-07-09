@@ -107,7 +107,7 @@ public class LambdaDemo {
 //        try {
 //            completableFuture.get();
 //        } catch (InterruptedException | ExecutionException e) {
-//            logger.error(e.getMessage());
+//            log.error(e.getMessage());
 //            throw new BusinessException("获取数据出错");
 //        }
         return finalList;

@@ -1,8 +1,7 @@
 package com.xwbing.util;
 
 import com.xwbing.exception.UtilException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
 import java.time.*;
@@ -15,6 +14,7 @@ import java.util.*;
  * 作者: xiangwb
  * 说明: 基于java8的日期处理类
  */
+@Slf4j
 public class DateUtil2 {
     public static final long SECOND = 1;
     public static final long MINUTE = SECOND * 60;
@@ -27,7 +27,6 @@ public class DateUtil2 {
     public static final String YYYY = "yyyy";
     public static final String HH_MM_SS = "HH:mm:ss";
     public static final String HH_MM = "HH:mm";
-    private static final Logger logger = LoggerFactory.getLogger(DateUtil2.class);
     /*
      * ChronoUnit:各种时间单位 | TemporalAdjusters:时态对象 可以获取第一天,最后一天等
      * 获取时间分量:Duration要求是localDateTime/localTime类型 | Period要求是localDate类型

@@ -1,8 +1,6 @@
 package com.xwbing.demo;
 
 import com.alibaba.fastjson.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +15,6 @@ import java.util.concurrent.CompletableFuture;
  * 参数: Function(函数)有返回值 Consumer(消费者)无返回值
  */
 public class CompletableFutureDemo {
-    private static final Logger logger = LoggerFactory.getLogger(CompletableFutureDemo.class);
-
     /**
      * 结合两个CompletionStage的结果，进行转化后返回
      *

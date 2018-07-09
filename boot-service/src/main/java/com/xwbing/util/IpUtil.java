@@ -1,8 +1,7 @@
 package com.xwbing.util;
 
 import com.xwbing.exception.UtilException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
@@ -12,9 +11,8 @@ import java.net.UnknownHostException;
  * 作者: xiangwb
  * 说明:
  */
+@Slf4j
 public class IpUtil {
-    private static final Logger LOGGER = LoggerFactory.getLogger(IpUtil.class);
-
     public static String getIpAddr(HttpServletRequest request) {
         // 获取X-Forwarded-For
         String ip = request.getHeader("x-forwarded-for");
@@ -38,7 +36,7 @@ public class IpUtil {
                 try {
                     inet = InetAddress.getLocalHost();
                 } catch (UnknownHostException e) {
-                    LOGGER.error(e.getMessage());
+                    log.error(e.getMessage());
                     throw new UtilException("ip地址异常");
                 }
                 ip = inet.getHostAddress();

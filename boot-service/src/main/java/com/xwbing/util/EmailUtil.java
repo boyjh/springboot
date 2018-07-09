@@ -3,12 +3,14 @@ package com.xwbing.util;
 
 import com.xwbing.domain.entity.model.EmailModel;
 import com.xwbing.exception.UtilException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.mail.*;
-import javax.mail.internet.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import java.util.Date;
 import java.util.Properties;
 
@@ -16,9 +18,8 @@ import java.util.Properties;
  * 作者: xiangwb
  * 说明: 邮箱工具类
  */
+@Slf4j
 public class EmailUtil {
-    private static final Logger LOGGER = LoggerFactory.getLogger(EmailUtil.class);
-
     /**
      * 发送邮件
      *
@@ -103,7 +104,7 @@ public class EmailUtil {
             transport.close();
             return true;
         } catch (MessagingException e) {
-            LOGGER.error(e.getMessage());
+            log.error(e.getMessage());
             throw new UtilException("发送邮件失败");
         }
     }
@@ -136,10 +137,10 @@ public class EmailUtil {
         emailModel.setProtocol("smtp");
         emailModel.setAuth(true);
 //		emailModel.setSendTime();默认当前时间
-        emailModel.setFromEmail("xwbing2009@163.com");
+        emailModel.setFromEmail("xwb1ng@163.com");
         emailModel.setToEmail("786461501@qq.com,xiangwb@drore.com");
         emailModel.setAttachFileNames(null);
-        emailModel.setPassword("xwbing900417");
+        emailModel.setPassword("xwbing000111");
         emailModel.setSubject("测试邮件");
         emailModel.setCentent("邮件功能测试,请勿回复");
         boolean b = sendTextEmail(emailModel);

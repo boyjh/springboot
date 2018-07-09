@@ -1,10 +1,9 @@
 package com.xwbing.util;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -15,9 +14,9 @@ import java.util.Base64;
  * 说明:编码解码工具类
  * 作者: xiangwb
  */
+@Slf4j
 public class EncodeUtils {
     private static final String DEFAULT_URL_ENCODING = "UTF-8";
-    private static final Logger LOGGER = LoggerFactory.getLogger(EncodeUtils.class);
 
     /**
      * Hex编码.
@@ -33,7 +32,7 @@ public class EncodeUtils {
         try {
             return Hex.decodeHex(input.toCharArray());
         } catch (DecoderException e) {
-            LOGGER.error(e.getMessage());
+            log.error(e.getMessage());
             throw new IllegalStateException("Hex Decoder exception");
         }
     }
@@ -67,7 +66,7 @@ public class EncodeUtils {
         try {
             return URLEncoder.encode(input, DEFAULT_URL_ENCODING);
         } catch (UnsupportedEncodingException e) {
-            LOGGER.error(e.getMessage());
+            log.error(e.getMessage());
             throw new IllegalArgumentException("Unsupported Encoding Exception");
         }
     }
@@ -79,7 +78,7 @@ public class EncodeUtils {
         try {
             return URLDecoder.decode(input, DEFAULT_URL_ENCODING);
         } catch (UnsupportedEncodingException e) {
-            LOGGER.error(e.getMessage());
+            log.error(e.getMessage());
             throw new IllegalArgumentException("Unsupported Encoding Exception");
         }
     }

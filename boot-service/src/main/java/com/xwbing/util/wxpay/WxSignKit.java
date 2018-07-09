@@ -1,15 +1,8 @@
 package com.xwbing.util.wxpay;
 
 import java.util.*;
-import java.util.logging.Logger;
 
-/**
- * Created by drore-wzm on 2015/11/23.
- */
 public class WxSignKit {
-    private static Logger logger = Logger.getLogger(WxSignKit.class
-            .getName());
-
     /***
      * 构建jsapi的签名
      * @param params

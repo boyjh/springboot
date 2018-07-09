@@ -1,8 +1,7 @@
 package com.xwbing.util.captcha;
 
 import com.xwbing.constant.CommonConstant;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServlet;
@@ -17,9 +16,9 @@ import java.io.OutputStream;
  * 说明: 创建验证码的servlet
  * 作者: xiangwb
  */
+@Slf4j
 public class CaptchaServlet extends HttpServlet {
     private static final long serialVersionUID = -8687266469702749102L;
-    private final Logger logger = LoggerFactory.getLogger(CaptchaServlet.class);
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse res) {
@@ -40,7 +39,7 @@ public class CaptchaServlet extends HttpServlet {
             OutputStream out = res.getOutputStream();
             ImageIO.write(image, "JPEG", out);
         } catch (IOException e) {
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
             throw new RuntimeException("获取验证码错误");
         }
     }

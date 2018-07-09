@@ -2,9 +2,8 @@ package com.xwbing.util;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.exception.UtilException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.PropertyUtilsBean;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.beans.PropertyDescriptor;
 import java.util.ArrayList;
@@ -16,9 +15,8 @@ import java.util.Map;
  * 说明: json格式转换
  * 作者: xiangwb
  */
+@Slf4j
 public class JsonUtil {
-    private static final Logger LOGGER = LoggerFactory.getLogger(JsonUtil.class);
-
     /**
      * 实体对象不序列化转换成jsonObject
      *
@@ -56,7 +54,7 @@ public class JsonUtil {
                     }
                 }
             } catch (Exception e) {
-                LOGGER.error(e.getMessage());
+                log.error(e.getMessage());
                 throw new UtilException("实体对象不序列化转换成object错误");
             }
             return new JSONObject(params);

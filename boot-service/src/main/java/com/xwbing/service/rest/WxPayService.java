@@ -8,6 +8,7 @@ import com.xwbing.util.wxpay.ClientCustomSSL;
 import com.xwbing.util.wxpay.RandomKit;
 import com.xwbing.util.wxpay.WxSignKit;
 import com.xwbing.util.wxpay.XmlUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
@@ -16,8 +17,6 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.util.EntityUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
@@ -30,10 +29,10 @@ import java.util.*;
  * 创建时间: 2017/5/10 17:30
  * 作者:  xiangwb
  */
+@Slf4j
 @Service
 @PropertySource("classpath:pay.properties")
 public class WxPayService {
-    private final Logger logger = LoggerFactory.getLogger(WxPayService.class);
     /**
      * 商户支付密钥 生成签名时用
      */
@@ -88,12 +87,12 @@ public class WxPayService {
             String returnCode = resultMap.get("return_code");
             result.setResultCode(returnCode);
             if (CommonConstant.FAIL.equalsIgnoreCase(returnCode)) {
-                logger.error("wx barCodePay failed!");
+                log.error("wx barCodePay failed!");
                 //返回信息:非空,为错误原因
                 result.setMessage(resultMap.get("return_msg"));
                 return result;
             }
-            logger.info("outRefundNo=" + param.getOutTradeNo() + ",err_code=" + resultMap.get("err_code") + ",result_code=" + resultMap.get("result_code") + ",err_code_des=" + resultMap.get("err_code_des"));
+            log.info("outRefundNo=" + param.getOutTradeNo() + ",err_code=" + resultMap.get("err_code") + ",result_code=" + resultMap.get("result_code") + ",err_code_des=" + resultMap.get("err_code_des"));
             //业务结果SUCCESS/FAIL
             if (CommonConstant.SUCCESS.equalsIgnoreCase(resultMap.get("result_code"))) {
                 result.setSuccess(true);
@@ -134,11 +133,11 @@ public class WxPayService {
             String returnCode = resultMap.get("return_code");
             result.setResultCode(returnCode);
             if (CommonConstant.FAIL.equalsIgnoreCase(returnCode)) {
-                logger.error("wx barCodePay failed!");
+                log.error("wx barCodePay failed!");
                 result.setMessage(resultMap.get("return_msg"));
                 return result;
             }
-            logger.info("outRefundNo=" + param.getOutTradeNo() + ",err_code=" + resultMap.get("err_code") + ",result_code=" + resultMap.get("result_code") + ",err_code_des=" + resultMap.get("err_code_des"));
+            log.info("outRefundNo=" + param.getOutTradeNo() + ",err_code=" + resultMap.get("err_code") + ",result_code=" + resultMap.get("result_code") + ",err_code_des=" + resultMap.get("err_code_des"));
             if (CommonConstant.SUCCESS.equalsIgnoreCase(resultMap.get("result_code"))) {
                 result.setSuccess(true);
                 result.setAppid(resultMap.get("appid"));
@@ -179,11 +178,11 @@ public class WxPayService {
             String returnCode = resultMap.get("return_code");
             result.setResultCode(returnCode);
             if (CommonConstant.FAIL.equalsIgnoreCase(returnCode)) {
-                logger.error("wx barCodePay failed!");
+                log.error("wx barCodePay failed!");
                 result.setMessage(resultMap.get("return_msg"));
                 return result;
             }
-            logger.info("outTradeNo=" + outTradeNo + ",transactionId=" + transactionId);
+            log.info("outTradeNo=" + outTradeNo + ",transactionId=" + transactionId);
             if (CommonConstant.SUCCESS.equalsIgnoreCase(resultMap.get("result_code"))) {
                 result.setSuccess(true);
                 //交易状态
@@ -218,11 +217,11 @@ public class WxPayService {
             String returnCode = resultMap.get("return_code");
             result.setResultCode(returnCode);
             if (CommonConstant.FAIL.equalsIgnoreCase(returnCode)) {
-                logger.error("wx barCodePay failed!");
+                log.error("wx barCodePay failed!");
                 result.setMessage(resultMap.get("return_msg"));
                 return result;
             }
-            logger.info("outTradeNo=" + outTradeNo + ",transactionId=" + transactionId + "ouRefundNo=" + ouRefundNo + "refundId=" + refundId);
+            log.info("outTradeNo=" + outTradeNo + ",transactionId=" + transactionId + "ouRefundNo=" + ouRefundNo + "refundId=" + refundId);
             //业务结果
             if (CommonConstant.SUCCESS.equalsIgnoreCase(resultMap.get("result_code"))) {
                 result.setSuccess(true);
@@ -264,7 +263,7 @@ public class WxPayService {
                 return Collections.EMPTY_MAP;
             }
         } catch (Exception ex) {
-            logger.error(ex.getMessage());
+            log.error(ex.getMessage());
             throw new PayException(message);
         }
     }

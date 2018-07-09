@@ -1,12 +1,9 @@
 package com.xwbing.service.sys;
 
 import com.xwbing.domain.entity.sys.SysConfig;
-import com.xwbing.exception.BusinessException;
 import com.xwbing.domain.repository.SysConfigRepository;
-import com.xwbing.util.PassWordUtil;
+import com.xwbing.exception.BusinessException;
 import com.xwbing.util.RestMessage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -23,7 +20,6 @@ import java.util.List;
 public class SysConfigService {
     @Resource
     private SysConfigRepository sysConfigRepository;
-    private static Logger logger = LoggerFactory.getLogger(SysConfigService.class);
 
     /**
      * 保存

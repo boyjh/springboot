@@ -2,6 +2,7 @@ package com.xwbing.util;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.exception.UtilException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.*;
 import org.apache.http.client.HttpRequestRetryHandler;
@@ -15,8 +16,6 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLException;
 import java.io.IOException;
@@ -33,8 +32,8 @@ import java.util.concurrent.TimeUnit;
  * 作者: xiangwb
  * 说明: HttpClientUtil
  */
+@Slf4j
 public class HttpUtil {
-    private static Logger LOGGER = LoggerFactory.getLogger(HttpUtil.class);
     private static PoolingHttpClientConnectionManager poolingHttpClientConnectionManager;
     private static final String APPLICATION_JSON = "application/json";
     private static final String FORM_URLENCODED = "application/x-www-form-urlencoded";
@@ -55,23 +54,23 @@ public class HttpUtil {
     private static final RequestConfig defaultRequestConfig = RequestConfig.custom().setSocketTimeout(600000).setConnectTimeout(600000).build();
     // Request retry handler
     private static HttpRequestRetryHandler retryHandler = (exception, executionCount, context) -> {
-        LOGGER.info("retryRequest-->");
+        log.info("retryRequest-->");
         if (executionCount > 5) {
             return false;
         }
         if (exception instanceof InterruptedIOException) {
             // Timeout
-            LOGGER.error("请求超时");
+            log.error("请求超时");
             return false;
         }
         if (exception instanceof UnknownHostException) {
             // Unknown host
-            LOGGER.error("未知主机");
+            log.error("未知主机");
             return false;
         }
         if (exception instanceof SSLException) {
             // SSL handshake exception
-            LOGGER.error("SSL连接失败");
+            log.error("SSL连接失败");
             return false;
         }
         HttpClientContext clientContext = HttpClientContext.adapt(context);
@@ -101,7 +100,7 @@ public class HttpUtil {
         if (param == null) {
             throw new IllegalArgumentException(PARAM_ERROR);
         }
-        LOGGER.info("postByJson request url:{}==================", url);
+        log.info("postByJson request url:{}==================", url);
         HttpPost post = new HttpPost(url);// 创建HttpPost的实例
         post.setEntity(new StringEntity(param.toString(), "UTF-8"));// 设置参数到请求对象中
         post.addHeader("Content-Type", APPLICATION_JSON);// 发送json数据需要设置contentType
@@ -122,7 +121,7 @@ public class HttpUtil {
         if (param == null || param.size() == 0) {
             throw new IllegalArgumentException(PARAM_ERROR);
         }
-        LOGGER.info("postByForm request url:{}================", url);
+        log.info("postByForm request url:{}================", url);
         HttpPost post = new HttpPost(url);
         // 创建参数队列
         List<NameValuePair> params = new ArrayList<>();
@@ -133,7 +132,7 @@ public class HttpUtil {
             post.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
             post.setHeader("Content-Type", FORM_URLENCODED);
         } catch (UnsupportedEncodingException e) {
-            LOGGER.error(e.getMessage());
+            log.error(e.getMessage());
             throw new UtilException("postByForm数据转换错误");
         }
         return getResult(post);
@@ -149,7 +148,7 @@ public class HttpUtil {
         if (StringUtils.isEmpty(url)) {
             throw new IllegalArgumentException(URL_ERROR);
         }
-        LOGGER.info("get request url:{}======================", url);
+        log.info("get request url:{}======================", url);
         HttpGet httpGet = new HttpGet(url);
         return getResult(httpGet);
     }
@@ -168,7 +167,7 @@ public class HttpUtil {
         if (param == null || param.size() == 0) {
             throw new IllegalArgumentException(PARAM_ERROR);
         }
-        LOGGER.info("put request url:{}====================", url);
+        log.info("put request url:{}====================", url);
         HttpPut put = new HttpPut(url);
         put.setEntity(new StringEntity(param.toString(), "UTF-8"));
         put.addHeader("Content-type", APPLICATION_JSON);
@@ -185,7 +184,7 @@ public class HttpUtil {
         if (StringUtils.isBlank(url)) {
             throw new IllegalArgumentException(URL_ERROR);
         }
-        LOGGER.info("delete request url:{}=====================", url);
+        log.info("delete request url:{}=====================", url);
         HttpDelete delete = new HttpDelete(url);
         return getResult(delete);
     }
@@ -204,7 +203,7 @@ public class HttpUtil {
             CloseableHttpResponse response = client.execute(request);
             long end = System.currentTimeMillis();
             long ms = end - start;
-            LOGGER.info("网络接口请求时间为{} ms=======================", ms);
+            log.info("网络接口请求时间为{} ms=======================", ms);
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {// 判断网络连接状态码是否正常(0-200都数正常)
                 HttpEntity entity = response.getEntity();// 获取结果实体
                 if (entity != null) {
@@ -217,7 +216,7 @@ public class HttpUtil {
         } catch (IOException e) {
             // result.setSuccess(false);
             // result.setMsg(e.getMessage());
-            LOGGER.error(e.getMessage());
+            log.error(e.getMessage());
             throw new UtilException("请求网络接口错误");
         } finally {
             poolingHttpClientConnectionManager.closeExpiredConnections();

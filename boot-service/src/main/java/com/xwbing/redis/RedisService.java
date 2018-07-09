@@ -1,8 +1,7 @@
 package com.xwbing.redis;
 
 import com.xwbing.exception.BusinessException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
@@ -20,6 +19,7 @@ import java.util.Set;
  * 创建时间: 2017/5/5 16:44
  * 作者:  xiangwb
  */
+@Slf4j
 @Component
 @PropertySource("classpath:redis.properties")
 public class RedisService {
@@ -27,7 +27,6 @@ public class RedisService {
     private JedisPool jedisPool;
     @Value("${redisCode}")
     private String redisCode;
-    private final Logger logger = LoggerFactory.getLogger(RedisService.class);
 
     private RedisService() {
 
@@ -42,7 +41,7 @@ public class RedisService {
         try {
             return jedisPool.getResource();
         } catch (Exception ex) {
-            logger.error("redis连接失败==================================");
+            log.error("redis连接失败==================================");
             throw new BusinessException("redis连接失败");
         }
     }
@@ -384,12 +383,12 @@ public class RedisService {
         try {
             jedis = getJedis();
             String ping = jedis.ping();
-            logger.info("redis连接成功");
+            log.info("redis连接成功");
             return ping;
         } catch (BusinessException ex) {//获取jedis客户端失败
             return "";
         } catch (Exception ex) {//ping失败
-            logger.error("redis连接失败=================================");
+            log.error("redis连接失败=================================");
             return "";
         } finally {
             returnJedis(jedis);

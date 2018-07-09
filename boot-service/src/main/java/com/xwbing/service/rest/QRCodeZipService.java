@@ -4,8 +4,7 @@ import com.xwbing.exception.BusinessException;
 import com.xwbing.util.QRCodeUtil;
 import com.xwbing.util.RestMessage;
 import com.xwbing.util.ZipUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
@@ -22,10 +21,9 @@ import java.util.List;
  * 作者: xiangwb
  * 说明:
  */
+@Slf4j
 @Service
 public class QRCodeZipService {
-    private final Logger logger = LoggerFactory.getLogger(QRCodeZipService.class);
-
     /**
      * 生成默认长度的二维码
      *
@@ -58,7 +56,7 @@ public class QRCodeZipService {
             result.setMessage("解析二维码成功");
             return result;
         } catch (Exception e) {
-            logger.error("解析二维码失败");
+            log.error("解析二维码失败");
             throw new BusinessException("解析二维码失败");
         }
     }

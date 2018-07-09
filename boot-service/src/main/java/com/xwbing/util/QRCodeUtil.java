@@ -7,9 +7,8 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.xwbing.exception.UtilException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.output.ByteArrayOutputStream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 
 import javax.imageio.ImageIO;
@@ -26,9 +25,9 @@ import java.util.Map;
  * 作者: xiangwb
  * 说明: 二维码工具类
  */
+@Slf4j
 public class QRCodeUtil {
     private static QRCodeUtil.Internal internal = new QRCodeUtil.Internal();
-    private static final Logger LOGGER = LoggerFactory.getLogger(QRCodeUtil.class);
 
     /***
      * 生成默认尺寸不带logo的二维码
@@ -55,7 +54,7 @@ public class QRCodeUtil {
             internal._output = output;
             internal.output(output, internal.createCode(text));
         } catch (Exception e) {
-            LOGGER.error(e.getMessage());
+            log.error(e.getMessage());
             throw new UtilException("生成自定义尺寸不带logo的二维码失败");
         }
     }
@@ -94,7 +93,7 @@ public class QRCodeUtil {
             BitMatrix bitMatrix = internal.createCode(text);
             internal.addMaterial(bitMatrix);
         } catch (WriterException e) {
-            LOGGER.error(e.getMessage());
+            log.error(e.getMessage());
             throw new UtilException("生成自定义尺寸带logo的二维码失败");
         }
 
@@ -120,7 +119,7 @@ public class QRCodeUtil {
             Result result = formatReader.decode(binaryBitmap, hints);
             return result.getText();
         } catch (Exception e) {
-            LOGGER.error(e.getMessage());
+            log.error(e.getMessage());
             throw new UtilException("解析二维码图片失败");
         }
     }
@@ -204,7 +203,7 @@ public class QRCodeUtil {
                 output(image);
 //                return bufferImage_to_InputStream(image);
             } catch (IOException c) {
-                LOGGER.error(c.getMessage());
+                log.error(c.getMessage());
 //                return null;
             }
         }

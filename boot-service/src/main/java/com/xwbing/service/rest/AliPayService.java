@@ -12,9 +12,8 @@ import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.alipay.api.response.AlipayTradeRefundResponse;
 import com.xwbing.domain.entity.pay.alipay.*;
 import com.xwbing.exception.PayException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
@@ -28,10 +27,10 @@ import java.util.Optional;
  * 创建时间: 2017/5/10 17:50
  * 作者:  xiangwb
  */
+@Slf4j
 @Service
 @PropertySource("classpath:pay.properties")
 public class AliPayService {
-    private final Logger logger = LoggerFactory.getLogger(AliPayService.class);
     /**
      * 支付宝分配给开发者的应用ID
      */
@@ -78,7 +77,7 @@ public class AliPayService {
         try {
             response = alipayClient.execute(request);
         } catch (AlipayApiException e) {
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
             throw new PayException("扫码支付异常");
         }
         //源码StringUtils.isEmpty(this.subCode)
@@ -90,7 +89,7 @@ public class AliPayService {
         } else {
             result.setCode(response.getSubCode());
             result.setMessage(response.getSubMsg());
-            logger.error(response.getSubMsg());
+            log.error(response.getSubMsg());
             return result;
         }
         result.setTradeNo(response.getTradeNo());
@@ -102,7 +101,7 @@ public class AliPayService {
         result.setFundBillList(response.getFundBillList());
         result.setBuyerUserId(response.getBuyerUserId());
         result.setDiscountGoodsDetail(response.getDiscountGoodsDetail());
-        logger.info("result = {}", result);
+        log.info("result = {}", result);
         return result;
     }
 
@@ -121,12 +120,12 @@ public class AliPayService {
         try {
             response = alipayClient.execute(request);
         } catch (AlipayApiException e) {
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
             throw new PayException("退款异常");
         }
         result.setSuccess(response.isSuccess());
         if (StringUtils.isNotEmpty(response.getSubCode())) {
-            logger.error(response.getSubMsg());
+            log.error(response.getSubMsg());
             result.setCode(response.getSubCode());
             result.setMessage(response.getSubMsg());
             return result;
@@ -141,7 +140,7 @@ public class AliPayService {
         result.setRefundFee(response.getRefundFee());
         result.setGmtRefundPay(response.getGmtRefundPay());
         result.setBuyerUserId(response.getBuyerUserId());
-        logger.info("result = {}", result);
+        log.info("result = {}", result);
         return result;
     }
 
@@ -172,7 +171,7 @@ public class AliPayService {
         try {
             response = alipayClient.execute(request);
         } catch (AlipayApiException e) {
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
             throw new PayException("查询订单异常");
         }
         result.setSuccess(response.isSuccess());
@@ -212,7 +211,7 @@ public class AliPayService {
         try {
             response = alipayClient.execute(request);
         } catch (AlipayApiException e) {
-            logger.error(e.getMessage());
+            log.error(e.getMessage());
             throw new PayException("退款查询异常");
         }
         result.setSuccess(response.isSuccess());
@@ -253,7 +252,7 @@ public class AliPayService {
         if (StringUtils.isNotEmpty(response.getSubCode())) {
             result.setCode(response.getSubCode());
             result.setMessage(response.getSubMsg());
-            logger.error(response.getSubMsg());
+            log.error(response.getSubMsg());
         } else {
             result.setCode(response.getCode());
             result.setMessage(response.getMsg());

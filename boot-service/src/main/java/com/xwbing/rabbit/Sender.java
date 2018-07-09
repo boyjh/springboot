@@ -1,7 +1,6 @@
 package com.xwbing.rabbit;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.support.CorrelationData;
 import org.springframework.stereotype.Component;
@@ -18,11 +17,11 @@ import java.util.UUID;
  */
 
 //public class Sender implements RabbitTemplate.ConfirmCallback, RabbitTemplate.ReturnCallback {
+@Slf4j
 @Component
 public class Sender {
     @Resource
     private RabbitTemplate rabbitTemplate;
-    private final Logger logger = LoggerFactory.getLogger(Sender.class);
 
     /**
      * 发送信息到email队列
@@ -51,12 +50,12 @@ public class Sender {
      */
     private void send(String[] msg, String exchange, String routingKey) {
         CorrelationData correlationId = new CorrelationData(UUID.randomUUID().toString());
-        logger.info("开始发送消息:{}", Arrays.toString(msg));
+        log.info("开始发送消息:{}", Arrays.toString(msg));
         //转换并发送消息,且等待消息者返回响应消息。
         Object response = rabbitTemplate.convertSendAndReceive(exchange, routingKey, msg, correlationId);
         if (response != null) {
-            logger.info("消费者响应:{}", response.toString());
+            log.info("消费者响应:{}", response.toString());
         }
-        logger.info("{}消息发送结束", Arrays.toString(msg));
+        log.info("{}消息发送结束", Arrays.toString(msg));
     }
 }

@@ -6,9 +6,8 @@ import com.xwbing.domain.entity.ExpressInfo;
 import com.xwbing.domain.entity.vo.ExpressInfoVo;
 import com.xwbing.exception.BusinessException;
 import com.xwbing.util.KdniaoUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
@@ -23,10 +22,10 @@ import static com.xwbing.util.KdniaoUtil.urlEncoder;
  * 作者: xiangwb
  * 说明: 快递查询服务层
  */
+@Slf4j
 @Service
 @PropertySource("classpath:kdniao.properties")
 public class ExpressDeliveryService {
-    private final Logger logger = LoggerFactory.getLogger(ExpressDeliveryService.class);
     /**
      * 电商用户ID
      */
@@ -77,7 +76,7 @@ public class ExpressDeliveryService {
             params.put("DataSign", urlEncoder(dataSign, "UTF-8"));
             params.put("DataType", "2");
         } catch (Exception e) {
-            logger.error("快递查询出错:{}", e.getMessage());
+            log.error("快递查询出错:{}", e.getMessage());
             throw new BusinessException("快递查询出错");
         }
         // 返回物流信息
@@ -86,7 +85,7 @@ public class ExpressDeliveryService {
         ExpressInfoVo infoVo = JSONObject.parseObject(result, ExpressInfoVo.class);
         if (infoVo != null) {
             boolean success = infoVo.isSuccess();
-            logger.info("查询快递信息:{}", success);
+            log.info("查询快递信息:{}", success);
             if (success) {
                 String status = StringUtils.isNotEmpty(infoVo.getState()) ? infoVo.getState() : "0";
                 int statusValue = Integer.valueOf(status);

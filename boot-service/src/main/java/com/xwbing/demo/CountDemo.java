@@ -96,12 +96,14 @@ public class CountDemo {
      * @param list
      * @return
      */
-    public static JSONArray g2Bar(String startDate, String endDate, List<JSONObject> list) {
-        JSONArray result = new JSONArray();
+    public static Map<String, Object> g2Bar(String startDate, String endDate, List<JSONObject> list) {
+        Map<String,Object> result = new HashMap<>();
         List<String> days = listDate(startDate, endDate);
+        result.put("fields", days);
         if (list == null) {
             list = Collections.EMPTY_LIST;
         }
+        JSONArray array = new JSONArray();
         Map<String, List<JSONObject>> collect = list.stream().collect(Collectors.groupingBy(obj -> obj.getString("day")));
         JSONObject obj;
         for (String item : ITEM.split(",")) {
@@ -117,8 +119,9 @@ public class CountDemo {
                     obj.put(day, 0);
                 }
             }
-            result.add(obj);
+            array.add(obj);
         }
+        result.put("data", array);
         return result;
     }
 
