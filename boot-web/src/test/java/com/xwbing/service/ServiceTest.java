@@ -41,7 +41,7 @@ import java.util.Map;
  * 说明: 服务层功能测试
  */
 @Slf4j
-public class ServiceTest extends BaseTest {
+public class  ServiceTest extends BaseTest {
     @Resource
     private RedisService redisService;
     @Resource
@@ -107,8 +107,8 @@ public class ServiceTest extends BaseTest {
     public void expressInfoTest() {
         log.debug("快递查询");
         ExpressInfo info = new ExpressInfo();
-        info.setLogisticCode("1179751819114");
-        info.setShipperCode("EMS");
+        info.setLogisticCode("800430151641580299");
+        info.setShipperCode("YTO");
         if (StringUtils.isEmpty(info.getLogisticCode()) || StringUtils.isEmpty(info.getShipperCode())) {
             log.error("快递公司或物流单号不能为空");
         }
