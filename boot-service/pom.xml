@@ -19,7 +19,7 @@
         <dependency><!-- druid -->
             <groupId>com.alibaba</groupId>
             <artifactId>druid-spring-boot-starter</artifactId>
-            <version>${druid-version}</version>
+            <version>${druid.version}</version>
         </dependency>
         <dependency> <!-- mysql driver -->
             <groupId>mysql</groupId>
@@ -39,17 +39,12 @@
         <dependency> <!-- mybatis -->
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>1.3.1</version>
-        </dependency>
-        <dependency>
-            <groupId>tk.mybatis</groupId>
-            <artifactId>mapper-spring-boot-starter</artifactId>
-            <version>1.2.4</version>
+            <version>${mybatis-boot-start.version}</version>
         </dependency>
         <dependency> <!-- 分页插件 -->
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
-            <version>1.2.3</version>
+            <version>${pagehelper-boot-start.version}</version>
         </dependency>
         <!-- lombok:实体类自动生成getting和setting方法,以及equals,hashCode,toString等 -->
         <dependency>
@@ -87,18 +82,18 @@
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
-            <version>${poi-verison}</version>
+            <version>${poi.verison}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
-            <version>${poi-verison}</version>
+            <version>${poi.verison}</version>
         </dependency>
         <!-- httpclient -->
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>${httpclient-version}</version>
+            <version>${httpclient.version}</version>
         </dependency>
         <!-- servlet 有些方法需要HttpServletResponse和HttpServletRequest的支持 -->
         <dependency>
@@ -119,7 +114,7 @@
         <dependency>
             <groupId>com.alipay.sdk</groupId>
             <artifactId>alipay</artifactId>
-            <version>${alipay-version}</version>
+            <version>${alipay.version}</version>
         </dependency>
         <!-- 消息队列 -->
         <dependency>
@@ -133,9 +128,9 @@
             <plugin>
                 <groupId>org.mybatis.generator</groupId>
                 <artifactId>mybatis-generator-maven-plugin</artifactId>
-                <version>1.3.2</version>
+                <version>${mybatis-generator-maven-plugin.vsrsion}</version>
                 <configuration>
-                    <configurationFile>${basedir}/src/main/resources/generator/generatorConfig.xml</configurationFile>
+                    <!--<configurationFile>src/main/resources/generator/generatorConfig.xml</configurationFile>-->
                     <overwrite>true</overwrite>
                     <verbose>true</verbose>
                 </configuration>
