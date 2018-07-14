@@ -1,4 +1,4 @@
-package com.xwbing.domain.entity;
+package com.xwbing.domain.entity.model;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

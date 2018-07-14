@@ -1,6 +1,6 @@
 package com.xwbing.domain.entity.vo;
 
-import com.xwbing.domain.entity.ExpressTrace;
+import com.xwbing.domain.entity.model.ExpressTrace;
 import lombok.Data;
 
 import java.util.List;

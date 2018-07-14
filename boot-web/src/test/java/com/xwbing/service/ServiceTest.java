@@ -5,7 +5,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.xwbing.BaseTest;
-import com.xwbing.domain.entity.ExpressInfo;
+import com.xwbing.domain.entity.model.ExpressInfo;
 import com.xwbing.domain.entity.sys.DataDictionary;
 import com.xwbing.domain.entity.sys.SysRole;
 import com.xwbing.domain.entity.sys.SysUserLoginInOut;

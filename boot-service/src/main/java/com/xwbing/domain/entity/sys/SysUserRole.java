@@ -1,5 +1,6 @@
 package com.xwbing.domain.entity.sys;
 
+import com.xwbing.domain.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

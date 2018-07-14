@@ -134,6 +134,14 @@
                     <overwrite>true</overwrite>
                     <verbose>true</verbose>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>mysqlTables</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

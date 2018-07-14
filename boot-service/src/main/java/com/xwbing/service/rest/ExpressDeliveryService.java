@@ -2,7 +2,7 @@ package com.xwbing.service.rest;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.constant.CommonEnum;
-import com.xwbing.domain.entity.ExpressInfo;
+import com.xwbing.domain.entity.model.ExpressInfo;
 import com.xwbing.domain.entity.vo.ExpressInfoVo;
 import com.xwbing.exception.BusinessException;
 import com.xwbing.util.KdniaoUtil;

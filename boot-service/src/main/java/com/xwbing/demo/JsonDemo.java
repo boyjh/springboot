@@ -6,7 +6,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 import com.google.gson.*;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.xwbing.domain.entity.sys.BaseEntity;
+import com.xwbing.domain.entity.BaseEntity;
 import com.xwbing.domain.entity.sys.SysUser;
 import com.xwbing.util.RestMessage;
 import lombok.Data;
