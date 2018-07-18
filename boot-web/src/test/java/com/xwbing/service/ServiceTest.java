@@ -24,12 +24,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
+import org.mybatis.generator.api.MyBatisGenerator;
+import org.mybatis.generator.config.Configuration;
+import org.mybatis.generator.config.xml.ConfigurationParser;
+import org.mybatis.generator.internal.DefaultShellCallback;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +47,7 @@ import java.util.Map;
  * 说明: 服务层功能测试
  */
 @Slf4j
-public class  ServiceTest extends BaseTest {
+public class ServiceTest extends BaseTest {
     @Resource
     private RedisService redisService;
     @Resource
@@ -148,5 +154,17 @@ public class  ServiceTest extends BaseTest {
         redisService.set("redis", "xwbing");
         String s = redisService.get("redis");
         Assert.assertEquals("xwbing", s);
+    }
+
+    @Test
+    public void mybatisGeneratorTest() throws Exception {
+        List<String> warnings = new ArrayList<>();
+        ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+        InputStream is = classloader.getResourceAsStream("generatorConfig.xml");
+        ConfigurationParser cp = new ConfigurationParser(warnings);
+        Configuration config = cp.parseConfiguration(is);
+        DefaultShellCallback callback = new DefaultShellCallback(true);
+        MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, callback, warnings);
+        myBatisGenerator.generate(null);
     }
 }

@@ -22,7 +22,7 @@ import java.util.Date;
 @ApiModel
 @MappedSuperclass
 public class JpaBaseEntity implements Serializable {
-    private static final long serialVersionUID = 2657519817528673800L;
+    private static final long serialVersionUID = 1L;
     @Id
     @GenericGenerator(name = "idGenerator", strategy = "uuid")
     @GeneratedValue(generator = "idGenerator")

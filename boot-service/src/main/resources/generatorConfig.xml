@@ -6,14 +6,15 @@
     <properties resource="druid.properties"/>
     <classPathEntry
             location="${maven.home}/repo/mysql/mysql-connector-java/${mysql.version}/mysql-connector-java-${mysql.version}.jar"/>
-    <context id="mysqlTables" targetRuntime="MyBatis3"  defaultModelType="conditional">
+    <context id="mysqlTables" targetRuntime="MyBatis3" defaultModelType="conditional">
         <property name="javaFileEncoding" value="UTF-8"/>
         <property name="autoDelimitKeywords" value="true"/>
         <property name="beginningDelimiter" value="`"/>
         <property name="endingDelimiter" value="`"/>
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
         <commentGenerator>
             <property name="suppressDate" value="true"/>
-            <property name="suppressAllComments" value="true"/>
+            <property name="suppressAllComments" value="false"/>
             <property name="addRemarkComments" value="true"/>
         </commentGenerator>
         <!-- jdbc -->
@@ -29,7 +30,7 @@
         <javaModelGenerator targetPackage="com.xwbing.domain.entity" targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
-            <property name="rootClass" value="com.xwbing.domain.entity.BaseEntity"/>
+            <property name="rootClass" value="org.mybatis.generator.api.dom.java.BaseEntity"/>
         </javaModelGenerator>
         <!-- mapper.xml -->
         <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources">

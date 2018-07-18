@@ -14,7 +14,7 @@ import java.util.Date;
  */
 @ApiModel
 public class BaseEntity implements Serializable {
-    private static final long serialVersionUID = 8901948362657956187L;
+    private static final long serialVersionUID = 1L;
     @ApiModelProperty(value = "主键")
     private String id;
     @ApiModelProperty(value = "创建者", hidden = true)
