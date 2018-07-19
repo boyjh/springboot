@@ -163,7 +163,7 @@ public class ServiceTest extends BaseTest {
         InputStream is = classloader.getResourceAsStream("generatorConfig.xml");
         ConfigurationParser cp = new ConfigurationParser(warnings);
         Configuration config = cp.parseConfiguration(is);
-        DefaultShellCallback callback = new DefaultShellCallback(true);
+        DefaultShellCallback callback = new DefaultShellCallback(false);
         MyBatisGenerator myBatisGenerator = new MyBatisGenerator(config, callback, warnings);
         myBatisGenerator.generate(null);
     }
