@@ -42,7 +42,7 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
         <!-- table -->
-        <table tableName="sys_role" domainObjectName="demo.Demo"
+        <table tableName="sys_user_info" domainObjectName="demo.Demo"
                enableSelectByExample="false" enableDeleteByExample="false"
                enableCountByExample="false" enableUpdateByExample="false"
                selectByExampleQueryId="false">
