@@ -11,7 +11,7 @@
     <sql id="table">
         sys_user_login_in_out
     </sql>
-    <sql id="columns">
+    <sql id="Base_Column_List">
         id,
         creator,
         modifier,

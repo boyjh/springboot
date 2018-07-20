@@ -9,7 +9,7 @@
     <sql id="table">
         file_upload
     </sql>
-    <sql id="columns">
+    <sql id="Base_Column_List">
         id,
         creator,
         modifier,

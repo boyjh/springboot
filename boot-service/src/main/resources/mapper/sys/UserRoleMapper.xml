@@ -11,7 +11,7 @@
     <sql id="table">
         sys_role_authority
     </sql>
-    <sql id="columns">
+    <sql id="Base_Column_List">
         id,
         creator,
         modifier,
@@ -52,7 +52,7 @@
     <!-- 根据userId查找 -->
     <select id="findByUserId" resultMap="resultMap">
         SELECT
-        <include refid="columns"/>
+        <include refid="Base_Column_List"/>
         FROM
         <include refid="table"/>
         where user_id=#{userId}

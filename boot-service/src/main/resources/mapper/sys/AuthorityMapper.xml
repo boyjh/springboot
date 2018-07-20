@@ -10,7 +10,7 @@
     <sql id="table">
         sys_authority
     </sql>
-    <sql id="columns">
+    <sql id="Base_Column_List">
         id,
         creator,
         modifier,
@@ -213,7 +213,7 @@
     <!-- 查找 -->
     <select id="findById" resultMap="resultMap">
         SELECT
-        <include refid="columns"/>
+        <include refid="Base_Column_List"/>
         FROM
         <include refid="table"/>
         WHERE id=#{id}
@@ -221,7 +221,7 @@
     <!-- 根据ids查找 -->
     <select id="findByIds" resultMap="resultMap">
         SELECT
-        <include refid="columns"/>
+        <include refid="Base_Column_List"/>
         FROM
         <include refid="table"/>
         WHERE id IN
@@ -232,7 +232,7 @@
     <!-- 条件查询 -->
     <select id="find" resultMap="resultMap">
         SELECT
-        <include refid="columns"/>
+        <include refid="Base_Column_List"/>
         FROM
         <include refid="table"/>
         <include refid="condition"/>
@@ -241,7 +241,7 @@
     <!-- 查询所有 -->
     <select id="findAll" resultMap="resultMap">
         SELECT
-        <include refid="columns"/>
+        <include refid="Base_Column_List"/>
         FROM
         <include refid="table"/>
         ORDER BY sort
