@@ -27,7 +27,7 @@
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>
         </javaTypeResolver>
-        <!-- entity -->
+        <!-- model -->
         <javaModelGenerator targetPackage="com.xwbing.domain.entity" targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
@@ -37,7 +37,7 @@
         <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources">
             <property name="enableSubPackages" value="true"/>
         </sqlMapGenerator>
-        <!-- dao -->
+        <!-- mapper.java -->
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.xwbing.domain.mapper" targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
