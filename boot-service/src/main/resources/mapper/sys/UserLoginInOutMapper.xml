@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.xwbing.domain.mapper.sys.SysUserLoginInOutMapper">
-    <resultMap id="resultMap" type="sysUserLoginInOut">
+    <resultMap id="BaseResultMap" type="sysUserLoginInOut">
         <id column="id" property="id"/>
         <result column="create_time" property="createTime"/>
         <result column="modified_time" property="modifiedTime"/>
@@ -48,7 +48,7 @@
         #{userId}
         )
     </insert>
-    <select id="findByInoutType" resultMap="resultMap">
+    <select id="findByInoutType" resultMap="BaseResultMap">
         SELECT a.inout_type,a.ip,date_format(a.create_time,'%Y-%m-%d %H:%i:%s') recordTime,b.name userIdName
         FROM sys_user_login_in_out a left join sys_user_info b on
         (a.user_id=b.id)
@@ -65,7 +65,7 @@
         </where>
         ORDER BY a.create_time DESC
     </select>
-    <select id="countByType" resultMap="resultMap">
+    <select id="countByType" resultMap="BaseResultMap">
         SELECT count(1) count,inout_type
         from
         <include refid="table"/>

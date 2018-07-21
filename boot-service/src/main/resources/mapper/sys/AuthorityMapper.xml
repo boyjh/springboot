@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.xwbing.domain.mapper.sys.SysAuthorityMapper">
-    <resultMap id="resultMap" type="sysAuthority">
+    <resultMap id="BaseResultMap" type="sysAuthority">
         <id column="id" property="id"/>
         <result column="create_time" property="createTime"/>
         <result column="modified_time" property="modifiedTime"/>
@@ -211,7 +211,7 @@
         </where>
     </update>
     <!-- 查找 -->
-    <select id="findById" resultMap="resultMap">
+    <select id="findById" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM
@@ -219,7 +219,7 @@
         WHERE id=#{id}
     </select>
     <!-- 根据ids查找 -->
-    <select id="findByIds" resultMap="resultMap">
+    <select id="findByIds" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM
@@ -230,7 +230,7 @@
         </foreach>
     </select>
     <!-- 条件查询 -->
-    <select id="find" resultMap="resultMap">
+    <select id="find" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM
@@ -239,7 +239,7 @@
         ORDER BY sort
     </select>
     <!-- 查询所有 -->
-    <select id="findAll" resultMap="resultMap">
+    <select id="findAll" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM
