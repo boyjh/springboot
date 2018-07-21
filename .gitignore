@@ -17,7 +17,6 @@ target
 *.iml
 *.ipr
 
-
 ### maven ###
 mvnw
 mvnw.cmd
