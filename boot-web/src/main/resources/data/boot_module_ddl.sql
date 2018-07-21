@@ -11,7 +11,7 @@
  Target Server Version : 80011
  File Encoding         : 65001
 
- Date: 21/06/2018 13:52:11
+ Date: 21/07/2018 13:58:48
 */
 
 SET NAMES utf8mb4;
@@ -21,72 +21,75 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- Table structure for data_dict
 -- ----------------------------
 DROP TABLE IF EXISTS `data_dict`;
-CREATE TABLE `data_dict`  (
-  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `create_time` datetime(0) NULL DEFAULT NULL,
-  `creator` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `modified_time` datetime(0) NULL DEFAULT NULL,
-  `modifier` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `code` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `enable` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `parent_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+CREATE TABLE `data_dict` (
+  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `creator` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '创建人',
+  `modified_time` datetime DEFAULT NULL COMMENT '修改时间',
+  `modifier` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '修改人',
+  `code` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '编码',
+  `description` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '描述',
+  `enable` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '是否启用',
+  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '名称',
+  `parent_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '父键',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uk_code`(`code`) USING BTREE COMMENT 'code唯一'
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+  UNIQUE KEY `uk_code` (`code`) USING BTREE COMMENT 'code唯一'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='数据字典';
 
 -- ----------------------------
 -- Records of data_dict
 -- ----------------------------
+BEGIN;
 INSERT INTO `data_dict` VALUES ('140a1a89d45f456ca8517b89a8b93160', '2018-02-26 15:43:24', NULL, NULL, NULL, 'aa2', 'aa2', 'Y', 'aa2', '256c2b119727469d960a98427028c4e6');
 INSERT INTO `data_dict` VALUES ('256c2b119727469d960a98427028c4e6', '2018-02-26 15:25:52', NULL, NULL, NULL, 'aa', 'aa', 'Y', 'aa', 'root');
 INSERT INTO `data_dict` VALUES ('4cdaef01159a4a57adc38f4c5f5daccf', '2018-02-26 15:43:14', NULL, NULL, NULL, 'aa1', 'aa1', 'Y', 'aa1', '256c2b119727469d960a98427028c4e6');
+COMMIT;
 
 -- ----------------------------
 -- Table structure for file_upload
 -- ----------------------------
 DROP TABLE IF EXISTS `file_upload`;
-CREATE TABLE `file_upload`  (
-  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `create_time` datetime(0) NULL DEFAULT NULL,
-  `creator` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `modified_time` datetime(0) NULL DEFAULT NULL,
-  `modifier` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `data` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
-  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `type` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+CREATE TABLE `file_upload` (
+  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `creator` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '创建人',
+  `modified_time` datetime DEFAULT NULL COMMENT '修改时间',
+  `modifier` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '修改人',
+  `data` longtext CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '数据',
+  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '名称',
+  `type` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '类型',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_name`(`name`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+  KEY `idx_name` (`name`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='文件上传';
 
 -- ----------------------------
 -- Table structure for sys_authority
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_authority`;
-CREATE TABLE `sys_authority`  (
-  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `create_time` datetime(0) NULL DEFAULT NULL,
-  `creator` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `modified_time` datetime(0) NULL DEFAULT NULL,
-  `modifier` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `code` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `name` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `parent_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `type` int(11) NULL DEFAULT NULL,
-  `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `enable` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `sort` int(11) NULL DEFAULT NULL,
+CREATE TABLE `sys_authority` (
+  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `creator` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '创建人',
+  `modified_time` datetime DEFAULT NULL COMMENT '修改时间',
+  `modifier` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '修改人',
+  `code` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '编码',
+  `name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '名称',
+  `parent_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '父键',
+  `type` int(11) DEFAULT NULL COMMENT '类型',
+  `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'url',
+  `enable` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '是否启用',
+  `sort` int(11) DEFAULT NULL COMMENT '序号',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uk_code`(`code`) USING BTREE,
-  UNIQUE INDEX `uk_sort`(`sort`) USING BTREE,
-  INDEX `idx_enable`(`enable`) USING BTREE,
-  INDEX `idx_parent_id`(`parent_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+  UNIQUE KEY `uk_code` (`code`) USING BTREE,
+  UNIQUE KEY `uk_sort` (`sort`) USING BTREE,
+  KEY `idx_enable` (`enable`) USING BTREE,
+  KEY `idx_parent_id` (`parent_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='权限';
 
 -- ----------------------------
 -- Records of sys_authority
 -- ----------------------------
+BEGIN;
 INSERT INTO `sys_authority` VALUES ('0f8e513001134f8cbe646181c7b5558f', '2017-11-15 14:24:10', NULL, NULL, NULL, 'roleManage', '角色管理', 'root', 1, 'role/listAllByEnable', 'Y', 2);
 INSERT INTO `sys_authority` VALUES ('10f9e7a25f834ec2be0aa6dd55344724', '2017-11-15 14:25:47', NULL, '2017-11-15 15:59:58', NULL, 'roleUpdate', '修改角色', '0f8e513001134f8cbe646181c7b5558f', 2, 'role/update', 'Y', 9);
 INSERT INTO `sys_authority` VALUES ('13092bea9c124111bedcb20aaafcdc4c', '2017-11-15 14:25:00', NULL, '2017-11-15 16:00:00', NULL, 'roleSave', '添加角色', '0f8e513001134f8cbe646181c7b5558f', 2, 'role/save', 'Y', 8);
@@ -100,54 +103,58 @@ INSERT INTO `sys_authority` VALUES ('a8be70734e4144b8acd7cf964773d2c6', '2017-12
 INSERT INTO `sys_authority` VALUES ('b002e0119a1940f6b673faa7534e4a0e', '2017-11-15 14:21:13', NULL, NULL, NULL, 'userRemove', '删除用户', 'bf1937cf97fb4eeda39c41ca76139a8f', 2, 'user/removeById', 'Y', 6);
 INSERT INTO `sys_authority` VALUES ('bf1937cf97fb4eeda39c41ca76139a8f', '2017-11-15 14:18:10', NULL, NULL, NULL, 'userManage', '用户管理', 'root', 1, 'user/listAll', 'Y', 1);
 INSERT INTO `sys_authority` VALUES ('f944e1848abc401ca1e00d8247d484c7', '2017-11-15 14:25:28', NULL, '2017-11-15 16:00:01', NULL, 'roleRemove', '删除角色', '0f8e513001134f8cbe646181c7b5558f', 2, 'role/removeById', 'Y', 10);
+COMMIT;
 
 -- ----------------------------
 -- Table structure for sys_role
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role`;
-CREATE TABLE `sys_role`  (
-  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `create_time` datetime(0) NULL DEFAULT NULL,
-  `creator` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `modified_time` datetime(0) NULL DEFAULT NULL,
-  `modifier` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `code` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `remark` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `enable` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+CREATE TABLE `sys_role` (
+  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `creator` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '创建人',
+  `modified_time` datetime DEFAULT NULL COMMENT '修改时间',
+  `modifier` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '修改人',
+  `code` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '编码',
+  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '名称',
+  `remark` varchar(100) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '描述',
+  `enable` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '是否启用',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uk_code`(`code`) USING BTREE,
-  INDEX `idx_enable`(`enable`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+  UNIQUE KEY `uk_code` (`code`) USING BTREE,
+  KEY `idx_enable` (`enable`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='角色';
 
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
+BEGIN;
 INSERT INTO `sys_role` VALUES ('491e0d8765ac43bfa017940bde47c90b', '2017-11-15 14:12:21', NULL, NULL, NULL, 'business', '业务员', '业务员', 'N');
 INSERT INTO `sys_role` VALUES ('72a50656b534436f89665bcb6cfdd620', '2017-11-14 11:30:21', NULL, NULL, NULL, 'admin', '管理员', '管理人员', 'Y');
 INSERT INTO `sys_role` VALUES ('76ff321b45404849ac2f04ce710b2e25', '2017-11-14 11:31:14', NULL, NULL, NULL, 'protector', '安保人员', '安保人员', 'Y');
 INSERT INTO `sys_role` VALUES ('c71040053f6a4728805f7a163b65129d', '2017-11-14 11:33:14', NULL, NULL, NULL, 'cleanner', '保洁人员', '保洁人员', 'Y');
 INSERT INTO `sys_role` VALUES ('e6cd98be7f384eba946a8895ece97d96', '2017-11-14 11:32:08', NULL, NULL, NULL, 'maintenance', '维修人员', '维修人员', 'Y');
+COMMIT;
 
 -- ----------------------------
 -- Table structure for sys_role_authority
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_authority`;
-CREATE TABLE `sys_role_authority`  (
-  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `create_time` datetime(0) NULL DEFAULT NULL,
-  `creator` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `modified_time` datetime(0) NULL DEFAULT NULL,
-  `modifier` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `authority_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `role_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+CREATE TABLE `sys_role_authority` (
+  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `creator` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '创建人',
+  `modified_time` datetime DEFAULT NULL COMMENT '修改时间',
+  `modifier` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '修改人',
+  `authority_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '权限\r权限id',
+  `role_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '角色id',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_role_id`(`role_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+  KEY `idx_role_id` (`role_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='角色权限关系';
 
 -- ----------------------------
 -- Records of sys_role_authority
 -- ----------------------------
+BEGIN;
 INSERT INTO `sys_role_authority` VALUES ('45ad3ec5e6544c78b5094943d0125860', NULL, NULL, '2017-11-15 14:41:47', NULL, 'a1e4018a5d354401b9bf4a2ac9dd2d01', '72a50656b534436f89665bcb6cfdd620');
 INSERT INTO `sys_role_authority` VALUES ('746d4d6d24324b04b7963d5b08a1285c', NULL, NULL, '2017-11-15 14:41:47', NULL, 'bf1937cf97fb4eeda39c41ca76139a8f', '72a50656b534436f89665bcb6cfdd620');
 INSERT INTO `sys_role_authority` VALUES ('85ff93de81714838a846c189e036ed88', NULL, NULL, '2017-11-15 14:41:47', NULL, 'b002e0119a1940f6b673faa7534e4a0e', '72a50656b534436f89665bcb6cfdd620');
@@ -157,57 +164,61 @@ INSERT INTO `sys_role_authority` VALUES ('cd4599070dd8435ead12371526190ece', NUL
 INSERT INTO `sys_role_authority` VALUES ('e32d89aef7eb45ba9b85dee51a9279b9', NULL, NULL, '2017-11-15 14:41:47', NULL, '10f9e7a25f834ec2be0aa6dd55344724', '72a50656b534436f89665bcb6cfdd620');
 INSERT INTO `sys_role_authority` VALUES ('e5920b542e0c4094b9f348a78f3de37d', NULL, NULL, '2017-11-15 14:41:47', NULL, '13092bea9c124111bedcb20aaafcdc4c', '72a50656b534436f89665bcb6cfdd620');
 INSERT INTO `sys_role_authority` VALUES ('f62c00ac745e4a6db0ff01143339837d', NULL, NULL, '2017-11-15 14:41:47', NULL, '803547685be4448bb4896b46581bb9d9', '72a50656b534436f89665bcb6cfdd620');
+COMMIT;
 
 -- ----------------------------
 -- Table structure for sys_user_info
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user_info`;
-CREATE TABLE `sys_user_info`  (
-  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `create_time` datetime(0) NULL DEFAULT NULL,
-  `creator` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `modified_time` datetime(0) NULL DEFAULT NULL,
-  `modifier` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `mail` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `salt` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `sex` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `user_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `is_admin` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+CREATE TABLE `sys_user_info` (
+  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `creator` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '创建人',
+  `modified_time` datetime DEFAULT NULL COMMENT '修改时间',
+  `modifier` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '修改人',
+  `mail` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '邮箱',
+  `name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '名字',
+  `password` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '密码',
+  `salt` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '盐值',
+  `sex` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '性别',
+  `user_name` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户名',
+  `is_admin` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '是否管理员',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uk_user_name`(`user_name`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+  UNIQUE KEY `uk_user_name` (`user_name`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='用户';
 
 -- ----------------------------
 -- Records of sys_user_info
 -- ----------------------------
+BEGIN;
 INSERT INTO `sys_user_info` VALUES ('44dad0e4f1934112bec0cff69b3f1cac', '2017-11-06 13:54:52', NULL, '2017-11-06 13:55:53', NULL, '786461501@qq.com', '王亚', '0ced021c7b7f16533dfef5a126c39418c1660d01', 'de9b2a362b490e051f3a', '0', 'wangy', 'N');
 INSERT INTO `sys_user_info` VALUES ('78425d59a2d64e49abe563d4de013d22', '2017-11-06 13:25:19', NULL, '2017-11-06 14:02:08', NULL, '786461501@qq.com', '项伟兵', '31002bc701a94519b2eb68a6872f96597ea23d9e', '67b749c4c2b09675b9b4', '1', 'xwbing', 'Y');
 INSERT INTO `sys_user_info` VALUES ('9648cf32a75d4d1999a70e7749780ec1', '2017-11-06 13:27:01', NULL, '2017-11-07 09:33:03', NULL, '786461501@qq.com', '李涛', '710a5f73d6ea51ffda3e8aac89cc13c4347822ab', 'a4c9b6960b25ffdfa72e', '1', 'lit', 'N');
+COMMIT;
 
 -- ----------------------------
 -- Table structure for sys_user_login_in_out
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user_login_in_out`;
-CREATE TABLE `sys_user_login_in_out`  (
-  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `create_time` datetime(0) NULL DEFAULT NULL,
-  `creator` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `modified_time` datetime(0) NULL DEFAULT NULL,
-  `modifier` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `inout_type` int(11) NULL DEFAULT NULL,
-  `ip` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `user_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+CREATE TABLE `sys_user_login_in_out` (
+  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `creator` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '创建人',
+  `modified_time` datetime DEFAULT NULL COMMENT '修改时间',
+  `modifier` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '修改人',
+  `inout_type` int(11) DEFAULT NULL COMMENT '类型',
+  `ip` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT 'ip',
+  `user_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '用户id',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_user_id`(`user_id`) USING BTREE,
-  INDEX `idx_inout_type`(`inout_type`) USING BTREE,
-  INDEX `idx_create_time`(`create_time`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+  KEY `idx_user_id` (`user_id`) USING BTREE,
+  KEY `idx_inout_type` (`inout_type`) USING BTREE,
+  KEY `idx_create_time` (`create_time`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='登录登出信息';
 
 -- ----------------------------
 -- Records of sys_user_login_in_out
 -- ----------------------------
+BEGIN;
 INSERT INTO `sys_user_login_in_out` VALUES ('0460f826e04c4d2da19f31c058f5f8d2', '2017-11-20 17:44:36', NULL, NULL, NULL, 1, '172.16.10.130', '78425d59a2d64e49abe563d4de013d22');
 INSERT INTO `sys_user_login_in_out` VALUES ('050ebe87af89489aaee03d5e453af1e3', '2017-11-21 11:52:44', NULL, NULL, NULL, 1, '172.16.10.130', '78425d59a2d64e49abe563d4de013d22');
 INSERT INTO `sys_user_login_in_out` VALUES ('07d73e1757cd42648f94851ac5ba945a', '2017-11-21 13:26:13', NULL, NULL, NULL, 1, '172.16.10.130', '78425d59a2d64e49abe563d4de013d22');
@@ -357,50 +368,55 @@ INSERT INTO `sys_user_login_in_out` VALUES ('f7c9e20c103a4e4c839591dd9a81d96d', 
 INSERT INTO `sys_user_login_in_out` VALUES ('f85672e881134d57b5a3da3f21233cdb', '2017-11-17 10:00:08', NULL, NULL, NULL, 1, '172.16.10.130', '78425d59a2d64e49abe563d4de013d22');
 INSERT INTO `sys_user_login_in_out` VALUES ('f92a0dd5ef12400fa1ca3b48d872c519', '2018-01-18 15:38:31', NULL, NULL, NULL, 1, '172.16.10.170', '78425d59a2d64e49abe563d4de013d22');
 INSERT INTO `sys_user_login_in_out` VALUES ('f95ce11b0c6847f98c8a963d9531e969', '2017-11-17 10:18:41', NULL, NULL, NULL, 1, '172.16.10.130', '78425d59a2d64e49abe563d4de013d22');
+COMMIT;
 
 -- ----------------------------
 -- Table structure for sys_user_role
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user_role`;
-CREATE TABLE `sys_user_role`  (
-  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `create_time` datetime(0) NULL DEFAULT NULL,
-  `creator` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `modified_time` datetime(0) NULL DEFAULT NULL,
-  `modifier` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `role_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `user_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+CREATE TABLE `sys_user_role` (
+  `id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '主键',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `creator` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '创建人',
+  `modified_time` datetime DEFAULT NULL COMMENT '修改时间',
+  `modifier` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '修改人',
+  `role_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '角色id',
+  `user_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户id',
   PRIMARY KEY (`id`) USING BTREE,
-  INDEX `idx_user_id`(`user_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+  KEY `idx_user_id` (`user_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='用户角色关系';
 
 -- ----------------------------
 -- Records of sys_user_role
 -- ----------------------------
+BEGIN;
 INSERT INTO `sys_user_role` VALUES ('62d46da696e349d7a65840dd43d55397', '2017-11-15 14:43:21', NULL, NULL, NULL, '72a50656b534436f89665bcb6cfdd620', '9648cf32a75d4d1999a70e7749780ec1');
+COMMIT;
 
 -- ----------------------------
 -- Table structure for system_config
 -- ----------------------------
 DROP TABLE IF EXISTS `system_config`;
-CREATE TABLE `system_config`  (
-  `id` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
-  `create_time` datetime(0) NULL DEFAULT NULL,
-  `creator` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `modified_time` datetime(0) NULL DEFAULT NULL,
-  `modifier` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `code` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `enable` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `name` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `value` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+CREATE TABLE `system_config` (
+  `id` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL COMMENT '主键',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `creator` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '创建人',
+  `modified_time` datetime DEFAULT NULL COMMENT '修改时间',
+  `modifier` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '修改人',
+  `code` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '编码',
+  `enable` char(1) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '是否启用',
+  `name` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '名称',
+  `value` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '值',
   PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE INDEX `uk_code`(`code`) USING BTREE,
-  INDEX `idx_enable`(`enable`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+  UNIQUE KEY `uk_code` (`code`) USING BTREE,
+  KEY `idx_enable` (`enable`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='系统配置';
 
 -- ----------------------------
 -- Records of system_config
 -- ----------------------------
+BEGIN;
 INSERT INTO `system_config` VALUES ('20546fc269c84b1d9a2687a9f595fa01', '2017-11-06 16:04:17', NULL, '2018-01-18 15:50:10', NULL, 'email_config', 'Y', '邮箱配置', '{\'serverHost\':\'smtp.163.com\',\'serverPort\':25,\'serverHost\':\'smtp.163.com\',\'protocol\':\'smtp\',\'auth\':true,\'fromEmail\':\'xwbing2009@163.com\',\'password\':\'xwbing900417\',\'subject\':\'注册成功\',\'centent\':\'注册成功\'}');
+COMMIT;
 
 SET FOREIGN_KEY_CHECKS = 1;
