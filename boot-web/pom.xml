@@ -22,8 +22,8 @@
     <!-- maven打包上传私服地址。id要跟maven->settings->server->id匹配 -->
     <distributionManagement>
         <repository>
-            <id>nexus-drore-team-3rd</id>
-            <url>http://192.168.11.110:8081/nexus/content/repositories/thirdparty/</url>
+            <id>nexus-xwbing</id>
+            <url>http://127.0.0.1:8080/nexus/content/repositories/thirdparty/</url>
         </repository>
     </distributionManagement>
     <dependencies>
