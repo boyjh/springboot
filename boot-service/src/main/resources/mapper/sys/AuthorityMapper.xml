@@ -7,7 +7,7 @@
         <result column="modified_time" property="modifiedTime"/>
         <result column="parent_id" property="parentId"/>
     </resultMap>
-    <sql id="table">
+    <sql id="Table">
         sys_authority
     </sql>
     <sql id="Base_Column_List">
@@ -52,7 +52,7 @@
     <!-- 插入 -->
     <insert id="insert">
         INSERT INTO
-        <include refid="table"/>(
+        <include refid="Table"/>(
         id,
         creator,
         create_time,
@@ -80,7 +80,7 @@
     <!-- 批量插入 -->
     <insert id="insertBatch">
         INSERT INTO
-        <include refid="table"/>(
+        <include refid="Table"/>(
         id,
         creator,
         create_time,
@@ -110,13 +110,13 @@
     <!-- 删除 -->
     <delete id="deleteById">
         DELETE FROM
-        <include refid="table"/>
+        <include refid="Table"/>
         WHERE id=#{id}
     </delete>
     <!-- 批量删除 -->
     <delete id="deleteByIds">
         DELETE FROM
-        <include refid="table"/>
+        <include refid="Table"/>
         WHERE id IN
         <foreach collection="list" item="id" separator="," open="(" close=")">
             #{id}
@@ -125,13 +125,13 @@
     <!-- 条件删除 -->
     <delete id="delete">
         DELETE FROM
-        <include refid="table"/>
+        <include refid="Table"/>
         <include refid="condition"/>
     </delete>
     <!-- 更新 -->
     <update id="update">
         UPDATE
-        <include refid="table"/>
+        <include refid="Table"/>
         <set>
             modified_time=now(),
             <if test="modifier!=null">modifier=#{modifier},</if>
@@ -147,7 +147,7 @@
     <!-- 批量更新 -->
     <update id="updateBatch">
         UPDATE
-        <include refid="table"/>
+        <include refid="Table"/>
         <trim prefix="set" suffixOverrides=",">
             <trim prefix="modified_time=case" suffix="end,">
                 <foreach collection="list" item="obj">
@@ -215,7 +215,7 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM
-        <include refid="table"/>
+        <include refid="Table"/>
         WHERE id=#{id}
     </select>
     <!-- 根据ids查找 -->
@@ -223,7 +223,7 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM
-        <include refid="table"/>
+        <include refid="Table"/>
         WHERE id IN
         <foreach collection="list" item="id" separator="," open="(" close=")">
             #{id}
@@ -234,7 +234,7 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM
-        <include refid="table"/>
+        <include refid="Table"/>
         <include refid="condition"/>
         ORDER BY sort
     </select>
@@ -243,13 +243,13 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM
-        <include refid="table"/>
+        <include refid="Table"/>
         ORDER BY sort
     </select>
     <!-- 获取最大排序号 -->
     <select id="getMaxSort" resultType="int">
         SELECT IFNULL(MAX(sort),0)
         FROM
-        <include refid="table"/>
+        <include refid="Table"/>
     </select>
 </mapper>

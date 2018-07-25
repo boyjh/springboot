@@ -30,13 +30,13 @@
         <!-- model -->
         <javaModelGenerator targetPackage="com.xwbing.domain.entity" targetProject="src/main/java">
             <property name="trimStrings" value="true"/>
-            <!--<property name="rootClass" value="org.mybatis.generator.api.dom.java.BaseEntity"/>-->
+            <property name="rootClass" value="org.mybatis.generator.api.dom.java.BaseEntity"/>
         </javaModelGenerator>
         <!-- mapper.xml -->
         <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources"/>
         <!-- mapper.java -->
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.xwbing.domain.mapper" targetProject="src/main/java">
-            <!--<property name="rootInterface" value="com.xwbing.domain.mapper.BaseMapper"/>-->
+            <property name="rootInterface" value="com.xwbing.domain.mapper.BaseMapper"/>
         </javaClientGenerator>
         <!-- table -->
         <table tableName="sys_role" domainObjectName="demo.Demo"

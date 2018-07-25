@@ -8,7 +8,7 @@
         <result column="inout_type" property="inoutType"/>
         <result column="user_id" property="userId"/>
     </resultMap>
-    <sql id="table">
+    <sql id="Table">
         sys_user_login_in_out
     </sql>
     <sql id="Base_Column_List">
@@ -31,7 +31,7 @@
             SELECT REPLACE(UUID(), '-', '')
         </selectKey>
         INSERT INTO
-        <include refid="table"/>(
+        <include refid="Table"/>(
         id,
         creator,
         create_time,
@@ -68,7 +68,7 @@
     <select id="countByType" resultMap="BaseResultMap">
         SELECT count(1) count,inout_type
         from
-        <include refid="table"/>
+        <include refid="Table"/>
         <where>
             <if test="startDate!=null">
                 and create_time>=#{startDate}

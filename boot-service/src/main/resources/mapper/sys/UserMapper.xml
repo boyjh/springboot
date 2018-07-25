@@ -8,7 +8,7 @@
         <result column="user_name" property="userName"/>
         <result column="is_admin" property="isAdmin"/>
     </resultMap>
-    <sql id="table">
+    <sql id="Table">
         sys_user_info
     </sql>
     <sql id="Base_Column_List">
@@ -38,7 +38,7 @@
     <!-- 插入 -->
     <insert id="insert">
         INSERT INTO
-        <include refid="table"/>(
+        <include refid="Table"/>(
         id,
         creator,
         create_time,
@@ -66,7 +66,7 @@
     <!-- 批量插入 -->
     <insert id="insertBatch">
         INSERT INTO
-        <include refid="table"/>(
+        <include refid="Table"/>(
         id,
         creator,
         create_time,
@@ -96,13 +96,13 @@
     <!-- 删除 -->
     <delete id="deleteById">
         DELETE FROM
-        <include refid="table"/>
+        <include refid="Table"/>
         WHERE id=#{id}
     </delete>
     <!-- 批量删除 -->
     <delete id="deleteByIds">
         DELETE FROM
-        <include refid="table"/>
+        <include refid="Table"/>
         WHERE id IN
         <foreach collection="list" item="id" separator="," open="(" close=")">
             #{id}
@@ -111,13 +111,13 @@
     <!-- 条件删除 -->
     <delete id="delete">
         DELETE FROM
-        <include refid="table"/>
+        <include refid="Table"/>
         <include refid="condition"/>
     </delete>
     <!-- 更新 -->
     <update id="update">
         UPDATE
-        <include refid="table"/>
+        <include refid="Table"/>
         <set>
             modified_time=now(),
             <if test="modifier!=null">modifier=#{modifier},</if>
@@ -133,7 +133,7 @@
     <!-- 批量更新 -->
     <update id="updateBatch">
         UPDATE
-        <include refid="table"/>
+        <include refid="Table"/>
         <trim prefix="set" suffixOverrides=",">
             <trim prefix="modified_time=case" suffix="end,">
                 <foreach collection="list" item="obj">
@@ -201,7 +201,7 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM
-        <include refid="table"/>
+        <include refid="Table"/>
         WHERE id=#{id}
     </select>
     <!-- 根据ids查找 -->
@@ -209,7 +209,7 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM
-        <include refid="table"/>
+        <include refid="Table"/>
         WHERE id IN
         <foreach collection="list" item="id" separator="," open="(" close=")">
             #{id}
@@ -220,7 +220,7 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM
-        <include refid="table"/>
+        <include refid="Table"/>
         <include refid="condition"/>
     </select>
     <!-- 查询所有 -->
@@ -228,14 +228,14 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM
-        <include refid="table"/>
+        <include refid="Table"/>
         ORDER BY create_time DESC
     </select>
     <select id="findByUserName" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM
-        <include refid="table"/>
+        <include refid="Table"/>
         where user_name=#{userName}
     </select>
 </mapper>

@@ -8,7 +8,7 @@
         <result column="role_id" property="roleId"/>
         <result column="authority_id" property="authorityId"/>
     </resultMap>
-    <sql id="table">
+    <sql id="Table">
         sys_role_authority
     </sql>
     <sql id="Base_Column_List">
@@ -23,7 +23,7 @@
     <!-- 批量插入 -->
     <insert id="insertBatch">
         INSERT INTO
-        <include refid="table"/>(
+        <include refid="Table"/>(
         id,
         creator,
         create_time,
@@ -43,7 +43,7 @@
     <!-- 批量删除 -->
     <delete id="deleteByIds">
         DELETE FROM
-        <include refid="table"/>
+        <include refid="Table"/>
         WHERE id IN
         <foreach collection="list" item="id" separator="," open="(" close=")">
             #{id}
@@ -54,7 +54,7 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM
-        <include refid="table"/>
+        <include refid="Table"/>
         where role_id=#{roleId}
     </select>
 </mapper>

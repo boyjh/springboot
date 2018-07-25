@@ -6,7 +6,7 @@
         <result column="create_time" property="createTime"/>
         <result column="modified_time" property="modifiedTime"/>
     </resultMap>
-    <sql id="table">
+    <sql id="Table">
         file_upload
     </sql>
     <sql id="Base_Column_List">
@@ -25,7 +25,7 @@
             SELECT REPLACE(UUID(), '-', '')
         </selectKey>
         INSERT INTO
-        <include refid="table"/>(
+        <include refid="Table"/>(
         id,
         creator,
         create_time,
@@ -45,7 +45,7 @@
     <!-- 批量插入 -->
     <insert id="insertBatch">
         INSERT INTO
-        <include refid="table"/>(
+        <include refid="Table"/>(
         id,
         creator,
         create_time,
@@ -68,7 +68,7 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM
-        <include refid="table"/>
+        <include refid="Table"/>
         where name=#{name}
         <if test="type!=null">
             and type=#{type}
