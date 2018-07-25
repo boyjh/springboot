@@ -36,11 +36,13 @@ public class ReflectDemo {
         //获取类名
         String simpleName = clazz.getSimpleName();
         String name1 = clazz.getName();
+
         /**
          * supper
          */
         Class superclass = clazz.getSuperclass();
         Class[] interfaces = clazz.getInterfaces();
+
         /**
          * method
          */
@@ -54,6 +56,7 @@ public class ReflectDemo {
         method.invoke(obj, "xwbing", 22);
         privateMethod.setAccessible(true); //执行private方法
         privateMethod.invoke(obj);
+
         /**
          * field
          */
@@ -66,6 +69,7 @@ public class ReflectDemo {
         Object name = field.get(obj);
         //设置指定对象的字段的值
         field.set(obj, "xwjun");
+
         /**
          * annotation(类，方法，字段)
          */
