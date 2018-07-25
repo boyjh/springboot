@@ -11,7 +11,7 @@
  Target Server Version : 80011
  File Encoding         : 65001
 
- Date: 21/07/2018 13:58:48
+ Date: 25/07/2018 20:20:40
 */
 
 SET NAMES utf8mb4;
@@ -145,7 +145,7 @@ CREATE TABLE `sys_role_authority` (
   `creator` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '创建人',
   `modified_time` datetime DEFAULT NULL COMMENT '修改时间',
   `modifier` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL COMMENT '修改人',
-  `authority_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '权限\r权限id',
+  `authority_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '权限id',
   `role_id` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '角色id',
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_role_id` (`role_id`) USING BTREE

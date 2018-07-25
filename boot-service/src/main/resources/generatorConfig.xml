@@ -5,8 +5,8 @@
 <generatorConfiguration>
     <properties resource="druid.properties"/>
     <classPathEntry
-    location="/usr/local/soft/apache-maven-3.5.3/repo/mysql/mysql-connector-java/5.1.44/mysql-connector-java-5.1.44.jar"/>
-            <!--location="${maven.home}/repo/mysql/mysql-connector-java/${mysql.version}/mysql-connector-java-${mysql.version}.jar"/>-->
+            location="/usr/local/soft/apache-maven-3.5.3/repo/mysql/mysql-connector-java/5.1.44/mysql-connector-java-5.1.44.jar"/>
+    <!--location="${maven.home}/repo/mysql/mysql-connector-java/${mysql.version}/mysql-connector-java-${mysql.version}.jar"/>-->
     <context id="mysqlTables" targetRuntime="MyBatis3" defaultModelType="conditional">
         <property name="javaFileEncoding" value="UTF-8"/>
         <property name="autoDelimitKeywords" value="true"/>
@@ -29,24 +29,21 @@
         </javaTypeResolver>
         <!-- model -->
         <javaModelGenerator targetPackage="com.xwbing.domain.entity" targetProject="src/main/java">
-            <property name="enableSubPackages" value="true"/>
             <property name="trimStrings" value="true"/>
-            <property name="rootClass" value="org.mybatis.generator.api.dom.java.BaseEntity"/>
+            <!--<property name="rootClass" value="org.mybatis.generator.api.dom.java.BaseEntity"/>-->
         </javaModelGenerator>
         <!-- mapper.xml -->
-        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources">
-            <property name="enableSubPackages" value="true"/>
-        </sqlMapGenerator>
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources"/>
         <!-- mapper.java -->
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.xwbing.domain.mapper" targetProject="src/main/java">
-            <property name="enableSubPackages" value="true"/>
+            <!--<property name="rootInterface" value="com.xwbing.domain.mapper.BaseMapper"/>-->
         </javaClientGenerator>
         <!-- table -->
         <table tableName="sys_role" domainObjectName="demo.Demo"
                enableSelectByExample="false" enableDeleteByExample="false"
                enableCountByExample="false" enableUpdateByExample="false"
                selectByExampleQueryId="false">
-            <property name="rootInterface" value="com.xwbing.domain.mapper.BaseMapper"/>
+            <property name="enableSubPackages" value="true"/>
             <generatedKey column="id" sqlStatement="SELECT REPLACE(UUID(), '-', '')" identity="false"/>
         </table>
     </context>

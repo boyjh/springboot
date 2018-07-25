@@ -1,7 +1,9 @@
 package com.xwbing.demo;
 
+import com.xwbing.domain.entity.BaseEntity;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -31,6 +33,14 @@ public class ReflectDemo {
         clazz = Class.forName("com.xwbing.demo.Reflect");
         //创建对象
         Object obj = clazz.newInstance();
+        //获取类名
+        String simpleName = clazz.getSimpleName();
+        String name1 = clazz.getName();
+        /**
+         * supper
+         */
+        Class superclass = clazz.getSuperclass();
+        Class[] interfaces = clazz.getInterfaces();
         /**
          * method
          */
@@ -71,7 +81,7 @@ public class ReflectDemo {
 }
 
 @Component("annotation")
-class Reflect {
+class Reflect extends BaseEntity implements Serializable {
     private String name;
     private int age;
 
