@@ -49,7 +49,7 @@
                enableCountByExample="false" enableUpdateByExample="false"
                selectByExampleQueryId="false">
             <property name="enableSubPackages" value="true"/>
-            <generatedKey column="pk_id" sqlStatement="SELECT REPLACE(UUID(), '-', '')" identity="false"/>
+            <generatedKey column="id" sqlStatement="SELECT REPLACE(UUID(), '-', '')" identity="false"/>
         </table>
     </context>
 </generatorConfiguration>
