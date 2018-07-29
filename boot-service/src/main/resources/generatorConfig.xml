@@ -35,12 +35,16 @@
         <!-- model -->
         <javaModelGenerator targetPackage="com.xwbing.domain.entity" targetProject="src/main/java">
             <property name="trimStrings" value="true"/>
+            <property name="enableSubPackages" value="true"/>
             <property name="rootClass" value="org.mybatis.generator.api.dom.java.BaseEntity"/>
         </javaModelGenerator>
         <!-- mapper.xml -->
-        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources"/>
+        <sqlMapGenerator targetPackage="mapper" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
         <!-- mapper.java -->
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.xwbing.domain.mapper" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
             <property name="rootInterface" value="org.mybatis.generator.api.dom.java.BaseMapper"/>
         </javaClientGenerator>
         <!-- table -->
@@ -48,7 +52,6 @@
                enableSelectByExample="false" enableDeleteByExample="false"
                enableCountByExample="false" enableUpdateByExample="false"
                selectByExampleQueryId="false">
-            <property name="enableSubPackages" value="true"/>
             <generatedKey column="id" sqlStatement="SELECT REPLACE(UUID(), '-', '')" identity="false"/>
         </table>
     </context>

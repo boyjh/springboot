@@ -136,17 +136,9 @@
                 <version>${mybatis-generator-maven-plugin.vsrsion}</version>
                 <configuration>
                     <!--<configurationFile>src/main/resources/generator/generatorConfig.xml</configurationFile>-->
-                    <overwrite>true</overwrite>
+                    <overwrite>false</overwrite>
                     <verbose>true</verbose>
                 </configuration>
-                <!--<executions>-->
-                <!--<execution>-->
-                <!--<id>mysqlTables</id>-->
-                <!--<goals>-->
-                <!--<goal>generate</goal>-->
-                <!--</goals>-->
-                <!--</execution>-->
-                <!--</executions>-->
             </plugin>
         </plugins>
     </build>
