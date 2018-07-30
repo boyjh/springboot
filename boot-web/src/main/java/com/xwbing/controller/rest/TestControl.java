@@ -3,14 +3,13 @@ package com.xwbing.controller.rest;
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.annotation.LogInfo;
 import com.xwbing.domain.entity.rest.FilesUpload;
-import com.xwbing.domain.mapper.rest.FilesUploadMapper;
 import com.xwbing.service.rest.CookieSessionService;
 import com.xwbing.service.rest.QRCodeZipService;
+import com.xwbing.service.rest.UploadService;
 import com.xwbing.util.EncodeUtils;
 import com.xwbing.util.JsonResult;
 import com.xwbing.util.RestMessage;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -42,7 +41,7 @@ public class TestControl {
     @Resource
     private CookieSessionService cookieSessionService;
     @Resource
-    private FilesUploadMapper uploadMapper;
+    private UploadService uploadService;
 
     @LogInfo("导出zip")
     @GetMapping("batchGetImage")
@@ -58,7 +57,7 @@ public class TestControl {
     @GetMapping("getDbPic")
     public void getDbPic(HttpServletResponse response, @RequestParam String name, @RequestParam(required = false) String type) throws IOException {
         if (StringUtils.isNotEmpty(name)) {
-            List<FilesUpload> files = uploadMapper.findByName(name, type);
+            List<FilesUpload> files = uploadService.findByName(name, type);
             if (CollectionUtils.isNotEmpty(files)) {
                 String data = files.get(0).getData();
                 byte[] bytes = EncodeUtils.base64Decode(data);

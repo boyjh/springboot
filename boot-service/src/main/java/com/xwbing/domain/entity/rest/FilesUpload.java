@@ -1,12 +1,13 @@
 package com.xwbing.domain.entity.rest;
 
-import com.xwbing.domain.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.mybatis.generator.api.dom.java.BaseEntity;
 
 /**
- * @author xiangwb
- * @version $Id: FilesUpload.java, v 0.1 2018年06月13日 17:23 wb-xwb402636 Exp $
+ * @author: xiangwb
+ * @date: 2018/06/13 21:54
+ * @description:
  */
 @EqualsAndHashCode(callSuper = true)
 @Data

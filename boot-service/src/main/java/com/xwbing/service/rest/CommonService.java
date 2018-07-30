@@ -6,7 +6,6 @@ import com.xwbing.constant.CommonConstant;
 import com.xwbing.domain.entity.model.EmailModel;
 import com.xwbing.domain.entity.rest.FilesUpload;
 import com.xwbing.domain.entity.sys.SysConfig;
-import com.xwbing.domain.mapper.rest.FilesUploadMapper;
 import com.xwbing.exception.BusinessException;
 import com.xwbing.service.sys.SysConfigService;
 import com.xwbing.util.DigestsUtil;
@@ -31,7 +30,7 @@ import java.util.Base64;
 @Service
 public class CommonService {
     @Resource
-    private FilesUploadMapper uploadMapper;
+    private UploadService uploadService;
     @Resource
     private SysConfigService sysConfigService;
 
@@ -55,7 +54,6 @@ public class CommonService {
      * @return
      */
     public RestMessage upload(MultipartFile file) {
-        RestMessage result = new RestMessage();
         if (file == null) {
             throw new BusinessException("请选择文件");
         }
@@ -78,14 +76,7 @@ public class CommonService {
         //对数据字节进行base64编码
         String base64 = Base64.getEncoder().encodeToString(data);
         filesUpload.setData(base64);
-        int save = uploadMapper.insert(filesUpload);
-        if (save == 1) {
-            result.setSuccess(true);
-            result.setMessage("保存文件成功");
-        } else {
-            result.setMessage("保存文件失败");
-        }
-        return result;
+        return uploadService.save(filesUpload);
     }
 
     /**
