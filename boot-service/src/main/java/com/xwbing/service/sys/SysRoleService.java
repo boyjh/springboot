@@ -1,15 +1,13 @@
 package com.xwbing.service.sys;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.xwbing.constant.CommonConstant;
 import com.xwbing.domain.entity.sys.SysRole;
 import com.xwbing.domain.entity.sys.SysRoleAuthority;
 import com.xwbing.domain.entity.sys.SysUserRole;
 import com.xwbing.domain.mapper.sys.SysRoleMapper;
 import com.xwbing.exception.BusinessException;
+import com.xwbing.service.BaseService;
 import com.xwbing.util.Pagination;
-import com.xwbing.util.PassWordUtil;
 import com.xwbing.util.RestMessage;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -30,13 +28,18 @@ import java.util.stream.Collectors;
  * 说明: 角色服务层
  */
 @Service
-public class SysRoleService {
+public class SysRoleService extends BaseService<SysRoleMapper,SysRole> {
     @Resource
     private SysRoleAuthorityService roleAuthorityService;
     @Resource
     private SysUserRoleService userRoleService;
     @Resource
     private SysRoleMapper roleMapper;
+
+    @Override
+    protected SysRoleMapper getMapper() {
+        return roleMapper;
+    }
 
     /**
      * 保存角色
@@ -45,23 +48,12 @@ public class SysRoleService {
      * @return
      */
     public RestMessage save(SysRole sysRole) {
-        RestMessage result = new RestMessage();
         //检查编码
         boolean b = uniqueCode(sysRole.getCode(), null);
         if (!b) {
             throw new BusinessException("该编码已存在");
         }
-        String id = PassWordUtil.createId();
-        sysRole.setId(id);
-        int save = roleMapper.insert(sysRole);
-        if (save == 1) {
-            result.setSuccess(true);
-            result.setId(id);
-            result.setMessage("保存角色成功");
-        } else {
-            result.setMessage("保存角色失败");
-        }
-        return result;
+        return super.save(sysRole);
     }
 
     /**
@@ -72,21 +64,18 @@ public class SysRoleService {
      */
     @Transactional
     public RestMessage removeById(String id) {
-        RestMessage result = new RestMessage();
         SysRole one = getById(id);
         if (one == null) {
             throw new BusinessException("该角色不存在");
         }
         //删除角色
-        roleMapper.deleteById(id);
+        RestMessage result = super.removeById(id);
         //删除角色权限
         List<SysRoleAuthority> roleAuthorities = roleAuthorityService.listByRoleId(id);
         if (CollectionUtils.isNotEmpty(roleAuthorities)) {
             List<String> ids = roleAuthorities.stream().map(SysRoleAuthority::getId).collect(Collectors.toList());
-            roleAuthorityService.removeBatch(ids);
+            result=roleAuthorityService.removeByIds(ids);
         }
-        result.setMessage("删除成功");
-        result.setSuccess(true);
         return result;
     }
 
@@ -97,9 +86,8 @@ public class SysRoleService {
      * @return
      */
     public RestMessage update(SysRole sysRole) {
-        RestMessage result = new RestMessage();
         String id = sysRole.getId();
-        SysRole old = getById(id);
+        SysRole old = super.getById(id);
         if (old == null) {
             throw new BusinessException("该角色不存在");
         }
@@ -112,30 +100,9 @@ public class SysRoleService {
         old.setCode(sysRole.getCode());
         old.setEnable(sysRole.getEnable());
         old.setRemark(sysRole.getRemark());
-        int update = roleMapper.update(old);
-        if (update == 1) {
-            result.setSuccess(true);
-            result.setId(id);
-            result.setMessage("修改角色成功");
-        } else {
-            result.setMessage("修改角色失败");
-        }
-        return result;
+        return super.update(old);
     }
 
-    /**
-     * 根据主键查找
-     *
-     * @param id
-     * @return
-     */
-    public SysRole getById(String id) {
-        if (StringUtils.isEmpty(id)) {
-            return null;
-        } else {
-            return roleMapper.findById(id);
-        }
-    }
 
     /**
      * 根据是否启用查询
@@ -146,8 +113,7 @@ public class SysRoleService {
     public Pagination pageByEnable(String enable, Pagination page) {
         Map<String, Object> map = new HashMap<>();
         map.put("enable", enable);
-        PageInfo<SysRole> pageInfo = PageHelper.startPage(page.getCurrentPage(), page.getPageSize()).doSelectPageInfo(() -> roleMapper.find(map));
-        return page.result(page, pageInfo);
+        return super.page(page, map);
     }
 
     /**
@@ -172,7 +138,7 @@ public class SysRoleService {
             if (StringUtils.isNotEmpty(enable)) {
                 map.put("enable", CommonConstant.IS_ENABLE);
             }
-            list = roleMapper.find(map);
+            list = super.listByParam(map);
         }
         return list;
     }
@@ -193,7 +159,7 @@ public class SysRoleService {
         if (StringUtils.isNotEmpty(id)) {
             map.put("id", id);
         }
-        List<SysRole> sysRoles = roleMapper.find(map);
+        List<SysRole> sysRoles =super.listByParam(map);
         return sysRoles.size() == 0;
     }
 }

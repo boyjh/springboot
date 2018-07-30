@@ -75,7 +75,6 @@ public abstract class BaseService<M extends BaseMapper<T>, T extends BaseEntity>
         int row = getMapper().deleteById(id);
         if (row == 1) {
             result.setSuccess(true);
-            result.setId(id);
             result.setMessage("删除成功");
         } else {
             result.setMessage("删除失败");

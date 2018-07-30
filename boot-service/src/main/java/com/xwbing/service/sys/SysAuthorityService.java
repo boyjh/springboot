@@ -1,15 +1,13 @@
 package com.xwbing.service.sys;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.xwbing.constant.CommonConstant;
 import com.xwbing.domain.entity.sys.SysAuthority;
 import com.xwbing.domain.entity.sys.SysRoleAuthority;
 import com.xwbing.domain.entity.vo.SysAuthVo;
 import com.xwbing.domain.mapper.sys.SysAuthorityMapper;
 import com.xwbing.exception.BusinessException;
+import com.xwbing.service.BaseService;
 import com.xwbing.util.Pagination;
-import com.xwbing.util.PassWordUtil;
 import com.xwbing.util.RestMessage;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -27,11 +25,16 @@ import java.util.stream.Collectors;
  * 说明: 权限服务层
  */
 @Service
-public class SysAuthorityService {
+public class SysAuthorityService extends BaseService<SysAuthorityMapper, SysAuthority> {
     @Resource
     private SysAuthorityMapper authorityMapper;
     @Resource
     private SysRoleAuthorityService roleAuthorityService;
+
+    @Override
+    protected SysAuthorityMapper getMapper() {
+        return authorityMapper;
+    }
 
     /**
      * 保存权限
@@ -40,7 +43,6 @@ public class SysAuthorityService {
      * @return
      */
     public RestMessage save(SysAuthority sysAuthority) {
-        RestMessage result = new RestMessage();
         //检查编码
         boolean b = uniqueCode(sysAuthority.getCode());
         if (!b) {
@@ -59,17 +61,7 @@ public class SysAuthorityService {
         if (StringUtils.isEmpty(sysAuthority.getParentId())) {
             sysAuthority.setParentId(CommonConstant.ROOT);
         }
-        String id = PassWordUtil.createId();
-        sysAuthority.setId(id);
-        int save = authorityMapper.insert(sysAuthority);
-        if (save == 1) {
-            result.setSuccess(true);
-            result.setId(id);
-            result.setMessage("保存权限成功");
-        } else {
-            result.setMessage("保存权限失败");
-        }
-        return result;
+        return super.save(sysAuthority);
     }
 
     /**
@@ -80,22 +72,19 @@ public class SysAuthorityService {
      */
     @Transactional
     public RestMessage removeById(String id) {
-        RestMessage result = new RestMessage();
         //判断该权限是否存在
         SysAuthority one = getById(id);
         if (one == null) {
             throw new BusinessException("该权限不存在");
         }
         //删除自身
-        authorityMapper.deleteById(id);
+        RestMessage result = super.removeById(id);
         //如果有子节点,递归删除子节点
         List<SysAuthority> list = listChildrenForRemove(id);
         if (CollectionUtils.isNotEmpty(list)) {
             List<String> ids = list.stream().map(SysAuthority::getId).collect(Collectors.toList());
-            authorityMapper.deleteByIds(ids);
+            super.removeByIds(ids);
         }
-        result.setMessage("删除成功");
-        result.setSuccess(true);
         return result;
     }
 
@@ -106,10 +95,9 @@ public class SysAuthorityService {
      * @return
      */
     public RestMessage update(SysAuthority sysAuthority) {
-        RestMessage result = new RestMessage();
         String id = sysAuthority.getId();
         //判断该权限是否存在
-        SysAuthority old = getById(id);
+        SysAuthority old = super.getById(id);
         if (old == null) {
             throw new BusinessException("该权限不存在");
         }
@@ -125,29 +113,7 @@ public class SysAuthorityService {
         old.setUrl(sysAuthority.getUrl());
 //        old.setCode(sysAuthority.getCode());编码不能修改
         old.setType(sysAuthority.getType());
-        int update = authorityMapper.update(old);
-        if (update == 1) {
-            result.setSuccess(true);
-            result.setId(id);
-            result.setMessage("修改权限成功");
-        } else {
-            result.setMessage("修改权限失败");
-        }
-        return result;
-    }
-
-    /**
-     * 根据主键查找
-     *
-     * @param id
-     * @return
-     */
-    public SysAuthority getById(String id) {
-        if (StringUtils.isEmpty(id)) {
-            return null;
-        } else {
-            return authorityMapper.findById(id);
-        }
+        return super.update(old);
     }
 
     /**
@@ -161,7 +127,7 @@ public class SysAuthorityService {
         if (StringUtils.isNotEmpty(enable)) {
             map.put("enable", enable);
         }
-        return authorityMapper.find(map);
+        return super.listByParam(map);
     }
 
     /**
@@ -175,8 +141,7 @@ public class SysAuthorityService {
         if (StringUtils.isNotEmpty(enable)) {
             map.put("enable", enable);
         }
-        PageInfo<SysAuthority> pageInfo = PageHelper.startPage(page.getCurrentPage(), page.getPageSize()).doSelectPageInfo(() -> authorityMapper.find(map));
-        return page.result(page, pageInfo);
+        return super.page(page, map);
     }
 
     /**
@@ -192,7 +157,7 @@ public class SysAuthorityService {
         if (StringUtils.isNotEmpty(enable)) {
             map.put("enable", enable);
         }
-        return authorityMapper.find(map);
+        return super.listByParam(map);
     }
 
     /**
@@ -217,7 +182,7 @@ public class SysAuthorityService {
             if (StringUtils.isNotEmpty(enable)) {
                 map.put("enable", enable);
             }
-            list = authorityMapper.find(map);
+            list = super.listByParam(map);
         }
         return list;
     }
@@ -234,8 +199,7 @@ public class SysAuthorityService {
         List<SysAuthority> sysAuthorities = disableChildren(parentId);
         //批量修改权限
         if (CollectionUtils.isNotEmpty(sysAuthorities)) {
-            int updateBatch = authorityMapper.updateBatch(sysAuthorities);
-            return updateBatch != 0;
+            return super.updateBatch(sysAuthorities).isSuccess();
         }
         return false;
     }
@@ -253,7 +217,7 @@ public class SysAuthorityService {
         if (StringUtils.isNotEmpty(enable)) {
             map.put("enable", enable);
         }
-        List<SysAuthority> authorities = authorityMapper.find(map);
+        List<SysAuthority> authorities = super.listByParam(map);
         if (CollectionUtils.isEmpty(authorities)) {
             return Collections.EMPTY_LIST;
         }
@@ -320,7 +284,7 @@ public class SysAuthorityService {
         }
         Map<String, Object> map = new HashMap<>();
         map.put("code", code);
-        List<SysAuthority> authorities = authorityMapper.find(map);
+        List<SysAuthority> authorities = super.listByParam(map);
         return authorities.size() == 0;
     }
 
@@ -340,7 +304,7 @@ public class SysAuthorityService {
         if (StringUtils.isNotEmpty(id)) {
             map.put("id", id);
         }
-        List<SysAuthority> authorities = authorityMapper.find(map);
+        List<SysAuthority> authorities = super.listByParam(map);
         return authorities.size() == 0;
     }
 }

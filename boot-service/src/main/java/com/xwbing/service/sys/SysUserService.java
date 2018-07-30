@@ -11,6 +11,7 @@ import com.xwbing.domain.entity.sys.*;
 import com.xwbing.domain.mapper.sys.SysUserMapper;
 import com.xwbing.exception.BusinessException;
 import com.xwbing.rabbit.Sender;
+import com.xwbing.service.BaseService;
 import com.xwbing.util.*;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -34,7 +35,7 @@ import java.util.stream.Collectors;
  * 作者:  xiangwb
  */
 @Service
-public class SysUserService {
+public class SysUserService extends BaseService<SysUserMapper, SysUser> {
     @Resource
     private SysConfigService sysConfigService;
     @Resource
@@ -50,6 +51,11 @@ public class SysUserService {
     @Resource
     private Sender sender;
 
+    @Override
+    protected SysUserMapper getMapper() {
+        return userMapper;
+    }
+
     /**
      * 增
      *
@@ -57,7 +63,6 @@ public class SysUserService {
      * @return
      */
     public RestMessage save(SysUser sysUser) {
-        RestMessage result = new RestMessage();
         //检查用户名是否存在
         String userName = sysUser.getUserName();
         SysUser old = getByUserName(userName);
@@ -70,17 +75,13 @@ public class SysUserService {
         sysUser.setPassword(res[2]);
         // 设置为非管理员
         sysUser.setIsAdmin(CommonEnum.YesOrNoEnum.NO.getCode());
-        String id = PassWordUtil.createId();
-        sysUser.setId(id);
-        int save = userMapper.insert(sysUser);
-        if (save == 0) {
+        RestMessage result = super.save(sysUser);
+        if (!result.isSuccess()) {
             throw new BusinessException("新增用户失败");
         }
         String[] msg = {sysUser.getMail(), userName, res[0]};
         //使用mq发送邮件
         sender.sendEmail(msg);
-        result.setId(id);
-        result.setSuccess(true);
         return result;
     }
 
@@ -92,9 +93,8 @@ public class SysUserService {
      */
     @Transactional
     public RestMessage removeById(String id) {
-        RestMessage result = new RestMessage();
         //检查该用户是否存在
-        SysUser old = getById(id);
+        SysUser old = super.getById(id);
         if (old == null) {
             throw new BusinessException("该用户不存在");
         }
@@ -107,15 +107,13 @@ public class SysUserService {
             throw new BusinessException("不能对管理员进行删除操作");
         }
         //删除用户
-        userMapper.deleteById(id);
+        RestMessage result = super.removeById(id);
         //删除用户角色
         List<SysUserRole> sysUserRoles = sysUserRoleService.listByUserId(id);
         if (CollectionUtils.isNotEmpty(sysUserRoles)) {
             List<String> ids = sysUserRoles.stream().map(SysUserRole::getId).collect(Collectors.toList());
-            sysUserRoleService.removeBatch(ids);
+            sysUserRoleService.removeByIds(ids);
         }
-        result.setMessage("删除成功");
-        result.setSuccess(true);
         return result;
     }
 
@@ -126,9 +124,8 @@ public class SysUserService {
      * @return
      */
     public RestMessage update(SysUser sysUser) {
-        RestMessage result = new RestMessage();
         //检查该用户是否存在
-        SysUser old = getById(sysUser.getId());
+        SysUser old = super.getById(sysUser.getId());
         if (old == null) {
             throw new BusinessException("该用户不存在");
         }
@@ -145,29 +142,7 @@ public class SysUserService {
         old.setMail(sysUser.getMail());
         old.setSex(sysUser.getSex());
 //        old.setUserName(sysUser.getUserName());//用户名不能修改
-        int update = userMapper.update(old);
-        if (update == 1) {
-            result.setMessage("更新成功");
-            result.setId(sysUser.getId());
-            result.setSuccess(true);
-        } else {
-            result.setMessage("更新失败");
-        }
-        return result;
-    }
-
-    /**
-     * 单个查询
-     *
-     * @param id
-     * @return
-     */
-    public SysUser getById(String id) {
-        if (StringUtils.isEmpty(id)) {
-            return null;
-        } else {
-            return userMapper.findById(id);
-        }
+        return super.update(old);
     }
 
     /**
@@ -216,7 +191,6 @@ public class SysUserService {
      * @return
      */
     public RestMessage resetPassWord(String id) {
-        RestMessage result = new RestMessage();
         SysUser old = getById(id);
         if (old == null) {
             throw new BusinessException("未查询到用户信息");
@@ -233,15 +207,13 @@ public class SysUserService {
         String[] str = PassWordUtil.getUserSecret(null, null);
         old.setSalt(str[1]);
         old.setPassword(str[2]);
-        int update = userMapper.update(old);
-        if (update == 0) {
+        RestMessage result = super.update(old);
+        if (!result.isSuccess()) {
             throw new BusinessException("重置密码失败");
         }
         //使用mq发送邮件
         String[] msg = {old.getMail(), userName, str[0]};
         sender.sendEmail(msg);
-        result.setSuccess(true);
-        result.setMessage("重置密码成功");
         return result;
     }
 
@@ -253,7 +225,6 @@ public class SysUserService {
      * @return
      */
     public RestMessage updatePassWord(String newPassWord, String oldPassWord, String id) {
-        RestMessage result = new RestMessage();
         SysUser sysUser = getById(id);
         if (sysUser == null) {
             throw new BusinessException("该用户不存在");
@@ -266,14 +237,7 @@ public class SysUserService {
         String[] str = PassWordUtil.getUserSecret(newPassWord, null);
         sysUser.setSalt(str[1]);
         sysUser.setPassword(str[2]);
-        int update = userMapper.update(sysUser);
-        if (update == 1) {
-            result.setMessage("修改密码成功");
-            result.setSuccess(true);
-        } else {
-            result.setMessage("修改密码失败");
-        }
-        return result;
+        return super.update(sysUser);
     }
 
     /**
@@ -419,7 +383,7 @@ public class SysUserService {
      */
     private List<UserDto> listReport() {
         List<UserDto> listDto = new ArrayList<>();
-        List<SysUser> list = userMapper.findAll();
+        List<SysUser> list = super.listAll();
         if (CollectionUtils.isNotEmpty(list)) {
             UserDto temp;
             for (SysUser info : list) {

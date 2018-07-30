@@ -7,15 +7,18 @@ import com.github.pagehelper.PageInfo;
 import com.xwbing.constant.CommonEnum;
 import com.xwbing.domain.entity.sys.SysUserLoginInOut;
 import com.xwbing.domain.mapper.sys.SysUserLoginInOutMapper;
+import com.xwbing.service.BaseService;
 import com.xwbing.util.DateUtil2;
 import com.xwbing.util.Pagination;
-import com.xwbing.util.RestMessage;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -25,27 +28,14 @@ import java.util.stream.Collectors;
  * 说明: 用户登录登出服务层
  */
 @Service
-public class SysUserLoginInOutService {
+public class SysUserLoginInOutService extends BaseService<SysUserLoginInOutMapper, SysUserLoginInOut> {
     public static final int[] ITEM = {1, 2};
     @Resource
     private SysUserLoginInOutMapper loginInOutMapper;
 
-    /**
-     * 保存
-     *
-     * @param inOut
-     * @return
-     */
-    public RestMessage save(SysUserLoginInOut inOut) {
-        RestMessage result = new RestMessage();
-        int save = loginInOutMapper.insert(inOut);
-        if (save == 1) {
-            result.setSuccess(true);
-            result.setMessage("保存登录登出信息成功");
-        } else {
-            result.setMessage("保存登录登出信息失败");
-        }
-        return result;
+    @Override
+    protected SysUserLoginInOutMapper getMapper() {
+        return loginInOutMapper;
     }
 
     /**

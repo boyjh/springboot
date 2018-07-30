@@ -45,7 +45,7 @@
         <!-- mapper.java -->
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.xwbing.domain.mapper" targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
-            <property name="rootInterface" value="org.mybatis.generator.api.dom.java.BaseMapper"/>
+            <property name="rootInterface" value="com.xwbing.domain.mapper.BaseMapper"/>
         </javaClientGenerator>
         <!-- table -->
         <table tableName="sys_role" domainObjectName="demo.Demo">

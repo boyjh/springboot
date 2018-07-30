@@ -1,9 +1,9 @@
 package com.xwbing.domain.entity.sys;
 
-import com.xwbing.domain.entity.BaseEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.mybatis.generator.api.dom.java.BaseEntity;
 
 /**
  * 说明: 权限
