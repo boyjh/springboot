@@ -5,8 +5,8 @@
 <generatorConfiguration>
     <properties resource="druid.properties"/>
     <classPathEntry
-            location="/usr/local/soft/apache-maven-3.5.3/repo/mysql/mysql-connector-java/5.1.44/mysql-connector-java-5.1.44.jar"/>
-    <!--location="${maven.home}/repo/mysql/mysql-connector-java/${mysql.version}/mysql-connector-java-${mysql.version}.jar"/>-->
+            location="${maven.home}/repo/mysql/mysql-connector-java/${mysql.version}/mysql-connector-java-${mysql.version}.jar"/>
+    <!--location="/usr/local/soft/apache-maven-3.5.3/repo/mysql/mysql-connector-java/5.1.44/mysql-connector-java-5.1.44.jar"/>-->
     <context id="mysqlTables" targetRuntime="MyBatis3" defaultModelType="conditional">
         <property name="javaFileEncoding" value="UTF-8"/>
         <property name="autoDelimitKeywords" value="true"/>
@@ -15,8 +15,8 @@
         <!-- ownProperty -->
         <property name="createTime" value="create_time"/>
         <property name="modifiedTime" value="modified_time"/>
-        <property name="creator" value="creator"/>
-        <property name="modifier" value="modifier"/>
+        <property name="updateIgnore" value="creator"/>
+        <property name="insertIgnore" value="modifier"/>
         <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
         <commentGenerator>
             <property name="suppressDate" value="true"/>

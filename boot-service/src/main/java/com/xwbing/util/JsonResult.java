@@ -56,7 +56,6 @@ public class JsonResult {
         JsonResult jsonObjResult = new JsonResult();
         jsonObjResult.setSuccess(rest.isSuccess());
         jsonObjResult.setMessage(rest.getMessage());
-        jsonObjResult.setData(JsonUtil.beanToMap(rest.getData()));
         jsonObjResult.setId(rest.getId());
         return JSON.parseObject(JSON.toJSONString(jsonObjResult, SerializerFeature.WriteMapNullValue));
     }
