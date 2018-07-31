@@ -12,7 +12,7 @@
         <property name="autoDelimitKeywords" value="true"/>
         <property name="beginningDelimiter" value="`"/>
         <property name="endingDelimiter" value="`"/>
-        <!-- ownProperty -->
+        <!-- 自定义参数,可忽略 -->
         <property name="createTimeField" value="create_time"/>
         <property name="modifiedTimeField" value="modified_time"/>
         <property name="updateIgnoreField" value="creator"/>
