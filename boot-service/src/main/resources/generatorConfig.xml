@@ -13,10 +13,10 @@
         <property name="beginningDelimiter" value="`"/>
         <property name="endingDelimiter" value="`"/>
         <!-- ownProperty -->
-        <property name="createTime" value="create_time"/>
-        <property name="modifiedTime" value="modified_time"/>
-        <property name="updateIgnore" value="creator"/>
-        <property name="insertIgnore" value="modifier"/>
+        <property name="createTimeField" value="create_time"/>
+        <property name="modifiedTimeField" value="modified_time"/>
+        <property name="updateIgnoreField" value="creator"/>
+        <property name="insertIgnoreField" value="modifier"/>
         <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
         <commentGenerator>
             <property name="suppressDate" value="true"/>
