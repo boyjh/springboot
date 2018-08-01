@@ -5,7 +5,7 @@
 <generatorConfiguration>
     <properties resource="druid.properties"/>
     <classPathEntry
-            location="${maven.home}/repo/my、sql/mysql-connector-java/${mysql.version}/mysql-connector-java-${mysql.version}.jar"/>
+            location="${maven.home}/repo/mysql/mysql-connector-java/${mysql.version}/mysql-connector-java-${mysql.version}.jar"/>
     <!--location="/usr/local/soft/apache-maven-3.5.3/repo/mysql/mysql-connector-java/5.1.44/mysql-connector-java-5.1.44.jar"/>-->
     <context id="mysqlTables" targetRuntime="MyBatis3" defaultModelType="conditional">
         <property name="javaFileEncoding" value="UTF-8"/>
