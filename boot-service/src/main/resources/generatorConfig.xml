@@ -18,7 +18,7 @@
         <property name="modifiedTimeColumn" value="modified_time"/>
         <property name="updateIgnoreColumn" value="creator"/>
         <property name="insertIgnoreColumn" value="modifier"/>
-        <property name="lombok" value="false"/>
+        <property name="lombok" value="true"/>
         <plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>
         <commentGenerator>
             <property name="suppressDate" value="true"/>
