@@ -2,11 +2,11 @@ package com.xwbing.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.xwbing.domain.entity.BaseEntity;
 import com.xwbing.domain.mapper.BaseMapper;
 import com.xwbing.util.Pagination;
 import com.xwbing.util.PassWordUtil;
 import com.xwbing.util.RestMessage;
-import org.mybatis.generator.api.dom.java.BaseEntity;
 
 import java.util.Collections;
 import java.util.List;

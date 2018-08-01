@@ -1,8 +1,8 @@
 package com.xwbing.domain.entity.rest;
 
+import com.xwbing.domain.entity.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.mybatis.generator.api.dom.java.BaseEntity;
 
 /**
  * @author: xiangwb

@@ -1,12 +1,12 @@
 package com.xwbing.domain.entity.sys;
 
+import com.xwbing.domain.entity.BaseEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
-import org.mybatis.generator.api.dom.java.BaseEntity;
 
 import javax.validation.constraints.Pattern;
 import java.util.List;
