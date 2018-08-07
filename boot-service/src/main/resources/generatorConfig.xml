@@ -49,10 +49,11 @@
         <!-- mapper.java -->
         <javaClientGenerator type="XMLMAPPER" targetPackage="com.xwbing.domain.mapper" targetProject="src/main/java">
             <property name="enableSubPackages" value="true"/>
+            <property name="rootGenerics" value="true"/><!-- 自定义参数 -->
             <property name="rootInterface" value="com.xwbing.domain.mapper.BaseMapper"/>
         </javaClientGenerator>
         <!-- table -->
-        <table tableName="sys_role" domainObjectName="demo.Demo">
+        <table tableName="aa" domainObjectName="demo.Demo" mapperName="demo.AaDao">
             <generatedKey column="id" sqlStatement="select replace(UUID(), '-', '')" identity="false"/>
         </table>
     </context>
