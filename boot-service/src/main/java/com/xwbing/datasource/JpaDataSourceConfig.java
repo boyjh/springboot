@@ -34,7 +34,7 @@ public class JpaDataSourceConfig {
     private JpaProperties jpaProperties;
 
     @Bean(name = "jpaDataSource")
-    @ConfigurationProperties("db2")
+    @ConfigurationProperties("db")
     public DataSource dataSource() {
         return DruidDataSourceBuilder.create().build();
     }
