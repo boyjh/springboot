@@ -60,6 +60,15 @@ public class ConvertUtil {
         }
     }
 
+    /**
+     * object赋值
+     *
+     * @param fromObj
+     * @param toClass
+     * @param <F>
+     * @param <T>
+     * @return
+     */
     public static <F, T> T convert(F fromObj, Class<T> toClass) {
         if (null == fromObj) {
             return null;
@@ -74,6 +83,15 @@ public class ConvertUtil {
         }
     }
 
+    /**
+     * list赋值
+     *
+     * @param fromList
+     * @param toClass
+     * @param <F>
+     * @param <T>
+     * @return
+     */
     public static <F, T> List<T> convertList(List<F> fromList, Class<T> toClass) {
         if (fromList == null || fromList.isEmpty()) {
             return Collections.emptyList();
