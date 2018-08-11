@@ -16,7 +16,6 @@ import java.util.Date;
  * 说明: hibernate validate  JSR303校验框架
  * 各种类型数据校验示例
  * controller层新增或更新的实体前加@Valid注解
- * 项目名称: boot-module-pro
  * 创建时间: 2017/5/17 16:13
  * 作者: xiangwb
  */

@@ -4,8 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author xiangwb
- * @version $Id: BaseMapper.java, v 0.1 2018年06月04日 11:05 wb-xwb402636 Exp $
+ * @author: xiangwb
+ * @date: 2018/06/04 20:14
+ * @description: BaseMapper
  */
 public interface BaseMapper<M> {
     int insert(M model);
