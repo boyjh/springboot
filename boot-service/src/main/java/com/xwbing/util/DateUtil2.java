@@ -11,8 +11,9 @@ import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 
 /**
- * 作者: xiangwb
- * 说明: 基于java8的日期处理类
+ * 基于java8的日期处理类
+ *
+ * @author xiangwb
  */
 @Slf4j
 public class DateUtil2 {

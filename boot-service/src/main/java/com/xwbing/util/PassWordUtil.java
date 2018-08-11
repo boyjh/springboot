@@ -5,8 +5,9 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.UUID;
 
 /**
- * 说明:密码工具类
- * 作者: xiangwb
+ * 密码工具类
+ *
+ * @author xiangwb
  */
 public class PassWordUtil {
     /**

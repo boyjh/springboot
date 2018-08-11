@@ -10,8 +10,9 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 /**
- * 作者: xiangwb
- * 说明: ZipUtil
+ * ZipUtil
+ *
+ * @author xiangwb
  */
 @Slf4j
 public class ZipUtil {

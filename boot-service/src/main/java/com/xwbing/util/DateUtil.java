@@ -9,8 +9,9 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
- * 作者: xiangwb
- * 说明: 日期处理类
+ * 日期处理类
+ *
+ * @author xiangwb
  */
 public class DateUtil {
     private static DecimalFormat df = new DecimalFormat("######0.00");

@@ -7,8 +7,9 @@ import lombok.Data;
 import org.apache.commons.lang3.StringUtils;
 
 /**
- * 说明: 封装对象结果的json结果
- * 作者: xiangwb
+ * 封装对象结果的json结果
+ *
+ * @author xiangwb
  */
 @Data
 public class JsonResult {
@@ -42,7 +43,7 @@ public class JsonResult {
         if (StringUtils.isNotEmpty(message)) {
             jsonObjResult.setMessage(message);
         }
-        jsonObjResult.setData(JsonUtil.beanToMap(o));
+        jsonObjResult.setData(ConvertUtil.beanToJson(o));
         return JSON.parseObject(JSON.toJSONString(jsonObjResult, SerializerFeature.WriteMapNullValue));
     }
 

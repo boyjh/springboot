@@ -22,8 +22,9 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * 作者: xiangwb
- * 说明: excel导出工具类
+ * excel导出工具类
+ *
+ * @author xiangwb
  */
 @Slf4j
 public class ExcelUtil {

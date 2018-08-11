@@ -8,11 +8,11 @@ import java.io.FileOutputStream;
 import java.util.Random;
 
 /**
- * 说明:验证码工具类
- * 作者: xiangwb
+ * 验证码工具类
+ *
+ * @author xiangwb
  */
 public class CaptchaUtil {
-
     // 随机产生的字符串
     private static final String RANDOM_STRS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     private static final String FONT_NAME = "Fixedsys";
@@ -22,7 +22,6 @@ public class CaptchaUtil {
     private static final int HEIGHT = 25;// 图片高
     private static final int LINE_NUM = 50;// 干扰线数量
     private static final int STR_NUM = 4;// 随机产生字符数量
-
 
     /**
      * 生成随机图片

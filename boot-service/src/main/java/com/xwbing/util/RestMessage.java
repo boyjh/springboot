@@ -7,8 +7,9 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * 说明:返回消息封装类
- * 作者: xiangwb
+ * 返回消息封装类
+ *
+ * @author xiangwb
  */
 @Data
 @ApiModel

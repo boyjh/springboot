@@ -4,8 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 /**
- * 作者: xiangwb
- * 说明:
+ * @author xiangwb
  */
 public class JsonConvertUtil {
     public static JSONArray str2JsonArray(String string) {

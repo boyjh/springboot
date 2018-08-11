@@ -13,8 +13,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 /**
- * 说明: 创建验证码的servlet
- * 作者: xiangwb
+ * 创建验证码的servlet
+ *
+ * @author xiangwb
  */
 @Slf4j
 public class CaptchaServlet extends HttpServlet {

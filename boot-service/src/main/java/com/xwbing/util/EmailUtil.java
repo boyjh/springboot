@@ -15,8 +15,9 @@ import java.util.Date;
 import java.util.Properties;
 
 /**
- * 作者: xiangwb
- * 说明: 邮箱工具类
+ * 邮箱工具类
+ *
+ * @author xiangwb
  */
 @Slf4j
 public class EmailUtil {

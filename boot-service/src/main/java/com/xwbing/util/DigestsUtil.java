@@ -13,8 +13,9 @@ import java.util.Base64;
 import java.util.Random;
 
 /**
- * 说明:散列算法/摘要算法
- * 作者: xiangwb
+ * 散列算法/摘要算法
+ *
+ * @author xiangwb
  */
 @Slf4j
 public class DigestsUtil {

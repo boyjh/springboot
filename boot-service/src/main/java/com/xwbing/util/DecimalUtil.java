@@ -5,8 +5,9 @@ import com.xwbing.exception.UtilException;
 import java.math.BigDecimal;
 
 /**
- * 作者: xiangwb
- * 说明: 数字工具类
+ * 数字工具类
+ *
+ * @author xiangwb
  */
 public class DecimalUtil {
     private static final int DEF_DIV_SCALE = 5;

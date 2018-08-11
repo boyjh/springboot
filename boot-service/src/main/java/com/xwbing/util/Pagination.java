@@ -9,10 +9,9 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * 项目名称: boot-module-pro
- * 创建时间: 2018/5/7 9:56
- * 作者: xiangwb
- * 说明: 分页基础类
+ * 分页基础类
+ *
+ * @author xiangwb
  */
 @Data
 @ApiModel
@@ -40,7 +39,7 @@ public class Pagination<T> {
         this.pageSize = pageInfo.getPageSize();
         this.totalNum = pageInfo.getTotal();
         this.totalPage = pageInfo.getPages();
-        this.items = (List<T>) JsonUtil.beanToMap(pageInfo.getList());
+        this.items = (List<T>) ConvertUtil.beanToJson(pageInfo.getList());
         this.hasNext = pageInfo.isHasNextPage();
     }
 
@@ -50,13 +49,13 @@ public class Pagination<T> {
         this.pageSize = page.getPageSize();
         this.totalNum = page.getTotal();
         this.totalPage = page.getPages();
-        this.items = (List<T>) JsonUtil.beanToMap(page);
+        this.items = (List<T>) ConvertUtil.beanToJson(page);
     }
 
     public Pagination result(Pagination page, PageInfo pageInfo) {
         page.setTotalNum(pageInfo.getTotal());
         page.setTotalPage(pageInfo.getPages());
-        page.setItems((List) JsonUtil.beanToMap(pageInfo.getList()));
+        page.setItems((List) ConvertUtil.beanToJson(pageInfo.getList()));
         page.setHasNext(pageInfo.isHasNextPage());
         return page;
     }

@@ -7,9 +7,9 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
- * 说明: PropertiesUtil
- * 创建时间: 2017/5/12 16:50
- * 作者:  xiangwb
+ * PropertiesUtil
+ *
+ * @author xiangwb
  */
 
 public class PropertiesUtil {

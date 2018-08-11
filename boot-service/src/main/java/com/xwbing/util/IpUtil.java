@@ -8,8 +8,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 /**
- * 作者: xiangwb
- * 说明:
+ * @author xiangwb
  */
 @Slf4j
 public class IpUtil {

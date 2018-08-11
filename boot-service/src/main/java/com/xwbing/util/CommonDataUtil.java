@@ -8,8 +8,9 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 作者: xiangwb
- * 说明: 公共数据类
+ * 公共数据类
+ *
+ * @author xiangwb
  */
 public class CommonDataUtil {
     private static Map<String, JSONObject> token = new ConcurrentHashMap<>();

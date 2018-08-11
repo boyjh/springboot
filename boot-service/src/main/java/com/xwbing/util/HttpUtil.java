@@ -29,8 +29,9 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 作者: xiangwb
- * 说明: HttpClientUtil
+ * HttpClientUtil
+ *
+ * @author xiangwb
  */
 @Slf4j
 public class HttpUtil {

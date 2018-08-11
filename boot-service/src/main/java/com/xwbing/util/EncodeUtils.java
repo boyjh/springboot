@@ -11,8 +11,9 @@ import java.net.URLEncoder;
 import java.util.Base64;
 
 /**
- * 说明:编码解码工具类
- * 作者: xiangwb
+ * 编码解码工具类
+ *
+ * @author xiangwb
  */
 @Slf4j
 public class EncodeUtils {

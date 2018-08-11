@@ -11,9 +11,10 @@ import java.security.MessageDigest;
 import java.util.Map;
 
 /**
- * 作者: xiangwb
  * 说明: 快递鸟工具类
  * 文档: http://www.kdniao.com/documents
+ *
+ * @author xiangwb
  */
 @Slf4j
 public class KdniaoUtil {

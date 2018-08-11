@@ -24,8 +24,7 @@ import java.security.spec.RSAPrivateKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
 /**
- * 作者: xiangwb
- * 说明: RSAUtil
+ * @author xiangwb
  */
 @Slf4j
 public class RSAUtil {

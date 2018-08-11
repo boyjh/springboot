@@ -22,8 +22,9 @@ import java.util.Hashtable;
 import java.util.Map;
 
 /**
- * 作者: xiangwb
- * 说明: 二维码工具类
+ * 二维码工具类
+ *
+ * @author xiangwb
  */
 @Slf4j
 public class QRCodeUtil {

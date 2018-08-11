@@ -12,8 +12,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * 作者: xiangwb
- * 说明: PingUtil
+ * PingUtil
+ *
+ * @author xiangwb
  */
 @Slf4j
 public class PingUtil {
