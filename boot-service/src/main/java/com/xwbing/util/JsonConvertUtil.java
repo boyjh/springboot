@@ -7,7 +7,7 @@ import com.alibaba.fastjson.JSONObject;
  * 作者: xiangwb
  * 说明:
  */
-public class JsonConverUtil {
+public class JsonConvertUtil {
     public static JSONArray str2JsonArray(String string) {
         return JSONObject.parseArray(string);
     }
