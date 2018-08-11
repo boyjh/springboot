@@ -26,7 +26,7 @@ import javax.sql.DataSource;
 @PropertySource("classpath:druid.properties")
 public class MybatisDataSourceConfig {
     @Primary
-    @ConfigurationProperties("db")
+    @ConfigurationProperties("db1")
     @Bean(name = "mybatisDatasource")
     public DataSource dataSource() {
         return DruidDataSourceBuilder.create().build();

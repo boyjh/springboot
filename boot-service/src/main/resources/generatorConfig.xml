@@ -28,10 +28,10 @@
             <property name="addRemarkComments" value="true"/>
         </commentGenerator>
         <!-- jdbc -->
-        <jdbcConnection driverClass="${db.driver-class-name}"
-                        connectionURL="${db.url}"
-                        userId="${db.username}"
-                        password="${db.password}">
+        <jdbcConnection driverClass="${db1.driver-class-name}"
+                        connectionURL="${db1.url}"
+                        userId="${db1.username}"
+                        password="${db1.password}">
         </jdbcConnection>
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>

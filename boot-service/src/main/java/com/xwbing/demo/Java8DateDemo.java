@@ -16,7 +16,6 @@ import java.util.Date;
 
 /**
  * 说明:
- * 项目名称: zxwbing
  * 创建日期: 2017年3月29日 下午4:37:09
  * 作者: xiangwb
  */
@@ -37,8 +36,7 @@ public class Java8DateDemo {
         date.isLeapYear();// 是否为闰年
         LocalDate dateOfBirth = LocalDate.of(2010, 05, 11);
         MonthDay monthDay = MonthDay.now();
-        MonthDay birthday = MonthDay.of(dateOfBirth.getMonth(),
-                dateOfBirth.getDayOfMonth());// 月日
+        MonthDay birthday = MonthDay.of(dateOfBirth.getMonth(), dateOfBirth.getDayOfMonth());// 月日
         YearMonth yearMonth = YearMonth.of(2018, 8);// 年月
         Year yearr = Year.now();
         LocalDate nextYear = date.plusYears(1); // 1年后日期，可以一个月，一年，一小时，一分钟
@@ -70,12 +68,14 @@ public class Java8DateDemo {
         Instant in = clock.instant();
         LocalDate d = LocalDate.now(clock);
         Instant timestamp = Instant.now();// 类似于java.util.Date
+
+
         /*
          *新旧日期转换
          */
         Instant instant = new Date().toInstant();
-        LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
         Date dateee = Date.from(instant);
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
 
         /*
          * 时间相差
