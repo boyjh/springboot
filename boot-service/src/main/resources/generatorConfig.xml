@@ -7,7 +7,7 @@
     <classPathEntry
             location="${maven.home}/repo/mysql/mysql-connector-java/${mysql.version}/mysql-connector-java-${mysql.version}.jar"/>
     <!--location="/usr/local/soft/apache-maven-3.5.3/repo/mysql/mysql-connector-java/5.1.44/mysql-connector-java-5.1.44.jar"/>-->
-    <context id="mysqlTables" targetRuntime="MyBatis3" defaultModelType="conditional">
+    <context id="mysqlTables" targetRuntime="MyBatis3" defaultModelType="flat">
         <property name="javaFileEncoding" value="UTF-8"/>
         <property name="autoDelimitKeywords" value="true"/>
         <property name="beginningDelimiter" value="`"/>
