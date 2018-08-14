@@ -29,7 +29,7 @@ public class ConvertUtil {
             return obj;
         } else if (obj instanceof List) {
             ArrayList<JSONObject> result = new ArrayList<>();
-            ((List) obj).forEach(one -> result.add((JSONObject) beanToJson(one)));
+            ((List<?>) obj).forEach(one -> result.add((JSONObject) beanToJson(one)));
             return result;
         } else {
             Map<String, Object> params = new HashMap<>(20);
