@@ -1,6 +1,7 @@
 package com.xwbing.demo;
 
 import com.xwbing.domain.entity.BaseEntity;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
@@ -84,23 +85,24 @@ public class ReflectDemo {
     }
 }
 
+@Slf4j
 @Component("annotation")
 class Reflect extends BaseEntity implements Serializable {
     private String name;
     private int age;
 
     public Reflect() {
-        System.out.println("无参构造器,给反射用");
+        log.info("无参构造器,给反射用");
     }
 
     public Reflect(String name, int age) {
-        System.out.println("有参构造器");
+        log.info("有参构造器");
         this.name = name;
         this.age = age;
     }
 
     private void privateMethod() {
-        System.out.println("私有方法");
+        log.info("私有方法");
     }
 
     public String getName() {

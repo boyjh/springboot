@@ -48,7 +48,7 @@ public class ConvertUtil {
                 }
             } catch (Exception e) {
                 log.error(e.getMessage());
-                throw new UtilException("实体对象不序列化转换成object错误");
+                throw new UtilException("nonSerialize convert error");
             }
             return new JSONObject(params);
         }
@@ -106,7 +106,7 @@ public class ConvertUtil {
             BeanUtils.copyProperties(source, target);
         } catch (Exception e) {
             log.error(e.getMessage());
-            throw new UtilException("convert error!");
+            throw new UtilException("convert error");
         }
     }
 }
