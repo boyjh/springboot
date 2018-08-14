@@ -28,28 +28,24 @@ public class ConvertUtil {
         } else if (obj instanceof String || obj instanceof JSONObject || obj instanceof Map) {
             return obj;
         } else if (obj instanceof List) {
-            List list = (List) obj;
             ArrayList<JSONObject> result = new ArrayList<>();
-            for (Object o : list) {
-                JSONObject javaObject = (JSONObject) beanToJson(o);
-                result.add(javaObject);
-            }
+            ((List) obj).forEach(one -> result.add((JSONObject) beanToJson(one)));
             return result;
         } else {
             Map<String, Object> params = new HashMap<>(20);
-            try {
-                PropertyUtilsBean propertyUtilsBean = new PropertyUtilsBean();
-                PropertyDescriptor[] descriptors = propertyUtilsBean.getPropertyDescriptors(obj);
-                for (PropertyDescriptor descriptor : descriptors) {
-                    String name = descriptor.getName();
-                    if (!"class".equals(name)) {
-                        params.put(name, propertyUtilsBean.getNestedProperty(obj, name));
-                    }
-                }
-            } catch (Exception e) {
-                log.error(e.getMessage());
-                throw new UtilException("nonSerialize convert error");
-            }
+            PropertyUtilsBean propertyUtilsBean = new PropertyUtilsBean();
+            PropertyDescriptor[] descriptors = propertyUtilsBean.getPropertyDescriptors(obj);
+            Arrays.stream(descriptors)
+                    .map(PropertyDescriptor::getName)
+                    .filter(name -> !"class".equals(name))
+                    .forEach(name -> {
+                        try {
+                            params.put(name, propertyUtilsBean.getNestedProperty(obj, name));
+                        } catch (Exception e) {
+                            log.error(e.getMessage());
+                            throw new UtilException("nonSerialize convert error");
+                        }
+                    });
             return new JSONObject(params);
         }
     }
