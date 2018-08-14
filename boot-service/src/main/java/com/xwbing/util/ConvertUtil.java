@@ -25,16 +25,10 @@ public class ConvertUtil {
     public static Object beanToJson(Object obj) {
         if (obj == null) {
             return null;
-        }
-        if (obj instanceof String) {
-            return obj;
-        }
-        if (obj instanceof JSONObject) {
-            return obj;
-        } else if (obj instanceof Map) {
+        } else if (obj instanceof String || obj instanceof JSONObject || obj instanceof Map) {
             return obj;
         } else if (obj instanceof List) {
-            List<?> list = (List<?>) obj;
+            List list = (List) obj;
             ArrayList<JSONObject> result = new ArrayList<>();
             for (Object o : list) {
                 JSONObject javaObject = (JSONObject) beanToJson(o);
