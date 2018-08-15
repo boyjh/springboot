@@ -86,8 +86,10 @@ public class SwaggerConfig {
     private List<Parameter> addParams() {
         ParameterBuilder ticketPar = new ParameterBuilder();
         List<Parameter> pars = new ArrayList<>();
-        ticketPar.name("token").description("令牌")
-                .modelRef(new ModelRef("string")).parameterType("header")
+        ticketPar.name("token")
+                .description("令牌")
+                .modelRef(new ModelRef("string"))
+                .parameterType("header")
                 .required(false).build();
         pars.add(ticketPar.build());
         return pars;

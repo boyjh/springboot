@@ -9,7 +9,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 /**
- * 项目名称: boot-module-pro
  * 创建时间: 2018/2/26 10:26
  * 作者: xiangwb
  * 说明: 数据字典

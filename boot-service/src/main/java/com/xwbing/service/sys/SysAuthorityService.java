@@ -19,7 +19,6 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * 项目名称: boot-module-pro
  * 创建时间: 2017/11/14 13:20
  * 作者: xiangwb
  * 说明: 权限服务层

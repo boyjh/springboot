@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 /**
- * 项目名称: boot-module-pro
  * 创建时间: 2018/2/26 10:43
  * 作者: xiangwb
  * 说明:

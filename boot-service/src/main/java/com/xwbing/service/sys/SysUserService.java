@@ -30,7 +30,6 @@ import java.util.stream.Collectors;
 
 /**
  * 说明: 用户服务层
- * 项目名称: boot-module-pro
  * 创建时间: 2017/5/5 16:44
  * 作者:  xiangwb
  */

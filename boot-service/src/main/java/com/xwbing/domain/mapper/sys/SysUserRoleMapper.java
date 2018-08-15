@@ -6,7 +6,6 @@ import com.xwbing.domain.mapper.BaseMapper;
 import java.util.List;
 
 /**
- * 项目名称: boot-module-pro
  * 创建时间: 2018/6/1 21:50
  * 作者: xiangwb
  * 说明:

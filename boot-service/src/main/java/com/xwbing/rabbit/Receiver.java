@@ -14,7 +14,6 @@ import static com.xwbing.rabbit.RabbitConstant.EMAIL_QUEUE;
 import static com.xwbing.rabbit.RabbitConstant.MESSAGE_QUEUE;
 
 /**
- * 项目名称: boot-module-pro
  * 创建时间: 2018/4/25 15:12
  * 作者: xiangwb
  * 说明: 消费者

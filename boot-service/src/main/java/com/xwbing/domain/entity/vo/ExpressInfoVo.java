@@ -6,7 +6,6 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * 项目名称: boot-module-pro
  * 创建时间: 2017/11/17 9:20
  * 作者: xiangwb
  * 说明: 快递信息展示

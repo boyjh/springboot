@@ -16,7 +16,6 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 项目名称: boot-module-pro
  * 创建时间: 2017/11/17 13:36
  * 作者: xiangwb
  * 说明:

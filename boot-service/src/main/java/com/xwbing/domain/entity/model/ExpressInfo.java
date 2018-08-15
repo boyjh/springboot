@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
- * 项目名称: boot-module-pro
  * 创建时间: 2017/11/17 9:26
  * 作者: xiangwb
  * 说明: 快递信息

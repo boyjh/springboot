@@ -14,7 +14,6 @@ import java.util.Date;
 
 /**
  * 说明: 基础类
- * 项目名称: boot-module-pro
  * 创建时间: 2017/5/10 16:36
  * 作者:  xiangwb
  */

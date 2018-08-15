@@ -17,7 +17,6 @@ import java.util.*;
 import static com.xwbing.util.KdniaoUtil.urlEncoder;
 
 /**
- * 项目名称: boot-module-pro
  * 创建时间: 2017/11/17 9:14
  * 作者: xiangwb
  * 说明: 快递查询服务层

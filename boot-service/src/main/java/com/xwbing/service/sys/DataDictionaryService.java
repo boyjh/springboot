@@ -4,7 +4,6 @@ import com.xwbing.constant.CommonConstant;
 import com.xwbing.domain.entity.sys.DataDictionary;
 import com.xwbing.domain.repository.DataDictionaryRepository;
 import com.xwbing.exception.BusinessException;
-import com.xwbing.util.PassWordUtil;
 import com.xwbing.util.RestMessage;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -15,7 +14,6 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 项目名称: boot-module-pro
  * 创建时间: 2018/2/26 10:29
  * 作者: xiangwb
  * 说明: 数据字典服务层
