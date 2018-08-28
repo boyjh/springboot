@@ -1,6 +1,7 @@
 package com.xwbing.controller.sys;
 
 import com.alibaba.fastjson.JSONObject;
+import com.xwbing.annotation.Idempotent;
 import com.xwbing.annotation.LogInfo;
 import com.xwbing.constant.CommonConstant;
 import com.xwbing.domain.entity.sys.DataDictionary;
@@ -11,8 +12,6 @@ import com.xwbing.service.sys.DataDictionaryService;
 import com.xwbing.util.JsonResult;
 import com.xwbing.util.RestMessage;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +32,7 @@ public class DataDictionaryControl {
     @Resource
     private DataDictionaryService dataDictionaryService;
 
+    @Idempotent
     @LogInfo("添加字典")
     @ApiOperation(value = "添加字典", response = RestMessageVo.class)
     @PostMapping("save")

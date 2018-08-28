@@ -1,10 +1,8 @@
 package com.xwbing.configuration;
 
-import com.xwbing.handler.FormRepeatFilter;
 import com.xwbing.util.captcha.CaptchaServlet;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,15 +30,15 @@ public class ServletFilterConfig {
     }
 
     /*servlet*****************************************************filter*/
-    @Bean
-    public FilterRegistrationBean formSaveFilter() {
-        log.info("注册表单重复提交过滤器FormRepeatFilter ======================= ");
-        FilterRegistrationBean registration = new FilterRegistrationBean(new FormRepeatFilter());
-        registration.setEnabled(formSaveFilterEnable);
-        registration.addUrlPatterns("/*");
-        registration.addInitParameter("excludePath", "/doc,/captcha,/v2/api-docs,/swagger-resources,/configuration/ui,/configuration/security,/druid");
-        registration.addInitParameter("excludeType", ".js,.css,.gif,.jpg,.png,.ico,.jsp,.html,/druid/");
-        return registration;
-    }
+//    @Bean
+//    public FilterRegistrationBean formSaveFilter() {
+//        log.info("注册表单重复提交过滤器FormRepeatFilter ======================= ");
+//        FilterRegistrationBean registration = new FilterRegistrationBean(new FormRepeatFilter());
+//        registration.setEnabled(formSaveFilterEnable);
+//        registration.addUrlPatterns("/*");
+//        registration.addInitParameter("excludePath", "/doc,/captcha,/v2/api-docs,/swagger-resources,/configuration/ui,/configuration/security,/druid");
+//        registration.addInitParameter("excludeType", ".js,.css,.gif,.jpg,.png,.ico,.jsp,.html,/druid/");
+//        return registration;
+//    }
 }
 

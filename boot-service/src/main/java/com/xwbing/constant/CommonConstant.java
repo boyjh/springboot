@@ -23,6 +23,14 @@ public class CommonConstant {
      */
     public static final String IS_NOT_ENABLE = "N";
     /**
+     * 消息头
+     */
+    public static final String HEADER = "header";
+    /**
+     * 表单
+     */
+    public static final String FORM = "form";
+    /**
      * 失败
      */
     public static final String FAIL = "fail";

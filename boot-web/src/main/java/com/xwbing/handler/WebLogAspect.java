@@ -5,10 +5,7 @@ import com.xwbing.util.IpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -33,6 +30,7 @@ import java.util.stream.Collectors;
 public class WebLogAspect {
     private final ThreadLocal<Long> startTime = new ThreadLocal<>();
 
+    //类型限定表达式
     @Pointcut("within(com.xwbing.controller..*) && @annotation(logInfo)")
     public void pointCutWithMsg(LogInfo logInfo) {
     }
@@ -101,7 +99,7 @@ public class WebLogAspect {
      * @param logInfo
      * @return
      */
-    // @Around("pointCutWithMsg(logInfo)")
+//     @Around(value = "pointCutWithMsg(logInfo)", argNames = "pjp,logInfo")
     public Object around(ProceedingJoinPoint pjp, LogInfo logInfo) {
         String info = logInfo.value();// 获取注解信息
         Object result = null;// 被代理对象方法返回的结果

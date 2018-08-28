@@ -16,6 +16,7 @@ import java.io.OutputStream;
  * 作者: xiangwb
  * 说明: 防止表单重复提交,新增数据时用
  */
+@Deprecated
 public class FormRepeatFilter implements Filter {
     private String[] paths;
     private String[] types;
@@ -55,7 +56,7 @@ public class FormRepeatFilter implements Filter {
                 session.removeAttribute("sign");
                 chain.doFilter(request, response);
             } else {
-                getOutputStream(response, "请不要重复提交");
+                getOutputStream(response, "请勿重复提交");
             }
         } else {
             chain.doFilter(request, response);

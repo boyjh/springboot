@@ -1,6 +1,7 @@
 package com.xwbing.controller.sys;
 
 import com.alibaba.fastjson.JSONObject;
+import com.xwbing.annotation.Idempotent;
 import com.xwbing.annotation.LogInfo;
 import com.xwbing.constant.CommonEnum;
 import com.xwbing.domain.entity.sys.SysAuthority;
@@ -45,6 +46,7 @@ public class SysUserControl {
     @Resource
     private SysAuthorityService sysAuthorityService;
 
+    @Idempotent
     @LogInfo("添加用户")
     @ApiOperation(value = "添加用户", response = RestMessageVo.class)
     @ApiImplicitParam(name = "sign", value = "签名", paramType = "header", dataType = "string")

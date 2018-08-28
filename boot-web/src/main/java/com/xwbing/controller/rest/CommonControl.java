@@ -9,12 +9,13 @@ import com.xwbing.util.RestMessage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * 项目名称: boot-module-pro
@@ -29,11 +30,19 @@ public class CommonControl {
     @Resource
     private CommonService commonService;
 
+//    @LogInfo("获取签名")
+//    @ApiOperation(value = "获取签名", response = RestMessageVo.class)
+//    @GetMapping("getSign")
+//    public JSONObject getSign(HttpServletRequest request) {
+//        String sign = commonService.getSign(request);
+//        return JsonResult.toJSONObj(sign, "");
+//    }
+
     @LogInfo("获取签名")
     @ApiOperation(value = "获取签名", response = RestMessageVo.class)
     @GetMapping("getSign")
-    public JSONObject getSign(HttpServletRequest request) {
-        String sign = commonService.getSign(request);
+    public JSONObject getSign() {
+        String sign = commonService.getSign();
         return JsonResult.toJSONObj(sign, "");
     }
 

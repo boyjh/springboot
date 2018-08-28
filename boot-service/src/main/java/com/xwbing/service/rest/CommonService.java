@@ -8,6 +8,7 @@ import com.xwbing.domain.entity.rest.FilesUpload;
 import com.xwbing.domain.entity.sys.SysConfig;
 import com.xwbing.exception.BusinessException;
 import com.xwbing.service.sys.SysConfigService;
+import com.xwbing.util.CommonDataUtil;
 import com.xwbing.util.DigestsUtil;
 import com.xwbing.util.RestMessage;
 import org.apache.commons.lang3.StringUtils;
@@ -39,10 +40,16 @@ public class CommonService {
      * @param request
      * @return
      */
-    public String getSign(HttpServletRequest request) {
+    public synchronized String getSign(HttpServletRequest request) {
         HttpSession session = request.getSession();
         String sign = DigestsUtil.getSign();
         session.setAttribute("sign", sign);
+        return sign;
+    }
+
+    public synchronized String getSign() {
+        String sign = DigestsUtil.getSign();
+        CommonDataUtil.setData(sign, sign);
         return sign;
     }
 
