@@ -2,11 +2,9 @@ package com.xwbing.configuration;
 
 import com.xwbing.util.captcha.CaptchaServlet;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 
 /**
  * 说明: 统一servlet/filter配置
@@ -16,11 +14,7 @@ import org.springframework.context.annotation.PropertySource;
  */
 @Slf4j
 @Configuration
-@PropertySource("classpath:config.properties")
 public class ServletFilterConfig {
-    @Value("${formSaveFilterEnable}")
-    private boolean formSaveFilterEnable;
-
     @Bean
     public ServletRegistrationBean captchaServlet() {
         log.info("注册登陆验证码CaptchaServlet ======================= ");
