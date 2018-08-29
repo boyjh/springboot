@@ -30,14 +30,6 @@ public class CommonControl {
     @Resource
     private CommonService commonService;
 
-//    @LogInfo("获取签名")
-//    @ApiOperation(value = "获取签名", response = RestMessageVo.class)
-//    @GetMapping("getSign")
-//    public JSONObject getSign(HttpServletRequest request) {
-//        String sign = commonService.getSign(request);
-//        return JsonResult.toJSONObj(sign, "");
-//    }
-
     @LogInfo("获取签名")
     @ApiOperation(value = "获取签名", response = RestMessageVo.class)
     @GetMapping("getSign")

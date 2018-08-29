@@ -94,22 +94,18 @@ public class WebLogAspect {
 
     /**
      * 环绕通知=前置+后置
+     * 如果return null有拦截的效果
      *
      * @param pjp
      * @param logInfo
      * @return
      */
 //     @Around(value = "pointCutWithMsg(logInfo)", argNames = "pjp,logInfo")
-    public Object around(ProceedingJoinPoint pjp, LogInfo logInfo) {
+    public Object around(ProceedingJoinPoint pjp, LogInfo logInfo) throws Throwable {
         String info = logInfo.value();// 获取注解信息
-        Object result = null;// 被代理对象方法返回的结果
-        try {
-            log.info("{} start", info);
-            result = pjp.proceed();
-            log.info("{} end", info);
-        } catch (Throwable e) {
-            log.error(e.getMessage());
-        }
+        log.info("{} start", info);//前置通知
+        Object result = pjp.proceed();
+        log.info("{} end", info);//后置通知
         return result;
     }
 

@@ -275,7 +275,7 @@ public class SysUserService extends BaseService<SysUserMapper, SysUser> {
             throw new BusinessException("保存用户登录日志失败");
         }
         //保存登录数据
-        String token = EncodeUtils.urlEncode(RSAUtil.encrypt(userName + "_" + ip));//rsa加密后密文是多行的,所以再次url编码
+        String token = EncodeUtil.urlEncode(RSAUtil.encrypt(userName + "_" + ip));//rsa加密后密文是多行的,所以再次url编码
         CommonDataUtil.setData(token, userName, CommonDataUtil.DAY);
         restMessage.setSuccess(true);
         restMessage.setData(token);
@@ -408,10 +408,10 @@ public class SysUserService extends BaseService<SysUserMapper, SysUser> {
      */
     private boolean checkPassWord(String passWord, String realPassWord, String salt) {
         // 根据密码盐值 解码
-        byte[] saltByte = EncodeUtils.hexDecode(salt);
+        byte[] saltByte = EncodeUtil.hexDecode(salt);
         byte[] hashPassword = DigestsUtil.sha1(passWord.getBytes(), saltByte, PassWordUtil.HASH_INTERATIONS);
         // 密码 数据库中密码
-        String validatePassWord = EncodeUtils.hexEncode(hashPassword);
+        String validatePassWord = EncodeUtil.hexEncode(hashPassword);
         //判断密码是否相同
         return realPassWord.equals(validatePassWord);
     }

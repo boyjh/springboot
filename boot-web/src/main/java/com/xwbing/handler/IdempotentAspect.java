@@ -21,22 +21,19 @@ import java.io.PrintWriter;
  * @author xiangwb
  * @date 2018/8/27 23:10
  * @description 接口幂等切面
+ * 解决接口幂等性 支持网络延迟和表单重复提交
  */
 @Slf4j
 @Aspect
 @Component
 public class IdempotentAspect {
+
     //名称限定表达式
-    @Pointcut("execution(public * com.xwbing.controller.*.*(..)) && @annotation(idempotent)")
+    @Pointcut("execution(public * com.xwbing.controller..*.*(..)) && @annotation(idempotent)")
     public void pointCut(Idempotent idempotent) {
     }
 
-    @Pointcut("within(com.xwbing.controller..*) && @annotation(idempotent)")
-    public void pointCutWithMsg(Idempotent idempotent) {
-    }
-
-    //环绕通知如果return null有拦截的效果
-    @Around(value = "pointCutWithMsg(idempotent)", argNames = "pjp,idempotent")
+    @Around(value = "pointCut(idempotent)", argNames = "pjp,idempotent")
     public Object idempotent(ProceedingJoinPoint pjp, Idempotent idempotent) throws Throwable {
         String type = idempotent.type();
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
@@ -51,8 +48,8 @@ public class IdempotentAspect {
             response("sign不能为空");
             return null;
         }
-        String cache = (String) CommonDataUtil.getData(sign);
-        if (cache != null && cache.equals(sign)) {
+        Object cache = CommonDataUtil.getData(sign);
+        if (cache != null) {
             CommonDataUtil.clearData(sign);
         } else {
             response("请勿重复提交");
@@ -70,7 +67,7 @@ public class IdempotentAspect {
             writer = response.getWriter();
             writer.println(msg);
         } catch (IOException e) {
-            log.error("");
+            log.error("幂等切面io错误");
         } finally {
             if (writer != null) {
                 writer.close();

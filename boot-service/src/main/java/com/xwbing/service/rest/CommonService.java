@@ -40,14 +40,19 @@ public class CommonService {
      * @param request
      * @return
      */
-    public synchronized String getSign(HttpServletRequest request) {
+    public String getSign(HttpServletRequest request) {
         HttpSession session = request.getSession();
         String sign = DigestsUtil.getSign();
         session.setAttribute("sign", sign);
         return sign;
     }
 
-    public synchronized String getSign() {
+    /**
+     * 保存信息表单提交时获取校验签名
+     *
+     * @return
+     */
+    public String getSign() {
         String sign = DigestsUtil.getSign();
         CommonDataUtil.setData(sign, sign);
         return sign;

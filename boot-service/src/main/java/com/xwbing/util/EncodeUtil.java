@@ -16,7 +16,7 @@ import java.util.Base64;
  * @author xiangwb
  */
 @Slf4j
-public class EncodeUtils {
+public class EncodeUtil {
     private static final String DEFAULT_URL_ENCODING = "UTF-8";
 
     /**

@@ -6,7 +6,7 @@ import com.xwbing.domain.entity.rest.FilesUpload;
 import com.xwbing.service.rest.CookieSessionService;
 import com.xwbing.service.rest.QRCodeZipService;
 import com.xwbing.service.rest.UploadService;
-import com.xwbing.util.EncodeUtils;
+import com.xwbing.util.EncodeUtil;
 import com.xwbing.util.JsonResult;
 import com.xwbing.util.RestMessage;
 import io.swagger.annotations.Api;
@@ -60,7 +60,7 @@ public class TestControl {
             List<FilesUpload> files = uploadService.findByName(name, type);
             if (CollectionUtils.isNotEmpty(files)) {
                 String data = files.get(0).getData();
-                byte[] bytes = EncodeUtils.base64Decode(data);
+                byte[] bytes = EncodeUtil.base64Decode(data);
                 // 设置相应类型,告诉浏览器输出的内容为图片
                 response.setContentType("image/jpeg");
                 // 禁止图像缓存。

@@ -10,7 +10,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
-import java.util.Random;
+
+import static java.util.UUID.randomUUID;
 
 /**
  * 散列算法/摘要算法
@@ -110,11 +111,11 @@ public class DigestsUtil {
      * @return
      */
     public static String getSign() {
-        String sign = System.currentTimeMillis() + new Random().nextInt() + "";
+        String sign = String.valueOf(System.currentTimeMillis()) + randomUUID();
         try {
             MessageDigest md = MessageDigest.getInstance(MD5);
             byte[] md5 = md.digest(sign.getBytes());
-            return Base64.getEncoder().encodeToString(md5);
+            return Base64.getEncoder().encodeToString(md5).replace("=", "");
         } catch (NoSuchAlgorithmException e) {
             log.error(e.getMessage());
             throw new UtilException("获取签名失败");

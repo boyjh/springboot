@@ -27,9 +27,9 @@ public class CommonConstant {
      */
     public static final String HEADER = "header";
     /**
-     * 表单
+     * 参数
      */
-    public static final String FORM = "form";
+    public static final String PARAM = "param";
     /**
      * 失败
      */

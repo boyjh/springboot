@@ -44,13 +44,13 @@ public class PassWordUtil {
         if (StringUtils.isEmpty(pwdSalt)) {
             salt = DigestsUtil.generateSalt(SALT_SIZE);
         } else {
-            salt = EncodeUtils.hexDecode(pwdSalt);
+            salt = EncodeUtil.hexDecode(pwdSalt);
         }
         // 密码加密
         byte[] hashPassword = DigestsUtil.sha1(password.getBytes(), salt, HASH_INTERATIONS);
         str[0] = password;
-        str[1] = EncodeUtils.hexEncode(salt);
-        str[2] = EncodeUtils.hexEncode(hashPassword);
+        str[1] = EncodeUtil.hexEncode(salt);
+        str[2] = EncodeUtil.hexEncode(hashPassword);
         return str;
     }
 
