@@ -5,10 +5,7 @@ import com.xwbing.util.IpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -91,7 +88,7 @@ public class WebLogAspect {
      *
      * @param e
      */
-    // @AfterThrowing(pointcut = "pointCut()", throwing = "e")
+//    @AfterThrowing(pointcut = "pointCut()", throwing = "e")
     public void afterThroing(Exception e) {
         log.error("异常信息:{}", e.getMessage());
     }
@@ -104,7 +101,7 @@ public class WebLogAspect {
      * @param logInfo
      * @return
      */
-//     @Around(value = "pointCutWithMsg(logInfo)", argNames = "pjp,logInfo")
+//    @Around(value = "pointCutWithMsg(logInfo)", argNames = "pjp,logInfo")
     public Object around(ProceedingJoinPoint pjp, LogInfo logInfo) throws Throwable {
         String info = logInfo.value();// 获取注解信息
         log.info("{} start", info);//前置通知
