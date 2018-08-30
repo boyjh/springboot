@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.security.GeneralSecurityException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.Base64;
 
 import static java.util.UUID.randomUUID;
@@ -22,21 +21,6 @@ import static java.util.UUID.randomUUID;
 public class DigestsUtil {
     private static final String SHA1 = "SHA-1";
     private static final String MD5 = "MD5";
-    private static SecureRandom random = new SecureRandom();
-
-    /**
-     * 生成随机的Byte[]作为salt.
-     *
-     * @param numBytes byte数组的大小
-     */
-    public static byte[] generateSalt(int numBytes) {
-        if (numBytes <= 0) {
-            throw new UtilException("numBytes argument must be a positive integer (1 or larger)");
-        }
-        byte[] bytes = new byte[numBytes];
-        random.nextBytes(bytes);
-        return bytes;
-    }
 
     /**
      * 对输入字符串进行sha1散列.
@@ -115,10 +99,14 @@ public class DigestsUtil {
         try {
             MessageDigest md = MessageDigest.getInstance(MD5);
             byte[] md5 = md.digest(sign.getBytes());
-            return Base64.getEncoder().encodeToString(md5).replace("=", "");
+            return Base64.getUrlEncoder().encodeToString(md5).replaceAll("[-_=]", "");
         } catch (NoSuchAlgorithmException e) {
             log.error(e.getMessage());
             throw new UtilException("获取签名失败");
         }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(getSign());
     }
 }

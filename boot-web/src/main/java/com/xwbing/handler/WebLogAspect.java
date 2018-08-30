@@ -5,7 +5,10 @@ import com.xwbing.util.IpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -35,7 +38,8 @@ public class WebLogAspect {
     public void pointCutWithMsg(LogInfo logInfo) {
     }
 
-    @Pointcut("within(com.xwbing.controller..*)")
+    //名称限定表达式
+    @Pointcut("execution(public * com.xwbing.controller..*.*(..))")
     public void pointCut() {
     }
 

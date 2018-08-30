@@ -1,7 +1,9 @@
 package com.xwbing.util;
 
+import com.xwbing.exception.UtilException;
 import org.apache.commons.lang3.StringUtils;
 
+import java.security.SecureRandom;
 import java.util.UUID;
 
 /**
@@ -22,6 +24,7 @@ public class PassWordUtil {
      * hash
      */
     public static int HASH_INTERATIONS = 1024;
+    private static SecureRandom random = new SecureRandom();
 
     public static void main(String[] args) {
         getUserSecret("123456", "123456");
@@ -42,7 +45,7 @@ public class PassWordUtil {
         byte[] salt;
         // 密码盐值 如果是为空，那么随机获取；不为空，解析pwdSalt
         if (StringUtils.isEmpty(pwdSalt)) {
-            salt = DigestsUtil.generateSalt(SALT_SIZE);
+            salt = generateSalt(SALT_SIZE);
         } else {
             salt = EncodeUtil.hexDecode(pwdSalt);
         }
@@ -62,5 +65,19 @@ public class PassWordUtil {
     public static String createId() {
         UUID uuid = UUID.randomUUID();
         return uuid.toString().replace("-", "");
+    }
+
+    /**
+     * 生成随机的Byte[]作为salt.
+     *
+     * @param numBytes byte数组的大小
+     */
+    public static byte[] generateSalt(int numBytes) {
+        if (numBytes <= 0) {
+            throw new UtilException("numBytes argument must be a positive integer (1 or larger)");
+        }
+        byte[] bytes = new byte[numBytes];
+        random.nextBytes(bytes);
+        return bytes;
     }
 }

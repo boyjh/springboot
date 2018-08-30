@@ -27,8 +27,6 @@ import java.io.PrintWriter;
 @Aspect
 @Component
 public class IdempotentAspect {
-
-    //名称限定表达式
     @Pointcut("execution(public * com.xwbing.controller..*.*(..)) && @annotation(idempotent)")
     public void pointCut(Idempotent idempotent) {
     }

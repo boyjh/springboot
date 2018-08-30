@@ -54,7 +54,7 @@ public class CommonService {
      */
     public String getSign() {
         String sign = DigestsUtil.getSign();
-        CommonDataUtil.setData(sign, sign);
+        CommonDataUtil.setData(sign, sign, CommonDataUtil.MINUTE * 30);
         return sign;
     }
 
