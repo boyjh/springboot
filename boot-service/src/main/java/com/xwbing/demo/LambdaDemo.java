@@ -9,11 +9,12 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Date: 2017/6/15 17:09
  * Author: xiangwb
- * 说明: 数据量大或者每个元素涉及到复杂操作的用parallelStream reduce/collect会并行化处理结果
+ * 说明: 数据量大或者每个元素涉及到复杂操作的用parallelStream
  */
 public class LambdaDemo {
     @Resource
@@ -28,13 +29,25 @@ public class LambdaDemo {
         /**
          * stream api 高级版本的迭代器
          */
-        List<Integer> lists = Arrays.asList(1, 2, 4, 2, 3, 5, 5, 6, 8, 9, 7, 10);
-//        //遍历
-//        Arrays.stream(arrays).forEach(System.out::println);
+        Integer[] ints = {1, 2, 4, 2, 3, 5, 5, 6, 8, 9, 7, 10};
+        List<Integer> lists = Arrays.asList(ints);
+        //获取stream
+        Arrays.stream(ints);
+        lists.stream();
+        Stream.of(lists);
+        Stream.of(ints);
+
+        //遍历
         list.forEach(System.out::println);//遍历时：对象,json等引用类型可直接转换
+        //排序
         lists.sort(Comparator.comparingInt(o -> o));//升序排序，不需要收集
-        System.out.println("sort:" + lists.stream().sorted((o1, o2) -> o2 - o1).collect(Collectors.toList()));//排序
+        System.out.println("sort:" + lists.stream().sorted((o1, o2) -> o2 - o1).collect(Collectors.toList()));//降序
+
         System.out.println("map:" + lists.stream().map(o1 -> o1 * 2).collect(Collectors.toList()));//转换成新元素
+        List<String> words = Arrays.asList("hello welcome", "world hello", "hello world", "hello world welcome");
+        List<String[]> map = words.stream().map(item -> item.split(" ")).distinct().collect(Collectors.toList());
+        List<String> flatMap = words.stream().flatMap(item -> Arrays.stream(item.split(" "))).distinct().collect(Collectors.toList());
+
         System.out.println("peak:" + lists.stream().peek(String::valueOf).collect(Collectors.toList()));//生成一个包含原Stream元素的新Stream
         System.out.println("distinct:" + lists.stream().distinct().collect(Collectors.toList()));//去重(去重逻辑依赖元素的equals方法)
         System.out.println("limit:" + lists.stream().limit(4).collect(Collectors.toList()));//截取

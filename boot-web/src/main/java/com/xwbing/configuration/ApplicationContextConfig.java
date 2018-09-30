@@ -61,7 +61,7 @@ public class ApplicationContextConfig {
     @Bean(name = "taskExecutor")
     public ThreadPoolTaskExecutor getPoolTaskExecutor() {
         ThreadPoolTaskExecutor poolTaskExecutor = new ThreadPoolTaskExecutor();
-        poolTaskExecutor.setKeepAliveSeconds(30000);//空闲线程的存活时间
+        poolTaskExecutor.setKeepAliveSeconds(10);//空闲线程的存活时间
         poolTaskExecutor.setCorePoolSize(5);//核心线程数
         poolTaskExecutor.setQueueCapacity(200);//任务队列最大长度
         poolTaskExecutor.setMaxPoolSize(1000);//最大线程数

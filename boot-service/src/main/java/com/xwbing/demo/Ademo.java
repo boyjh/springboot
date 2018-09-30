@@ -1,12 +1,10 @@
 package com.xwbing.demo;
 
-import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Lists;
 import lombok.extern.java.Log;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * 项目名称: boot-module-pro
@@ -17,9 +15,20 @@ import java.util.stream.Collectors;
 @Log
 public class Ademo {
     public static void main(String[] args) {
-        List<JSONObject> list=new ArrayList<>();
-        Map<String, List<JSONObject>> aa = list.stream().collect(Collectors.groupingBy(obj -> obj.getString("aa")));
-        System.out.println("aa");
+        ArrayList<Integer> list = Lists.newArrayList();
+        for (int i = 0; i < 57; i++) {
+            list.add(i);
+        }
+        ArrayList<List<Integer>> result = Lists.newArrayList();
+        int size = list.size();
+        int rang=10;
+        for (int i = 0; i < size; i += rang) {
+            if (i + rang > size) {
+                rang = size - i;
+            }
+            result.add(list.subList(i, i + rang));
+        }
+        result.stream().flatMap(o -> o.stream()).map(o -> o+1).forEach(integer -> System.out.println(integer));
 
     }
 }

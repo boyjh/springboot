@@ -2,6 +2,7 @@ package com.xwbing.demo;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.google.common.collect.Lists;
 
 import java.util.*;
 
@@ -107,6 +108,7 @@ public class CollectionDemo {
          * ArrayList的subList结果不可强转成ArrayList 子集,含头不含尾,对子集的修改，就是原集合相应的内容
          */
         List<Integer> subList = list.subList(0, 1);
+        ArrayList<Integer> arrayList = new ArrayList<>(subList);
         list.subList(0, 1).clear();// 删除集合中0-1的元素
         Collections.sort(list);// 对集合进行从小到大排序
         Collections.reverse(list);// 反转
@@ -205,5 +207,24 @@ public class CollectionDemo {
         str = stack.peek();// 引用队首元素，但是不做出队操作
         System.out.println(str);
         System.out.println(stack);
+    }
+
+    /**
+     * list分组
+     *
+     * @param list
+     * @param rang
+     * @return
+     */
+    public static List group(List list, int rang) {
+        ArrayList<List> result = Lists.newArrayList();
+        int size = list.size();
+        for (int i = 0; i < size; i += rang) {
+            if (i + rang > size) {
+                rang = size - i;
+            }
+            result.add(list.subList(i, i + rang));
+        }
+        return result;
     }
 }
