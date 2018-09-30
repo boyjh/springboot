@@ -4,14 +4,19 @@ package com.xwbing.demo;
 import com.xwbing.util.DateUtil2;
 
 import java.util.Date;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 创建日期: 2017年2月20日 上午11:32:55
  * 作者: xwb
  * 说明：线程api demo
  */
-
 public class ThreadDemo {
+    private static final ThreadPoolExecutor EXECUTOR = new ThreadPoolExecutor(20, 35, 10,
+            TimeUnit.SECONDS, new ArrayBlockingQueue<>(1000), new ThreadPoolExecutor.DiscardPolicy());
+
     public static void main(String[] args) {
         /**
          * 直接继承thread并重写run方法，在其中定义当前线程要执行的任务 
@@ -27,7 +32,7 @@ public class ThreadDemo {
         /**
          * 定义一个类并实现runable接口来单独定义线程要执行的任务
          */
-        Runnable r1 = new MyRunnable();
+        Runnable r1 = new MyRunnable("xwbing", 18);
         Thread t2 = new Thread(r1);
         t2.start();
 
@@ -45,6 +50,11 @@ public class ThreadDemo {
             Thread.yield();//模拟cpu时间片耗尽，线程发生切换
         };
         Thread thread2 = new Thread(runnable);
+        //尝试连接10次
+        for (int attempt = 0; attempt < 10; attempt++) {
+            EXECUTOR.execute(runnable);
+            break;
+        }
         // 方式三：匿名对象方式
         Thread thread3 = new Thread(() -> {// 使用sleep阻塞，实现电子表功能
             while (true) {
@@ -117,13 +127,20 @@ class Join {
 }
 
 class MyThread extends Thread {
-    public void run() {// run方法是线程要执行的任务
-        // TUDO
+    public void run() {
     }
 }
 
 class MyRunnable implements Runnable {
+    private String name;
+    private int age;
+
+    MyRunnable(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
     public void run() {
-        // TUDO
+        System.out.println(name + ":" + age);
     }
 }
