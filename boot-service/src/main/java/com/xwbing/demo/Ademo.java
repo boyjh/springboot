@@ -15,20 +15,28 @@ import java.util.List;
 @Log
 public class Ademo {
     public static void main(String[] args) {
+
+
+
+
         ArrayList<Integer> list = Lists.newArrayList();
-        for (int i = 0; i < 57; i++) {
+        for (int i = 0; i < 50; i++) {
             list.add(i);
         }
-        ArrayList<List<Integer>> result = Lists.newArrayList();
-        int size = list.size();
-        int rang=10;
-        for (int i = 0; i < size; i += rang) {
-            if (i + rang > size) {
-                rang = size - i;
-            }
-            result.add(list.subList(i, i + rang));
-        }
-        result.stream().flatMap(o -> o.stream()).map(o -> o+1).forEach(integer -> System.out.println(integer));
+        List<Integer> integers = list.subList(0, 10);
+        integers.add(8);
+        System.out.println("");
+
+//        List<Integer> result =new ArrayList<>();
+//        list.parallelStream().forEach(integer -> {
+//            result.add(integer);
+//        });
+//        System.out.println(result.size());
+//        for (int i = 0; i < result.size(); i++) {
+//            System.out.println(result.get(i));
+//        }
+//        System.out.println("");
+//        Map<String,Object> ma = new HashMap<>();
 
     }
 }
