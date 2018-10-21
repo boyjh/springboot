@@ -28,7 +28,6 @@ public class Ademo {
 
 
 
-
         List<Integer> reslut = new ArrayList<>();
         list.parallelStream().forEach(reslut::add);
         System.out.println(reslut.size());
