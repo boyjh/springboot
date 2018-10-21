@@ -1,10 +1,13 @@
 package com.xwbing.demo;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Lists;
 import lombok.extern.java.Log;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 项目名称: boot-module-pro
@@ -14,29 +17,16 @@ import java.util.List;
  */
 @Log
 public class Ademo {
+    private Cache<String, List<String>> dyInfosCache = CacheBuilder.newBuilder().maximumSize(1000).expireAfterWrite(24, TimeUnit.HOURS).recordStats().build();
+
     public static void main(String[] args) {
-
-
-
-
         ArrayList<Integer> list = Lists.newArrayList();
         for (int i = 0; i < 50; i++) {
             list.add(i);
         }
-        List<Integer> integers = list.subList(0, 10);
-        integers.add(8);
+        List<Integer> reslut = new ArrayList<>();
+        list.parallelStream().forEach(reslut::add);
+        System.out.println(reslut.size());
         System.out.println("");
-
-//        List<Integer> result =new ArrayList<>();
-//        list.parallelStream().forEach(integer -> {
-//            result.add(integer);
-//        });
-//        System.out.println(result.size());
-//        for (int i = 0; i < result.size(); i++) {
-//            System.out.println(result.get(i));
-//        }
-//        System.out.println("");
-//        Map<String,Object> ma = new HashMap<>();
-
     }
 }
