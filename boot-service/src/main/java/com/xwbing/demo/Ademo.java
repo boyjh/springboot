@@ -24,11 +24,6 @@ public class Ademo {
         for (int i = 0; i < 50; i++) {
             list.add(i);
         }
-
-
-
-
-
         List<Integer> reslut = new ArrayList<>();
         list.parallelStream().forEach(reslut::add);
         System.out.println(reslut.size());
