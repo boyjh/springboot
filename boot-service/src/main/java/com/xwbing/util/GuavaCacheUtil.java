@@ -1,14 +1,12 @@
 package com.xwbing.util;
 
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
-import com.google.common.cache.RemovalListener;
+import com.google.common.cache.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
 
@@ -22,46 +20,25 @@ public class GuavaCacheUtil {
     /**
      * 缓存项最大数量
      */
-    private static final long GUAVA_CACHE_SIZE = 10000;
+    private static final long SIZE = 10000;
     /**
      * 缓存时间：小时
      */
-    private static final long GUAVA_CACHE_TIME = 24;
+    private static final long TIME = 24;
 
     /**
      * 缓存操作对象
      */
-    private static LoadingCache<String, Object> GLOBAL_CACHE;
+    private static Cache<String, Object> GLOBAL_CACHE;
 
     static {
-        GLOBAL_CACHE = loadCache(new CacheLoader<String, Object>() {
-            public Object load(String key) {
-                // 该方法主要是处理缓存键不存在缓存值时的处理逻辑
-                if (log.isDebugEnabled())
-                    log.debug("Guava Cache缓存值不存在，初始化空值，键名：{}", key);
-                return null;
-            }
-        });
-    }
-
-    /**
-     * 全局缓存设置
-     * <ul>
-     * <li>缓存项最大数量：100000</li>
-     * <li>缓存有效时间（分钟）：10</li>
-     * </ul>
-     *
-     * @param cacheLoader
-     * @return
-     * @throws Exception
-     */
-    private static LoadingCache<String, Object> loadCache(CacheLoader<String, Object> cacheLoader) {
-        return CacheBuilder.newBuilder().maximumSize(GUAVA_CACHE_SIZE).expireAfterAccess(GUAVA_CACHE_TIME, TimeUnit.HOURS)
+        GLOBAL_CACHE = CacheBuilder.newBuilder().maximumSize(SIZE).expireAfterAccess(TIME, TimeUnit.HOURS)
                 .removalListener((RemovalListener<String, Object>) rn -> {
                     if (log.isDebugEnabled())
                         log.debug("Guava Cache缓存回收成功，键：{}, 值：{}", rn.getKey(), rn.getValue());
-                }).recordStats().build(cacheLoader);
+                }).recordStats().build();
     }
+
 
     /**
      * 设置缓存值
@@ -90,15 +67,14 @@ public class GuavaCacheUtil {
 
     /**
      * 获取缓存值
-     * <p>注：如果键不存在值，将调用CacheLoader的load方法加载新值到该键中</p>
      *
      * @param key
      * @return
      */
-    public static Object get(String key) {
+    public static Object get(String key, Callable<Object> callable) {
         Object obj = null;
         try {
-            obj = GLOBAL_CACHE.get(key);
+            obj = GLOBAL_CACHE.get(key, callable);
             if (log.isDebugEnabled())
                 log.debug("缓存命中率：{}，新值平均加载时间：{}", getHitRate(), getAverageLoadPenalty());
         } catch (Exception e) {
@@ -109,7 +85,6 @@ public class GuavaCacheUtil {
 
     /**
      * 获取缓存值
-     * <p>注：如果键不存在值，将直接返回 NULL</p>
      *
      * @param key
      * @return
@@ -146,7 +121,7 @@ public class GuavaCacheUtil {
      *
      * @param keys
      */
-    public static void removeAll(Iterable<String> keys) {
+    public static void removeAll(List<String> keys) {
         try {
             GLOBAL_CACHE.invalidateAll(keys);
             if (log.isDebugEnabled())
@@ -192,7 +167,7 @@ public class GuavaCacheUtil {
      * @return
      */
     public static List<String> keys() {
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         try {
             ConcurrentMap<String, Object> map = GLOBAL_CACHE.asMap();
             for (Map.Entry<String, Object> item : map.entrySet())
@@ -230,5 +205,15 @@ public class GuavaCacheUtil {
      */
     public static long getEvictionCount() {
         return GLOBAL_CACHE.stats().evictionCount();
+    }
+
+    public static void main(String[] args) {
+        GuavaCacheUtil.put("aa", "aa");
+        Object aa = GuavaCacheUtil.getIfPresent("aa");
+        GuavaCacheUtil.remove("aa");
+        Object bb = GuavaCacheUtil.get("bb", () -> {
+            return "bb";
+        });
+
     }
 }

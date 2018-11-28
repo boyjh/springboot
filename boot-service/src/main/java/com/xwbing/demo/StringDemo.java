@@ -85,6 +85,7 @@ public class StringDemo {
          * 格式化字符串
          */
         System.out.println(String.format("xwbing %s", "项伟兵"));
+        System.out.println(String.format("xwbing %02d", 1));
         System.out.println(MessageFormat.format("xwbing {0}", "项伟兵"));
         //努力拉到需要的位数
         System.out.println(new DecimalFormat("#####.###").format(11.23));

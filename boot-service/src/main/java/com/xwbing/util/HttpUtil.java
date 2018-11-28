@@ -1,5 +1,6 @@
 package com.xwbing.util;
 
+import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.exception.UtilException;
 import lombok.extern.slf4j.Slf4j;
@@ -22,10 +23,7 @@ import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.io.UnsupportedEncodingException;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -94,17 +92,17 @@ public class HttpUtil {
      * @param param
      * @return
      */
-    public static JSONObject postByJson(String url, JSONObject param) {
+    public static JSONObject postByJson(String url, JSONObject param, JSONObject header) {
         if (StringUtils.isEmpty(url)) {
             throw new IllegalArgumentException(URL_ERROR);
         }
         if (param == null) {
             throw new IllegalArgumentException(PARAM_ERROR);
         }
-        log.info("postByJson request url:{}==================", url);
         HttpPost post = new HttpPost(url);// 创建HttpPost的实例
         post.setEntity(new StringEntity(param.toString(), "UTF-8"));// 设置参数到请求对象中
         post.addHeader("Content-Type", APPLICATION_JSON);// 发送json数据需要设置contentType
+        Optional.ofNullable(header).orElse(new JSONObject()).forEach((key, value) -> post.addHeader(key, String.valueOf(value)));
         return getResult(post);
     }
 
@@ -115,16 +113,14 @@ public class HttpUtil {
      * @param param
      * @return
      */
-    public static JSONObject postByForm(String url, Map<String, Object> param) {
+    public static JSONObject postByForm(String url, Map<String, Object> param, JSONObject header) {
         if (StringUtils.isEmpty(url)) {
             throw new IllegalArgumentException(URL_ERROR);
         }
         if (param == null || param.size() == 0) {
             throw new IllegalArgumentException(PARAM_ERROR);
         }
-        log.info("postByForm request url:{}================", url);
         HttpPost post = new HttpPost(url);
-        // 创建参数队列
         List<NameValuePair> params = new ArrayList<>();
         for (Map.Entry<String, Object> keys : param.entrySet()) {
             params.add(new BasicNameValuePair(keys.getKey(), Objects.toString(keys.getValue())));
@@ -132,6 +128,7 @@ public class HttpUtil {
         try {
             post.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
             post.setHeader("Content-Type", FORM_URLENCODED);
+            Optional.ofNullable(header).orElse(new JSONObject()).forEach((key, value) -> post.addHeader(key, String.valueOf(value)));
         } catch (UnsupportedEncodingException e) {
             log.error(e.getMessage());
             throw new UtilException("postByForm数据转换错误");
@@ -145,13 +142,14 @@ public class HttpUtil {
      * @param url
      * @return
      */
-    public static JSONObject get(String url) {
+    public static JSONObject get(String url, JSONObject header) {
         if (StringUtils.isEmpty(url)) {
             throw new IllegalArgumentException(URL_ERROR);
         }
-        log.info("get request url:{}======================", url);
-        HttpGet httpGet = new HttpGet(url);
-        return getResult(httpGet);
+        url = url.replaceAll(" ", "%20");
+        HttpGet get = new HttpGet(url);
+        Optional.ofNullable(header).orElse(new JSONObject()).forEach((key, value) -> get.addHeader(key, String.valueOf(value)));
+        return getResult(get);
     }
 
     /**
@@ -161,17 +159,17 @@ public class HttpUtil {
      * @param param
      * @return
      */
-    public static JSONObject put(String url, JSONObject param) {
+    public static JSONObject put(String url, JSONObject param, JSONObject header) {
         if (StringUtils.isBlank(url)) {
             throw new IllegalArgumentException(URL_ERROR);
         }
         if (param == null || param.size() == 0) {
             throw new IllegalArgumentException(PARAM_ERROR);
         }
-        log.info("put request url:{}====================", url);
         HttpPut put = new HttpPut(url);
         put.setEntity(new StringEntity(param.toString(), "UTF-8"));
-        put.addHeader("Content-type", APPLICATION_JSON);
+//        put.addHeader("Content-type", APPLICATION_JSON);
+        Optional.ofNullable(header).orElse(new JSONObject()).forEach((key, value) -> put.addHeader(key, String.valueOf(value)));
         return getResult(put);
     }
 
@@ -181,12 +179,12 @@ public class HttpUtil {
      * @param url
      * @return
      */
-    public static JSONObject delete(String url) {
+    public static JSONObject delete(String url, JSONObject header) {
         if (StringUtils.isBlank(url)) {
             throw new IllegalArgumentException(URL_ERROR);
         }
-        log.info("delete request url:{}=====================", url);
         HttpDelete delete = new HttpDelete(url);
+        Optional.ofNullable(header).orElse(new JSONObject()).forEach((key, value) -> delete.addHeader(key, String.valueOf(value)));
         return getResult(delete);
     }
 
@@ -204,21 +202,23 @@ public class HttpUtil {
             CloseableHttpResponse response = client.execute(request);
             long end = System.currentTimeMillis();
             long ms = end - start;
-            log.info("网络接口请求时间为{} ms=======================", ms);
+            log.info("{} url:{} 请求时间{}ms", request.getMethod(), request.getURI(), ms);
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {// 判断网络连接状态码是否正常(0-200都数正常)
                 HttpEntity entity = response.getEntity();// 获取结果实体
                 if (entity != null) {
                     String result = EntityUtils.toString(entity, "UTF-8");
                     jsonResult = JSONObject.parseObject(result);
                 }
+            } else {
+                log.error(response.getStatusLine().getReasonPhrase());
             }
             response.close();
             return jsonResult;
         } catch (IOException e) {
-            // result.setSuccess(false);
-            // result.setMsg(e.getMessage());
             log.error(e.getMessage());
             throw new UtilException("请求网络接口错误");
+        } catch (JSONException e) {
+            throw new UtilException("返回结果不是json");
         } finally {
             poolingHttpClientConnectionManager.closeExpiredConnections();
             poolingHttpClientConnectionManager.closeIdleConnections(120, TimeUnit.MILLISECONDS);
@@ -226,14 +226,10 @@ public class HttpUtil {
     }
 
     public static void main(String[] args) {
-        String url = "http://label.drore.com//gis/mapMain/find.json";
-        JSONObject j = new JSONObject();
-        JSONObject jr = new JSONObject();
-        j.put("pageNo", 1);
-        j.put("pageSize", 10);
-        jr.put("name", "千岛湖");
-        j.put("fields", jr);
-        String ret = postByJson(url, j).toString();
-        System.out.println(ret);
+        String url = "http://www.baidu.com";
+        JSONObject header = new JSONObject();
+        header.put("aa", "aa");
+        JSONObject jsonObject = get(url, header);
+        System.out.println();
     }
 }
