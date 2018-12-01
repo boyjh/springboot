@@ -15,11 +15,13 @@ import java.util.*;
  * Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = {}
  * Object[] elementData
  * *
- * oldCapacity + (oldCapacity >> 1) 1.5倍
+ * newCapacity=oldCapacity + (oldCapacity >> 1) // 1.5倍
  * Arrays.copyOf(elementData, newCapacity)
  * *
  * ensureCapacityInternal(size + 1);
+ * //1.ArrayIndexOutOfBoundsException 2.elementData[i]=null
  * elementData[size] = e;
+ * //3.size++覆盖 size小于理论值
  * r1=size;
  * r2=r1+1;
  * size=r2;
