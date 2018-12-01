@@ -24,13 +24,13 @@ public class LambdaDemo {
         //匿名内部类
         Thread t = new Thread(() -> System.out.println("hello,lambda"));
         t.start();
-        List<String> list = Arrays.asList("a", "b", "c");
+        List<String> list = Arrays.asList("b", "c", "a");
         list.sort(Comparator.naturalOrder());
         /**
          * stream api 高级版本的迭代器
          */
         Integer[] ints = {1, 2, 4, 2, 3, 5, 5, 6, 8, 9, 7, 10};
-        List<Integer> lists = Arrays.asList(ints);
+        List<Integer> lists = new ArrayList<>(Arrays.asList(ints));
         //获取stream
         Arrays.stream(ints);
         lists.stream();
@@ -46,7 +46,7 @@ public class LambdaDemo {
         System.out.println("map:" + lists.stream().map(o1 -> o1 * 2).collect(Collectors.toList()));//转换成新元素
         List<String> words = Arrays.asList("hello welcome", "world hello", "hello world", "hello world welcome");
         List<String[]> map = words.stream().map(item -> item.split(" ")).distinct().collect(Collectors.toList());
-        List<String> flatMap = words.stream().flatMap(item -> Arrays.stream(item.split(" "))).distinct().collect(Collectors.toList());
+        System.out.println("flatMap:" + words.stream().flatMap(item -> Arrays.stream(item.split(" "))).distinct().collect(Collectors.toList()));
 
         System.out.println("peak:" + lists.stream().peek(String::valueOf).collect(Collectors.toList()));//生成一个包含原Stream元素的新Stream
         System.out.println("distinct:" + lists.stream().distinct().collect(Collectors.toList()));//去重(去重逻辑依赖元素的equals方法)
@@ -64,9 +64,9 @@ public class LambdaDemo {
         //删除
         lists.removeIf(item -> item > 3);//根据条件删除，不用收集
         //聚合(最好给默认值,不然如果list为空时,聚合计算时会报错)
-        System.out.println("reduce:" + lists.stream().reduce((o1, o2) -> o1 + o2).get());//聚合
+        System.out.println("reduce:" + lists.stream().reduce((o1, o2) -> o1 + o2).orElse(0));//聚合
         System.out.println("reduce:" + lists.stream().reduce(0, (o1, o2) -> o1 + o2));//聚合(给定默认值)
-        System.out.println("ids:" + list.stream().reduce((sum, item) -> sum + "," + item).get());//list(a,b,c)-->a,b,c
+        System.out.println("ids:" + list.stream().reduce((sum, item) -> sum + "," + item).orElse(""));//list(a,b,c)-->a,b,c
         System.out.println("ids:" + list.stream().reduce("", (sum, item) -> sum + "," + item).substring(1));//list(a,b,c)-->,a,b,c-->a,b,c
         String s = list.stream().reduce("", (sum, item) -> sum + "'" + item + "',");//list(a,b,c)-->'a','b','c',-->'a','b','c'
         System.out.println("id in:" + s.substring(0, s.lastIndexOf(",")));
@@ -77,14 +77,16 @@ public class LambdaDemo {
         IntSummaryStatistics statistics = lists.stream().mapToInt(x -> x).summaryStatistics();
         System.out.println("List中最大的数字 : " + statistics.getMax());
         System.out.println("List中最小的数字 : " + statistics.getMin());
-        System.out.println("所有数字的总和   : " + statistics.getSum());
-        System.out.println("所有数字的平均值 : " + statistics.getAverage());
+        System.out.println("List所有数字的总和   : " + statistics.getSum());
+        System.out.println("List所有数字的平均值 : " + statistics.getAverage());
         System.out.println("List成员个数     : " + statistics.getCount());
         //all example
         System.out.println("all:" + lists.stream().filter(Objects::nonNull).distinct().mapToInt(num -> num * 2).skip(2).limit(4).sum());
-        //遍历list存入map里
+        //遍历list存入map里 key不能重复 value不能为null
         Map<String, SysUser> userMap = listAll().stream().collect(Collectors.toMap(SysUser::getId, Function.identity()));
         Map<String, String> nameMap = listAll().stream().collect(Collectors.toMap(SysUser::getId, SysUser::getName));
+        //mergeFunction value合并策略
+        Map<String, String> duplicateKey = listAll().stream().collect(Collectors.toMap(SysUser::getId, SysUser::getName, (name1, name2) -> name1 + "," + name2));
         Map<String, String> jsonMap = getList().stream().collect(Collectors.toMap(o1 -> o1.getString(""), o2 -> o2.getString("")));
         //分组
         Map<String, List<SysUser>> groupMap = listAll().stream().collect(Collectors.groupingBy(SysUser::getSex));//(分组条件为key，分组成员为value)

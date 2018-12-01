@@ -202,7 +202,7 @@ public class HttpUtil {
             CloseableHttpResponse response = client.execute(request);
             long end = System.currentTimeMillis();
             long ms = end - start;
-            log.info("{} url:{} 请求时间{}ms", request.getMethod(), request.getURI(), ms);
+            log.info("{} url:{} 请求时间{}ms", request.getMethod(), request.getURI().toString().replace("%20"," "), ms);
             if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {// 判断网络连接状态码是否正常(0-200都数正常)
                 HttpEntity entity = response.getEntity();// 获取结果实体
                 if (entity != null) {
