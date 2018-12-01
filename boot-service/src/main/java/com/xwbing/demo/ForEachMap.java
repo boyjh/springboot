@@ -26,7 +26,7 @@ import java.util.Set;
  */
 public class ForEachMap {
     public static void main(String[] args) {
-        Map<String, Integer> map = new HashMap<String, Integer>() {
+        Map<String, Integer> map = new HashMap<String, Integer>(7) {
             private static final long serialVersionUID = 2832423252566685445L;
 
             {

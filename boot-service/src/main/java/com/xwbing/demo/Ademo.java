@@ -21,8 +21,16 @@ public class Ademo {
     private Cache<String, List<String>> dyInfosCache = CacheBuilder.newBuilder().maximumSize(1000).expireAfterWrite(24, TimeUnit.HOURS).recordStats().build();
 
     public static void main(String[] args) {
-        List<Integer> list = new ArrayList<>();
-        IntStream.rangeClosed(1, 100).parallel().forEach(list::add);
+        List<Integer> list = new ArrayList<>(2);
+        list.add(1);
+        list.add(2);
+
+        System.out.println("");
+        IntStream.rangeClosed(1, 100).forEach(list::add);
         long count = list.stream().filter(Objects::isNull).count();
+        List<Integer> integers = list.subList(1, 10);
+        integers.add(200);
+        System.out.println("");
+
     }
 }

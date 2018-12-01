@@ -11,8 +11,8 @@ import java.util.*;
  * 作者: xiangwb
  * *
  * DEFAULT_CAPACITY = 10
- * Object[] EMPTY_ELEMENTDATA = {}
  * Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = {}
+ * Object[] EMPTY_ELEMENTDATA = {}
  * Object[] elementData
  * *
  * newCapacity=oldCapacity + (oldCapacity >> 1) // 1.5倍
@@ -71,12 +71,7 @@ public class CollectionDemo {
          * 那么就不能表示原来的数组了,会抛出UnsupportedOperationException异常
          */
         String[] array = {"one", "two", "three", "four"};
-        List<String> coll = Arrays.asList(array);
-        /*
-         * 所有的集合提供了一个带有collection类型参数的构造方法 该构造方法称为：复制构造器
-         * 作用是在创建当前集合的同时，集合中包含给定集合中的所有元素
-         */
-        List<String> list1 = new ArrayList<>(coll);
+        List<String> collection = new ArrayList<>(Arrays.asList(array));
 
         /**
          * 集合转数组
