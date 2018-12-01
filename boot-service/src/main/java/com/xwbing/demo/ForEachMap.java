@@ -14,8 +14,12 @@ import java.util.Set;
  * 遍历所有的key-value对
  * 遍历所有的value（相对不常用）
  * --------------------------------------------------------------------------------------------------------------------------------
+ * DEFAULT_INITIAL_CAPACITY = 1 << 4; // aka 16
+ * DEFAULT_LOAD_FACTOR = 0.75f
+ * TREEIFY_THRESHOLD = 8
+ * Node<K,V>[] table
  * 说明: HashMap初始容量capacity为16,加载因子loadFactor为0.75,临界值threshold=capacity*loadFactor,如果元素个数超过临界值,capacity<<1
- * bucket地址:hash&(table.length-1)
+ * bucket地址:hash&(table.length-1) // hash%size
  * 数据结构:数组-链表-红黑树
  *
  * @author xiangwb

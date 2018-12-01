@@ -9,10 +9,20 @@ import java.util.*;
 /**
  * 创建日期: 2017年2月16日 下午4:06:56
  * 作者: xiangwb
- * 说明: ArrayList初始容量为10,容量不足,会扩充为原有容量的1.5。然后通过底层的复制方法将原有数据复制过来
+ * *
+ * DEFAULT_CAPACITY = 10
+ * Object[] EMPTY_ELEMENTDATA = {}
+ * Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = {}
+ * Object[] elementData
+ * *
+ * oldCapacity + (oldCapacity >> 1) 1.5倍
+ * Arrays.copyOf(elementData, newCapacity)
+ * *
  * ensureCapacityInternal(size + 1);
  * elementData[size] = e;
- * size++;
+ * r1=size;
+ * r2=r1+1;
+ * size=r2;
  */
 
 public class CollectionDemo {
