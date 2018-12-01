@@ -39,7 +39,7 @@ public class LambdaDemo {
         Stream.of(ints);
 
         //遍历
-        IntStream.rangeClosed(1,2).parallel().forEach(System.out::println);//遍历时：对象,json等引用类型可直接转换
+        IntStream.rangeClosed(1, 2).parallel().forEach(System.out::println);//遍历时：对象,json等引用类型可直接转换
         //排序
         lists.sort(Comparator.comparingInt(o -> o));//升序排序，不需要收集
         System.out.println("sort:" + lists.stream().sorted((o1, o2) -> o2 - o1).collect(Collectors.toList()));//降序
@@ -85,10 +85,11 @@ public class LambdaDemo {
         System.out.println("all:" + lists.stream().filter(Objects::nonNull).distinct().mapToInt(num -> num * 2).skip(2).limit(4).sum());
         //toMap 遍历list存入map里 key不能重复 value不能为null
         Map<String, SysUser> userMap = listAll().stream().collect(Collectors.toMap(SysUser::getId, Function.identity()));
-        Map<String, String> nameMap = listAll().stream().collect(Collectors.toMap(SysUser::getId, SysUser::getName));
-        //key重复:mergeFunction value合并策略
-        Map<String, String> duplicateNameMap = listAll().stream().collect(Collectors.toMap(SysUser::getId, SysUser::getName, (name1, name2) -> name1 + "," + name2));
+        userMap = listAll().stream().collect(Collectors.toMap(SysUser::getId, sysUser -> sysUser));
+        Map<String, String> nameMap = listAll().stream().collect(Collectors.toMap(SysUser::getName, SysUser::getSex));
         Map<String, String> jsonMap = getList().stream().collect(Collectors.toMap(o1 -> o1.getString(""), o2 -> o2.getString("")));
+        //解决key重复 value为null
+        Map<String, String> fixMap = listAll().stream().filter(sysUser -> sysUser.getSex() != null).collect(Collectors.toMap(SysUser::getName, SysUser::getSex, (sex1, sex2) -> sex1 + "," + sex2));
         //分组
         Map<String, List<SysUser>> groupMap = listAll().stream().collect(Collectors.groupingBy(SysUser::getSex));//(分组条件为key，分组成员为value)
         //非空判断
