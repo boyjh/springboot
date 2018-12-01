@@ -9,6 +9,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
@@ -24,8 +25,8 @@ public class LambdaDemo {
         //匿名内部类
         Thread t = new Thread(() -> System.out.println("hello,lambda"));
         t.start();
-        List<String> list = Arrays.asList("b", "c", "a");
-        list.sort(Comparator.naturalOrder());
+        List<String> abc = Arrays.asList("b", "c", "a");
+        abc.sort(Comparator.naturalOrder());
         /**
          * stream api 高级版本的迭代器
          */
@@ -38,7 +39,7 @@ public class LambdaDemo {
         Stream.of(ints);
 
         //遍历
-        list.forEach(System.out::println);//遍历时：对象,json等引用类型可直接转换
+        IntStream.rangeClosed(1,2).parallel().forEach(System.out::println);//遍历时：对象,json等引用类型可直接转换
         //排序
         lists.sort(Comparator.comparingInt(o -> o));//升序排序，不需要收集
         System.out.println("sort:" + lists.stream().sorted((o1, o2) -> o2 - o1).collect(Collectors.toList()));//降序
@@ -64,34 +65,34 @@ public class LambdaDemo {
         //删除
         lists.removeIf(item -> item > 3);//根据条件删除，不用收集
         //聚合(最好给默认值,不然如果list为空时,聚合计算时会报错)
-        System.out.println("reduce:" + lists.stream().reduce((o1, o2) -> o1 + o2).orElse(0));//聚合
-        System.out.println("reduce:" + lists.stream().reduce(0, (o1, o2) -> o1 + o2));//聚合(给定默认值)
-        System.out.println("ids:" + list.stream().reduce((sum, item) -> sum + "," + item).orElse(""));//list(a,b,c)-->a,b,c
-        System.out.println("ids:" + list.stream().reduce("", (sum, item) -> sum + "," + item).substring(1));//list(a,b,c)-->,a,b,c-->a,b,c
-        String s = list.stream().reduce("", (sum, item) -> sum + "'" + item + "',");//list(a,b,c)-->'a','b','c',-->'a','b','c'
-        System.out.println("id in:" + s.substring(0, s.lastIndexOf(",")));
+        System.out.println("reduce sum:" + lists.stream().reduce((o1, o2) -> o1 + o2).orElse(0));//聚合
+        System.out.println("reduce sum:" + lists.stream().reduce(0, (o1, o2) -> o1 + o2));//聚合(给定默认值)
+        System.out.println("reduce ids:" + abc.stream().reduce((sum, item) -> sum + "," + item).orElse(""));//abc(a,b,c)-->a,b,c
+        System.out.println("reduce ids:" + abc.stream().reduce("", (sum, item) -> sum + "," + item).substring(1));//abc(a,b,c)-->,a,b,c-->a,b,c
+        String s = abc.stream().reduce("", (sum, item) -> sum + "'" + item + "',");//abc(a,b,c)-->'a','b','c',-->'a','b','c'
+        System.out.println("reduce id in:" + s.substring(0, s.lastIndexOf(",")));
         //join
-        System.out.println("join:" + list.stream().collect(Collectors.joining(",")));//list(a,b,c)-->a,b,c
-        System.out.println("join:" + String.join(",", list));
+        System.out.println("join:" + abc.stream().collect(Collectors.joining(",")));//abc(a,b,c)-->a,b,c
+        System.out.println("join:" + String.join(",", abc));
         //统计
         IntSummaryStatistics statistics = lists.stream().mapToInt(x -> x).summaryStatistics();
         System.out.println("List中最大的数字 : " + statistics.getMax());
         System.out.println("List中最小的数字 : " + statistics.getMin());
-        System.out.println("List所有数字的总和   : " + statistics.getSum());
-        System.out.println("List所有数字的平均值 : " + statistics.getAverage());
-        System.out.println("List成员个数     : " + statistics.getCount());
+        System.out.println("List所有数字的总和: " + statistics.getSum());
+        System.out.println("List所有数字的平均值: " + statistics.getAverage());
+        System.out.println("List成员个数: " + statistics.getCount());
         //all example
         System.out.println("all:" + lists.stream().filter(Objects::nonNull).distinct().mapToInt(num -> num * 2).skip(2).limit(4).sum());
-        //遍历list存入map里 key不能重复 value不能为null
+        //toMap 遍历list存入map里 key不能重复 value不能为null
         Map<String, SysUser> userMap = listAll().stream().collect(Collectors.toMap(SysUser::getId, Function.identity()));
         Map<String, String> nameMap = listAll().stream().collect(Collectors.toMap(SysUser::getId, SysUser::getName));
-        //mergeFunction value合并策略
-        Map<String, String> duplicateKey = listAll().stream().collect(Collectors.toMap(SysUser::getId, SysUser::getName, (name1, name2) -> name1 + "," + name2));
+        //key重复:mergeFunction value合并策略
+        Map<String, String> duplicateNameMap = listAll().stream().collect(Collectors.toMap(SysUser::getId, SysUser::getName, (name1, name2) -> name1 + "," + name2));
         Map<String, String> jsonMap = getList().stream().collect(Collectors.toMap(o1 -> o1.getString(""), o2 -> o2.getString("")));
         //分组
         Map<String, List<SysUser>> groupMap = listAll().stream().collect(Collectors.groupingBy(SysUser::getSex));//(分组条件为key，分组成员为value)
         //非空判断
-        Optional<String> optional = list.stream().reduce((sum, item) -> sum + "," + item);
+        Optional<String> optional = abc.stream().reduce((sum, item) -> sum + "," + item);
         String reduce;
         if (optional.isPresent()) {
             reduce = optional.get();
@@ -104,16 +105,16 @@ public class LambdaDemo {
      * 遍历集合，集合里数据还要进行复杂操作，导致速度很慢,用以下操作
      */
     public List<Integer> supplyAsync() {
-        List<Integer> list = new ArrayList<>();
+        List<Integer> abc = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
-            list.add(i);
+            abc.add(i);
         }
-        int size = list.size();
+        int size = abc.size();
         CompletableFuture[] futures = new CompletableFuture[size];
         List<Integer> finalList = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
             finalList.add(null);//在异步之前size+1，必须有这步，否则会下标越界
-            Integer integer = list.get(i);
+            Integer integer = abc.get(i);
             final int pos = i;
             futures[i] = CompletableFuture.supplyAsync(() -> finalList.set(pos, integer), taskExecutor);//按原来顺序存
         }
