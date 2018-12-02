@@ -209,7 +209,6 @@ class MethodThree {
             public void run() {
                 for (int i = 0; i < arr.length; i = i + 2) {
                     while (share.value == 2) {
-
                     }
                     ThreadCommunication.print(arr[i], arr[i + 1]);
                     share.value = 2;
