@@ -4,11 +4,8 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import lombok.extern.java.Log;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.IntStream;
 
 /**
  * 项目名称: boot-module-pro
@@ -21,16 +18,32 @@ public class Ademo {
     private Cache<String, List<String>> dyInfosCache = CacheBuilder.newBuilder().maximumSize(1000).expireAfterWrite(24, TimeUnit.HOURS).recordStats().build();
 
     public static void main(String[] args) {
-        List<Integer> list = new ArrayList<>(2);
-        list.add(1);
-        list.add(2);
+        try {
+            MyThrea thread = new MyThrea();
+            thread.start();
+            Thread.sleep(1);
+            thread.setRunning(false);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+class MyThrea extends Thread {
+    private boolean isRunning = true;
 
-        System.out.println("");
-        IntStream.rangeClosed(1, 100).forEach(list::add);
-        long count = list.stream().filter(Objects::isNull).count();
-        List<Integer> integers = list.subList(1, 10);
-        integers.add(200);
-        System.out.println("");
+    public boolean isRunning() {
+        return isRunning;
+    }
 
+    public void setRunning(boolean isRunning) {
+        this.isRunning = isRunning;
+    }
+
+    @Override
+    public void run() {
+        System.out.println("进入到run方法中了");
+        while (isRunning == true) {
+        }
+        System.out.println("线程执行完成了");
     }
 }
