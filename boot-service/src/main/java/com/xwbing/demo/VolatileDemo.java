@@ -9,7 +9,9 @@ import java.util.concurrent.CompletableFuture;
  * synchronize和锁也可以保证可见性
  * 保证读取主内存副本到工作内存和刷新到主内存的步骤是原子的
  * volatile修饰的变量值直接存在main memory里面，子线程对该变量的读写直接写入main memory，而不是像其它变量一样在local thread里面产生一份copy。(可以理解为直接操作主内存)
- * volatile能保证所修饰的变量对于多个线程可见性，即只要被修改，其它线程读到的一定是最新的值。
+ * volatile能保证所修饰的共享变量对于多个线程可见性，即只要被修改，其它线程读到的一定是最新的值。
+ * *
+ * （有序性：禁止指令重排序，保证被volatile修饰变量这一行之前的代码肯定是执行了的）
  */
 public class VolatileDemo {
     volatile
@@ -87,5 +89,4 @@ class RW {
     synchronized int increase() {
         return value++;
     }
-
 }
