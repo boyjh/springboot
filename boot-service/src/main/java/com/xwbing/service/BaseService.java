@@ -5,7 +5,6 @@ import com.github.pagehelper.PageInfo;
 import com.xwbing.domain.entity.BaseEntity;
 import com.xwbing.domain.mapper.BaseMapper;
 import com.xwbing.util.Pagination;
-import com.xwbing.util.PassWordUtil;
 import com.xwbing.util.RestMessage;
 
 import java.util.Collections;
@@ -33,12 +32,10 @@ public abstract class BaseService<M extends BaseMapper<T>, T extends BaseEntity>
      */
     public RestMessage save(T t) {
         RestMessage result = new RestMessage();
-        String id = PassWordUtil.createId();
-        t.setId(id);
         int row = getMapper().insert(t);
         if (row == 1) {
             result.setSuccess(true);
-            result.setId(id);
+            result.setId(t.getId());
             result.setMessage("保存成功");
         } else {
             result.setMessage("保存失败");

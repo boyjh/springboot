@@ -20,7 +20,7 @@ public class UploadService extends BaseService<FilesUploadMapper, FilesUpload> {
 
     @Override
     protected FilesUploadMapper getMapper() {
-        return null;
+        return uploadMapper;
     }
 
     public List<FilesUpload> findByName(String name, String type) {
