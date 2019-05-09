@@ -42,7 +42,7 @@
         <skipTests>true</skipTests>
         <fileUpLoad.version>1.3.1</fileUpLoad.version>
         <zxing.version>3.2.1</zxing.version>
-        <fastjson.version>1.2.20</fastjson.version>
+        <fastjson.version>1.2.31</fastjson.version>
         <rsa.version>1.45</rsa.version>
         <commons-io.version>2.2</commons-io.version>
         <alipay.version>1.0</alipay.version>
