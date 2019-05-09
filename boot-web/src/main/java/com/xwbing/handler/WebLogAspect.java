@@ -52,7 +52,7 @@ public class WebLogAspect {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
         //获取ip
-        String ip = IpUtil.getIpAddr(request);
+        String ip = IpUtil.getIp(request);
         //注解信息
         String info = logInfo.value();
         //获取相应类名

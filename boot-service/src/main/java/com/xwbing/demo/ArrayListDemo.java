@@ -33,7 +33,12 @@ public class ArrayListDemo<E> extends AbstractList<E> {
         demo2.add(1);
         demo2.add(1);
 
-        int[] arrays = IntStream.rangeClosed(1, 100).toArray();
+        /**
+         * 1.size少于理想值
+         * 2.有些下标元素为null
+         * 3.下标越界
+         */
+        int[] arrays = IntStream.rangeClosed(1, 2).toArray();
         ArrayListDemo<Integer> result = new ArrayListDemo<>();
         Arrays.stream(arrays).parallel().forEach(result::add);
         System.out.println(result.size());

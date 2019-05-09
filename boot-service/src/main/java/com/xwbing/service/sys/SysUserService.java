@@ -268,7 +268,7 @@ public class SysUserService extends BaseService<SysUserMapper, SysUser> {
         SysUserLoginInOut loginInOut = new SysUserLoginInOut();
         loginInOut.setUserId(user.getId());
         loginInOut.setInoutType(CommonEnum.LoginInOutEnum.IN.getValue());
-        String ip = IpUtil.getIpAddr(request);
+        String ip = IpUtil.getIp(request);
         loginInOut.setIp(ip);
         RestMessage save = loginInOutService.save(loginInOut);
         if (!save.isSuccess()) {
@@ -301,7 +301,7 @@ public class SysUserService extends BaseService<SysUserMapper, SysUser> {
             SysUserLoginInOut loginInOut = new SysUserLoginInOut();
             loginInOut.setUserId(user.getId());
             loginInOut.setInoutType(CommonEnum.LoginInOutEnum.OUT.getValue());
-            loginInOut.setIp(IpUtil.getIpAddr(request));
+            loginInOut.setIp(IpUtil.getIp(request));
             restMessage = loginInOutService.save(loginInOut);
             if (restMessage.isSuccess()) {
                 restMessage.setMessage("登出成功");
