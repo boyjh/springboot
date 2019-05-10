@@ -6,22 +6,26 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
+
 /**
- * Twitter_Snowflake
+ * traceId生成服务, 参考snowflake算法
  * SnowFlake的结构如下(每部分用-分开):
  * 0 - 0000000000 0000000000 0000000000 0000000000 0 - 00000 - 00000 - 000000000000
- * 1位标识，由于long基本类型在Java中是带符号的，最高位是符号位，正数是0，负数是1，所以id一般是正数，最高位是0
- * 41位时间截(毫秒级)，注意，41位时间截不是存储当前时间的时间截，而是存储时间截的差值（当前时间截 - 开始时间截)
- * 得到的值），这里的的开始时间截，一般是我们的id生成器开始使用的时间，由我们程序来指定的（如下下面程序IdWorker类的startTime属性）。41位的时间截，可以使用69年，年T = (1L << 41) / (1000L * 60 * 60 * 24 * 365) = 69
- * 10位的数据机器位，可以部署在1024个节点，包括5位datacenterId和5位workerId
- * 12位序列，毫秒内的计数，12位的计数顺序号支持每个节点每毫秒(同一机器，同一时间截)产生4096个ID序号
+ * 1位标识: 由于long基本类型在Java中是带符号的，最高位是符号位，正数是0，负数是1，所以id一般是正数，最高位是0
+ * 41位时间截(毫秒级): 注意，41位时间截不是存储当前时间的时间截，而是存储时间截的差值（当前时间截 - 开始时间截)得到的值，
+ * 这里的的开始时间截，一般是我们的id生成器开始使用的时间，由我们程序来指定的（如下下面程序IdWorker类的startTime属性）。41位的时间截，可以使用69年，年T = (1L << 41) / (1000L * 60 * 60 * 24 * 365) = 69
+ * 10位的数据机器位: 可以部署在1024个节点，包括5位datacenterId和5位workerId
+ * 12位序列: 毫秒内的计数，12位的计数顺序号支持每个节点每毫秒(同一机器，同一时间截)产生4096个ID序号
  * 加起来刚好64位，为一个Long型。
  * SnowFlake的优点是，整体上按照时间自增排序，并且整个分布式系统内不会产生ID碰撞(由数据中心ID和机器ID作区分)，并且效率较高，经测试，SnowFlake每秒能够产生26万ID左右。
  */
 @Component
 @Slf4j
 @Data
-public class SnowflakeIdWorker implements InitializingBean {
+public class TraceIdGenerateWorker implements InitializingBean {
     /**
      * 开始时间截 (2019-01-01)
      */
@@ -78,6 +82,10 @@ public class SnowflakeIdWorker implements InitializingBean {
      * 上次生成ID的时间截
      */
     private long lastTimestamp = -1L;
+    /**
+     * 分表前缀
+     */
+    private static String TABLE_PREFIX = "";
 
     @Override
     public void afterPropertiesSet() {
@@ -101,7 +109,7 @@ public class SnowflakeIdWorker implements InitializingBean {
      *
      * @return SnowflakeId
      */
-    private synchronized long nextId() {
+    public synchronized long nextId() {
         long timestamp = timeGen();
         //如果当前时间小于上一次ID生成的时间戳，说明系统时钟回退过这个时候应当抛出异常
         if (timestamp < lastTimestamp) {
@@ -131,6 +139,20 @@ public class SnowflakeIdWorker implements InitializingBean {
     }
 
     /**
+     * 根据traceId 计算表名
+     *
+     * @param traceId
+     * @return
+     */
+    public String getTableNameByTraceId(Long traceId) {
+        long time = (traceId >> timestampLeftShift) + twepoch;
+        LocalDate localDate = new Date(time).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        int month = localDate.getMonthValue();
+        String suffix = String.format("_%02d", month);
+        return TABLE_PREFIX + suffix;
+    }
+
+    /**
      * 阻塞到下一个毫秒，直到获得新的时间戳
      *
      * @param lastTimestamp 上次生成ID的时间截
@@ -157,7 +179,7 @@ public class SnowflakeIdWorker implements InitializingBean {
      * 测试
      */
     public static void main(String[] args) {
-        SnowflakeIdWorker idWorker = new SnowflakeIdWorker();
+        TraceIdGenerateWorker idWorker = new TraceIdGenerateWorker();
         idWorker.setWorkerId(1);
         idWorker.setDatacenterId(0);
         for (int i = 0; i < 10; i++) {
