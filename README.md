@@ -1,6 +1,6 @@
 # springboot多模块项目
 
-**邮箱xiangwbs@163.com**
+**邮箱:xiangwbs@163.com**
 
 ### 介绍
 
