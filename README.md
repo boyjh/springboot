@@ -29,7 +29,7 @@
 6. boot-service/com.xwbing.util.DateUtil2 -java8日期工具类
 7. boot-service/com.xwbing.util.DigestsUtil -MD5/SHA-1
 8. boot-service/com.xwbing.util.EmailUtil -邮箱
-9. boot-service/com.xwbing.util.EncodeUtil -编解工具类
+9. boot-service/com.xwbing.util.EncodeUtil -编码解码工具类
 10. boot-service/com.xwbing.util.ExcelUtil -excel工具类
 11. boot-service/com.xwbing.util.HttpUtil -httpcliet工具类
 12. boot-service/com.xwbing.util.KdniaoUtil -快递鸟快递查询
