@@ -28,7 +28,7 @@
 5. boot-service/com.xwbing.util.captcha -验证码
 6. boot-service/com.xwbing.util.DateUtil2 -java8日期工具类
 7. boot-service/com.xwbing.util.DigestsUtil -MD5/SHA-1
-8. boot-service/com.xwbing.util.EmailUtil -邮箱
+8. boot-service/com.xwbing.util.EmailUtil -邮箱工具类
 9. boot-service/com.xwbing.util.EncodeUtil -编码解码工具类
 10. boot-service/com.xwbing.util.ExcelUtil -excel工具类
 11. boot-service/com.xwbing.util.HttpUtil -httpcliet工具类
@@ -38,7 +38,7 @@
 15. boot-service/com.xwbing.util.RSAUtil -rsa非对称加密工具类
 16. boot-service/com.xwbing.util.TraceIdGenerateWorker -分布式全局id雪花算法
 17. boot-service/com.xwbing.util.ZipUtil.java -压缩工具类
-18. boot-web/com.xwbing.configuration -核心配置类
+18. boot-web/com.xwbing.configuration -核心配置包
 19. boot-web/com.xwbing.handler.FlowLimiterAspect -基于注解接口限流
 20. boot-web/com.xwbing.handler.GlobalExceptionHandler -全局异常处理
 21. boot-web/com.xwbing.handler.IdempotentAspect -基于注解接口幂等
