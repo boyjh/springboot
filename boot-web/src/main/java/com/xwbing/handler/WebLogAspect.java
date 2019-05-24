@@ -1,14 +1,14 @@
 package com.xwbing.handler;
 
 import com.xwbing.annotation.LogInfo;
-import com.xwbing.util.IpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -48,11 +48,6 @@ public class WebLogAspect {
     @Before(value = "pointCutWithMsg(logInfo)", argNames = "joinPoint,logInfo")
     public void before(JoinPoint joinPoint, LogInfo logInfo) {
         startTime.set(System.currentTimeMillis());
-        //接收到请求，记录请求内容
-        ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
-        HttpServletRequest request = attributes.getRequest();
-        //获取ip
-        String ip = IpUtil.getIp(request);
         //注解信息
         String info = logInfo.value();
         //获取相应类名

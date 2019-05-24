@@ -1,6 +1,7 @@
 package com.xwbing.controller.sys;
 
 import com.alibaba.fastjson.JSONObject;
+import com.xwbing.annotation.FlowLimiter;
 import com.xwbing.annotation.Idempotent;
 import com.xwbing.annotation.LogInfo;
 import com.xwbing.constant.CommonConstant;
@@ -128,6 +129,7 @@ public class SysAuthorityControl {
         return JsonResult.toJSONObj(queryByParentId, "");
     }
 
+    @FlowLimiter(permitsPerSecond = 1, timeOut = 500)
     @LogInfo("递归查询所有权限")
     @ApiOperation(value = "递归查询所有权限", response = ListSysAuthorityVo.class)
     @GetMapping("listTree")
