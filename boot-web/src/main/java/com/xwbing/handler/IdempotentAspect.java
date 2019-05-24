@@ -65,7 +65,7 @@ public class IdempotentAspect {
             writer = response.getWriter();
             writer.println(msg);
         } catch (IOException e) {
-            log.error("幂等切面io错误");
+            log.error("idempotent io error:{}", e.getMessage());
         } finally {
             if (writer != null) {
                 writer.close();

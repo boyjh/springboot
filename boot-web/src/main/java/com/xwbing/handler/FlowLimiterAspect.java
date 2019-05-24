@@ -69,7 +69,7 @@ public class FlowLimiterAspect {
         try (PrintWriter writer = response.getWriter()) {
             writer.println("服务繁忙！请稍后重试！");
         } catch (IOException e) {
-            log.error(requestURI + "限流");
+            log.error("flowLimiter io error:{}", e.getMessage());
         }
     }
 
