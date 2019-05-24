@@ -34,8 +34,8 @@
 11. boot-service/com.xwbing.util.HttpUtil -httpcliet工具类
 12. boot-service/com.xwbing.util.KdniaoUtil -快递鸟快递查询
 13. boot-service/com.xwbing.util.PassWordUtil -密码工具类
-14. boot-service/com.xwbing.util.QRCodeUtil -二维工具类
-15. boot-service/com.xwbing.util.RSAUtil -rsa非对称工具类
+14. boot-service/com.xwbing.util.QRCodeUtil -二维码工具类
+15. boot-service/com.xwbing.util.RSAUtil -rsa非对称加密工具类
 16. boot-service/com.xwbing.util.TraceIdGenerateWorker -分布式全局id雪花算法
 17. boot-service/com.xwbing.util.ZipUtil.java -压缩工具类
 18. boot-web/com.xwbing.configuration -核心配置类
