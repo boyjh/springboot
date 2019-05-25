@@ -240,7 +240,7 @@ public class SysUserService extends BaseService<SysUserMapper, SysUser> {
     }
 
     /**
-     * 登录
+     * 登录（如果想实现唯一登录，可以在SysUserLoginInOut表添加token字段，根据userid和时间倒序查询第一个token，从缓存中删除）
      *
      * @param userName
      * @param passWord
