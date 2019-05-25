@@ -18,6 +18,7 @@
 2. maven
 3. redis
 4. rabbitmq
+5. lombok插件
 
 ### 项目说明
 
@@ -38,16 +39,16 @@
 15. boot-service/com.xwbing.util.RSAUtil -rsa非对称加密工具类
 16. boot-service/com.xwbing.util.TraceIdGenerateWorker -分布式全局id雪花算法
 17. boot-service/com.xwbing.util.ZipUtil.java -压缩工具类
-18. boot-web/com.xwbing.configuration -核心配置包
-19. boot-web/com.xwbing.handler.FlowLimiterAspect -基于注解接口限流
-20. boot-web/com.xwbing.handler.GlobalExceptionHandler -全局异常处理
-21. boot-web/com.xwbing.handler.IdempotentAspect -基于注解接口幂等
-22. boot-web/com.xwbing.handler.LoginInterceptor -登录拦截器
-23. boot-web/com.xwbing.handler.UrlPermissionsInterceptor -权限拦截器
-24. boot-web/com.xwbing.handler.WebLogAspect -基于注解日志切面
-25. boot-web/data.boot_module_ddl.sql -数据库脚本
-26. boot-web/data.bootModule.pdm -表结构
-27. boot-web/data.mybatis-generator-core-1.3.7.jar -改过源码的mybatis自动生成工具
+18. boot-service/generatorConfig.xml -mybatis自动生成插件配置
+19. boot-web/com.xwbing.configuration -核心配置包
+20. boot-web/com.xwbing.handler.FlowLimiterAspect -基于注解接口限流
+21. boot-web/com.xwbing.handler.GlobalExceptionHandler -全局异常处理
+22. boot-web/com.xwbing.handler.IdempotentAspect -基于注解接口幂等
+23. boot-web/com.xwbing.handler.LoginInterceptor -登录拦截器
+24. boot-web/com.xwbing.handler.UrlPermissionsInterceptor -权限拦截器
+25. boot-web/com.xwbing.handler.WebLogAspect -基于注解日志切面
+26. boot-web/data.boot_module_ddl.sql -数据库脚本
+27. boot-web/data.bootModule.pdm -表结构
 28. boot-web/log4j2.xml -log4j2配置
 
 ### 接口说明
