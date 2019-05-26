@@ -1,5 +1,6 @@
 package com.xwbing.redis;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,6 +43,9 @@ public class RedisConfig {
     @Bean
     public JedisPool jedisPool() {
         JedisPoolConfig config = jedisPoolConfig();
-        return new JedisPool(config, host, port, timeOut,password);
+        if (StringUtils.isEmpty(password)) {
+            password = null;
+        }
+        return new JedisPool(config, host, port, timeOut, password);
     }
 }
