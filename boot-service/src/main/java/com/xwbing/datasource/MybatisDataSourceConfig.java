@@ -39,7 +39,7 @@ public class MybatisDataSourceConfig {
         sqlSessionFactoryBean.setTypeAliasesPackage("com.xwbing.domain.entity");
         PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath:mapper/**/*.xml"));
-        //DefaultVFS扫包在获取jar上存在问题，使用SpringBootVFS(java -jar运行会Could not resolve type alias)
+        //DefaultVFS扫包在多模块时获取jar上存在问题，使用SpringBootVFS(java -jar运行会Could not resolve type alias)
         sqlSessionFactoryBean.setVfs(SpringBootVFS.class);
         return sqlSessionFactoryBean.getObject();
     }
