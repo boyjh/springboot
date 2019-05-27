@@ -62,10 +62,10 @@ spring:
        channel:
          size: 1
 #mybatis
-mybatis:
-  mapper-locations: #classpath:mapper/**/*.xml
-  type-aliases-package: #com.xwbing.domain.entity
-  config-location: # classpath:mybatisConfig.xml
+#mybatis:
+#  mapper-locations: #classpath:mapper/**/*.xml
+#  type-aliases-package: #com.xwbing.domain.entity
+#  config-location: # classpath:mybatisConfig.xml
 pagehelper:
   helper-dialect: mysql
 #log

@@ -16,7 +16,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -27,7 +26,7 @@ import java.util.Optional;
  * 作者:  xiangwb
  */
 @Slf4j
-@Service
+//@Service
 @PropertySource("classpath:pay.properties")
 public class AliPayService {
     /**
