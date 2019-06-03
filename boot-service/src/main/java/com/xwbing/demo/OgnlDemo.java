@@ -37,6 +37,7 @@ public class OgnlDemo {
         boolean b6 = (boolean) Ognl.getValue("detail.detail == 'in root'", context, root);
         boolean b7 = (boolean) Ognl.getValue("#detail == 'out root'", context, root);
         boolean b8 = (boolean) Ognl.getValue("name == 'test',age == 18", context, root);
+        boolean b9 = (boolean) Ognl.getValue("name == 'test',age in {17,18}", context, root);
         detail = (JSONObject) Ognl.getValue("detail", context, root);
 
         //模糊过滤
@@ -57,7 +58,8 @@ public class OgnlDemo {
         List<String> expressions = new ArrayList<>();
         expressions.add("name == 'test'");
         expressions.add("age in {17,18}");
-        expressions.add("color like {'red','blue'}");
+        expressions.add("color like {'blue','red'}");
+        expressions.add("detail.detail like 'in'");
         boolean match = match(expressions, root);
         System.out.println(match);
     }
@@ -67,7 +69,7 @@ public class OgnlDemo {
             try {
                 if (expression.contains("like")) {
                     String field = expression.substring(0, expression.indexOf(" "));
-                    String value = expression.substring(expression.indexOf("{"));
+                    String value = expression.substring(expression.lastIndexOf(" ") + 1);
                     return (boolean) Ognl.getValue("@com.xwbing.demo.OgnlDemo@like(" + field + "," + value + ")", context, root);
                 } else {
                     return (boolean) Ognl.getValue(expression, context, root);
@@ -80,9 +82,12 @@ public class OgnlDemo {
     }
 
     public static boolean like(String original, String value) {
-        value = value.substring(value.indexOf("[") + 1, value.indexOf("]"));
-        String[] split = value.split(",");
-        return Arrays.stream(value.split(",")).anyMatch(original::contains);
+        if (value.contains("[")) {
+            value = value.substring(value.indexOf("[") + 1, value.indexOf("]"));
+            return Arrays.stream(value.split(", ")).anyMatch(original::contains);
+        } else {
+            return original.contains(value);
+        }
     }
 }
 
