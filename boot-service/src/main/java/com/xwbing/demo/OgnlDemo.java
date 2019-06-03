@@ -64,6 +64,25 @@ public class OgnlDemo {
         System.out.println(match);
     }
 
+    /**
+     * 语法:element.element.element....+比较符。元素和比较符之间要有空格
+     * element == 'xxx'
+     * element != 'xxx'
+     * element in {'xxx','xxx'}
+     * element not in {'xxx','xxx'}
+     * element > 18
+     * element >= 18
+     * element < 18
+     * element <= 18
+     * element == 'xxx',element > 18 //以上表达式可以任意组合
+     * //like不是ognl原生的，不能组合
+     * element like 'xxx'
+     * element like {'xxx','xxx'}
+     *
+     * @param expressions
+     * @param root
+     * @return
+     */
     private static boolean match(List<String> expressions, Object root) {
         return expressions.stream().allMatch(expression -> {
             try {
