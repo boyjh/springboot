@@ -10,6 +10,7 @@ CREATE TABLE xwbing(
 )
 DESC xwbing;
 DROP TABLE xwbing;
+truncate table xwbing；
 RENAME employ_xwbing TO xwbing;
 向表中添加新的字段,只能在当前表的末尾追加,可以同时追加多个列,只需要使用逗号隔开即可,与创建声明列的时候语法一样
 ALTER TABLE XWBING ADD(

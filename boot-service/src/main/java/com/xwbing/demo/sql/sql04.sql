@@ -30,16 +30,17 @@ SELECT * FROM EMP_XWBING;
 多行多列:常用在WHERE中作为表看待
 
 查看比clerk和salesman部门工资都高的员工?
-SELECT ename,sal FROM emp_xwbing WHERE sal>ALL(SELECT deptno FROM emp_xwbing WHERE job='SALESMAN' OR job='CLERK');
+SELECT ename,sal FROM emp_xwbing WHERE sal>ALL(SELECT sal FROM emp_xwbing WHERE job='SALESMAN' OR job='CLERK');
 查看和clerk相同部门的其他职位员工?
 SELECT ename FROM emp_xwbing WHERE deptno in (SELECT deptno FROM emp_xwbing WHERE JOB='CLERK');
 
 EXISTS 关键字
+指定一个子查询,检测行的存在.遍历循环外表,然后看外表中的记录有没有和内表的数据一样的.匹配上就将结果放入结果集中.
 用在WHERE中,其后要根一个子查询,作用是若子查询至少可以查询出一条记录,那么exisets表达式返回真,NOT EXISTS 则起到相反的作用,查不到数据则返回真
 产看有员工的部门?
-SELECT d.deptno,d.dname,d.loc FROM dept_xwbing d WHERE EXISTS(SELECT *FROM EMP_XWBING  e WHERE e.deptno=d.deptno);
+SELECT d.deptno,d.dname,d.loc FROM dept_xwbing d WHERE EXISTS(SELECT * FROM EMP_XWBING  e WHERE e.deptno=d.deptno);
 没有下属的员工?
-SELECT n.ENAME FROM EMP_XWBING n WHERE NOT EXISTS(SELECT *FROM EMP_XWBING m WHERE N.EMPNO=M.MGR);
+SELECT n.ENAME FROM EMP_XWBING n WHERE NOT EXISTS(SELECT * FROM EMP_XWBING m WHERE N.EMPNO=M.MGR);
 
 查询列出最低薪水高于部门30的最低薪水的部门的最低薪水?
 SELECT min(sal),deptno FROM emp_xwbing GROUP BY deptno having min(sal)>(SELECT min(sal) FROM emp_xwbing WHERE deptno=30);
