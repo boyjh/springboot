@@ -20,12 +20,15 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 项目名称: boot-module-pro
@@ -37,6 +40,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/authority/")
 public class SysAuthorityControl {
+    private final Lock lock = new ReentrantLock();
     @Resource
     private SysAuthorityService sysAuthorityService;
 
@@ -133,13 +137,31 @@ public class SysAuthorityControl {
     @LogInfo("递归查询所有权限")
     @ApiOperation(value = "递归查询所有权限", response = ListSysAuthorityVo.class)
     @GetMapping("listTree")
-    public JSONObject listTree(@RequestParam(required = false) String enable) {
+    public JSONObject listTree(@RequestParam(required = false) String enable) throws InterruptedException {//解决缓存击穿
         //先去缓存里拿
         List<SysAuthVo> authVos = (List<SysAuthVo>) CommonDataUtil.getData(CommonConstant.AUTHORITY_THREE);
         if (authVos == null) {
-            authVos = sysAuthorityService.listChildren(CommonConstant.ROOT, enable);
-            // 设置缓存
-            CommonDataUtil.setData(CommonConstant.AUTHORITY_THREE, authVos);
+            //去获取锁,获取成功,去数据库取数据
+            if (lock.tryLock()) {
+                try {
+                    authVos = sysAuthorityService.listChildren(CommonConstant.ROOT, enable);
+                    if (CollectionUtils.isNotEmpty(authVos)) {
+                        // 设置缓存
+                        CommonDataUtil.setData(CommonConstant.AUTHORITY_THREE, authVos);
+                    }
+                } finally {
+                    lock.unlock();
+                }
+                //获取锁失败
+            } else {
+                //先查一下缓存
+                authVos = (List<SysAuthVo>) CommonDataUtil.getData(CommonConstant.AUTHORITY_THREE);
+                //没拿到锁,缓存也没数据,先小憩一下
+                if (CollectionUtils.isNotEmpty(authVos)) {
+                    Thread.sleep(100);
+                    return listTree(enable);
+                }
+            }
         }
         return JsonResult.toJSONObj(authVos, "");
     }
