@@ -137,7 +137,7 @@ public class SysAuthorityControl {
     @LogInfo("递归查询所有权限")
     @ApiOperation(value = "递归查询所有权限", response = ListSysAuthorityVo.class)
     @GetMapping("listTree")
-    public JSONObject listTree(@RequestParam(required = false) String enable) throws InterruptedException {//解决缓存击穿问题
+    public JSONObject listTree(@RequestParam(required = false) String enable) throws InterruptedException {//互斥锁解决缓存击穿问题
         //先去缓存里拿
         List<SysAuthVo> authVos = (List<SysAuthVo>) CommonDataUtil.getData(CommonConstant.AUTHORITY_THREE);
         if (authVos == null) {
