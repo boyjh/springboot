@@ -35,7 +35,7 @@ public class CookieSessionService {
 
     public RestMessage cookie(HttpServletResponse response, HttpServletRequest request) {
         RestMessage restMessage = new RestMessage();
-        Cookie cookie = new Cookie("cookie", "cookieValue");
+        Cookie cookie = new Cookie("sb", "xwjun");
         cookie.setMaxAge(60 * 60);//单位为秒
         //设置路径,这个路径即该工程下都可以访问该cookie 如果不设置路径,那么只有设置该cookie路径及其子路径可以访问
         cookie.setPath("/");
