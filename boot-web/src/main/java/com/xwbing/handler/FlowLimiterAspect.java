@@ -68,6 +68,7 @@ public class FlowLimiterAspect {
         String requestURI = attributes.getRequest().getRequestURI();
         response.setHeader("Content-Type", "text/html;charset=utf-8");
         try (PrintWriter writer = response.getWriter()) {
+            log.info("flowLimiter url:{}", requestURI);
             writer.println("服务繁忙！请稍后重试！");
         } catch (IOException e) {
             log.error("flowLimiter io error:{}", e.getMessage());
