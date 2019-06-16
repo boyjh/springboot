@@ -19,7 +19,7 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class ReentrantLockDemo {
     // 注意这个地方:lock被声明为成员变量
-    private final Lock lock = new ReentrantLock();
+    private final Lock lock = new ReentrantLock(true);
 
     public void lock() {
         lock.lock();

@@ -40,7 +40,7 @@ import java.util.concurrent.locks.ReentrantLock;
 @RestController
 @RequestMapping("/authority/")
 public class SysAuthorityControl {
-    private final Lock lock = new ReentrantLock();
+    private final Lock lock = new ReentrantLock(true);
     @Resource
     private SysAuthorityService sysAuthorityService;
 
