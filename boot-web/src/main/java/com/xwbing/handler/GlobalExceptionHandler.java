@@ -12,10 +12,9 @@ import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,7 +29,7 @@ import java.util.stream.Collectors;
  * 作者:  xiangwb
  */
 // 作用在所有注解了@RequestMapping的控制器的方法上
-@ControllerAdvice
+@RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
 
@@ -44,7 +43,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = BusinessException.class)
     // 返回给页面200状态码
     @ResponseStatus(value = HttpStatus.OK)
-    @ResponseBody
     public JSONObject handlerBusinessException(BusinessException ex) {
         log.error(ex.getMessage());
         return JsonResult.toJSONObj(ex.getMessage());
@@ -58,7 +56,6 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = UtilException.class)
     @ResponseStatus(value = HttpStatus.OK)
-    @ResponseBody
     public JSONObject handlerUtilException(UtilException ex) {
         log.error(ex.getMessage());
         return JsonResult.toJSONObj(ex.getMessage());
@@ -72,7 +69,6 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = PayException.class)
     @ResponseStatus(value = HttpStatus.OK)
-    @ResponseBody
     public JSONObject handlerPayException(PayException ex) {
         log.error(ex.getMessage());
         return JsonResult.toJSONObj(ex.getMessage());
@@ -86,7 +82,6 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = CompletionException.class)
     @ResponseStatus(value = HttpStatus.OK)
-    @ResponseBody
     public JSONObject handlerCompletionException(CompletionException ex) {
         Throwable cause = ex.getCause();
         String errorMessages = cause.getMessage();
@@ -107,7 +102,6 @@ public class GlobalExceptionHandler {
      * @return
      */
     @ExceptionHandler(value = BindException.class)
-    @ResponseBody
     public JSONObject handlerBindException(HttpServletRequest request, HttpServletResponse response, BindException ex) {
         List<ObjectError> list = ex.getAllErrors();
         String errorMessages = list.stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.joining("&&"));
@@ -124,7 +118,6 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     @ResponseStatus(value = HttpStatus.OK)
-    @ResponseBody
     public JSONObject handlerMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         BindingResult bindingResult = ex.getBindingResult();
         List<ObjectError> allErrors = bindingResult.getAllErrors();
@@ -141,7 +134,6 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = Exception.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
-    @ResponseBody
     public JSONObject handlerException(Exception ex) {
         log.error(ex.getMessage());
         return JsonResult.toJSONObj("系统异常,请联系管理员");
