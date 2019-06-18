@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * @author xiangwb
- * @date 2019/5/30 21:33
+ * @date 2019/1/30 21:33
  * 任务Handler示例（Bean模式）
  * 开发步骤：
  * 1、继承"IJobHandler"：“com.xxl.job.core.handler.IJobHandler”；
