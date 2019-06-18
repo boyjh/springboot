@@ -72,6 +72,7 @@ public class WebLogAspect {
     public void afterReturning(JoinPoint joinPoint, LogInfo logInfo) {
         long end = System.currentTimeMillis();
         long ms = end - startTime.get();
+        startTime.remove();
         String info = logInfo.value();
         String targetName = joinPoint.getTarget().getClass().getName();
         String methodName = joinPoint.getSignature().getName();

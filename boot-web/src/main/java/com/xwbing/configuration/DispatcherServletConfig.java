@@ -81,6 +81,7 @@ public class DispatcherServletConfig extends WebMvcConfigurerAdapter {
 //        registry.addResourceHandler("/js/**").addResourceLocations("html/js/");
 //        registry.addResourceHandler("/css/**").addResourceLocations("html/css/");
 //        registry.addResourceHandler("/img/**").addResourceLocations("html/img/");
+        registry.addResourceHandler("/file/**").addResourceLocations("classpath:/file/");
         super.addResourceHandlers(registry);
     }
 

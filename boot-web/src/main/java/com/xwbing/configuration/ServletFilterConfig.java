@@ -1,27 +1,22 @@
 package com.xwbing.configuration;
 
-import com.xwbing.util.captcha.CaptchaServlet;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.web.servlet.ServletRegistrationBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
 /**
  * 说明: 统一servlet/filter配置
  * 项目名称: boot-module-pro
  * 创建时间: 2017/5/10 16:36
  * 作者:  xiangwb
  */
-@Slf4j
-@Configuration
+//@Slf4j
+//@Configuration
+@Deprecated
 public class ServletFilterConfig {
-    @Bean
-    public ServletRegistrationBean captchaServlet() {
-        log.info("注册登陆验证码CaptchaServlet ======================= ");
-        ServletRegistrationBean registration = new ServletRegistrationBean(new CaptchaServlet());
-        registration.addUrlMappings("/captcha");
-        return registration;
-    }
+//    @Bean
+//    public ServletRegistrationBean captchaServlet() {
+//        log.info("注册登陆验证码CaptchaServlet ======================= ");
+//        ServletRegistrationBean registration = new ServletRegistrationBean(new CaptchaServlet());
+//        registration.addUrlMappings("/captcha");
+//        return registration;
+//    }
 
     /*servlet*****************************************************filter*/
 //    @Bean
