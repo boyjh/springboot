@@ -308,7 +308,8 @@ public class QRCodeUtil {
     public static void main(String[] args) throws Exception {
         ClassPathResource file = new ClassPathResource("pic");
         String path = file.getFile().getAbsolutePath();
-        File image = new File(path + File.separator + "logo.png");
+        File image = new File(path + File.separator + "xwbing.png");
+//        createCode("xiangwbs@163.com", image);
         FileInputStream logo = new FileInputStream(image);
         File out = new File(path + File.separator + "QRCode.png");
         createCodeLogo(out, "java生成的二維碼", logo, "logo");
