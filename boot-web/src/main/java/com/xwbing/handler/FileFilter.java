@@ -1,19 +1,15 @@
 package com.xwbing.handler;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author xiangwb
@@ -23,11 +19,12 @@ import java.io.IOException;
 @WebFilter(filterName = "fileFilter", urlPatterns = "/file/*")
 @Order(3)
 public class FileFilter implements Filter {
-    @Value("localhost:8080")
-    private String domainName;
+    private static final Set<String> WHITE_LIST = new HashSet<>();
 
     @Override
     public void init(FilterConfig filterConfig) {
+        WHITE_LIST.add("localhost:8080");
+        WHITE_LIST.add("127.0.0.1:8080");
     }
 
     @Override
@@ -40,7 +37,7 @@ public class FileFilter implements Filter {
             return;
         }
         String domain = getDomain(referer);
-        if (!domain.equals(domainName)) {
+        if (WHITE_LIST.contains(domain)) {
             request.getRequestDispatcher("/file/error.png").forward(request, response);
             return;
         }
