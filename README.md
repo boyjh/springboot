@@ -26,7 +26,7 @@
 1. boot-service/com.xwbing.datasource-(JpaDataSourceConfig,MybatisDataSourceConfig)
 2. boot-service/com.xwbing.demo -常用api的使用
 3. boot-service/com.xwbing.rabiit -rabbitmq使用
-4. boot-service/com.xwbing.redis -redis使用
+4. boot-service/com.xwbing.redis -redis自动配置使用
 5. boot-service/com.xwbing.util.captcha -验证码
 6. boot-service/com.xwbing.util.DateUtil2 -java8日期工具类
 7. boot-service/com.xwbing.util.DigestsUtil -MD5/SHA-1
