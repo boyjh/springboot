@@ -63,11 +63,6 @@
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-validator</artifactId>
         </dependency>
-        <!-- redis -->
-        <dependency>
-            <groupId>redis.clients</groupId>
-            <artifactId>jedis</artifactId>
-        </dependency>
         <!-- 二维码 -->
         <dependency>
             <groupId>com.google.zxing</groupId>
@@ -122,13 +117,29 @@
             <groupId>com.alipay.sdk</groupId>
             <artifactId>alipay</artifactId>
             <version>${alipay.version}</version>
-            <scope>system</scope>
+            <scope>system</scope><!-- 会导致传递依赖中断，本项目打包成的jar包，其他依赖本项目的项目无法传递依赖了 -->
             <systemPath>${basedir}/../boot-web/src/main/resources/data/alipay-1.0.jar</systemPath>
         </dependency>
         <!-- 消息队列 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-amqp</artifactId>
+        </dependency>
+        <!-- jedis -->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+        </dependency>
+        <!-- 所有starter标配 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
     <build>

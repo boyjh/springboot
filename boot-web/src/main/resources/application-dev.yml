@@ -89,3 +89,13 @@ pagehelper:
 logging:
   config: classpath:log4j2.xml
 
+redis:
+  host: 127.0.0.1
+  port: 6379
+  password: xwbing
+  timeout: 10000
+  maxTotal: 8
+  maxIdle: 8
+  minIdle: 0
+  prefix: bootWeb-
+  enabled: true

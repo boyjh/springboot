@@ -2,34 +2,22 @@ package com.xwbing.redis;
 
 import com.xwbing.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Component;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 /**
- * 说明: 封装redis 缓存服务器服务接口
+ * redis服务加载类,封装jedis接口
  * 创建时间: 2017/5/5 16:44
  * 作者:  xiangwb
  */
 @Slf4j
-@Component
-@PropertySource("classpath:redis.properties")
 public class RedisService {
-    @Resource
     private JedisPool jedisPool;
-    @Value("${redisCode}")
-    private String redisCode;
-
-    private RedisService() {
-
-    }
+    private String prefix;
 
     /**
      * 获取一个jedis 客户端
@@ -67,7 +55,7 @@ public class RedisService {
         Jedis jedis = null;
         try {
             jedis = getJedis();
-            key = redisCode + key;
+            key = prefix + key;
             jedis.set(key, value);
         } finally {
             returnJedis(jedis);
@@ -85,7 +73,7 @@ public class RedisService {
         Jedis jedis = null;
         try {
             jedis = getJedis();
-            key = redisCode + key;
+            key = prefix + key;
             jedis.setex(key, liveTime, value);
         } finally {
             returnJedis(jedis);
@@ -102,7 +90,7 @@ public class RedisService {
         Jedis jedis = null;
         try {
             jedis = getJedis();
-            key = redisCode + key;
+            key = prefix + key;
             return jedis.get(key);
         } finally {
             returnJedis(jedis);
@@ -136,7 +124,7 @@ public class RedisService {
         Jedis jedis = null;
         try {
             jedis = getJedis();
-            list = redisCode + list;
+            list = prefix + list;
             jedis.lpush(list, values);
         } finally {
             returnJedis(jedis);
@@ -153,7 +141,7 @@ public class RedisService {
         Jedis jedis = null;
         try {
             jedis = getJedis();
-            key = redisCode + key;
+            key = prefix + key;
             return jedis.lrange(key, 0, -1);
         } finally {
             returnJedis(jedis);
@@ -172,7 +160,7 @@ public class RedisService {
         Jedis jedis = null;
         try {
             jedis = getJedis();
-            key = redisCode + key;
+            key = prefix + key;
             return jedis.hmset(key, hash);
         } finally {
             returnJedis(jedis);
@@ -189,7 +177,7 @@ public class RedisService {
         Jedis jedis = null;
         try {
             jedis = getJedis();
-            map = redisCode + map;
+            map = prefix + map;
             return jedis.hgetAll(map);
         } finally {
             returnJedis(jedis);
@@ -208,7 +196,7 @@ public class RedisService {
         Jedis jedis = null;
         try {
             jedis = getJedis();
-            map = redisCode + map;
+            map = prefix + map;
             jedis.hset(key, map, value);
         } finally {
             returnJedis(jedis);
@@ -226,7 +214,7 @@ public class RedisService {
         Jedis jedis = null;
         try {
             jedis = getJedis();
-            map = redisCode + map;
+            map = prefix + map;
             return jedis.hget(key, map);
         } finally {
             returnJedis(jedis);
@@ -243,7 +231,7 @@ public class RedisService {
         Jedis jedis = null;
         try {
             jedis = getJedis();
-            map = redisCode + map;
+            map = prefix + map;
             jedis.hdel(key, map);
         } finally {
             returnJedis(jedis);
@@ -259,7 +247,7 @@ public class RedisService {
         Jedis jedis = null;
         try {
             jedis = getJedis();
-            map = redisCode + map;
+            map = prefix + map;
             return jedis.hkeys(map);
         } finally {
             returnJedis(jedis);
@@ -275,7 +263,7 @@ public class RedisService {
         Jedis jedis = null;
         try {
             jedis = getJedis();
-            map = redisCode + map;
+            map = prefix + map;
             return jedis.hvals(map);
         } finally {
             returnJedis(jedis);
@@ -292,7 +280,7 @@ public class RedisService {
         Jedis jedis = null;
         try {
             jedis = getJedis();
-            key = redisCode + key;
+            key = prefix + key;
             jedis.del(key);
         } finally {
             returnJedis(jedis);
@@ -324,7 +312,7 @@ public class RedisService {
         Jedis jedis = null;
         try {
             jedis = getJedis();
-            key = redisCode + key;
+            key = prefix + key;
             return jedis.exists(key);
         } finally {
             returnJedis(jedis);
@@ -393,4 +381,21 @@ public class RedisService {
             returnJedis(jedis);
         }
     }
+
+    public JedisPool getJedisPool() {
+        return jedisPool;
+    }
+
+    public void setJedisPool(JedisPool jedisPool) {
+        this.jedisPool = jedisPool;
+    }
+
+    public String getPrefix() {
+        return prefix;
+    }
+
+    public void setPrefix(String prefix) {
+        this.prefix = prefix;
+    }
+
 }
