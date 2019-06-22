@@ -16,7 +16,7 @@ import javax.annotation.Resource;
  * redis自动配置加载类
  * 提供外部可插拔式插件功能2种方式:
  * 1.在META-INF/spring.factories/EnableAutoConfiguration下配置RedisAutoConfiguration
- * 2.自定义@Enablexxx注解，使用@Import导入RedisAutoConfiguration
+ * 2.自定义@EnableRedis注解，使用@Import导入RedisAutoConfiguration
  */
 @Configuration
 @ConditionalOnProperty(prefix = RedisProperties.REDIS_PREFIX, name = "enabled", havingValue = "true")
