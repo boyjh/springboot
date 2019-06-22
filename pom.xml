@@ -62,7 +62,7 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
         </dependency>
-        <!-- 让配置文件有提示 自定义配置文件打包时会在META-INF下生成pring-configuration-metadata.json -->
+        <!-- @ConfigurationProperties annotation processing (metadata for IDE) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>

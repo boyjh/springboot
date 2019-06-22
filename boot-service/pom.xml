@@ -51,7 +51,7 @@
             <artifactId>mybatis-generator-core</artifactId>
             <version>1.3.7</version>
             <scope>system</scope>
-            <systemPath>${basedir}/../boot-web/src/main/resources/data/mybatis-generator-core-1.3.7.jar</systemPath>
+            <systemPath>${basedir}/src/main/resources/data/mybatis-generator-core-1.3.7.jar</systemPath>
         </dependency>
         <!-- lombok:实体类自动生成getting和setting方法,以及equals,hashCode,toString等 -->
         <dependency>
@@ -118,7 +118,7 @@
             <artifactId>alipay</artifactId>
             <version>${alipay.version}</version>
             <scope>system</scope><!-- 会导致传递依赖中断，本项目打包成的jar包，其他依赖本项目的项目无法传递依赖了 -->
-            <systemPath>${basedir}/../boot-web/src/main/resources/data/alipay-1.0.jar</systemPath>
+            <systemPath>${basedir}/src/main/resources/data/alipay-1.0.jar</systemPath>
         </dependency>
         <!-- 消息队列 -->
         <dependency>
@@ -155,7 +155,7 @@
                         <artifactId>mybatis-generator-core</artifactId>
                         <version>1.3.7</version>
                         <scope>system</scope>
-                        <systemPath>${basedir}/../boot-web/src/main/resources/data/mybatis-generator-core-1.3.7.jar
+                        <systemPath>${basedir}/src/main/resources/data/mybatis-generator-core-1.3.7.jar
                         </systemPath>
                     </dependency>
                 </dependencies>

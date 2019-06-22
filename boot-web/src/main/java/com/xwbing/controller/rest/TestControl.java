@@ -3,6 +3,7 @@ package com.xwbing.controller.rest;
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.annotation.LogInfo;
 import com.xwbing.domain.entity.rest.FilesUpload;
+import com.xwbing.redis.RedisService;
 import com.xwbing.service.rest.CookieSessionService;
 import com.xwbing.service.rest.QRCodeZipService;
 import com.xwbing.service.rest.UploadService;
@@ -42,6 +43,8 @@ public class TestControl {
     private CookieSessionService cookieSessionService;
     @Resource
     private UploadService uploadService;
+    @Resource
+    private RedisService redisService;
 
     @LogInfo("导出zip")
     @GetMapping("batchGetImage")
@@ -83,6 +86,13 @@ public class TestControl {
     @GetMapping("cookie")
     public JSONObject cookie(HttpServletRequest request, HttpServletResponse response) {
         return JsonResult.toJSONObj(cookieSessionService.cookie(response, request));
+    }
+
+    @LogInfo("redis")
+    @GetMapping("redis")
+    public JSONObject redis(@RequestParam String kv) {
+        redisService.set(kv, kv);
+        return JsonResult.toJSONObj(redisService.get(kv),"redis success");
     }
 }
 

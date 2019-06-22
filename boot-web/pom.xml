@@ -93,7 +93,7 @@
                     <!-- 本地jar打进war -->
                     <webResources>
                         <resource>
-                            <directory>${basedir}/src/main/resources/data</directory>
+                            <directory>${basedir}/../boot-service/src/main/resources/data</directory>
                             <targetPath>WEB-INF/lib/</targetPath>
                             <includes>
                                 <include>alipay-1.0.jar</include>
