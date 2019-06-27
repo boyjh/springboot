@@ -49,18 +49,21 @@ public class SysAuthorityControl {
     @ApiOperation(value = "添加权限", response = RestMessageVo.class)
     @ApiImplicitParam(name = "sign", value = "签名", paramType = "header", dataType = "string")
     @PostMapping("save")
-    public JSONObject save(@RequestBody SysAuthority sysAuthority) {
+    public JSONObject save(@RequestBody SysAuthority sysAuthority) throws InterruptedException {
         //删除缓存
         CommonDataUtil.clearData(CommonConstant.AUTHORITY_THREE);
 //        redisService.del(CommonConstant.AUTHORITY_THREE);
         RestMessage save = sysAuthorityService.save(sysAuthority);
+        //延时双删,时间根据读数据业务逻辑的耗时
+        Thread.sleep(500);
+        CommonDataUtil.clearData(CommonConstant.AUTHORITY_THREE);
         return JsonResult.toJSONObj(save);
     }
 
     @LogInfo("删除权限")
     @ApiOperation(value = "删除权限", response = RestMessageVo.class)
     @DeleteMapping("removeById/{id}")
-    public JSONObject removeById(@PathVariable String id) {
+    public JSONObject removeById(@PathVariable String id) throws InterruptedException {
         if (StringUtils.isEmpty(id)) {
             return JsonResult.toJSONObj("主键不能为空");
         }
@@ -68,13 +71,15 @@ public class SysAuthorityControl {
         CommonDataUtil.clearData(CommonConstant.AUTHORITY_THREE);
 //        redisService.del(CommonConstant.AUTHORITY_THREE);
         RestMessage result = sysAuthorityService.removeById(id);
+        Thread.sleep(500);
+        CommonDataUtil.clearData(CommonConstant.AUTHORITY_THREE);
         return JsonResult.toJSONObj(result);
     }
 
     @LogInfo("修改权限")
     @ApiOperation(value = "修改权限", response = RestMessageVo.class)
     @PutMapping("update")
-    public JSONObject update(@RequestBody SysAuthority sysAuthority) {
+    public JSONObject update(@RequestBody SysAuthority sysAuthority) throws InterruptedException {
         if (StringUtils.isEmpty(sysAuthority.getId())) {
             return JsonResult.toJSONObj("主键不能为空");
         }
@@ -98,7 +103,8 @@ public class SysAuthorityControl {
         CommonDataUtil.clearData(CommonConstant.AUTHORITY_THREE);
 //        redisService.del(CommonConstant.AUTHORITY_THREE);
         RestMessage result = sysAuthorityService.update(sysAuthority);
-
+        Thread.sleep(500);
+        CommonDataUtil.clearData(CommonConstant.AUTHORITY_THREE);
         return JsonResult.toJSONObj(result);
     }
 
