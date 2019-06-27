@@ -50,12 +50,10 @@ public class SysAuthorityControl {
     @ApiImplicitParam(name = "sign", value = "签名", paramType = "header", dataType = "string")
     @PostMapping("save")
     public JSONObject save(@RequestBody SysAuthority sysAuthority) {
-        RestMessage save = sysAuthorityService.save(sysAuthority);
         //删除缓存
-        if (save.isSuccess()) {
-            CommonDataUtil.clearData(CommonConstant.AUTHORITY_THREE);
-//            redisService.del(CommonConstant.AUTHORITY_THREE);
-        }
+        CommonDataUtil.clearData(CommonConstant.AUTHORITY_THREE);
+//        redisService.del(CommonConstant.AUTHORITY_THREE);
+        RestMessage save = sysAuthorityService.save(sysAuthority);
         return JsonResult.toJSONObj(save);
     }
 
@@ -66,12 +64,10 @@ public class SysAuthorityControl {
         if (StringUtils.isEmpty(id)) {
             return JsonResult.toJSONObj("主键不能为空");
         }
-        RestMessage result = sysAuthorityService.removeById(id);
         //删除缓存
-        if (result.isSuccess()) {
-            CommonDataUtil.clearData(CommonConstant.AUTHORITY_THREE);
-//            redisService.del(CommonConstant.AUTHORITY_THREE);
-        }
+        CommonDataUtil.clearData(CommonConstant.AUTHORITY_THREE);
+//        redisService.del(CommonConstant.AUTHORITY_THREE);
+        RestMessage result = sysAuthorityService.removeById(id);
         return JsonResult.toJSONObj(result);
     }
 
@@ -98,12 +94,11 @@ public class SysAuthorityControl {
                 }
             }
         }
-        RestMessage result = sysAuthorityService.update(sysAuthority);
         //删除缓存
-        if (result.isSuccess()) {
-            CommonDataUtil.clearData(CommonConstant.AUTHORITY_THREE);
-//            redisService.del(CommonConstant.AUTHORITY_THREE);
-        }
+        CommonDataUtil.clearData(CommonConstant.AUTHORITY_THREE);
+//        redisService.del(CommonConstant.AUTHORITY_THREE);
+        RestMessage result = sysAuthorityService.update(sysAuthority);
+
         return JsonResult.toJSONObj(result);
     }
 
@@ -144,6 +139,10 @@ public class SysAuthorityControl {
             //去获取锁,获取成功,去数据库取数据
             if (lock.tryLock()) {
                 try {
+                    authVos = (List<SysAuthVo>) CommonDataUtil.getData(CommonConstant.AUTHORITY_THREE);//应对高并发场景
+                    if (authVos != null) {
+                        return JsonResult.toJSONObj(authVos, "");
+                    }
                     authVos = sysAuthorityService.listChildren(CommonConstant.ROOT, enable);
                     if (CollectionUtils.isNotEmpty(authVos)) {
                         // 设置缓存
