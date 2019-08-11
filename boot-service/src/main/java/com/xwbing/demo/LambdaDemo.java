@@ -6,6 +6,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import javax.annotation.Resource;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -53,6 +54,11 @@ public class LambdaDemo {
         System.out.println("distinct:" + lists.stream().distinct().collect(Collectors.toList()));//去重(去重逻辑依赖元素的equals方法)
         System.out.println("limit:" + lists.stream().limit(4).collect(Collectors.toList()));//截取
         System.out.println("skip:" + lists.stream().skip(4).collect(Collectors.toList()));//丢弃
+        //去重
+        listAll().stream().collect(Collectors.collectingAndThen(Collectors
+                .toCollection(() -> new TreeSet<>(Comparator.comparing(SysUser::getName))), ArrayList::new));
+        listAll().stream().filter(distinctByKey(SysUser::getName)).collect(Collectors.toList());
+
         //匹配
         boolean b1 = lists.stream().anyMatch(o -> o == 1);
         boolean b = lists.stream().allMatch(o -> o == 1);
@@ -148,6 +154,11 @@ public class LambdaDemo {
                 return "Y".equals(admin);
             }).collect(Collectors.toList());
         }
+    }
+
+    public static <T> Predicate<T> distinctByKey(Function<? super T, Object> keyExtractor) {
+        Map<Object, Boolean> map = new ConcurrentHashMap<>();
+        return t -> map.putIfAbsent(keyExtractor.apply(t), true) == null;
     }
 
     /**
