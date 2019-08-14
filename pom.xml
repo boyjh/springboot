@@ -17,8 +17,11 @@
         <version>1.5.7.RELEASE</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
+    <!-- 建议在settings.xml->mirror配镜像 settings.xml->profile配公司私服地址-->
+    <!--
     <repositories>
-        <repository><!-- 阿里云maven仓库 -->
+        <repository>
             <id>nexus</id>
             <name>aliyun nexus</name>
             <url>http://maven.aliyun.com/nexus/content/groups/public</url>
@@ -34,6 +37,21 @@
             <url>http://maven.aliyun.com/nexus/content/groups/public</url>
         </pluginRepository>
     </pluginRepositories>
+    -->
+    <!-- maven打包上传私服地址。id要跟maven->settings->server->id匹配 -->
+    <distributionManagement>
+        <repository>
+            <id>private-release</id>
+            <name>private-release</name>
+            <url>https://maven.jimistore.com/nexus/content/repositories/jimi-private-release/</url>
+        </repository>
+        <snapshotRepository>
+            <id>private-snapshot</id>
+            <name>private-snapshot</name>
+            <url>https://maven.jimistore.com/nexus/content/repositories/jimi-private-snapshot/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -56,6 +74,7 @@
         <mybatis-generator-maven-plugin.vsrsion>1.3.7</mybatis-generator-maven-plugin.vsrsion>
         <xxl-job.version>2.1.0-SNAPSHOT</xxl-job.version>
     </properties>
+
     <dependencies>
         <!-- 子模块需要用到web依赖下的相关注解 -->
         <dependency>
@@ -129,9 +148,10 @@
             <version>${xxl-job.version}</version>
         </dependency>
     </dependencies>
+
     <build>
         <plugins>
-            <!-- maven指定jdk版本 -->
+            <!-- maven指定jdk版本(可以在settings.xml->profile模块配) -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -142,6 +162,30 @@
                     <skip>${skipTests}</skip>
                     <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
+            </plugin>
+            <!-- 生成文档包 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <configuration>
+                    <aggregate>true</aggregate>
+                </configuration>
+            </plugin>
+            <!-- 生成sources源码包 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <configuration>
+                    <attach>true</attach>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
