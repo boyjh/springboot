@@ -86,6 +86,7 @@ SELECT ename,hiredate FROM emp_xwbing WHERE hiredate>to_date('1982-1-1','yyyy-mm
 DATE之间可以做减法,差为相差的天数
 SELECT  ename,sysdate-hiredate FROM emp_xwbing;
 SELECT trunc(sysdate-to_date('1990-5-11','yyyy-mm-dd')) FROM dual;
+select datediff('2008-08-08 12:00:00', '2008-08-01 00:00:00');  //mysql--------7天--------------------------
 
 DATE可以和一个数字进行加减运算,相当与加减了指定的天数,返回值为对应的日期
 7天后是那天?
