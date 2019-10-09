@@ -6,6 +6,7 @@ import com.xwbing.exception.PayException;
 import com.xwbing.exception.UtilException;
 import com.xwbing.util.JsonResult;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
@@ -44,7 +45,7 @@ public class GlobalExceptionHandler {
     // 返回给页面200状态码
     @ResponseStatus(value = HttpStatus.OK)
     public JSONObject handlerBusinessException(BusinessException ex) {
-        log.error(ex.getMessage());
+        log.error(ExceptionUtils.getStackTrace(ex));
         return JsonResult.toJSONObj(ex.getMessage());
     }
 
@@ -57,7 +58,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = UtilException.class)
     @ResponseStatus(value = HttpStatus.OK)
     public JSONObject handlerUtilException(UtilException ex) {
-        log.error(ex.getMessage());
+        log.error(ExceptionUtils.getStackTrace(ex));
         return JsonResult.toJSONObj(ex.getMessage());
     }
 
@@ -70,7 +71,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = PayException.class)
     @ResponseStatus(value = HttpStatus.OK)
     public JSONObject handlerPayException(PayException ex) {
-        log.error(ex.getMessage());
+        log.error(ExceptionUtils.getStackTrace(ex));
         return JsonResult.toJSONObj(ex.getMessage());
     }
 
@@ -83,9 +84,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = CompletionException.class)
     @ResponseStatus(value = HttpStatus.OK)
     public JSONObject handlerCompletionException(CompletionException ex) {
+        log.error(ExceptionUtils.getStackTrace(ex));
         Throwable cause = ex.getCause();
         String errorMessages = cause.getMessage();
-        log.error(errorMessages);
         String detail = cause.toString();
         if (!detail.contains("BusinessException")) {
             errorMessages = "异步获取数据出错";
@@ -103,9 +104,9 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(value = BindException.class)
     public JSONObject handlerBindException(HttpServletRequest request, HttpServletResponse response, BindException ex) {
+        log.error(ExceptionUtils.getStackTrace(ex));
         List<ObjectError> list = ex.getAllErrors();
         String errorMessages = list.stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.joining("&&"));
-        log.error(errorMessages);
         response.setStatus(HttpStatus.OK.value());
         return JsonResult.toJSONObj(errorMessages);
     }
@@ -119,10 +120,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     @ResponseStatus(value = HttpStatus.OK)
     public JSONObject handlerMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+        log.error(ExceptionUtils.getStackTrace(ex));
         BindingResult bindingResult = ex.getBindingResult();
         List<ObjectError> allErrors = bindingResult.getAllErrors();
         String errorMessages = allErrors.stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.joining("&&"));
-        log.error(errorMessages);
         return JsonResult.toJSONObj(errorMessages);
     }
 
@@ -135,7 +136,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public JSONObject handlerException(Exception ex) {
-        log.error(ex.getMessage());
+        log.error(ExceptionUtils.getStackTrace(ex));
         return JsonResult.toJSONObj("系统异常,请联系管理员");
     }
 }

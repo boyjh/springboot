@@ -2,10 +2,9 @@ package com.xwbing.constant;
 
 import com.alibaba.fastjson.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * 说明: 公共枚举
@@ -32,6 +31,12 @@ public class CommonEnum {
 
         public String getName() {
             return name;
+        }
+
+        private static final Map<String, YesOrNoEnum> map = Arrays.stream(YesOrNoEnum.values()).collect(Collectors.toMap(YesOrNoEnum::getCode, Function.identity()));
+
+        public static YesOrNoEnum parse(String code) {
+            return map.get(code);
         }
     }
 
