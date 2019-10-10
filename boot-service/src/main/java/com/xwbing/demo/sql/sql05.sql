@@ -84,12 +84,24 @@ DROP SEQUENCE seq_emp_xwbing;
 数据库对象之一
 一种提高查询效率的机制
 CREATE INDEX idx_name ON name(col);
-
-CREATE INDEX idx_emp ON emp(ename);
 复合索引
 CREATE INDEX idx_emp_job_sal ON emp(job,sal);
 基于函数索引
 CREATE INDEX emp_ename_upper_idx ON emp(UPPER(ename));
+CREATE INDEX `index_name` ON `table_name` (col1,col2)
+CREATE UNIQUE INDEX `index_name` ON `table_name` (col1,col2)
+
+添加PRIMARY KEY(主键索引)
+alter table `table_name` add primary key(`column`);
+添加UNIQUE(唯一索引)
+alter table `table_name` add unique uk_name(`column`);
+添加普通索引
+alter table `table_name` add index idx_name(`column`);
+添加全文索引
+alter table `table_name` add fulltext(`column`);
+添加多列索引
+alter table `table_name` add index idx_name_name(`column1`,`column2`,`column3`);
+
 
 重建索引
 ALTER INDEX IDX_EMP REBUILD;
