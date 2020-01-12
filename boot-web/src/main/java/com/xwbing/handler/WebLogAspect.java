@@ -85,7 +85,7 @@ public class WebLogAspect {
      * @param e
      */
 //    @AfterThrowing(pointcut = "pointCut()", throwing = "e")
-    public void afterThroing(Exception e) {
+    public void afterThrowing(Exception e) {
         log.error("异常信息:{}", e.getMessage());
     }
 
