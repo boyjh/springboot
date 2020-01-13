@@ -9,6 +9,8 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.hibernate.StaleObjectStateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.annotation.Order;
+import org.springframework.orm.hibernate4.HibernateOptimisticLockingFailureException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.HeuristicCompletionException;
 
@@ -24,19 +26,22 @@ import java.util.stream.Collectors;
  */
 @Aspect
 @Component
+@Order
 public class RetryAspect {
     private static final Logger logger = LoggerFactory.getLogger(RetryAspect.class);
 
-    @Pointcut("within(com.xwbing.service..*) && @annotation(retry)")
-    public void retryCut(Retry retry) {
+    @Pointcut("@annotation(com.xwbing.annotation.Retry)")
+    public void retryCut() {
     }
 
-    @Around(value = "retryCut(retry)", argNames = "joinPoint,retry")
-    public Object around(ProceedingJoinPoint joinPoint, Retry retry) throws Throwable {
+    @Around("retryCut()")
+    public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
         try {
             return joinPoint.proceed();
         } catch (Exception exception) {
-            if (exception instanceof HeuristicCompletionException || exception instanceof StaleObjectStateException) {
+            if (exception instanceof HeuristicCompletionException
+                    || exception instanceof HibernateOptimisticLockingFailureException
+                    || exception instanceof StaleObjectStateException) {
                 String className = joinPoint.getTarget().getClass().getSimpleName();
                 String methodName = joinPoint.getSignature().getName();
                 String params = Arrays.stream(joinPoint.getArgs())
