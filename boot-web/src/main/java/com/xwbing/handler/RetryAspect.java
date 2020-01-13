@@ -1,7 +1,6 @@
 package com.xwbing.handler;
 
 import com.alibaba.fastjson.JSONObject;
-import com.xwbing.annotation.Retry;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
