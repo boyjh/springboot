@@ -75,25 +75,26 @@ public class LockAspect {
         log.debug("request lock , the key is : {}", key);
         key = String.format("%s%s", key, suffix);
         Long now = System.currentTimeMillis();
-        //尝试加锁
-        Long lock = redisService.setNx(key, String.valueOf(now));
-        if (lock != null && lock.equals(1L)) {
-            redisService.expire(key, timeout);
-        } else {
-            //如果已经加过锁,则判断加锁是否已经失效
-            String current = redisService.get(key);
-            now = System.currentTimeMillis();
-            if (current != null && now - Long.parseLong(current) > timeout) {
-                //如果加锁已经失效,则加锁
-                String old = redisService.getSet(key, String.valueOf(now));
-                //考虑多线程并发的情况,只有一个线程的设置值和当前值相同,它才有权利加锁
-                if (old != null && old.equals(current)) {
-                    //如果是则加锁成功
-                    redisService.expire(key, timeout);
-                    return;
+        try {
+            Long lock = redisService.setNx(key, String.valueOf(now));
+            if (!(lock != null && lock.equals(1L))) {
+                //如果已经加过锁,则判断加锁是否已经失效
+                String current = redisService.get(key);
+                now = System.currentTimeMillis();
+                if (current != null && now - Long.parseLong(current) > timeout) {
+                    //如果加锁已经失效,则加锁
+                    String old = redisService.getSet(key, String.valueOf(now));
+                    //判断上一次的锁是否就是失效的锁
+                    if (old != null && old.equals(current)) {
+                        //如果是则加锁成功
+                        return;
+                    }
                 }
+                throw new LockException(remark);
             }
-            throw new LockException(remark);
+        } finally {
+            //统一设置过期时间，防止发生死锁
+            redisService.expire(key, timeout);
         }
     }
 
