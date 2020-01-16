@@ -63,6 +63,34 @@ public class RedisService {
     }
 
     /**
+     * set if not exits
+     *
+     * @param key
+     * @param value
+     */
+    public Long setNx(String key, String value) {
+        Jedis jedis = null;
+        try {
+            jedis = getJedis();
+            key = prefix + key;
+            return jedis.setnx(key, value);
+        } finally {
+            returnJedis(jedis);
+        }
+    }
+
+    public String getSet(String key, String value) {
+        Jedis jedis = null;
+        try {
+            jedis = getJedis();
+            key = prefix + key;
+            return jedis.getSet(key, value);
+        } finally {
+            returnJedis(jedis);
+        }
+    }
+
+    /**
      * 添加key value 并且设置存活时间
      *
      * @param key
@@ -297,6 +325,23 @@ public class RedisService {
         try {
             jedis = getJedis();
             jedis.del(key);
+        } finally {
+            returnJedis(jedis);
+        }
+    }
+
+    /**
+     * 设置过期时间
+     *
+     * @param key
+     * @param liveTime seconds
+     */
+    public void expire(String key, int liveTime) {
+        Jedis jedis = null;
+        try {
+            jedis = getJedis();
+            key = prefix + key;
+            jedis.expire(key, liveTime);
         } finally {
             returnJedis(jedis);
         }

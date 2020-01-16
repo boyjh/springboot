@@ -2,6 +2,7 @@ package com.xwbing.controller.sys;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.annotation.Idempotent;
+import com.xwbing.annotation.Lock;
 import com.xwbing.annotation.LogInfo;
 import com.xwbing.constant.CommonEnum;
 import com.xwbing.domain.entity.sys.SysAuthority;
@@ -67,6 +68,7 @@ public class SysUserControl {
         return JsonResult.toJSONObj(result);
     }
 
+    @Lock(value = "#p0.getId()", remark = "用户信息修改中，请稍后", timeout = 60)
     @LogInfo("修改用户信息")
     @ApiOperation(value = "修改用户信息", response = RestMessageVo.class)
     @PutMapping("update")

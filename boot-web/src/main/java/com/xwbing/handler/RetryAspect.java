@@ -1,6 +1,7 @@
 package com.xwbing.handler;
 
 import com.alibaba.fastjson.JSONObject;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -23,12 +24,11 @@ import java.util.stream.Collectors;
  * @date 20/1/9 15:20
  * 乐观锁异常切面
  */
+@Slf4j
 @Aspect
 @Component
 @Order
 public class RetryAspect {
-    private static final Logger logger = LoggerFactory.getLogger(RetryAspect.class);
-
     @Pointcut("@annotation(com.xwbing.annotation.Retry)")
     public void retryCut() {
     }
@@ -46,7 +46,7 @@ public class RetryAspect {
                 String params = Arrays.stream(joinPoint.getArgs())
                         .filter(param -> !(param instanceof HttpServletRequest || param instanceof HttpServletResponse))
                         .map(JSONObject::toJSONString).collect(Collectors.joining(","));
-                logger.info("class:{} method:{} params:{}", className, methodName, params);
+                log.info("class:{} method:{} params:{}", className, methodName, params);
                 return joinPoint.proceed();
             }
             throw exception;
