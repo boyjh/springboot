@@ -297,6 +297,36 @@ public class RedisService {
             returnJedis(jedis);
         }
     }
+
+    ///////////////////////////////////数字/////////////////////////////////////////////////
+
+    /**
+     * 原子增长
+     *
+     * @param key
+     */
+    public Long incr(String key) {
+        Jedis jedis = null;
+        try {
+            jedis = getJedis();
+            key = prefix + key;
+            return jedis.incr(key);
+        } finally {
+            returnJedis(jedis);
+        }
+    }
+
+    public Long decrBy(String key, long value) {
+        Jedis jedis = null;
+        try {
+            jedis = getJedis();
+            key = prefix + key;
+            return jedis.decrBy(key, value);
+        } finally {
+            returnJedis(jedis);
+        }
+    }
+
     ///////////////////////////////////public/////////////////////////////////////////////////
 
     /**

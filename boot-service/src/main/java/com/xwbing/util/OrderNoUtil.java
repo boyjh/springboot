@@ -1,8 +1,11 @@
 package com.xwbing.util;
 
 import com.xwbing.constant.Base;
+import com.xwbing.redis.RedisService;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.text.DecimalFormat;
 import java.util.Date;
 
@@ -11,8 +14,12 @@ import java.util.Date;
  * @date 20/1/18 20:38
  * 订单号生产工具类
  */
+@Component
 public class OrderNoUtil {
-    public static String createOrderId() {
+    @Resource
+    private RedisService redisService;
+
+    public String createOrderId() {
         int businessType;
         String env = EnvUtil.getEnv();
         if (StringUtils.equals(env, Base.ENV_DEV)) {
@@ -24,14 +31,14 @@ public class OrderNoUtil {
         } else {
             businessType = Base.BUSINESS_LEASE_PROD;
         }
-        Long seq = redisTemplate.opsForValue().increment("or-sequence", 1);
+        Long seq = redisService.incr("order-sequence");
         boolean flag = false;
         if (seq > Base.ORDER_MAX_SEQ) {
-            seq = 1L;
+            seq = 0L;
             flag = true;
         }
         if (flag) {
-            redisTemplate.opsForValue().set("or-sequence", seq);
+            redisService.decrBy("order-sequence", Base.ORDER_MAX_SEQ);
         }
         String sequence = new DecimalFormat("000000").format(seq);
         String date = DateUtil2.dateToStr(new Date(), DateUtil2.YYYYMMDD);
