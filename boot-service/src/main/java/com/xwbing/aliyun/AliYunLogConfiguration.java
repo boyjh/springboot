@@ -27,7 +27,6 @@ public class AliYunLogConfiguration {
     @Resource
     private Client aliYunLogClient;
 
-
     @Bean
     public Client aliYunLogClient() {
         return new Client(ENDPOINT, "xxx", "xxx");
