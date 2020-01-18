@@ -10,20 +10,31 @@ import javax.annotation.Resource;
 
 @Configuration
 public class AliYunLogConfiguration {
-
+    /**
+     * 阿里云所属区域匹配Endpoint
+     */
+    private static final String ENDPOINT = "cn-hangzhou.log.aliyuncs.com";
+    /**
+     * 区域创建的项目名称
+     */
+    @Value("${aliYunLog.project}")
+    private String project;
+    /**
+     * 项目下创建的logStore
+     */
+    @Value("${aliYunLog.logStore}")
+    private String logStore;
     @Resource
     private Client aliYunLogClient;
 
-    @Value("${aliYun.logStore}")
-    private String logStore;
 
     @Bean
     public Client aliYunLogClient() {
-        return new Client("cn-hangzhou.log.aliyuncs.com", "xxx", "xxx");
+        return new Client(ENDPOINT, "xxx", "xxx");
     }
 
     @Bean
     public AliYunLog getLeaseAliYunLog() {
-        return new AliYunLog(aliYunLogClient, logStore, "springboot");
+        return new AliYunLog(aliYunLogClient, logStore, "springboot", project);
     }
 }

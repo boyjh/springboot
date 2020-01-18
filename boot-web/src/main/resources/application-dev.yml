@@ -55,5 +55,7 @@ redis:
   minIdle: 0
   prefix: bootWeb-
   enabled: true
-aliYun:
+#阿里云配置
+aliYunLog:
+  project: boot-api
   logStore: test_boot

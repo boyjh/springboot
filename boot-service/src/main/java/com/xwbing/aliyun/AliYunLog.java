@@ -6,7 +6,6 @@ import com.aliyun.openservices.log.request.PutLogsRequest;
 import com.dingtalk.chatbot.DingtalkChatbotClient;
 import com.dingtalk.chatbot.message.TextMessage;
 import com.xwbing.util.EnvUtil;
-import com.xwbing.util.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
@@ -19,14 +18,16 @@ import java.util.Vector;
 public class AliYunLog {
     private static final Logger logger = LoggerFactory.getLogger(AliYunLog.class);
 
-    private Client client;
     private DingtalkChatbotClient dingTalkClient;
-    private String logStore = "test_boot";
-    private String topic = "springboot";
+    private Client client;
+    private String logStore;
+    private String topic;
+    private String project;
 
-    public AliYunLog(Client client, String logStore, String topic) {
-        this.client = client;
+    public AliYunLog(Client client, String logStore, String topic, String project) {
         this.dingTalkClient = new DingtalkChatbotClient();
+        this.client = client;
+        this.project = project;
         this.logStore = logStore;
         this.topic = topic;
     }
@@ -39,7 +40,6 @@ public class AliYunLog {
         LogItem logItem = new LogItem((int) ((new Date()).getTime() / 1000L));
         logItem.PushBack(key, EnvUtil.getHost() + "_: " + value);
         logGroup.add(logItem);
-        String project = "xwb-api";
         PutLogsRequest req2 = new PutLogsRequest(project, logStore, topic, source, logGroup);
         try {
             client.PutLogs(req2);
