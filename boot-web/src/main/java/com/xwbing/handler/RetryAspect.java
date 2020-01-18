@@ -36,10 +36,10 @@ public class RetryAspect {
 
     @Around("retryCut()")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
-        int retry = 0;
+        int tries = 0;
         Exception optimisticLockException;
         do {
-            retry++;
+            tries++;
             try {
                 return joinPoint.proceed();
             } catch (Exception exception) {
@@ -57,7 +57,7 @@ public class RetryAspect {
                     throw exception;
                 }
             }
-        } while (retry < MAX_RETRY);
+        } while (tries < MAX_RETRY);
         throw optimisticLockException;
     }
 }
