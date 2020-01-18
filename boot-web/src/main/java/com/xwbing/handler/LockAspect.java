@@ -88,8 +88,8 @@ public class LockAspect {
                     if (old != null && old.equals(current)) {
                         //如果是则加锁成功
                         return;
-                    }
-                }
+                    }  //如果不是则加锁异常
+                }  //如果未失效则返回异常
                 throw new LockException(remark);
             }
         } finally {

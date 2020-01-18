@@ -4,6 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.xwbing.util.RestMessage;
 
 import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
+import javax.servlet.annotation.WebInitParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -15,8 +17,12 @@ import java.io.OutputStream;
  * 创建时间: 2018/5/7 10:11
  * 作者: xiangwb
  * 说明: 防止表单重复提交,新增数据时用
+ * 根据url过滤太low了，建议用注解+aop形式实现，参考IdempotentAspect
  */
 @Deprecated
+//@WebFilter(filterName = "formRepeatFilter", urlPatterns = {"/*"},
+//        initParams = {@WebInitParam(name = "excludePath", value = "/doc,/captcha,/v2/api-docs,/swagger-resources,/configuration/ui,/configuration/security,/druid"),
+//                @WebInitParam(name = "excludeType", value = ".js,.css,.gif,.jpg,.png,.ico,.jsp,.html,/druid/")})
 public class FormRepeatFilter implements Filter {
     private String[] paths;
     private String[] types;

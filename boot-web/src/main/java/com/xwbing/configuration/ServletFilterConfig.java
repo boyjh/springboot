@@ -2,9 +2,9 @@ package com.xwbing.configuration;
 
 /**
  * 说明: 统一servlet/filter配置
- * 项目名称: boot-module-pro
  * 创建时间: 2017/5/10 16:36
  * 作者:  xiangwb
+ * 推荐使用注解@WebFilter和@WebServlet
  */
 //@Slf4j
 //@Configuration
