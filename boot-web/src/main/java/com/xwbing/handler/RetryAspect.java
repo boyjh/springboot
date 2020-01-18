@@ -36,8 +36,9 @@ public class RetryAspect {
 
     @Around("retryCut()")
     public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
-        int tries = 0;
         Exception optimisticLockException;
+        String params = null;
+        int tries = 0;
         do {
             tries++;
             try {
@@ -48,7 +49,7 @@ public class RetryAspect {
                         || exception instanceof StaleObjectStateException) {
                     String className = joinPoint.getTarget().getClass().getSimpleName();
                     String methodName = joinPoint.getSignature().getName();
-                    String params = Arrays.stream(joinPoint.getArgs())
+                    params = params != null ? params = Arrays.stream(joinPoint.getArgs())
                             .filter(param -> !(param instanceof HttpServletRequest || param instanceof HttpServletResponse))
                             .map(JSONObject::toJSONString).collect(Collectors.joining(","));
                     optimisticLockException = exception;
