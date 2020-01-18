@@ -2,6 +2,8 @@ package com.xwbing.util;
 
 import com.xwbing.exception.UtilException;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Random;
 
 /**
@@ -10,21 +12,22 @@ import java.util.Random;
  * @author xiangwb
  */
 public class RadomUtil {
-    public static String buildRandom(int length) {
+
+    public static String buildRandom(int length) throws NoSuchAlgorithmException {
         if (length < 1) {
             throw new UtilException("参数异常!!!");
         }
-        Random random = new Random();
+        SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < length; i++) {
             String str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            int number = random.nextInt(str.length());
+            int number = secureRandom.nextInt(str.length());
             sb.append(str.charAt(number));
         }
         return sb.toString();
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NoSuchAlgorithmException {
         while (true)
             System.out.println(buildRandom(8));
     }

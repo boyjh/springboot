@@ -2,6 +2,7 @@ package com.xwbing.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.xwbing.util.CommonDataUtil;
+import com.xwbing.util.HeaderUtil;
 import com.xwbing.util.RestMessage;
 import com.xwbing.util.ThreadLocalUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +46,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         String servletPath = request.getServletPath();
         if (!SET.contains(servletPath) && !servletPath.contains("test")) {
             HttpSession session = request.getSession(false);
-            String token = request.getHeader("token");
+            String token = HeaderUtil.getToken(request);
             if (session == null) {
                 getOutputStream(response, "登录超时,请重新登录");
                 CommonDataUtil.clearData(token);
