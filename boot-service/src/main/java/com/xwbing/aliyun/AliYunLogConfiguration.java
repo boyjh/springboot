@@ -10,16 +10,16 @@ import javax.annotation.Resource;
 @Configuration
 public class AliYunLogConfiguration {
     /**
-     * 阿里云所属区域匹配Endpoint
+     * 项目所属区域匹配的Endpoint
      */
     private static final String ENDPOINT = "cn-hangzhou.log.aliyuncs.com";
     /**
-     * 区域创建的项目名称
+     * 创建的项目名称
      */
     @Value("${aliYunLog.project}")
     private String project;
     /**
-     * 项目下创建的logStore
+     * 项目下创建的日志库名称
      */
     @Value("${aliYunLog.logStore}")
     private String logStore;
