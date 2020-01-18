@@ -49,7 +49,7 @@ public class RetryAspect {
                         || exception instanceof StaleObjectStateException) {
                     String className = joinPoint.getTarget().getClass().getSimpleName();
                     String methodName = joinPoint.getSignature().getName();
-                    params = params != null ? params = Arrays.stream(joinPoint.getArgs())
+                    params = params != null ? params : Arrays.stream(joinPoint.getArgs())
                             .filter(param -> !(param instanceof HttpServletRequest || param instanceof HttpServletResponse))
                             .map(JSONObject::toJSONString).collect(Collectors.joining(","));
                     optimisticLockException = exception;
