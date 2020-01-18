@@ -58,7 +58,7 @@ public class RetryAspect {
                     throw exception;
                 }
             }
-        } while (tries < MAX_RETRY);
+        } while (tries <= MAX_RETRY);
         throw optimisticLockException;
     }
 }
