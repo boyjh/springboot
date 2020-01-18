@@ -34,7 +34,7 @@ public class AliYunLogConfiguration {
     }
 
     @Bean
-    public AliYunLog getLeaseAliYunLog() {
+    public AliYunLog aliYunLog() {
         return new AliYunLog(aliYunLogClient, logStore, "springboot", project);
     }
 }
