@@ -1,6 +1,7 @@
 package com.xwbing.handler;
 
 import com.alibaba.fastjson.JSONObject;
+import com.xwbing.annotation.Retry;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -27,15 +28,12 @@ import java.util.stream.Collectors;
 @Component
 @Order
 public class RetryAspect {
-    //阿里巴巴java开发手册建议乐观锁重试次数不得小于3次
-    private static final int MAX_RETRY = 3;
-
-    @Pointcut("@annotation(com.xwbing.annotation.Retry)")
-    public void retryCut() {
+    @Pointcut("@annotation(retry)")
+    public void retryCut(Retry retry) {
     }
 
-    @Around("retryCut()")
-    public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
+    @Around(value = "retryCut(retry)", argNames = "joinPoint,retry")
+    public Object around(ProceedingJoinPoint joinPoint, Retry retry) throws Throwable {
         Exception optimisticLockException;
         String params = null;
         int tries = 0;
@@ -58,7 +56,7 @@ public class RetryAspect {
                     throw exception;
                 }
             }
-        } while (tries <= MAX_RETRY);
+        } while (tries <= retry.value());
         throw optimisticLockException;
     }
 }
