@@ -4,7 +4,7 @@
 
 ### 介绍
 
-本项目集成springboot，jpa，mybatis(pagehelper，mybatis-generator)，redis，shiro(shiro分支)，druid，RabbitMQ，log4j2，swagger2，email，rsa加密，基于注解接口幂等设计，基于注解接口限流，全局异常处理，乐观锁异常重试机制，基于redis分布式锁，xxl-job，分布式全局id雪花算法，二维码，验证码，防盗链，文件上传，阿里支付，微信支付，快递鸟快递查询等。一些常用util。一些常用类的api使用demo！
+本项目集成springboot，jpa，mybatis(pagehelper，mybatis-generator)，redis，shiro(shiro分支)，druid，RabbitMQ，log4j2，swagger2，email，rsa加密，基于注解接口幂等设计，基于注解接口限流，全局异常处理，乐观锁异常重试机制，基于redis分布式锁，xxl-job，分布式全局id雪花算法，二维码，验证码，防盗链，文件上传，阿里支付，微信支付，快递鸟快递查询，阿里云log，钉钉机器人等。一些常用util。一些常用类的api使用demo！
 
 本项目适合3年以内工作经验的同学学习和借鉴，有不足之处，请大家指出，互相学习！
 
@@ -27,6 +27,7 @@
 2. boot-service/com.xwbing.demo -常用api的使用
 3. boot-service/com.xwbing.rabiit -rabbitmq使用
 4. boot-service/com.xwbing.redis -redis自动配置使用
+4. boot-service/com.xwbing.aliyun -阿里云log自动配置使用
 5. boot-service/com.xwbing.util.captcha -验证码
 6. boot-service/com.xwbing.util.DateUtil2 -java8日期工具类
 7. boot-service/com.xwbing.util.DigestsUtil -MD5/SHA-1
