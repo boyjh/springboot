@@ -2,14 +2,12 @@ package com.xwbing.aliyun;
 
 import com.aliyun.openservices.log.Client;
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Slf4j
 @Data
 @Configuration
 @ConditionalOnProperty(prefix = "aliYunLog", name = {"accessId", "accessKey"}, havingValue = "true")
@@ -25,6 +23,7 @@ public class AliYunLogConfiguration {
     private String secret;
 
     @Bean
+    @ConditionalOnMissingBean(Client.class)
     public Client aliYunLogClient() {
         return new Client(endpoint, accessId, accessKey);
     }
