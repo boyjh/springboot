@@ -1,2 +1,3 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.xwbing.redis.RedisAutoConfiguration
+com.xwbing.redis.RedisAutoConfiguration,\
+com.xwbing.aliyun.AliYunLog

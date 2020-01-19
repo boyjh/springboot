@@ -1,38 +1,37 @@
 package com.xwbing.aliyun;
 
 import com.aliyun.openservices.log.Client;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import javax.annotation.Resource;
-
+@Slf4j
+@Data
 @Configuration
+@ConditionalOnProperty(prefix = "aliYunLog", name = {"accessId", "accessKey"}, havingValue = "true")
+@ConfigurationProperties(prefix = "aliYunLog")
 public class AliYunLogConfiguration {
-    /**
-     * 项目所属区域匹配的Endpoint
-     */
-    private static final String ENDPOINT = "cn-hangzhou.log.aliyuncs.com";
-    /**
-     * 创建的项目名称
-     */
-    @Value("${aliYunLog.project}")
+    private String endpoint;
     private String project;
-    /**
-     * 项目下创建的日志库名称
-     */
-    @Value("${aliYunLog.logStore}")
+    private String accessId;
+    private String accessKey;
+    private String topic;
     private String logStore;
-    @Resource
-    private Client aliYunLogClient;
+    private String dingTalkPrefix;
+    private String dingTalkToken;
 
     @Bean
     public Client aliYunLogClient() {
-        return new Client(ENDPOINT, "xxx", "xxx");
+        return new Client(endpoint, accessId, accessKey);
     }
 
     @Bean
-    public AliYunLog aliYunLog() {
-        return new AliYunLog(aliYunLogClient, logStore, "springboot", project);
+    @ConditionalOnMissingBean(AliYunLog.class)
+    public AliYunLog aliYunLog(Client aliYunLogClient) {
+        return new AliYunLog(aliYunLogClient, logStore, topic, project, dingTalkPrefix, dingTalkToken);
     }
 }

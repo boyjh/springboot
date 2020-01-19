@@ -57,5 +57,5 @@ redis:
   enabled: true
 #阿里云配置
 aliYunLog:
-  project: boot-api
-  logStore: test_boot
+  logStore: dev_boot #日志库名称
+  dingTalkToken: xxx

@@ -44,3 +44,13 @@ pagehelper:
 logging:
   config: classpath:log4j2.xml
 
+#阿里云配置
+aliYunLog:
+  endpoint: cn-shenzhen.log.aliyuncs.com #华东 1 (杭州)
+  project: boot-api #项目名称
+  accessId:
+  accessKey:
+  topic: boot_moddule
+  dingTalkPrefix: https://oapi.dingtalk.com/robot/send?access_token=
+
+
