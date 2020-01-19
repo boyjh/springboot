@@ -41,6 +41,13 @@ public class AliYunLog {
         this.secret = secret;
     }
 
+    /**
+     * 打印log
+     *
+     * @param source
+     * @param key
+     * @param value
+     */
     public void write(String source, String key, String value) {
         if (StringUtils.isEmpty(key)) {
             key = "default";
@@ -58,6 +65,12 @@ public class AliYunLog {
         }
     }
 
+    /**
+     * 钉钉群发送消息
+     *
+     * @param source
+     * @param params
+     */
     public void postDingTalk(String source, Object... params) {
         StringBuilder content = new StringBuilder("host: ").append(EnvUtil.getHost()).append("\n").append("source: ").append(source).append("\n");
         int i = 1;
