@@ -10,6 +10,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.Date;
 import java.util.Vector;
 
@@ -20,17 +28,17 @@ public class AliYunLog {
     private String logStore;
     private String topic;
     private String project;
-    private String dingTalkPrefix;
-    private String dingTalkToken;
+    private String webHook;
+    private String secret;
 
-    public AliYunLog(Client client, String logStore, String topic, String project, String dingTalkPrefix, String dingTalkToken) {
+    public AliYunLog(Client client, String logStore, String topic, String project, String webHook, String secret) {
         this.dingTalkClient = new DingtalkChatbotClient();
         this.client = client;
         this.project = project;
         this.logStore = logStore;
         this.topic = topic;
-        this.dingTalkPrefix = dingTalkPrefix;
-        this.dingTalkToken = dingTalkToken;
+        this.webHook = webHook;
+        this.secret = secret;
     }
 
     public void write(String source, String key, String value) {
@@ -57,10 +65,32 @@ public class AliYunLog {
             content.append("params").append(i).append(": ").append(obj).append("\n");
             i++;
         }
+        String dingTalkUrl = dingTalkUrl();
+        if (dingTalkUrl != null) {
+            try {
+                dingTalkClient.send(dingTalkUrl, new TextMessage(content.toString()));
+            } catch (Exception e) {
+                log.error(ExceptionUtils.getStackTrace(e));
+            }
+        }
+    }
+
+    /**
+     * 钉钉安全设置：加签
+     *
+     * @return url
+     */
+    private String dingTalkUrl() {
         try {
-            dingTalkClient.send(dingTalkPrefix + dingTalkToken, new TextMessage(content.toString()));
-        } catch (Exception e) {
-            log.error(ExceptionUtils.getStackTrace(e));
+            Long timestamp = System.currentTimeMillis();
+            String stringToSign = timestamp + "\n" + secret;
+            Mac mac = Mac.getInstance("HmacSHA256");
+            mac.init(new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), "HmacSHA256"));
+            byte[] signData = mac.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8));
+            String sign = URLEncoder.encode(Base64.getEncoder().encodeToString(signData), "UTF-8");
+            return String.format("%s&timestamp=%s&sign=%s", webHook, timestamp, sign);
+        } catch (NoSuchAlgorithmException | InvalidKeyException | UnsupportedEncodingException ex) {
+            return null;
         }
     }
 }

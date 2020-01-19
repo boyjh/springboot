@@ -21,8 +21,8 @@ public class AliYunLogConfiguration {
     private String accessKey;
     private String topic;
     private String logStore;
-    private String dingTalkPrefix;
-    private String dingTalkToken;
+    private String webHook;
+    private String secret;
 
     @Bean
     public Client aliYunLogClient() {
@@ -32,6 +32,6 @@ public class AliYunLogConfiguration {
     @Bean
     @ConditionalOnMissingBean(AliYunLog.class)
     public AliYunLog aliYunLog(Client aliYunLogClient) {
-        return new AliYunLog(aliYunLogClient, logStore, topic, project, dingTalkPrefix, dingTalkToken);
+        return new AliYunLog(aliYunLogClient, logStore, topic, project, webHook, secret);
     }
 }

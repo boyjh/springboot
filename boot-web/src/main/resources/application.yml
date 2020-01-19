@@ -51,6 +51,4 @@ aliYunLog:
   accessId:
   accessKey:
   topic: boot_moddule
-  dingTalkPrefix: https://oapi.dingtalk.com/robot/send?access_token=
-
 
