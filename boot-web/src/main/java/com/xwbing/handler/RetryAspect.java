@@ -38,20 +38,20 @@ public class RetryAspect {
         String params = null;
         int tries = 0;
         do {
-            tries++;
             try {
                 return joinPoint.proceed();
             } catch (Exception exception) {
                 if (exception instanceof HeuristicCompletionException
                         || exception instanceof HibernateOptimisticLockingFailureException
                         || exception instanceof StaleObjectStateException) {
+                    tries++;
                     String className = joinPoint.getTarget().getClass().getSimpleName();
                     String methodName = joinPoint.getSignature().getName();
                     params = params != null ? params : Arrays.stream(joinPoint.getArgs())
                             .filter(param -> !(param instanceof HttpServletRequest || param instanceof HttpServletResponse))
                             .map(JSONObject::toJSONString).collect(Collectors.joining(","));
                     optimisticLockException = exception;
-                    log.info("class:{} method:{} params:{}", className, methodName, params);
+                    log.info("class:{} - method:{} - params:{}", className, methodName, params);
                 } else {
                     throw exception;
                 }
