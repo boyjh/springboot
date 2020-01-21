@@ -8,6 +8,7 @@
     <packaging>pom</packaging>
     <version>1.0</version>
     <modules>
+        <module>boot-config</module>
         <module>boot-service</module>
         <module>boot-web</module>
     </modules>
@@ -143,11 +144,10 @@
             <artifactId>guava</artifactId>
             <version>${guava.verison}</version>
         </dependency>
-        <!-- xxl-job -->
+        <!-- lombok:实体类自动生成getting和setting方法,以及equals,hashCode,toString等 -->
         <dependency>
-            <groupId>com.xuxueli</groupId>
-            <artifactId>xxl-job-core</artifactId>
-            <version>${xxl-job.version}</version>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
         </dependency>
     </dependencies>
 

@@ -1,11 +1,10 @@
-package com.xwbing.aliyun;
+package com.xwbing.config.aliyun;
 
 import com.aliyun.openservices.log.Client;
 import com.aliyun.openservices.log.common.LogItem;
 import com.aliyun.openservices.log.request.PutLogsRequest;
 import com.dingtalk.chatbot.DingtalkChatbotClient;
 import com.dingtalk.chatbot.message.TextMessage;
-import com.xwbing.util.EnvUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -54,7 +53,8 @@ public class AliYunLog {
         }
         Vector<LogItem> logGroup = new Vector<>();
         LogItem logItem = new LogItem((int) ((new Date()).getTime() / 1000L));
-        logItem.PushBack(key, EnvUtil.getHost() + "_: " + value);
+        String host = System.getenv("hostName");
+        logItem.PushBack(key, host + "_: " + value);
         logGroup.add(logItem);
         PutLogsRequest putLogsRequest = new PutLogsRequest(project, logStore, topic, source, logGroup);
         try {
@@ -72,7 +72,8 @@ public class AliYunLog {
      * @param params
      */
     public void postDingTalk(String source, Object... params) {
-        StringBuilder content = new StringBuilder("host: ").append(EnvUtil.getHost()).append("\n").append("source: ").append(source).append("\n");
+        String host = System.getenv("hostName");
+        StringBuilder content = new StringBuilder("host: ").append(host).append("\n").append("source: ").append(source).append("\n");
         int i = 1;
         for (Object obj : params) {
             content.append("params").append(i).append(": ").append(obj).append("\n");

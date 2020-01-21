@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.xwbing.config.aliyun.AliYunLog,\
+com.xwbing.config.aspect.AspectAutoConfiguration

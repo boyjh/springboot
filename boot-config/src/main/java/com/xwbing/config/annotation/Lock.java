@@ -1,10 +1,9 @@
-package com.xwbing.annotation;
+package com.xwbing.config.annotation;
 
 import java.lang.annotation.*;
 
 /**
  * @author xiangwb
- * @date 20/1/15 20:30
  * 并发锁注解
  */
 @Retention(RetentionPolicy.RUNTIME)

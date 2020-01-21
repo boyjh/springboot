@@ -46,9 +46,9 @@ logging:
 
 #阿里云配置
 aliYunLog:
-  endpoint: cn-shenzhen.log.aliyuncs.com #华东 1 (杭州)
-  project: boot-api #项目名称
   accessId:
   accessKey:
+  endpoint: cn-shenzhen.log.aliyuncs.com
+  project: boot-api
   topic: boot_moddule
 

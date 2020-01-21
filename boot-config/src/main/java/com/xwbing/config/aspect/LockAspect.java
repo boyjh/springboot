@@ -1,8 +1,8 @@
-package com.xwbing.handler;
+package com.xwbing.config.aspect;
 
-import com.xwbing.annotation.Lock;
-import com.xwbing.exception.LockException;
-import com.xwbing.redis.RedisService;
+import com.xwbing.config.annotation.Lock;
+import com.xwbing.config.exception.LockException;
+import com.xwbing.config.redis.RedisService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -17,19 +17,17 @@ import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Method;
 
 /**
  * @author xiangwb
- * @date 20/1/15 20:30
+ * 分布式锁切面
  */
+@Order
 @Slf4j
 @Aspect
-@Order
-@Component
 public class LockAspect {
     private static final String suffix = ".lock";
     @Resource

@@ -1,4 +1,4 @@
-package com.xwbing.redis;
+package com.xwbing.config.redis;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

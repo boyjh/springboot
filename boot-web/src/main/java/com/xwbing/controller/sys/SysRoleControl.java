@@ -1,7 +1,7 @@
 package com.xwbing.controller.sys;
 
 import com.alibaba.fastjson.JSONObject;
-import com.xwbing.annotation.Idempotent;
+import com.xwbing.config.annotation.Idempotent;
 import com.xwbing.annotation.LogInfo;
 import com.xwbing.domain.entity.sys.SysAuthority;
 import com.xwbing.domain.entity.sys.SysRole;

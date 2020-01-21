@@ -57,6 +57,8 @@ redis:
   enabled: true
 #阿里云配置
 aliYunLog:
-  logStore: dev_boot #日志库名称
-  secret: SECf84bb8feb4f414fd0a298f2258bf1bfa512ddf79086033f6ce5739a5c7614ff9 #安全设置：加签
-  webhook: https://oapi.dingtalk.com/robot/send?access_token=3895a756e1e59a751fdccabed9f019def6d23acce3ee9f3e6c70b4d96744ea91 #钉钉机器人地址
+
+  logStore: dev_boot
+  webHook: https://oapi.dingtalk.com/robot/send?access_token=3895a756e1e59a751fdccabed9f019def6d23acce3ee9f3e6c70b4d96744ea91
+  secret: SECf84bb8feb4f414fd0a298f2258bf1bfa512ddf79086033f6ce5739a5c7614ff9
+

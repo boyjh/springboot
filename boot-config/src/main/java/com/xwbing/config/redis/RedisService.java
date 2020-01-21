@@ -1,6 +1,6 @@
-package com.xwbing.redis;
+package com.xwbing.config.redis;
 
-import com.xwbing.exception.BusinessException;
+import com.xwbing.config.exception.ConfigException;
 import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -29,7 +29,7 @@ public class RedisService {
             return jedisPool.getResource();
         } catch (Exception ex) {
             log.error("redis连接失败==================================");
-            throw new BusinessException("redis连接失败");
+            throw new ConfigException("redis连接失败");
         }
     }
 
@@ -447,7 +447,7 @@ public class RedisService {
             String ping = jedis.ping();
             log.info("redis连接成功");
             return ping;
-        } catch (BusinessException ex) {//获取jedis客户端失败
+        } catch (ConfigException ex) {//获取jedis客户端失败
             return "";
         } catch (Exception ex) {//ping失败
             log.error("redis连接失败=================================");

@@ -1,8 +1,8 @@
-package com.xwbing.exception;
+package com.xwbing.config.exception;
 
 /**
  * @author xiangwb
- * @date 20/1/15 21:17
+ * 分布式锁异常
  */
 public class LockException extends RuntimeException {
     private static final long serialVersionUID = -1087873952753821569L;
