@@ -10,7 +10,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 @ConfigurationProperties(prefix = RedisProperties.REDIS_PREFIX)
 public class RedisProperties {
-    public static final String REDIS_PREFIX = "redis";
+    public static final String REDIS_PREFIX = "boot.redis";
     /**
      * 最大连接数
      */

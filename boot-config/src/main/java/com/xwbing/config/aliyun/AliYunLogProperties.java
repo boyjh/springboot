@@ -10,7 +10,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 @ConfigurationProperties(prefix = AliYunLogProperties.PREFIX)
 public class AliYunLogProperties {
-    public static final String PREFIX = "aliYunLog";
+    public static final String PREFIX = "boot.aliYunLog";
     private String accessId;
     private String accessKey;
     /**

@@ -45,10 +45,11 @@ logging:
   config: classpath:log4j2.xml
 
 #阿里云配置
-aliYunLog:
-  accessId:
-  accessKey:
-  endpoint: cn-shenzhen.log.aliyuncs.com
-  project: boot-api
-  topic: boot_moddule
+boot:
+  aliYunLog:
+    accessId:
+    accessKey:
+    endpoint: cn-shenzhen.log.aliyuncs.com
+    project: boot-api
+    topic: boot_moddule
 
