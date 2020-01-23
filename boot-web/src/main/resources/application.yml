@@ -46,10 +46,12 @@ logging:
 
 #阿里云配置
 boot:
-  aliYunLog:
-    accessId:
-    accessKey:
-    endpoint: cn-shenzhen.log.aliyuncs.com
-    project: boot-api
-    topic: boot_moddule
+  aliYun:
+    enabled: true
+    log:
+      access-id:
+      access-key:
+      endpoint: cn-shenzhen.log.aliyuncs.com
+      project: boot-api
+      topic: boot_moddule
 

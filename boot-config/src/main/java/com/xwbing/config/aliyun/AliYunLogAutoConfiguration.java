@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import javax.annotation.Resource;
 
 @Configuration
-@ConditionalOnProperty(prefix = AliYunLogProperties.PREFIX, name = {"accessId", "accessKey"}, havingValue = "true")
+@ConditionalOnProperty(prefix = AliYunLogProperties.PREFIX, name = "enabled", havingValue = "true")
 @EnableConfigurationProperties(AliYunLogProperties.class)
 public class AliYunLogAutoConfiguration {
     @Resource
@@ -19,14 +19,14 @@ public class AliYunLogAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean(Client.class)
     public Client aliYunLogClient() {
-        return new Client(aliYunLogProperties.getEndpoint(),
-                aliYunLogProperties.getAccessId(), aliYunLogProperties.getAccessKey());
+        return new Client(aliYunLogProperties.getLog().getEndpoint(),
+                aliYunLogProperties.getLog().getAccessId(), aliYunLogProperties.getLog().getAccessKey());
     }
 
     @Bean
     @ConditionalOnMissingBean(AliYunLog.class)
     public AliYunLog aliYunLog(Client aliYunLogClient) {
-        return new AliYunLog(aliYunLogClient, aliYunLogProperties.getLogStore(), aliYunLogProperties.getTopic(),
-                aliYunLogProperties.getProject(), aliYunLogProperties.getWebHook(), aliYunLogProperties.getSecret());
+        return new AliYunLog(aliYunLogClient, aliYunLogProperties.getLog().getLogStore(), aliYunLogProperties.getLog().getTopic(),
+                aliYunLogProperties.getLog().getProject(), aliYunLogProperties.getDingTalk().getWebHook(), aliYunLogProperties.getDingTalk().getSecret());
     }
 }

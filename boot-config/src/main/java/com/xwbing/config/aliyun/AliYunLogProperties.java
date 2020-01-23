@@ -10,31 +10,51 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @Data
 @ConfigurationProperties(prefix = AliYunLogProperties.PREFIX)
 public class AliYunLogProperties {
-    public static final String PREFIX = "boot.aliYunLog";
-    private String accessId;
-    private String accessKey;
+    public static final String PREFIX = "boot.aliYun";
     /**
-     * 华东1(杭州)
+     * 开启自动配置
      */
-    private String endpoint;
+    private String enabled;
     /**
-     * 阿里云上创建的项目名称
+     * 阿里云日志
      */
-    private String project;
+    private Log log = new Log();
     /**
-     * 建议填本项目名称
+     * 钉钉机器人
      */
-    private String topic;
-    /**
-     * 日志库名称
-     */
-    private String logStore;
-    /**
-     * 钉钉机器人地址
-     */
-    private String webHook;
-    /**
-     * 钉钉消息安全设置:加签
-     */
-    private String secret;
+    private DingTalk dingTalk = new DingTalk();
+
+    @Data
+    protected static class Log {
+        private String accessId;
+        private String accessKey;
+        /**
+         * 华东1(杭州)
+         */
+        private String endpoint;
+        /**
+         * 阿里云上创建的项目名称
+         */
+        private String project;
+        /**
+         * 建议填本项目名称
+         */
+        private String topic;
+        /**
+         * 日志库名称
+         */
+        private String logStore;
+    }
+
+    @Data
+    protected static class DingTalk {
+        /**
+         * 钉钉机器人地址
+         */
+        private String webHook;
+        /**
+         * 钉钉消息安全设置:加签
+         */
+        private String secret;
+    }
 }

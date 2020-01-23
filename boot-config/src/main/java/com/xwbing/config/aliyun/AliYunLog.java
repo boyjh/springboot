@@ -71,7 +71,7 @@ public class AliYunLog {
      * @param source
      * @param params
      */
-    public void postDingTalk(String source, Object... params) {
+    public void dingTalk(String source, Object... params) {
         String host = System.getenv("hostName");
         StringBuilder content = new StringBuilder("host: ").append(host).append("\n").append("source: ").append(source).append("\n");
         int i = 1;

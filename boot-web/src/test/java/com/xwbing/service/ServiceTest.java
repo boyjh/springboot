@@ -12,7 +12,7 @@ import com.xwbing.domain.entity.sys.SysUserLoginInOut;
 import com.xwbing.domain.entity.vo.ExpressInfoVo;
 import com.xwbing.domain.mapper.sys.SysUserLoginInOutMapper;
 import com.xwbing.rabbit.Sender;
-import com.xwbing.redis.RedisService;
+import com.xwbing.config.redis.RedisService;
 import com.xwbing.service.rest.ExpressDeliveryService;
 import com.xwbing.service.rest.QRCodeZipService;
 import com.xwbing.service.sys.DataDictionaryService;
