@@ -26,7 +26,7 @@ xxl:
       addresses: http://127.0.0.1:7777/xxl-job-admin
     #xxl-job executor address
     executor:
-      appname: boot-web
+      appname: boot
       ip:
       port: 9990
       logpath: logs/jobhandler
