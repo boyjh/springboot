@@ -112,12 +112,4 @@ public class CommonDataUtil {
     public static void clearAllData() {
         token.clear();
     }
-
-    public static void main(String[] args) {
-        CommonDataUtil.setData("a", "a", 1);
-        CommonDataUtil.setData("b", "b");
-        Object a = CommonDataUtil.getData("a");
-        Object b = CommonDataUtil.getData("b");
-        CommonDataUtil.clearExpiryData();
-    }
 }

@@ -27,7 +27,7 @@ import java.lang.reflect.Method;
 @Slf4j
 @Aspect
 public class LockAspect {
-    private static final String suffix = ".lock";
+    private static final String SUFFIX = ".lock";
     @Resource
     private RedisService redisService;
 
@@ -69,7 +69,7 @@ public class LockAspect {
 
     public void lock(String key, int timeout, String remark) throws LockException {
         log.debug("request lock , the key is : {}", key);
-        key = String.format("%s%s", key, suffix);
+        key = String.format("%s%s", key, SUFFIX);
         Long now = System.currentTimeMillis();
         try {
             Long lock = redisService.setNx(key, String.valueOf(now));
@@ -100,7 +100,7 @@ public class LockAspect {
 
     public void unlock(String key) {
         log.debug("request unlock , the key is : {}", key);
-        key = String.format("%s%s", key, suffix);
+        key = String.format("%s%s", key, SUFFIX);
         redisService.del(key);
     }
 

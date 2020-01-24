@@ -8,9 +8,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * redis属性加载配置类
  */
 @Data
-@ConfigurationProperties(prefix = RedisProperties.REDIS_PREFIX)
+@ConfigurationProperties(prefix = RedisProperties.PREFIX)
 public class RedisProperties {
-    public static final String REDIS_PREFIX = "boot.redis";
+    public static final String PREFIX = "boot.redis";
     /**
      * 最大连接数
      */
@@ -32,7 +32,7 @@ public class RedisProperties {
      */
     private Integer port;
     /**
-     * 超时时间
+     * 超时时间(毫秒)
      */
     private Integer timeout;
     /**
