@@ -15,16 +15,16 @@
 6. xxl-job服务
 ### 项目说明
 ##### 自动配置(boot-config)
->com.xwbing.config.aspect.FlowLimiterAspect -基于注解接口限流
-com.xwbing.config.aspect.IdempotentAspect -基于注解接口幂等
+com.xwbing.config.aspect.FlowLimiterAspect 基于注解接口限流
+com.xwbing.config.aspect.IdempotentAspect 基于注解接口幂等
 com.xwbing.config.aspect.LockAspect -基于redis分布式锁
 com.xwbing.config.aspect.OptimisticLockRetryAspect -乐观锁异常重试机制
 com.xwbing.config.redis -redis自动配置
 com.xwbing.config.aliyun -aliYunLog和dingTalk自动配置
 ##### service(boot-service)
->com.xwbing.datasource-(JpaDataSourceConfig,MybatisDataSourceConfig)
-com.xwbing.demo -常用api的使用
-com.xwbing.rabiit -rabbitmq使用
+>com.xwbing.datasource-(JpaDataSourceConfig,MybatisDataSourceConfig)  
+com.xwbing.demo -常用api的使用  
+com.xwbing.rabiit -rabbitmq使用  
 com.xwbing.util.captcha -验证码
 com.xwbing.util.DateUtil2 -java8日期工具类
 com.xwbing.util.DigestsUtil -MD5/SHA-1
