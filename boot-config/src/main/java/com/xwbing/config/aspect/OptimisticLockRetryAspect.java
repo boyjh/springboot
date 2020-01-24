@@ -8,7 +8,6 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.hibernate.StaleObjectStateException;
-import org.springframework.core.annotation.Order;
 import org.springframework.orm.hibernate4.HibernateOptimisticLockingFailureException;
 import org.springframework.transaction.HeuristicCompletionException;
 
@@ -21,7 +20,6 @@ import java.util.stream.Collectors;
  * @author xiangwb
  * 乐观锁异常切面
  */
-@Order
 @Slf4j
 @Aspect
 public class OptimisticLockRetryAspect {
