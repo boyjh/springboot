@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
 
 spring:
   rabbitmq:
@@ -26,7 +26,7 @@ xxl:
       addresses: http://127.0.0.1:7777/xxl-job-admin
     #xxl-job executor address
     executor:
-      appname: boot-web
+      appname: boot
       ip:
       port: 9990
       logpath: logs/jobhandler
@@ -39,12 +39,12 @@ boot:
     port: 6379
     password: xwbing
     timeout: 10000
-    maxTotal: 50
-    maxIdle: 5
+    maxTotal: 100
+    maxIdle: 10
     minIdle: 0
   aliYun:
     log:
-      log-store: dev_boot
+      log-store: prod_boot
     ding-talk:
       web-hook: https://oapi.dingtalk.com/robot/send?access_token=3895a756e1e59a751fdccabed9f019def6d23acce3ee9f3e6c70b4d96744ea91
       secret: SECf84bb8feb4f414fd0a298f2258bf1bfa512ddf79086033f6ce5739a5c7614ff9

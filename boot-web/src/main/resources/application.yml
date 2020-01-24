@@ -8,16 +8,6 @@ server:
 spring:
   profiles:
     active: dev
-  jpa:
-    database: mysql
-    show-sql: false
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
-        dialect: org.hibernate.dialect.MySQL5Dialect
-  #aop
   aop:
     auto: true # Add @EnableAspectJAutoProxy
     proxy-target-class: false
@@ -30,6 +20,27 @@ spring:
     #MultipartResolver
     multipart:
       enabled: false #关闭自带multipartResolver,否则commonsMultipartResolver解析会得不到数据
+  mail:
+    host: smtp.163.com
+    username: xwb1ng@163.com
+    password: xwbing000111 #邮箱设置里获取的授权码
+    default-encoding: utf-8
+    properties:
+      mail:
+        smtp:
+          auth: true #授权
+          starttls:
+            enable: true
+            required: true
+  jpa:
+    database: mysql
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+        dialect: org.hibernate.dialect.MySQL5Dialect
 
 #mybatis
 #mybatis:
@@ -37,15 +48,19 @@ spring:
 #  type-aliases-package: #com.xwbing.domain.entity
 #  config-location: # classpath:mybatisConfig.xml
 
-
 pagehelper:
   helper-dialect: mysql
+
 #log
 logging:
   config: classpath:log4j2.xml
 
-#阿里云配置
+#自定义自动配置参数
 boot:
+  redis:
+    prefix: boot-
+    enabled: true
+  #阿里云配置
   aliYun:
     enabled: true
     log:
