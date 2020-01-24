@@ -15,41 +15,41 @@
 6. xxl-job服务
 ### 项目说明
 ##### 自动配置(boot-config)
-com.xwbing.config.aspect.FlowLimiterAspect 基于注解接口限流
-com.xwbing.config.aspect.IdempotentAspect 基于注解接口幂等
-com.xwbing.config.aspect.LockAspect -基于redis分布式锁
-com.xwbing.config.aspect.OptimisticLockRetryAspect -乐观锁异常重试机制
-com.xwbing.config.redis -redis自动配置
-com.xwbing.config.aliyun -aliYunLog和dingTalk自动配置
+* com.xwbing.config.aspect.FlowLimiterAspect 基于注解接口限流
+* com.xwbing.config.aspect.IdempotentAspect 基于注解接口幂等
+* com.xwbing.config.aspect.LockAspect -基于redis分布式锁
+* com.xwbing.config.aspect.OptimisticLockRetryAspect -乐观锁异常重试机制
+* com.xwbing.config.redis -redis自动配置
+* com.xwbing.config.aliyun -aliYunLog和dingTalk自动配置
 ##### service(boot-service)
->com.xwbing.datasource-(JpaDataSourceConfig,MybatisDataSourceConfig)  
-com.xwbing.demo -常用api的使用  
-com.xwbing.rabiit -rabbitmq使用  
-com.xwbing.util.captcha -验证码
-com.xwbing.util.DateUtil2 -java8日期工具类
-com.xwbing.util.DigestsUtil -MD5/SHA-1
-com.xwbing.util.EmailUtil -邮箱工具类
-com.xwbing.util.EncodeUtil -编码解码工具类
-com.xwbing.util.ExcelUtil -excel工具类
-com.xwbing.util.HttpUtil -httpcliet工具类
-com.xwbing.util.KdniaoUtil -快递鸟快递查询
-com.xwbing.util.PassWordUtil -密码工具类
-com.xwbing.util.QRCodeUtil -二维码工具类
-com.xwbing.util.OrderNoUtil -订单号生成工具类
-com.xwbing.util.RSAUtil -rsa非对称加密工具类
-com.xwbing.util.TraceIdGenerateWorker -分布式全局id雪花算法
-com.xwbing.util.ZipUtil.java -压缩工具类
-generatorConfig.xml -mybatis自动生成插件配置
+* com.xwbing.datasource-(JpaDataSourceConfig,MybatisDataSourceConfig)  
+* com.xwbing.demo -常用api的使用  
+* com.xwbing.rabiit -rabbitmq使用  
+* com.xwbing.util.captcha -验证码
+* com.xwbing.util.DateUtil2 -java8日期工具类
+* com.xwbing.util.DigestsUtil -MD5/SHA-1
+* com.xwbing.util.EmailUtil -邮箱工具类
+* com.xwbing.util.EncodeUtil -编码解码工具类
+* com.xwbing.util.ExcelUtil -excel工具类
+* com.xwbing.util.HttpUtil -httpcliet工具类
+* com.xwbing.util.KdniaoUtil -快递鸟快递查询
+* com.xwbing.util.PassWordUtil -密码工具类
+* com.xwbing.util.QRCodeUtil -二维码工具类
+* com.xwbing.util.OrderNoUtil -订单号生成工具类
+* com.xwbing.util.RSAUtil -rsa非对称加密工具类
+* com.xwbing.util.TraceIdGenerateWorker -分布式全局id雪花算法
+* com.xwbing.util.ZipUtil.java -压缩工具类
+* generatorConfig.xml -mybatis自动生成插件配置
 ##### web(boot-web)
->com.xwbing.configuration -核心配置包
-com.xwbing.handler.FileFilter -防盗链
-com.xwbing.handler.GlobalExceptionHandler -全局异常处理
-com.xwbing.handler.LoginInterceptor -登录拦截器
-com.xwbing.handler.UrlPermissionsInterceptor -权限拦截器
-com.xwbing.handler.WebLogAspect -基于注解日志切面
-data.boot_module_ddl.sql -数据库脚本
-data.bootModule.pdm -表结构
-log4j2.xml -log4j2配置
+* com.xwbing.configuration -核心配置包
+* com.xwbing.handler.FileFilter -防盗链
+* com.xwbing.handler.GlobalExceptionHandler -全局异常处理
+* com.xwbing.handler.LoginInterceptor -登录拦截器
+* com.xwbing.handler.UrlPermissionsInterceptor -权限拦截器
+* com.xwbing.handler.WebLogAspect -基于注解日志切面
+* data.boot_module_ddl.sql -数据库脚本
+* data.bootModule.pdm -表结构
+* log4j2.xml -log4j2配置
 ### 接口说明
 boot-web/config.properties 里面可以开启登录拦截器和权限拦截器
 如果开启权限，得在权限接口里添加权限，否则一些接口无法访问
