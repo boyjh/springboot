@@ -31,26 +31,26 @@ public class UrlPermissionsInterceptor extends HandlerInterceptorAdapter {
     private SysAuthorityService sysAuthorityService;
     @Resource
     private SysUserService sysUserService;
-    private static final Set<String> SET = new HashSet<>();//拦截器白名单
+    private static final Set<String> WHITE_LIST = new HashSet<>();//拦截器白名单
 
     static {
         //映射swagger文档
-        SET.add("doc");
+        WHITE_LIST.add("doc");
         //验证码
-        SET.add("captcha");
+        WHITE_LIST.add("captcha");
         //swagger
-        SET.add("v2/api-docs");
-        SET.add("swagger-resources");
-        SET.add("configuration/ui");
-        SET.add("configuration/security");
+        WHITE_LIST.add("v2/api-docs");
+        WHITE_LIST.add("swagger-resources");
+        WHITE_LIST.add("configuration/ui");
+        WHITE_LIST.add("configuration/security");
         //德鲁伊监控
-        SET.add("druid");
+        WHITE_LIST.add("druid");
     }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String servletPath = request.getServletPath().substring(1);
-        if (!SET.contains(servletPath) && !servletPath.contains("test")) {
+        if (!WHITE_LIST.contains(servletPath) && !servletPath.contains("test")) {
             if (checkUrlExit(servletPath)) {
                 List<String> permissionList = permissionList();
                 if (CollectionUtils.isNotEmpty(permissionList) && permissionList.contains(servletPath)) {

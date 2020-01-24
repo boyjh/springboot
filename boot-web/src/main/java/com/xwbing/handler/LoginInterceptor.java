@@ -25,26 +25,26 @@ import java.util.Set;
  */
 @Slf4j
 public class LoginInterceptor extends HandlerInterceptorAdapter {
-    private static final Set<String> SET = new HashSet<>();//拦截器白名单
+    private static final Set<String> WHITE_LIST = new HashSet<>();//拦截器白名单
 
     static {
         //映射swagger文档
-        SET.add("/doc");
+        WHITE_LIST.add("/doc");
         //验证码
-        SET.add("/captcha");
+        WHITE_LIST.add("/captcha");
         //swagger
-        SET.add("/v2/api-docs");
-        SET.add("/swagger-resources");
-        SET.add("/configuration/ui");
-        SET.add("/configuration/security");
+        WHITE_LIST.add("/v2/api-docs");
+        WHITE_LIST.add("/swagger-resources");
+        WHITE_LIST.add("/configuration/ui");
+        WHITE_LIST.add("/configuration/security");
         //德鲁伊监控
-        SET.add("/druid");
+        WHITE_LIST.add("/druid");
     }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String servletPath = request.getServletPath();
-        if (!SET.contains(servletPath) && !servletPath.contains("test")) {
+        if (!WHITE_LIST.contains(servletPath) && !servletPath.contains("test")) {
             HttpSession session = request.getSession(false);
             String token = HeaderUtil.getToken(request);
             if (session == null) {
