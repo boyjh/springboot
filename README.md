@@ -23,38 +23,42 @@
 
 ### 项目说明
 
-1. boot-service/com.xwbing.datasource-(JpaDataSourceConfig,MybatisDataSourceConfig)
-2. boot-service/com.xwbing.demo -常用api的使用
-3. boot-service/com.xwbing.rabiit -rabbitmq使用
-4. boot-service/com.xwbing.redis -redis自动配置使用
-4. boot-service/com.xwbing.aliyun -阿里云log自动配置使用
-5. boot-service/com.xwbing.util.captcha -验证码
-6. boot-service/com.xwbing.util.DateUtil2 -java8日期工具类
-7. boot-service/com.xwbing.util.DigestsUtil -MD5/SHA-1
-8. boot-service/com.xwbing.util.EmailUtil -邮箱工具类
-9. boot-service/com.xwbing.util.EncodeUtil -编码解码工具类
-10. boot-service/com.xwbing.util.ExcelUtil -excel工具类
-11. boot-service/com.xwbing.util.HttpUtil -httpcliet工具类
-12. boot-service/com.xwbing.util.KdniaoUtil -快递鸟快递查询
-13. boot-service/com.xwbing.util.PassWordUtil -密码工具类
-14. boot-service/com.xwbing.util.QRCodeUtil -二维码工具类
-15. boot-service/com.xwbing.util.RSAUtil -rsa非对称加密工具类
-16. boot-service/com.xwbing.util.TraceIdGenerateWorker -分布式全局id雪花算法
-17. boot-service/com.xwbing.util.ZipUtil.java -压缩工具类
-18. boot-service/generatorConfig.xml -mybatis自动生成插件配置
-19. boot-web/com.xwbing.configuration -核心配置包
-20. boot-web/com.xwbing.handler.FlowLimiterAspect -基于注解接口限流
-21. boot-web/com.xwbing.handler.GlobalExceptionHandler -全局异常处理
-22. boot-web/com.xwbing.handler.IdempotentAspect -基于注解接口幂等
-23. boot-web/com.xwbing.handler.LoginInterceptor -登录拦截器
-23. boot-web/com.xwbing.handler.RetryAspect -乐观锁异常重试机制
-23. boot-web/com.xwbing.handler.LockAspect -分布式锁
-24. boot-web/com.xwbing.handler.UrlPermissionsInterceptor -权限拦截器
-25. boot-web/com.xwbing.handler.WebLogAspect -基于注解日志切面
-26. boot-web/com.xwbing.handler.FileFilter -防盗链
-27. boot-web/data.boot_module_ddl.sql -数据库脚本
-28. boot-web/data.bootModule.pdm -表结构
-29. boot-web/log4j2.xml -log4j2配置
+##### 自动配置-
+boot-config/com.xwbing.config.aspect.FlowLimiterAspect -基于注解接口限流
+boot-config/com.xwbing.config.aspect.IdempotentAspect -基于注解接口幂等
+boot-config/com.xwbing.config.aspect.LockAspect -基于redis分布式锁
+boot-config/com.xwbing.config.aspect.OptimisticLockRetryAspect -乐观锁异常重试机制
+boot-config/com.xwbing.config.redis -redis自动配置
+boot-config/com.xwbing.config.aliyun -aliYunLog和dingTalk自动配置
+##### service-
+boot-service/com.xwbing.datasource-(JpaDataSourceConfig,MybatisDataSourceConfig)
+boot-service/com.xwbing.demo -常用api的使用
+boot-service/com.xwbing.rabiit -rabbitmq使用
+boot-service/com.xwbing.util.captcha -验证码
+boot-service/com.xwbing.util.DateUtil2 -java8日期工具类
+boot-service/com.xwbing.util.DigestsUtil -MD5/SHA-1
+boot-service/com.xwbing.util.EmailUtil -邮箱工具类
+boot-service/com.xwbing.util.EncodeUtil -编码解码工具类
+boot-service/com.xwbing.util.ExcelUtil -excel工具类
+boot-service/com.xwbing.util.HttpUtil -httpcliet工具类
+boot-service/com.xwbing.util.KdniaoUtil -快递鸟快递查询
+boot-service/com.xwbing.util.PassWordUtil -密码工具类
+boot-service/com.xwbing.util.QRCodeUtil -二维码工具类
+boot-service/com.xwbing.util.OrderNoUtil -订单号生成工具类
+boot-service/com.xwbing.util.RSAUtil -rsa非对称加密工具类
+boot-service/com.xwbing.util.TraceIdGenerateWorker -分布式全局id雪花算法
+boot-service/com.xwbing.util.ZipUtil.java -压缩工具类
+boot-service/generatorConfig.xml -mybatis自动生成插件配置
+##### web-
+boot-web/com.xwbing.configuration -核心配置包
+boot-web/com.xwbing.handler.FileFilter -防盗链
+boot-web/com.xwbing.handler.GlobalExceptionHandler -全局异常处理
+boot-web/com.xwbing.handler.LoginInterceptor -登录拦截器
+boot-web/com.xwbing.handler.UrlPermissionsInterceptor -权限拦截器
+boot-web/com.xwbing.handler.WebLogAspect -基于注解日志切面
+boot-web/data.boot_module_ddl.sql -数据库脚本
+boot-web/data.bootModule.pdm -表结构
+boot-web/log4j2.xml -log4j2配置
 
 ### 接口说明
 
