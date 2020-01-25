@@ -31,6 +31,7 @@ boot:
     log:
       log-store: prod_lease
     ding-talk:
-      web-hook: https://oapi.dingtalk.com/robot/send?access_token=3895a756e1e59a751fdccabed9f019def6d23acce3ee9f3e6c70b4d96744ea91
-      secret: SECf84bb8feb4f414fd0a298f2258bf1bfa512ddf79086033f6ce5739a5c7614ff9
+      web-hook: https://oapi.dingtalk.com/robot/send?access_token=f41b013832ca349f45cabce7dd7e64b19f3e1aabc4414d71a1e9ee050d65e141
+      secret: SEC9f4390e8c897e118ab487b0ed5874100a7693920eb87e9a968ee8129b0874e3f
+
 

@@ -56,10 +56,5 @@
             <artifactId>aliyun-log</artifactId>
             <version>${aliyun-log.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.dingtalk</groupId>
-            <artifactId>dingtalk-chatbot-sdk</artifactId>
-            <version>${dingtalk-chatbot-sdk.version}</version>
-        </dependency>
     </dependencies>
 </project>

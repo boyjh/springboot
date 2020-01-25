@@ -2,6 +2,7 @@ package com.xwbing.controller.rest;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.annotation.LogInfo;
+import com.xwbing.config.aliyun.AliYunLog;
 import com.xwbing.domain.entity.rest.FilesUpload;
 import com.xwbing.config.redis.RedisService;
 import com.xwbing.service.rest.CookieSessionService;
@@ -45,6 +46,8 @@ public class TestControl {
     private UploadService uploadService;
     @Resource
     private RedisService redisService;
+    @Resource
+    private AliYunLog aliYunLog;
 
     @LogInfo("导出zip")
     @GetMapping("batchGetImage")
@@ -92,7 +95,13 @@ public class TestControl {
     @GetMapping("redis")
     public JSONObject redis(@RequestParam String kv) {
         redisService.set(kv, kv);
-        return JsonResult.toJSONObj(redisService.get(kv),"redis success");
+        return JsonResult.toJSONObj(redisService.get(kv), "redis success");
+    }
+
+    @LogInfo("dingTalk")
+    @GetMapping("dingTalk")
+    public void dingTalk() {
+        aliYunLog.dingTalkText("测试,请忽略", false, null, "test");
     }
 }
 

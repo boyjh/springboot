@@ -3,8 +3,8 @@ package com.xwbing.config.aliyun;
 import com.aliyun.openservices.log.Client;
 import com.aliyun.openservices.log.common.LogItem;
 import com.aliyun.openservices.log.request.PutLogsRequest;
-import com.dingtalk.chatbot.DingtalkChatbotClient;
-import com.dingtalk.chatbot.message.TextMessage;
+import com.xwbing.config.util.dingTalk.DingTalkClient;
+import com.xwbing.config.util.dingTalk.TextMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -16,13 +16,11 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
-import java.util.Date;
-import java.util.Vector;
+import java.util.*;
 
 @Slf4j
 public class AliYunLog {
-    private DingtalkChatbotClient dingTalkClient;
+    private DingTalkClient dingTalkClient;
     private Client client;
     private String logStore;
     private String topic;
@@ -31,7 +29,7 @@ public class AliYunLog {
     private String secret;
 
     public AliYunLog(Client client, String logStore, String topic, String project, String webHook, String secret) {
-        this.dingTalkClient = new DingtalkChatbotClient();
+        this.dingTalkClient = new DingTalkClient();
         this.client = client;
         this.project = project;
         this.logStore = logStore;
@@ -68,12 +66,14 @@ public class AliYunLog {
     /**
      * 钉钉群发送消息
      *
-     * @param source
+     * @param title
+     * @param atAll
+     * @param atMobiles
      * @param params
      */
-    public void dingTalk(String source, Object... params) {
+    public void dingTalkText(String title, boolean atAll, List<String> atMobiles, Object... params) {
         String host = System.getenv("hostName");
-        StringBuilder content = new StringBuilder("host: ").append(host).append("\n").append("source: ").append(source).append("\n");
+        StringBuilder content = new StringBuilder("host: ").append(host).append("\n").append("title: ").append(title).append("\n");
         int i = 1;
         for (Object obj : params) {
             content.append("params").append(i).append(": ").append(obj).append("\n");
@@ -82,7 +82,10 @@ public class AliYunLog {
         String dingTalkUrl = dingTalkUrl();
         if (dingTalkUrl != null) {
             try {
-                dingTalkClient.send(dingTalkUrl, new TextMessage(content.toString()));
+                TextMessage textMessage = new TextMessage(content.toString());
+                textMessage.setAtMobiles(atMobiles);
+                textMessage.setIsAtAll(atAll);
+                dingTalkClient.send(dingTalkUrl, textMessage);
             } catch (Exception e) {
                 log.error(ExceptionUtils.getStackTrace(e));
             }
