@@ -1,22 +1,19 @@
 package com.xwbing.config.aliyun;
 
+import com.alibaba.fastjson.JSONObject;
 import com.aliyun.openservices.log.Client;
 import com.aliyun.openservices.log.common.LogItem;
 import com.aliyun.openservices.log.request.PutLogsRequest;
 import com.xwbing.config.util.dingTalk.DingTalkClient;
+import com.xwbing.config.util.dingTalk.SendResult;
 import com.xwbing.config.util.dingTalk.TextMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Vector;
 
 @Slf4j
 public class AliYunLog {
@@ -79,35 +76,16 @@ public class AliYunLog {
             content.append("params").append(i).append(": ").append(obj).append("\n");
             i++;
         }
-        String dingTalkUrl = dingTalkUrl();
-        if (dingTalkUrl != null) {
-            try {
-                TextMessage textMessage = new TextMessage(content.toString());
-                textMessage.setAtMobiles(atMobiles);
-                textMessage.setIsAtAll(atAll);
-                dingTalkClient.send(dingTalkUrl, textMessage);
-            } catch (Exception e) {
-                log.error(ExceptionUtils.getStackTrace(e));
-            }
-        }
-    }
-
-    /**
-     * 钉钉安全设置：加签
-     *
-     * @return url
-     */
-    private String dingTalkUrl() {
         try {
-            Long timestamp = System.currentTimeMillis();
-            String stringToSign = timestamp + "\n" + secret;
-            Mac mac = Mac.getInstance("HmacSHA256");
-            mac.init(new SecretKeySpec(secret.getBytes(StandardCharsets.UTF_8), "HmacSHA256"));
-            byte[] signData = mac.doFinal(stringToSign.getBytes(StandardCharsets.UTF_8));
-            String sign = URLEncoder.encode(Base64.getEncoder().encodeToString(signData), "UTF-8");
-            return String.format("%s&timestamp=%s&sign=%s", webHook, timestamp, sign);
-        } catch (NoSuchAlgorithmException | InvalidKeyException | UnsupportedEncodingException ex) {
-            return null;
+            TextMessage textMessage = new TextMessage(content.toString());
+            textMessage.setAtMobiles(atMobiles);
+            textMessage.setIsAtAll(atAll);
+            SendResult send = dingTalkClient.send(webHook, secret, textMessage);
+            if (!send.isSuccess()) {
+                log.error("{} - {}", title, JSONObject.toJSON(send));
+            }
+        } catch (Exception e) {
+            log.error(ExceptionUtils.getStackTrace(e));
         }
     }
 }
