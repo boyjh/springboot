@@ -29,7 +29,7 @@ boot:
     minIdle: 0
   aliYun:
     log:
-      log-store: dev_boot
+      log-store: test_lease
     ding-talk:
       web-hook: https://oapi.dingtalk.com/robot/send?access_token=3895a756e1e59a751fdccabed9f019def6d23acce3ee9f3e6c70b4d96744ea91
       secret: SECf84bb8feb4f414fd0a298f2258bf1bfa512ddf79086033f6ce5739a5c7614ff9

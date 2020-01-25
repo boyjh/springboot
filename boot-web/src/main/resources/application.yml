@@ -62,11 +62,11 @@ boot:
     enabled: true
   #阿里云配置
   aliYun:
-    enabled: false
+    enabled: true
     log:
-      access-id:
-      access-key:
-      endpoint: cn-shenzhen.log.aliyuncs.com
-      project: boot-api
+      access-id: LTAIOoyUI7hj3bEr
+      access-key: jONbBlnX12MU0okBDXZs6HEy8DP37T
+      endpoint: cn-hangzhou.log.aliyuncs.com
+      project: jimi-api
       topic: boot_moddule
 
