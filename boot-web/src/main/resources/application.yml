@@ -58,11 +58,11 @@ logging:
 #自定义自动配置参数
 boot:
   redis:
-    prefix: boot-
+    prefix: boot_
     enabled: true
   #阿里云配置
   aliYun:
-    enabled: true
+    enabled: false
     log:
       access-id:
       access-key:

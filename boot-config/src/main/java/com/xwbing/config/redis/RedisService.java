@@ -1,6 +1,8 @@
 package com.xwbing.config.redis;
 
 import com.xwbing.config.exception.ConfigException;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -16,7 +18,11 @@ import java.util.Set;
  */
 @Slf4j
 public class RedisService {
+    @Getter
+    @Setter
     private JedisPool jedisPool;
+    @Getter
+    @Setter
     private String prefix;
 
     /**
@@ -456,21 +462,4 @@ public class RedisService {
             returnJedis(jedis);
         }
     }
-
-    public JedisPool getJedisPool() {
-        return jedisPool;
-    }
-
-    public void setJedisPool(JedisPool jedisPool) {
-        this.jedisPool = jedisPool;
-    }
-
-    public String getPrefix() {
-        return prefix;
-    }
-
-    public void setPrefix(String prefix) {
-        this.prefix = prefix;
-    }
-
 }
