@@ -46,7 +46,7 @@ public class SwaggerConfig {
         return new ApiInfoBuilder()
                 .title("RESTful API Document")
                 .description("系统接口文档")
-                .termsOfServiceUrl("http://localhost:8080/swagger-ui.html")
+                .termsOfServiceUrl("host:port/swagger-ui.html")
                 .contact(new Contact("项伟兵", "https://github.com/xiangwbs/springboot.git", "xiangwbs@163.com"))
                 .version("1.0.0")
                 .build();
@@ -72,7 +72,7 @@ public class SwaggerConfig {
         return new ApiInfoBuilder()
                 .title("RESTful API Document")
                 .description("接口文档")
-                .termsOfServiceUrl("http://localhost:8080/swagger-ui.html")
+                .termsOfServiceUrl("host:port/swagger-ui.html")
                 .contact(new Contact("项伟兵", "https://github.com/xiangwbs/springboot.git", "xiangwbs@163.com"))
                 .version("1.0.0")
                 .build();
@@ -101,7 +101,10 @@ public class SwaggerConfig {
      * @return
      */
     private ArrayList<ResponseMessage> customerResponseMessage() {
-        return new ArrayList<ResponseMessage>() {{
+        return new ArrayList<ResponseMessage>() {
+            private static final long serialVersionUID = 2099140398938704631L;
+
+            {
             add(new ResponseMessageBuilder()
                     .code(CommonEnum.CodeEnum.OK.getValue())
                     .message(CommonEnum.CodeEnum.OK.getName())
