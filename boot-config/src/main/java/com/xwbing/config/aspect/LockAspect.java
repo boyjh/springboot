@@ -37,25 +37,29 @@ public class LockAspect {
 
     @Around(value = "lockCut(lock)", argNames = "joinPoint,lock")
     public Object around(ProceedingJoinPoint joinPoint, Lock lock) throws Throwable {
-        //创建SpEL表达式解析器
-        ExpressionParser expressionParser = new SpelExpressionParser();
-        //创建解析表达式上下文
-        EvaluationContext context = new StandardEvaluationContext();
-        //上下文中设置变量
-        Object[] params = joinPoint.getArgs();
-        for (int i = 0; i < params.length; i++) {
-            //p0,p1......
-            context.setVariable(String.format("%s%s", "p", i), params[i]);
-        }
-        ParameterNameDiscoverer parameterNameDiscoverer = new LocalVariableTableParameterNameDiscoverer();
         Method method = ((MethodSignature) joinPoint.getSignature()).getMethod();
-        String[] parameterNames = parameterNameDiscoverer.getParameterNames(method);
-        for (int i = 0; i < params.length; i++) {
-            //paramName1,paraName2......
-            context.setVariable(parameterNames[i], params[i]);
+        String subject = "";
+        String value = lock.value();
+        if (StringUtils.isNotEmpty(value)) {
+            //创建SpEL表达式解析器
+            ExpressionParser expressionParser = new SpelExpressionParser();
+            //创建解析表达式上下文
+            EvaluationContext context = new StandardEvaluationContext();
+            //上下文中设置变量
+            Object[] params = joinPoint.getArgs();
+            for (int i = 0; i < params.length; i++) {
+                //p0,p1......
+                context.setVariable(String.format("%s%s", "p", i), params[i]);
+            }
+            ParameterNameDiscoverer parameterNameDiscoverer = new LocalVariableTableParameterNameDiscoverer();
+            String[] parameterNames = parameterNameDiscoverer.getParameterNames(method);
+            for (int i = 0; i < params.length; i++) {
+                //paramName1,paraName2......
+                context.setVariable(parameterNames[i], params[i]);
+            }
+            //获取上下文变量值 #p0 | #p0.getXxx() | #paramName | 基本数据类型
+            subject = String.valueOf(expressionParser.parseExpression(value).getValue(context));
         }
-        //获取上下文变量值 #p0 | #p0.getXxx() | #paramName | 基本数据类型
-        String subject = String.valueOf(expressionParser.parseExpression(lock.value()).getValue(context));
         String operator = StringUtils.isNotEmpty(lock.operator()) ? lock.operator()
                 : String.format("%s.%s", joinPoint.getTarget().getClass().getName(), method.getName());
         try {

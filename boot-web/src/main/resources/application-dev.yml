@@ -18,21 +18,6 @@ spring:
       simple:
         acknowledge-mode: manual #消息接收手动ack确认
 
-#xxl-job
-xxl:
-  job:
-    admin:
-      #admin address list, such as "http://address" or "http://address01,http://address02"
-      addresses: http://127.0.0.1:7777/xxl-job-admin
-    #xxl-job executor address
-    executor:
-      appname: boot
-      ip:
-      port: 9990
-      logpath: logs/jobhandler
-      logretentiondays: -1
-    accessToken:
-
 boot:
   redis:
     host: 127.0.0.1

@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 @Documented
 public @interface Lock {
 
-    String value(); //SpEL表达式
+    String value() default ""; //SpEL表达式
 
     String remark() default "lock failed, please try again later";
 

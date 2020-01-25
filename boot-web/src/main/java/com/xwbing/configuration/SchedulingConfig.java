@@ -1,5 +1,6 @@
 package com.xwbing.configuration;
 
+import com.xwbing.config.annotation.Lock;
 import com.xwbing.util.CommonDataUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +17,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 @Configuration
 @EnableScheduling//启用定时任务
 public class SchedulingConfig {
+    @Lock
     @Scheduled(cron = "0 0 6 * * ?")//每天6点执行定时任务
     public void scheduler() {
         log.info("清除公共数据类过期数据===================");

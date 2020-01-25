@@ -27,4 +27,8 @@ public class Base {
     public static final String ENV_SANDBOX = "sandbox";
     //正式环境
     public static final String ENV_PROD = "prod";
+
+    public static final String HOST = System.getenv("hostName");
+
+
 }
