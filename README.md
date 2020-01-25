@@ -12,7 +12,6 @@
 3. redis
 4. rabbitmq
 5. lombok插件
-6. xxl-job服务
 ### 项目说明
 ##### boot-config(自动配置)
 * com.xwbing.config.aspect.FlowLimiterAspect 接口限流
