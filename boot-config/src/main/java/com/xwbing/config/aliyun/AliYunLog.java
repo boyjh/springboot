@@ -22,7 +22,7 @@ import java.util.Vector;
 
 @Slf4j
 public class AliYunLog {
-    private DingtalkChatbotClient   dingTalkClient;
+    private DingtalkChatbotClient dingTalkClient;
     private Client client;
     private String logStore;
     private String topic;
