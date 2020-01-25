@@ -1,16 +1,14 @@
-package com.xwbing.handler;
+package com.xwbing.config.aspect;
 
 import com.alibaba.fastjson.JSONObject;
-import com.xwbing.annotation.Retry;
+import com.xwbing.config.annotation.OptimisticLockRetry;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.hibernate.StaleObjectStateException;
-import org.springframework.core.annotation.Order;
 import org.springframework.orm.hibernate4.HibernateOptimisticLockingFailureException;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.HeuristicCompletionException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,20 +18,17 @@ import java.util.stream.Collectors;
 
 /**
  * @author xiangwb
- * @date 20/1/9 15:20
  * 乐观锁异常切面
  */
 @Slf4j
 @Aspect
-@Component
-@Order
-public class RetryAspect {
-    @Pointcut("@annotation(retry)")
-    public void retryCut(Retry retry) {
+public class OptimisticLockRetryAspect {
+    @Pointcut("@annotation(optimisticLockRetry)")
+    public void retryCut(OptimisticLockRetry optimisticLockRetry) {
     }
 
-    @Around(value = "retryCut(retry)", argNames = "joinPoint,retry")
-    public Object around(ProceedingJoinPoint joinPoint, Retry retry) throws Throwable {
+    @Around(value = "retryCut(optimisticLockRetry)", argNames = "joinPoint,optimisticLockRetry")
+    public Object around(ProceedingJoinPoint joinPoint, OptimisticLockRetry optimisticLockRetry) throws Throwable {
         Exception optimisticLockException;
         String params = null;
         int tries = 0;
@@ -45,18 +40,18 @@ public class RetryAspect {
                         || exception instanceof HibernateOptimisticLockingFailureException
                         || exception instanceof StaleObjectStateException) {
                     tries++;
+                    optimisticLockException = exception;
                     String className = joinPoint.getTarget().getClass().getSimpleName();
                     String methodName = joinPoint.getSignature().getName();
                     params = params != null ? params : Arrays.stream(joinPoint.getArgs())
                             .filter(param -> !(param instanceof HttpServletRequest || param instanceof HttpServletResponse))
                             .map(JSONObject::toJSONString).collect(Collectors.joining(","));
-                    optimisticLockException = exception;
-                    log.info("class:{} - method:{} - params:{}", className, methodName, params);
+                    log.info("class:{} method:{} params:{}", className, methodName, params);
                 } else {
                     throw exception;
                 }
             }
-        } while (tries <= retry.value());
+        } while (tries <= optimisticLockRetry.value());
         throw optimisticLockException;
     }
 }

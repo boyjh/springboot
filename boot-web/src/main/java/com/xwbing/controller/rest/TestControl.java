@@ -3,7 +3,7 @@ package com.xwbing.controller.rest;
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.annotation.LogInfo;
 import com.xwbing.domain.entity.rest.FilesUpload;
-import com.xwbing.redis.RedisService;
+import com.xwbing.config.redis.RedisService;
 import com.xwbing.service.rest.CookieSessionService;
 import com.xwbing.service.rest.QRCodeZipService;
 import com.xwbing.service.rest.UploadService;

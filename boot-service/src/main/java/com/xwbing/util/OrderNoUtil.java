@@ -1,7 +1,7 @@
 package com.xwbing.util;
 
 import com.xwbing.constant.Base;
-import com.xwbing.redis.RedisService;
+import com.xwbing.config.redis.RedisService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 

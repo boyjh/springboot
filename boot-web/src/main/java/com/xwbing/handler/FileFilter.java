@@ -37,7 +37,7 @@ public class FileFilter implements Filter {
             return;
         }
         String domain = getDomain(referer);
-        if (WHITE_LIST.contains(domain)) {
+        if (!WHITE_LIST.contains(domain)) {
             request.getRequestDispatcher("/file/error.png").forward(request, response);
             return;
         }

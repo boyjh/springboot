@@ -4,10 +4,14 @@ import com.xwbing.annotation.LogInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.Signature;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
+import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -114,22 +118,16 @@ public class WebLogAspect {
      * @throws ClassNotFoundException
      */
     @Deprecated
-    public String getMsg(JoinPoint joinPoint) throws ClassNotFoundException {
-        String targetName = joinPoint.getTarget().getClass().getName();// 类名
+    public void getMsg(JoinPoint joinPoint) throws ClassNotFoundException {
+        String targetName = joinPoint.getTarget().getClass().getSimpleName();// 类名
         String methodName = joinPoint.getSignature().getName();// 方法名
-        Object[] arguments = joinPoint.getArgs();// 方法参数
+        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+        Class[] parameterTypes = methodSignature.getParameterTypes();//方法参数类型
+        String[] parameterNames = methodSignature.getParameterNames();//方法参数名
+        Object[] arguments = joinPoint.getArgs();// 方法参数值
         Class targetClass = Class.forName(targetName);
         Method[] methods = targetClass.getMethods();
-        String description = "";
-        for (Method method : methods) {
-            if (method.getName().equals(methodName)) {
-                Class[] classes = method.getParameterTypes();
-                if (classes.length == arguments.length) {
-                    description = method.getAnnotation(LogInfo.class).value();
-                    break;
-                }
-            }
-        }
-        return description;
+        Method method = methodSignature.getMethod();
+        String value = method.getAnnotation(LogInfo.class).value();
     }
 }

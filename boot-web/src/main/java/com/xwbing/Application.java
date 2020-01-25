@@ -1,5 +1,6 @@
 package com.xwbing;
 
+import com.xwbing.config.annotation.EnableRedis;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletComponentScan;
@@ -10,6 +11,7 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
  * 作者: boot-module-pro
  * 说明: 启动类
  */
+@EnableRedis
 @ServletComponentScan
 @SpringBootApplication
 public class Application {

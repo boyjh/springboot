@@ -1,8 +1,8 @@
-package com.xwbing.handler;
+package com.xwbing.config.aspect;
 
-import com.xwbing.annotation.Lock;
-import com.xwbing.exception.LockException;
-import com.xwbing.redis.RedisService;
+import com.xwbing.config.annotation.Lock;
+import com.xwbing.config.exception.LockException;
+import com.xwbing.config.redis.RedisService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -12,26 +12,22 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.ParameterNameDiscoverer;
-import org.springframework.core.annotation.Order;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Method;
 
 /**
  * @author xiangwb
- * @date 20/1/15 20:30
+ * 分布式锁切面
  */
 @Slf4j
 @Aspect
-@Order
-@Component
 public class LockAspect {
-    private static final String suffix = ".lock";
+    private static final String SUFFIX = ".lock";
     @Resource
     private RedisService redisService;
 
@@ -73,7 +69,7 @@ public class LockAspect {
 
     public void lock(String key, int timeout, String remark) throws LockException {
         log.debug("request lock , the key is : {}", key);
-        key = String.format("%s%s", key, suffix);
+        key = String.format("%s%s", key, SUFFIX);
         Long now = System.currentTimeMillis();
         try {
             Long lock = redisService.setNx(key, String.valueOf(now));
@@ -104,7 +100,7 @@ public class LockAspect {
 
     public void unlock(String key) {
         log.debug("request unlock , the key is : {}", key);
-        key = String.format("%s%s", key, suffix);
+        key = String.format("%s%s", key, SUFFIX);
         redisService.del(key);
     }
 

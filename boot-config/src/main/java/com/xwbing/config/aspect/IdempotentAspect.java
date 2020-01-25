@@ -1,14 +1,12 @@
-package com.xwbing.handler;
+package com.xwbing.config.aspect;
 
-import com.xwbing.annotation.Idempotent;
-import com.xwbing.constant.CommonConstant;
-import com.xwbing.util.CommonDataUtil;
+import com.xwbing.config.annotation.Idempotent;
+import com.xwbing.config.util.CommonDataUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -19,15 +17,13 @@ import java.io.PrintWriter;
 
 /**
  * @author xiangwb
- * @date 2018/8/27 23:10
- * @description 接口幂等切面
+ * 接口幂等切面
  * 解决接口幂等性 支持网络延迟和表单重复提交
  */
 @Slf4j
 @Aspect
-@Component
 public class IdempotentAspect {
-    @Pointcut("execution(public * com.xwbing.controller..*.*(..)) && @annotation(idempotent)")
+    @Pointcut("@annotation(idempotent)")
     public void pointCut(Idempotent idempotent) {
     }
 
@@ -37,7 +33,7 @@ public class IdempotentAspect {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
         String sign;
-        if (CommonConstant.HEADER.equals(type)) {
+        if ("header".equals(type)) {
             sign = request.getHeader("sign");
         } else {
             sign = request.getParameter("sign");

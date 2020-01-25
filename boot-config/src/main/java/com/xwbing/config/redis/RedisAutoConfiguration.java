@@ -1,4 +1,4 @@
-package com.xwbing.redis;
+package com.xwbing.config.redis;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -19,7 +19,7 @@ import javax.annotation.Resource;
  * 2.自定义@EnableRedis注解，使用@Import导入RedisAutoConfiguration
  */
 @Configuration
-@ConditionalOnProperty(prefix = RedisProperties.REDIS_PREFIX, name = "enabled", havingValue = "true")
+@ConditionalOnProperty(prefix = RedisProperties.PREFIX, name = "enabled", havingValue = "true")
 @EnableConfigurationProperties(RedisProperties.class)
 public class RedisAutoConfiguration {
     @Resource

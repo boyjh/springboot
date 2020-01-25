@@ -1,11 +1,10 @@
-package com.xwbing.annotation;
+package com.xwbing.config.annotation;
 
 import java.lang.annotation.*;
 
 /**
  * @author xiangwb
- * @date 2019/5/24 19:06
- * @description 自定义限流注解
+ * 自定义限流注解
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
