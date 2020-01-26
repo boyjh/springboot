@@ -164,12 +164,12 @@ public class MarkdownMessage implements Message {
         items.put("msgtype", "markdown");
         //at(在text内容里要有@手机号)
         Map<String, Object> atItems = new HashMap<>();
-        boolean atOne = false;
+        boolean atMobile = false;
         if (this.isAtAll) {
             atItems.put("isAtAll", true);
         } else if (CollectionUtils.isNotEmpty(this.atMobiles)) {
             atItems.put("atMobiles", this.atMobiles);
-            atOne = true;
+            atMobile = true;
         }
         items.put("at", atItems);
         //markdown
@@ -179,7 +179,7 @@ public class MarkdownMessage implements Message {
         for (Object item : this.items) {
             markdownText.append(item).append("\n\n");
         }
-        if (atOne && !isAtAll) {
+        if (atMobile && !isAtAll) {
             atMobiles.forEach(mobile -> markdownText.append("@").append(mobile).append("\n"));
         }
         markdown.put("text", markdownText.toString());
