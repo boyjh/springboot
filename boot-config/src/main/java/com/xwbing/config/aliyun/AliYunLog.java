@@ -62,7 +62,7 @@ public class AliYunLog {
     }
 
     /**
-     * 钉钉群发送消息
+     * 钉钉群发送text
      *
      * @param source
      * @param atAll
@@ -89,6 +89,11 @@ public class AliYunLog {
         }
     }
 
+    /**
+     * 钉钉群发送markdown
+     *
+     * @param markdownMessage
+     */
     public void sendMarkdownMessage(MarkdownMessage markdownMessage) {
         try {
             markdownMessage.add(0, MarkdownMessage.getHeaderText(1, markdownMessage.getTitle()));
