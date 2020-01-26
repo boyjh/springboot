@@ -11,8 +11,17 @@ import java.util.Map;
  * @author xiangwb
  */
 public class TextMessage implements Message {
+    /**
+     * 消息内容
+     */
     private String text;
+    /**
+     * 被@人的手机号，号码必须正确，否则不起作用
+     */
     private List<String> atMobiles;
+    /**
+     * -@所有人时：true，否则为：false
+     */
     private boolean isAtAll = false;
 
     public TextMessage(String text) {
@@ -56,7 +65,6 @@ public class TextMessage implements Message {
         if (this.isAtAll) {
             atItems.put("isAtAll", true);
         } else if (CollectionUtils.isNotEmpty(atMobiles)) {
-            //号码必须正确,否则不起作用
             atItems.put("atMobiles", this.atMobiles);
         }
         items.put("at", atItems);

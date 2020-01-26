@@ -9,9 +9,21 @@ import java.util.*;
  * @author xiangwb
  */
 public class MarkdownMessage implements Message {
+    /**
+     * 首屏会话透出的展示内容
+     */
     private String title;
+    /**
+     * -@所有人时：true，否则为：false
+     */
     private boolean isAtAll = false;
+    /**
+     * 被@人的手机号(在text内容里要有@手机号)
+     */
     private List<String> atMobiles;
+    /**
+     * markdown格式的消息
+     */
     private List<String> items = new ArrayList<>();
 
     public MarkdownMessage() {
@@ -60,11 +72,9 @@ public class MarkdownMessage implements Message {
     public static String getHeaderText(int headerType, String text) {
         if (headerType >= 1 && headerType <= 6) {
             StringBuilder numbers = new StringBuilder();
-
             for (int i = 0; i < headerType; ++i) {
                 numbers.append("#");
             }
-
             return numbers + " " + text;
         } else {
             throw new IllegalArgumentException("headerType should be in [1, 6]");
@@ -162,7 +172,7 @@ public class MarkdownMessage implements Message {
         Map<String, Object> items = new HashMap<>();
         //msgtype
         items.put("msgtype", "markdown");
-        //at(在text内容里要有@手机号)
+        //at
         Map<String, Object> atItems = new HashMap<>();
         boolean atMobile = false;
         if (this.isAtAll) {
@@ -179,6 +189,7 @@ public class MarkdownMessage implements Message {
         for (Object item : this.items) {
             markdownText.append(item).append("\n\n");
         }
+        //text添加@信息，否则@不起作用
         if (this.isAtAll) {
             markdownText.append("@所有人");
         } else if (atMobile && !this.isAtAll) {
