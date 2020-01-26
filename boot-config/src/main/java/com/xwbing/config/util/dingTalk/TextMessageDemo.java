@@ -14,7 +14,7 @@ public class TextMessageDemo {
 
     public void testSendTextMessage() throws Exception {
         TextMessage message = new TextMessage("我就是我, 是不一样的烟火");
-        SendResult result = this.client.send("https://oapi.dingtalk.com/robot/send?access_token=5dbe45a28dfcf369a8ac651461ebf5205f3ed1c19b61e3a08e180070e18aca4c", message);
+        SendResult result = this.client.send("https://oapi.dingtalk.com/robot/send?access_token=f41b013832ca349f45cabce7dd7e64b19f3e1aabc4414d71a1e9ee050d65e141", "SEC9f4390e8c897e118ab487b0ed5874100a7693920eb87e9a968ee8129b0874e3f", message);
         System.out.println(result);
     }
 
@@ -23,14 +23,14 @@ public class TextMessageDemo {
         ArrayList<String> atMobiles = new ArrayList<>();
         atMobiles.add("137xxxx3310");
         message.setAtMobiles(atMobiles);
-        SendResult result = this.client.send("https://oapi.dingtalk.com/robot/send?access_token=5dbe45a28dfcf369a8ac651461ebf5205f3ed1c19b61e3a08e180070e18aca4c", message);
+        SendResult result = this.client.send("https://oapi.dingtalk.com/robot/send?access_token=f41b013832ca349f45cabce7dd7e64b19f3e1aabc4414d71a1e9ee050d65e141", "SEC9f4390e8c897e118ab487b0ed5874100a7693920eb87e9a968ee8129b0874e3f", message);
         System.out.println(result);
     }
 
     public void testSendTextMessageWithAtAll() throws Exception {
         TextMessage message = new TextMessage("我就是我, 是不一样的烟火");
         message.setIsAtAll(true);
-        SendResult result = this.client.send("https://oapi.dingtalk.com/robot/send?access_token=5dbe45a28dfcf369a8ac651461ebf5205f3ed1c19b61e3a08e180070e18aca4c", message);
+        SendResult result = this.client.send("https://oapi.dingtalk.com/robot/send?access_token=f41b013832ca349f45cabce7dd7e64b19f3e1aabc4414d71a1e9ee050d65e141", "SEC9f4390e8c897e118ab487b0ed5874100a7693920eb87e9a968ee8129b0874e3f", message);
         System.out.println(result);
     }
 
@@ -40,7 +40,7 @@ public class TextMessageDemo {
         atMobiles.add("186xxxx0822");
         message.setAtMobiles(atMobiles);
         message.setIsAtAll(true);
-        SendResult result = this.client.send("https://oapi.dingtalk.com/robot/send?access_token=5dbe45a28dfcf369a8ac651461ebf5205f3ed1c19b61e3a08e180070e18aca4c", message);
+        SendResult result = this.client.send("https://oapi.dingtalk.com/robot/send?access_token=f41b013832ca349f45cabce7dd7e64b19f3e1aabc4414d71a1e9ee050d65e141", "SEC9f4390e8c897e118ab487b0ed5874100a7693920eb87e9a968ee8129b0874e3f", message);
         System.out.println(result);
     }
 }

@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import javax.annotation.Resource;
 
 @Configuration
-@ConditionalOnProperty(prefix = AliYunLogProperties.PREFIX, name = "enabled", havingValue = "true")
+@ConditionalOnProperty(prefix = AliYunLogProperties.PREFIX, name = {"enabled"}, havingValue = "true")
 @EnableConfigurationProperties(AliYunLogProperties.class)
 public class AliYunLogAutoConfiguration {
     @Resource

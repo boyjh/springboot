@@ -101,7 +101,7 @@ public class TestControl {
     @LogInfo("dingTalk")
     @GetMapping("dingTalk")
     public void dingTalk() {
-        aliYunLog.dingTalkText("测试,请忽略", false, null, "test");
+        aliYunLog.dingTalkText("测试,请忽略", true, null, "test");
     }
 }
 

@@ -54,11 +54,10 @@ public class TextMessage implements Message {
             textContent.put("content", this.text);
             items.put("text", textContent);
             Map<String, Object> atItems = new HashMap<>();
-            if (CollectionUtils.isNotEmpty(atMobiles)) {
-                atItems.put("atMobiles", this.atMobiles);
-            }
             if (this.isAtAll) {
                 atItems.put("isAtAll", true);
+            } else if (CollectionUtils.isNotEmpty(atMobiles)) {
+                atItems.put("atMobiles", this.atMobiles);
             }
             items.put("at", atItems);
             return JSON.toJSONString(items);

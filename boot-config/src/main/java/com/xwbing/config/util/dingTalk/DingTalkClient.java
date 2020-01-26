@@ -2,6 +2,7 @@ package com.xwbing.config.util.dingTalk;
 
 import com.alibaba.fastjson.JSONObject;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -27,22 +28,30 @@ public class DingTalkClient {
     public DingTalkClient() {
     }
 
+    /**
+     * 发送钉钉消息
+     *
+     * @param webHook
+     * @param secret
+     * @param message
+     * @return
+     * @throws IOException
+     */
     public SendResult send(String webHook, String secret, Message message) throws IOException {
         String dingTalkUrl = dingTalkUrl(webHook, secret);
         SendResult sendResult = new SendResult();
         if (dingTalkUrl != null) {
             HttpPost httppost = new HttpPost(dingTalkUrl);
             httppost.addHeader("Content-Type", "application/json; charset=utf-8");
-            StringEntity se = new StringEntity(message.toJsonString(), "utf-8");
-            httppost.setEntity(se);
+            httppost.setEntity(new StringEntity(message.toJsonString(), "utf-8"));
             HttpResponse response = this.httpclient.execute(httppost);
-            if (response.getStatusLine().getStatusCode() == 200) {
-                String result = EntityUtils.toString(response.getEntity());
-                JSONObject obj = JSONObject.parseObject(result);
-                Integer errCode = obj.getInteger("errcode");
+            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                String entity = EntityUtils.toString(response.getEntity());
+                JSONObject result = JSONObject.parseObject(entity);
+                Integer errCode = result.getInteger("errcode");
                 sendResult.setErrorCode(errCode);
-                sendResult.setErrorMsg(obj.getString("errmsg"));
                 sendResult.setSuccess(errCode.equals(0));
+                sendResult.setErrorMsg(result.getString("errmsg"));
             }
         } else {
             sendResult.setSuccess(false);
