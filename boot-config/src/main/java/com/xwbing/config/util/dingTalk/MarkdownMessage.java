@@ -1,6 +1,7 @@
 package com.xwbing.config.util.dingTalk;
 
 import com.alibaba.fastjson.JSON;
+import org.apache.commons.collections.CollectionUtils;
 
 import java.util.*;
 
@@ -9,6 +10,8 @@ import java.util.*;
  */
 public class MarkdownMessage implements Message {
     private String title;
+    private boolean isAtAll = false;
+    private List<String> atMobiles;
     private List<String> items = new ArrayList<>();
 
     public MarkdownMessage() {
@@ -22,26 +25,34 @@ public class MarkdownMessage implements Message {
         this.title = title;
     }
 
+    public boolean isAtAll() {
+        return isAtAll;
+    }
+
+    public void setAtAll(boolean atAll) {
+        isAtAll = atAll;
+    }
+
+    public void setAtMobiles(List<String> atMobiles) {
+        this.atMobiles = atMobiles;
+    }
+
     public void add(String text) {
         this.items.add(text);
     }
 
-    public static String getBoldText(String text) {
-        return "**" + text + "**";
+    public void add(int index, String text) {
+        this.items.add(index, text);
     }
 
-    public static String getItalicText(String text) {
-        return "*" + text + "*";
-    }
 
-    public static String getLinkText(String text, String href) {
-        return "[" + text + "](" + href + ")";
-    }
-
-    public static String getImageText(String imageUrl) {
-        return "![image](" + imageUrl + ")";
-    }
-
+    /**
+     * 标题
+     *
+     * @param headerType
+     * @param text
+     * @return
+     */
     public static String getHeaderText(int headerType, String text) {
         if (headerType >= 1 && headerType <= 6) {
             StringBuilder numbers = new StringBuilder();
@@ -56,36 +67,89 @@ public class MarkdownMessage implements Message {
         }
     }
 
+    /**
+     * 引用
+     *
+     * @param text
+     * @return
+     */
     public static String getReferenceText(String text) {
         return "> " + text;
     }
 
+    /**
+     * 加粗
+     *
+     * @param text
+     * @return
+     */
+    public static String getBoldText(String text) {
+        return "**" + text + "**";
+    }
+
+    /**
+     * 斜体
+     *
+     * @param text
+     * @return
+     */
+    public static String getItalicText(String text) {
+        return "*" + text + "*";
+    }
+
+    /**
+     * 链接
+     *
+     * @param text
+     * @param href
+     * @return
+     */
+    public static String getLinkText(String text, String href) {
+        return "[" + text + "](" + href + ")";
+    }
+
+    /**
+     * 图片
+     *
+     * @param imageUrl
+     * @return
+     */
+    public static String getImageText(String imageUrl) {
+        return "![image](" + imageUrl + ")";
+    }
+
+    /**
+     * 有序列表
+     *
+     * @param orderItem
+     * @return
+     */
     public static String getOrderListText(List<String> orderItem) {
         if (orderItem.isEmpty()) {
             return "";
         } else {
             StringBuilder sb = new StringBuilder();
-
-            for (int i = 1; i <= orderItem.size() - 1; ++i) {
+            for (int i = 1; i <= orderItem.size(); i++) {
                 sb.append(i).append(". ").append(orderItem.get(i - 1)).append("\n");
             }
-
-            sb.append(orderItem.size()).append(". ").append(orderItem.get(orderItem.size() - 1));
             return sb.toString();
         }
     }
 
-    public static String getUnorderListText(List<String> unorderItem) {
-        if (unorderItem.isEmpty()) {
+    /**
+     * 无序列表
+     *
+     * @param unOrderItem
+     * @return
+     */
+    public static String getUnOrderListText(List<String> unOrderItem) {
+        if (unOrderItem.isEmpty()) {
             return "";
         } else {
             StringBuilder sb = new StringBuilder();
-
-            for (int i = 0; i < unorderItem.size() - 1; ++i) {
-                sb.append("- ").append(unorderItem.get(i)).append("\n");
+            for (String anUnOrderItem : unOrderItem) {
+                sb.append("- ").append(anUnOrderItem).append("\n");
             }
-
-            sb.append("- ").append(unorderItem.get(unorderItem.size() - 1));
             return sb.toString();
         }
     }
@@ -100,11 +164,18 @@ public class MarkdownMessage implements Message {
 
         while (i$.hasNext()) {
             String item = (String) i$.next();
-            markdownText.append(item).append("\n");
+            markdownText.append(item).append("\n\n");
         }
 
         markdown.put("text", markdownText.toString());
         result.put("markdown", markdown);
+        Map<String, Object> atItems = new HashMap<>();
+        if (this.isAtAll) {
+            atItems.put("isAtAll", true);
+        } else if (CollectionUtils.isNotEmpty(atMobiles)) {
+            atItems.put("atMobiles", this.atMobiles);
+        }
+        result.put("at", atItems);
         return JSON.toJSONString(result);
     }
 }

@@ -5,6 +5,7 @@ import com.aliyun.openservices.log.Client;
 import com.aliyun.openservices.log.common.LogItem;
 import com.aliyun.openservices.log.request.PutLogsRequest;
 import com.xwbing.config.util.dingTalk.DingTalkClient;
+import com.xwbing.config.util.dingTalk.MarkdownMessage;
 import com.xwbing.config.util.dingTalk.SendResult;
 import com.xwbing.config.util.dingTalk.TextMessage;
 import lombok.extern.slf4j.Slf4j;
@@ -68,7 +69,7 @@ public class AliYunLog {
      * @param atMobiles
      * @param params
      */
-    public void dingTalkText(String source, boolean atAll, List<String> atMobiles, Object... params) {
+    public void sendTextMessage(String source, boolean atAll, List<String> atMobiles, Object... params) {
         StringBuilder content = new StringBuilder("host: ").append(HOST).append("\n").append("source: ").append(source).append("\n");
         int i = 1;
         for (Object obj : params) {
@@ -85,6 +86,18 @@ public class AliYunLog {
             }
         } catch (Exception e) {
             log.error("{} - {}", source, ExceptionUtils.getStackTrace(e));
+        }
+    }
+
+    public void sendMarkdownMessage(MarkdownMessage markdownMessage) {
+        try {
+            markdownMessage.add(0, MarkdownMessage.getHeaderText(1, markdownMessage.getTitle()));
+            SendResult send = dingTalkClient.send(webHook, secret, markdownMessage);
+            if (!send.isSuccess()) {
+                log.error("{} - {}", markdownMessage.getTitle(), JSONObject.toJSON(send));
+            }
+        } catch (Exception e) {
+            log.error("{} - {}", markdownMessage.getTitle(), ExceptionUtils.getStackTrace(e));
         }
     }
 }

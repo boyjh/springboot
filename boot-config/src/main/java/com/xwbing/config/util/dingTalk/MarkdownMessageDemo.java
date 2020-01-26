@@ -38,7 +38,7 @@ public class MarkdownMessageDemo {
         ArrayList<String> unorderList = new ArrayList<>();
         unorderList.add("unorder item1");
         unorderList.add("unorder item2");
-        message.add(MarkdownMessage.getUnorderListText(unorderList));
+        message.add(MarkdownMessage.getUnOrderListText(unorderList));
         message.add("\n\n");
         message.add(MarkdownMessage.getImageText("http://img01.taobaocdn.com/top/i1/LB1GCdYQXXXXXXtaFXXXXXXXXXX"));
         message.add(MarkdownMessage.getLinkText("This is a link", "dtmd://dingtalkclient/sendMessage?content=linkmessage"));

@@ -3,8 +3,9 @@ package com.xwbing.controller.rest;
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.annotation.LogInfo;
 import com.xwbing.config.aliyun.AliYunLog;
-import com.xwbing.domain.entity.rest.FilesUpload;
 import com.xwbing.config.redis.RedisService;
+import com.xwbing.config.util.dingTalk.MarkdownMessage;
+import com.xwbing.domain.entity.rest.FilesUpload;
 import com.xwbing.service.rest.CookieSessionService;
 import com.xwbing.service.rest.QRCodeZipService;
 import com.xwbing.service.rest.UploadService;
@@ -25,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -98,10 +100,39 @@ public class TestControl {
         return JsonResult.toJSONObj(redisService.get(kv), "redis success");
     }
 
-    @LogInfo("dingTalk")
-    @GetMapping("dingTalk")
-    public void dingTalk() {
-        aliYunLog.dingTalkText("测试,请忽略", true, null, "test");
+    @LogInfo("sendTextMessage")
+    @GetMapping("sendTextMessage")
+    public void sendTextMessage() {
+        List<String> atMobiles = new ArrayList<>();
+        atMobiles.add("134xxxx4170");
+        aliYunLog.sendTextMessage("测试,请忽略", false, atMobiles, "test");
+    }
+
+    @LogInfo("sendMarkdownMessage")
+    @GetMapping("sendMarkdownMessage")
+    public void sendMarkdownMessage() {
+        MarkdownMessage message = new MarkdownMessage();
+        message.setTitle("markdown message");
+        message.add(MarkdownMessage.getHeaderText(6, "六级标题"));
+        message.add(MarkdownMessage.getReferenceText("引用"));
+        message.add("正常字体 @134xxxx4170");
+        message.add(MarkdownMessage.getBoldText("加粗字体"));
+        message.add(MarkdownMessage.getItalicText("斜体"));
+        ArrayList<String> orderList = new ArrayList<>();
+        orderList.add("有序列表1");
+        orderList.add("有序列表2");
+        message.add(MarkdownMessage.getOrderListText(orderList));
+        ArrayList<String> unOrderList = new ArrayList<>();
+        unOrderList.add("无序列表1");
+        unOrderList.add("无序列表2");
+        message.add(MarkdownMessage.getUnOrderListText(unOrderList));
+        message.add(MarkdownMessage.getImageText("http://img01.taobaocdn.com/top/i1/LB1GCdYQXXXXXXtaFXXXXXXXXXX"));
+        message.add(MarkdownMessage.getLinkText("百度", "http://baidu.com"));
+        message.setAtAll(true);
+        List<String> atMobiles = new ArrayList<>();
+        atMobiles.add("134xxxx4170");
+        message.setAtMobiles(atMobiles);
+        aliYunLog.sendMarkdownMessage(message);
     }
 }
 

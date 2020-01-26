@@ -142,7 +142,7 @@ public class GlobalExceptionHandler {
     public JSONObject handlerException(Exception ex) {
         String stackTrace = ExceptionUtils.getStackTrace(ex);
         log.error(stackTrace);
-        aliYunLog.dingTalkText("业务流程异常", false, null, stackTrace);
+        aliYunLog.sendTextMessage("业务流程异常", false, null, stackTrace);
         return JsonResult.toJSONObj("系统异常,请联系管理员");
     }
 }
