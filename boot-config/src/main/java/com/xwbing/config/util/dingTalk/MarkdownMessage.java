@@ -37,6 +37,10 @@ public class MarkdownMessage implements Message {
         this.atMobiles = atMobiles;
     }
 
+    public List<String> getAtMobiles() {
+        return atMobiles;
+    }
+
     public void add(String text) {
         this.items.add(text);
     }
@@ -155,27 +159,31 @@ public class MarkdownMessage implements Message {
     }
 
     public String toJsonString() {
-        Map<String, Object> result = new HashMap<>();
-        result.put("msgtype", "markdown");
+        Map<String, Object> items = new HashMap<>();
+        //msgtype
+        items.put("msgtype", "markdown");
+        //at(在text内容里要有@手机号)
+        Map<String, Object> atItems = new HashMap<>();
+        boolean atOne = false;
+        if (this.isAtAll) {
+            atItems.put("isAtAll", true);
+        } else if (CollectionUtils.isNotEmpty(this.atMobiles)) {
+            atItems.put("atMobiles", this.atMobiles);
+            atOne = true;
+        }
+        items.put("at", atItems);
+        //markdown
         Map<String, Object> markdown = new HashMap<>();
         markdown.put("title", this.title);
         StringBuilder markdownText = new StringBuilder();
-        Iterator i$ = this.items.iterator();
-
-        while (i$.hasNext()) {
-            String item = (String) i$.next();
+        for (Object item : this.items) {
             markdownText.append(item).append("\n\n");
         }
-
-        markdown.put("text", markdownText.toString());
-        result.put("markdown", markdown);
-        Map<String, Object> atItems = new HashMap<>();
-        if (this.isAtAll) {
-            atItems.put("isAtAll", true);
-        } else if (CollectionUtils.isNotEmpty(atMobiles)) {
-            atItems.put("atMobiles", this.atMobiles);
+        if (atOne && !isAtAll) {
+            atMobiles.forEach(mobile -> markdownText.append("@").append(mobile).append("\n"));
         }
-        result.put("at", atItems);
-        return JSON.toJSONString(result);
+        markdown.put("text", markdownText.toString());
+        items.put("markdown", markdown);
+        return JSON.toJSONString(items);
     }
 }

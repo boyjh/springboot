@@ -115,7 +115,7 @@ public class TestControl {
         message.setTitle("markdown message");
         message.add(MarkdownMessage.getHeaderText(6, "六级标题"));
         message.add(MarkdownMessage.getReferenceText("引用"));
-        message.add("正常字体 @134xxxx4170");
+        message.add("正常字体");
         message.add(MarkdownMessage.getBoldText("加粗字体"));
         message.add(MarkdownMessage.getItalicText("斜体"));
         ArrayList<String> orderList = new ArrayList<>();
@@ -128,9 +128,10 @@ public class TestControl {
         message.add(MarkdownMessage.getUnOrderListText(unOrderList));
         message.add(MarkdownMessage.getImageText("http://img01.taobaocdn.com/top/i1/LB1GCdYQXXXXXXtaFXXXXXXXXXX"));
         message.add(MarkdownMessage.getLinkText("百度", "http://baidu.com"));
-        message.setAtAll(true);
+        message.setAtAll(false);
         List<String> atMobiles = new ArrayList<>();
         atMobiles.add("134xxxx4170");
+        atMobiles.add("134xxxx8888");
         message.setAtMobiles(atMobiles);
         aliYunLog.sendMarkdownMessage(message);
     }

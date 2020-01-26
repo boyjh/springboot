@@ -2,7 +2,6 @@ package com.xwbing.config.util.dingTalk;
 
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -46,21 +45,20 @@ public class TextMessage implements Message {
 
     public String toJsonString() {
         Map<String, Object> items = new HashMap<>();
+        //msgtype
         items.put("msgtype", "text");
+        //text
         Map<String, String> textContent = new HashMap<>();
-        if (StringUtils.isBlank(this.text)) {
-            throw new IllegalArgumentException("text should not be blank");
-        } else {
-            textContent.put("content", this.text);
-            items.put("text", textContent);
-            Map<String, Object> atItems = new HashMap<>();
-            if (this.isAtAll) {
-                atItems.put("isAtAll", true);
-            } else if (CollectionUtils.isNotEmpty(atMobiles)) {
-                atItems.put("atMobiles", this.atMobiles);
-            }
-            items.put("at", atItems);
-            return JSON.toJSONString(items);
+        textContent.put("content", this.text);
+        items.put("text", textContent);
+        //at
+        Map<String, Object> atItems = new HashMap<>();
+        if (this.isAtAll) {
+            atItems.put("isAtAll", true);
+        } else if (CollectionUtils.isNotEmpty(atMobiles)) {
+            atItems.put("atMobiles", this.atMobiles);
         }
+        items.put("at", atItems);
+        return JSON.toJSONString(items);
     }
 }
