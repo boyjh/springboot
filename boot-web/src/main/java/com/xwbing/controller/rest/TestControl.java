@@ -102,15 +102,13 @@ public class TestControl {
 
     @LogInfo("sendTextMessage")
     @GetMapping("sendTextMessage")
-    public void sendTextMessage() {
-        List<String> atMobiles = new ArrayList<>();
-        atMobiles.add("134xxxx4170");
-        aliYunLog.sendTextMessage("测试,请忽略", false, atMobiles, "test");
+    public void sendTextMessage(@RequestParam boolean atAll, @RequestParam List<String> atMobiles) {
+        aliYunLog.sendTextMessage("测试,请忽略", atAll, atMobiles, "test");
     }
 
     @LogInfo("sendMarkdownMessage")
     @GetMapping("sendMarkdownMessage")
-    public void sendMarkdownMessage() {
+    public void sendMarkdownMessage(@RequestParam boolean atAll, @RequestParam List<String> atMobiles) {
         MarkdownMessage message = new MarkdownMessage();
         message.setTitle("markdown message");
         message.add(MarkdownMessage.getHeaderText(6, "六级标题"));
@@ -120,7 +118,7 @@ public class TestControl {
         message.add(MarkdownMessage.getItalicText("斜体"));
         ArrayList<String> orderList = new ArrayList<>();
         orderList.add("有序列表1");
-        orderList.add("有序列表2");
+        orderList.add("有序列表2"); 
         message.add(MarkdownMessage.getOrderListText(orderList));
         ArrayList<String> unOrderList = new ArrayList<>();
         unOrderList.add("无序列表1");
@@ -128,10 +126,7 @@ public class TestControl {
         message.add(MarkdownMessage.getUnOrderListText(unOrderList));
         message.add(MarkdownMessage.getImageText("http://img01.taobaocdn.com/top/i1/LB1GCdYQXXXXXXtaFXXXXXXXXXX"));
         message.add(MarkdownMessage.getLinkText("百度", "http://baidu.com"));
-        message.setAtAll(false);
-        List<String> atMobiles = new ArrayList<>();
-        atMobiles.add("134xxxx4170");
-        atMobiles.add("134xxxx8888");
+        message.setAtAll(atAll);
         message.setAtMobiles(atMobiles);
         aliYunLog.sendMarkdownMessage(message);
     }

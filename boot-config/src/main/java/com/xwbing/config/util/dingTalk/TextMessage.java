@@ -56,6 +56,7 @@ public class TextMessage implements Message {
         if (this.isAtAll) {
             atItems.put("isAtAll", true);
         } else if (CollectionUtils.isNotEmpty(atMobiles)) {
+            //号码必须正确,否则不起作用
             atItems.put("atMobiles", this.atMobiles);
         }
         items.put("at", atItems);

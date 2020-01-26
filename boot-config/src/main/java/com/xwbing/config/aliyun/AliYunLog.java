@@ -96,6 +96,7 @@ public class AliYunLog {
      */
     public void sendMarkdownMessage(MarkdownMessage markdownMessage) {
         try {
+            //title当做一级标题
             markdownMessage.add(0, MarkdownMessage.getHeaderText(1, markdownMessage.getTitle()));
             SendResult send = dingTalkClient.send(webHook, secret, markdownMessage);
             if (!send.isSuccess()) {

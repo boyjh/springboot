@@ -179,7 +179,9 @@ public class MarkdownMessage implements Message {
         for (Object item : this.items) {
             markdownText.append(item).append("\n\n");
         }
-        if (atMobile && !isAtAll) {
+        if (this.isAtAll) {
+            markdownText.append("@所有人");
+        } else if (atMobile && !this.isAtAll) {
             atMobiles.forEach(mobile -> markdownText.append("@").append(mobile).append("\n"));
         }
         markdown.put("text", markdownText.toString());
