@@ -119,7 +119,7 @@ public class WebLogAspect {
     }
 
     /**
-     * 获取日志注解信息
+     * 获取切入点信息
      *
      * @param joinPoint
      * @throws ClassNotFoundException
