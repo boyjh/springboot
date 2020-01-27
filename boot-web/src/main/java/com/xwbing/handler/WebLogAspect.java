@@ -82,6 +82,7 @@ public class WebLogAspect {
 
     /**
      * 异常通知
+     * 适用于rpc远程调用中台服务异常记录(GlobalExceptionHandler无法捕捉异常)
      *
      * @param joinPoint
      * @param exception
