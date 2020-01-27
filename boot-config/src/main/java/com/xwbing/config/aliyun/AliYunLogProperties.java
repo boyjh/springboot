@@ -18,14 +18,14 @@ public class AliYunLogProperties {
     /**
      * 阿里云日志
      */
-    private Log log = new Log();
+    private final AliYunLogProperties.Log log = new AliYunLogProperties.Log();
     /**
      * 钉钉机器人
      */
-    private DingTalk dingTalk = new DingTalk();
+    private final AliYunLogProperties.DingTalk dingTalk = new AliYunLogProperties.DingTalk();
 
     @Data
-    protected static class Log {
+    public static class Log {
         private String accessId;
         private String accessKey;
         /**
@@ -47,7 +47,7 @@ public class AliYunLogProperties {
     }
 
     @Data
-    protected static class DingTalk {
+    public static class DingTalk {
         /**
          * 钉钉机器人地址
          */
