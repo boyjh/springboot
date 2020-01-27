@@ -1,6 +1,8 @@
 package com.xwbing.config.util.dingTalk;
 
 import com.alibaba.fastjson.JSON;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,11 +39,15 @@ public class TextMessage implements Message {
     }
 
     public void addMobile(String mobile) {
-        this.atMobiles.add(mobile);
+        if (StringUtils.isNotEmpty(mobile)) {
+            this.atMobiles.add(mobile);
+        }
     }
 
     public void addMobiles(List<String> mobiles) {
-        this.atMobiles.addAll(mobiles);
+        if (CollectionUtils.isNotEmpty(mobiles)) {
+            this.atMobiles.addAll(mobiles);
+        }
     }
 
     public boolean isAtAll() {

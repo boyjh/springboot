@@ -1,25 +1,20 @@
 package com.xwbing.handler;
 
+import com.alibaba.fastjson.JSONObject;
 import com.xwbing.annotation.LogInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.Signature;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
-import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -40,8 +35,8 @@ public class WebLogAspect {
     }
 
     //名称限定表达式
-    @Pointcut("execution(public * com.xwbing.controller..*.*(..))")
-    public void pointCut() {
+    @Pointcut("execution(public * com.xwbing.service..*.*(..))")
+    public void pointCutService() {
     }
 
     /**
@@ -59,12 +54,14 @@ public class WebLogAspect {
         //获取方法名
         String methodName = joinPoint.getSignature().getName();
         //获取参数
-        Object[] args = joinPoint.getArgs();
-        List<Object> params = new ArrayList<>();
-        if (args != null && args.length > 0) {
-            params = Arrays.stream(args).filter(o -> !(o instanceof HttpServletRequest || o instanceof HttpServletResponse)).collect(Collectors.toList());
+        String params = Arrays.stream(joinPoint.getArgs())
+                .filter(param -> !(param instanceof HttpServletRequest || param instanceof HttpServletResponse))
+                .map(JSONObject::toJSONString).collect(Collectors.joining(","));
+        if (StringUtils.isNotEmpty(params)) {
+            log.info("{}.{}: {} started params:{}", targetName, methodName, info, params);
+        } else {
+            log.info("{}.{}: {} started", targetName, methodName, info);
         }
-        log.info("{}/{}:{} started 参数:{}", targetName, methodName, info, params);
     }
 
     /**
@@ -80,17 +77,28 @@ public class WebLogAspect {
         String info = logInfo.value();
         String targetName = joinPoint.getTarget().getClass().getName();
         String methodName = joinPoint.getSignature().getName();
-        log.info("{}/{}:{} completed in {} ms", targetName, methodName, info, ms);
+        log.info("{}.{}: {} completed in {} ms", targetName, methodName, info, ms);
     }
 
     /**
      * 异常通知
      *
-     * @param e
+     * @param joinPoint
+     * @param exception
      */
-//    @AfterThrowing(pointcut = "pointCut()", throwing = "e")
-    public void afterThrowing(Exception e) {
-        log.error("异常信息:{}", e.getMessage());
+    @AfterThrowing(pointcut = "pointCutService()", throwing = "exception")
+    public void afterThrowing(JoinPoint joinPoint, Exception exception) {
+        String stackTrace = ExceptionUtils.getStackTrace(exception);
+        String className = joinPoint.getTarget().getClass().getSimpleName();
+        String methodName = joinPoint.getSignature().getName();
+        String params = Arrays.stream(joinPoint.getArgs())
+                .filter(param -> !(param instanceof HttpServletRequest || param instanceof HttpServletResponse))
+                .map(JSONObject::toJSONString).collect(Collectors.joining(","));
+        if (StringUtils.isNotEmpty(params)) {
+            log.error("{}.{} - params:{} - exception:{}", className, methodName, params, stackTrace);
+        } else {
+            log.error("{}.{} - exception:{}", className, methodName, stackTrace);
+        }
     }
 
     /**
@@ -114,11 +122,9 @@ public class WebLogAspect {
      * 获取日志注解信息
      *
      * @param joinPoint
-     * @return
      * @throws ClassNotFoundException
      */
-    @Deprecated
-    public void getMsg(JoinPoint joinPoint) throws ClassNotFoundException {
+    private void getMsg(JoinPoint joinPoint) throws ClassNotFoundException {
         String targetName = joinPoint.getTarget().getClass().getSimpleName();// 类名
         String methodName = joinPoint.getSignature().getName();// 方法名
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
