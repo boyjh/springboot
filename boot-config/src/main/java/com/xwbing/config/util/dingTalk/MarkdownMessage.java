@@ -1,9 +1,11 @@
 package com.xwbing.config.util.dingTalk;
 
 import com.alibaba.fastjson.JSON;
-import org.apache.commons.collections.CollectionUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author xiangwb
@@ -20,7 +22,7 @@ public class MarkdownMessage implements Message {
     /**
      * 被@人的手机号(在text内容里要有@手机号)
      */
-    private List<String> atMobiles;
+    private List<String> atMobiles = new ArrayList<>();
     /**
      * markdown格式的消息
      */
@@ -38,32 +40,32 @@ public class MarkdownMessage implements Message {
     }
 
     public boolean isAtAll() {
-        return isAtAll;
+        return this.isAtAll;
     }
 
     public void setAtAll(boolean atAll) {
-        isAtAll = atAll;
+        this.isAtAll = atAll;
     }
 
-    public void setAtMobiles(List<String> atMobiles) {
-        this.atMobiles = atMobiles;
+    public void addMobile(String mobile) {
+        this.atMobiles.add(mobile);
     }
 
-    public List<String> getAtMobiles() {
-        return atMobiles;
+    public void addMobiles(List<String> mobiles) {
+        this.atMobiles.addAll(mobiles);
     }
 
-    public void add(String text) {
+    public void addItem(String text) {
         this.items.add(text);
     }
 
-    public void add(int index, String text) {
+    public void addItem(int index, String text) {
         this.items.add(index, text);
     }
 
 
     /**
-     * 标题
+     * 标题，总共六级
      *
      * @param headerType
      * @param text
@@ -72,7 +74,7 @@ public class MarkdownMessage implements Message {
     public static String getHeaderText(int headerType, String text) {
         if (headerType >= 1 && headerType <= 6) {
             StringBuilder numbers = new StringBuilder();
-            for (int i = 0; i < headerType; ++i) {
+            for (int i = 1; i <= headerType; i++) {
                 numbers.append("#");
             }
             return numbers + " " + text;
@@ -174,12 +176,10 @@ public class MarkdownMessage implements Message {
         items.put("msgtype", "markdown");
         //at
         Map<String, Object> atItems = new HashMap<>();
-        boolean atMobile = false;
         if (this.isAtAll) {
             atItems.put("isAtAll", true);
-        } else if (CollectionUtils.isNotEmpty(this.atMobiles)) {
+        } else if (!this.atMobiles.isEmpty()) {
             atItems.put("atMobiles", this.atMobiles);
-            atMobile = true;
         }
         items.put("at", atItems);
         //markdown
@@ -192,7 +192,7 @@ public class MarkdownMessage implements Message {
         //text添加@信息，否则@不起作用
         if (this.isAtAll) {
             markdownText.append("@所有人");
-        } else if (atMobile && !this.isAtAll) {
+        } else if (!this.atMobiles.isEmpty()) {
             atMobiles.forEach(mobile -> markdownText.append("@").append(mobile).append("\n"));
         }
         markdown.put("text", markdownText.toString());

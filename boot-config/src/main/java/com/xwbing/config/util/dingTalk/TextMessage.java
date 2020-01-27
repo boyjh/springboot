@@ -1,8 +1,8 @@
 package com.xwbing.config.util.dingTalk;
 
 import com.alibaba.fastjson.JSON;
-import org.apache.commons.collections.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +18,7 @@ public class TextMessage implements Message {
     /**
      * 被@人的手机号，号码必须正确，否则不起作用
      */
-    private List<String> atMobiles;
+    private List<String> atMobiles = new ArrayList<>();
     /**
      * -@所有人时：true，否则为：false
      */
@@ -36,20 +36,20 @@ public class TextMessage implements Message {
         this.text = text;
     }
 
-    public List<String> getAtMobiles() {
-        return this.atMobiles;
+    public void addMobile(String mobile) {
+        this.atMobiles.add(mobile);
     }
 
-    public void setAtMobiles(List<String> atMobiles) {
-        this.atMobiles = atMobiles;
+    public void addMobiles(List<String> mobiles) {
+        this.atMobiles.addAll(mobiles);
     }
 
     public boolean isAtAll() {
         return this.isAtAll;
     }
 
-    public void setIsAtAll(boolean isAtAll) {
-        this.isAtAll = isAtAll;
+    public void setAtAll(boolean atAll) {
+        this.isAtAll = atAll;
     }
 
     public String toJsonString() {
@@ -64,7 +64,7 @@ public class TextMessage implements Message {
         Map<String, Object> atItems = new HashMap<>();
         if (this.isAtAll) {
             atItems.put("isAtAll", true);
-        } else if (CollectionUtils.isNotEmpty(atMobiles)) {
+        } else if (!this.atMobiles.isEmpty()) {
             atItems.put("atMobiles", this.atMobiles);
         }
         items.put("at", atItems);

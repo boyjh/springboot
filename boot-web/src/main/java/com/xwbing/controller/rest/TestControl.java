@@ -111,23 +111,23 @@ public class TestControl {
     public void sendMarkdownMessage(@RequestParam boolean atAll, @RequestParam List<String> atMobiles) {
         MarkdownMessage message = new MarkdownMessage();
         message.setTitle("markdown message");
-        message.add(MarkdownMessage.getHeaderText(6, "六级标题"));
-        message.add(MarkdownMessage.getReferenceText("引用"));
-        message.add("正常字体");
-        message.add(MarkdownMessage.getBoldText("加粗字体"));
-        message.add(MarkdownMessage.getItalicText("斜体"));
+        message.addItem(MarkdownMessage.getHeaderText(6, "六级标题"));
+        message.addItem(MarkdownMessage.getReferenceText("引用"));
+        message.addItem("正常字体");
+        message.addItem(MarkdownMessage.getBoldText("加粗字体"));
+        message.addItem(MarkdownMessage.getItalicText("斜体"));
         ArrayList<String> orderList = new ArrayList<>();
         orderList.add("有序列表1");
-        orderList.add("有序列表2"); 
-        message.add(MarkdownMessage.getOrderListText(orderList));
+        orderList.add("有序列表2");
+        message.addItem(MarkdownMessage.getOrderListText(orderList));
         ArrayList<String> unOrderList = new ArrayList<>();
         unOrderList.add("无序列表1");
         unOrderList.add("无序列表2");
-        message.add(MarkdownMessage.getUnOrderListText(unOrderList));
-        message.add(MarkdownMessage.getImageText("http://img01.taobaocdn.com/top/i1/LB1GCdYQXXXXXXtaFXXXXXXXXXX"));
-        message.add(MarkdownMessage.getLinkText("百度", "http://baidu.com"));
+        message.addItem(MarkdownMessage.getUnOrderListText(unOrderList));
+        message.addItem(MarkdownMessage.getImageText("https://gw.alicdn.com/tfs/TB1ut3xxbsrBKNjSZFpXXcXhFXa-846-786.png"));
+        message.addItem(MarkdownMessage.getLinkText("天气", "https://www.seniverse.com"));
         message.setAtAll(atAll);
-        message.setAtMobiles(atMobiles);
+        message.addMobiles(atMobiles);
         aliYunLog.sendMarkdownMessage(message);
     }
 }
