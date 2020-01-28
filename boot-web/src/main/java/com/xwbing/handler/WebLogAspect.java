@@ -87,7 +87,7 @@ public class WebLogAspect {
      * @param joinPoint
      * @param exception
      */
-    @AfterThrowing(pointcut = "pointCutService()", throwing = "exception")
+//    @AfterThrowing(pointcut = "pointCutService()", throwing = "exception")
     public void afterThrowing(JoinPoint joinPoint, Exception exception) {
         String stackTrace = ExceptionUtils.getStackTrace(exception);
         String className = joinPoint.getTarget().getClass().getSimpleName();

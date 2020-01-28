@@ -1,5 +1,8 @@
 package com.xwbing.config.aspect;
 
+import org.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +14,24 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class AspectAutoConfiguration {
+    @Value("${pointcut.service}")
+    private String servicePointcut;
+
+    /**
+     * service异常日志切面
+     * 适用于rpc远程调用中台服务异常记录(GlobalExceptionHandler无法捕捉异常)
+     *
+     * @return
+     */
+    @Bean
+    @ConditionalOnExpression("!'${pointcut.service}'.empty && !'${pointcut.service:null}'.equals('null')")
+    public AspectJExpressionPointcutAdvisor afterThrowingAdvice() {
+        AspectJExpressionPointcutAdvisor advisor = new AspectJExpressionPointcutAdvisor();
+        advisor.setExpression(servicePointcut);
+        advisor.setAdvice(new ExceptionLogAdvice());
+        return advisor;
+    }
+
     /**
      * 基于redis分布式锁
      *

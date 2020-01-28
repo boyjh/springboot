@@ -70,3 +70,7 @@ boot:
       project: jimi-api
       topic: boot_moddule
 
+pointcut:
+  service: execution(public * com.xwbing.service..*.*(..))
+
+
