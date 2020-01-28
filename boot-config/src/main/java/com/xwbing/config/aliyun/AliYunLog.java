@@ -16,6 +16,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
+/**
+ * @author xiangwb
+ * aliyunlog dingtalk
+ */
 @Slf4j
 public class AliYunLog {
     private static final String HOST = System.getenv("hostName");

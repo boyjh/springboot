@@ -15,8 +15,7 @@ import java.util.stream.Collectors;
 
 /**
  * @author xiangwb
- * @date 2020/1/28 14:06
- * 异常通知
+ * 异常记录通知
  * 适用于rpc远程调用中台服务异常记录(GlobalExceptionHandler无法捕捉异常)
  */
 @Slf4j

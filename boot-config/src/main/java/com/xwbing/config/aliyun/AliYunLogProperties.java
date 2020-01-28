@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
  * @author xiangwb
- * @date 20/1/21 10:10
+ * aliyun属性加载配置类
  */
 @Data
 @ConfigurationProperties(prefix = AliYunLogProperties.PREFIX)

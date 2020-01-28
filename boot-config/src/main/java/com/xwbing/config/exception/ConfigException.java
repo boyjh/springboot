@@ -1,6 +1,7 @@
 package com.xwbing.config.exception;
 
 /**
+ * @author xiangwb
  * 自定义配置异常
  */
 public class ConfigException extends RuntimeException {

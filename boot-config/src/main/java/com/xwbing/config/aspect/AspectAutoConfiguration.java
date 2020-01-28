@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * @author xiangwb
- * @date 20/1/21 11:06
  * 切面自动配置类
  */
 @Configuration
@@ -19,7 +18,6 @@ public class AspectAutoConfiguration {
 
     /**
      * service异常日志切面
-     * 适用于rpc远程调用中台服务异常记录(GlobalExceptionHandler无法捕捉异常)
      *
      * @return
      */

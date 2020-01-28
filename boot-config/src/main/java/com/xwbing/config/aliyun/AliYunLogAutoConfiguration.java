@@ -9,6 +9,10 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.Resource;
 
+/**
+ * @author xiangwb
+ * aliyun属性加载配置类
+ */
 @Configuration
 @ConditionalOnProperty(prefix = AliYunLogProperties.PREFIX, name = {"enabled"}, havingValue = "true")
 @EnableConfigurationProperties(AliYunLogProperties.class)
