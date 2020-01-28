@@ -38,13 +38,13 @@ public class TextMessage implements Message {
         this.text = text;
     }
 
-    public void addMobile(String mobile) {
+    public void addAtMobile(String mobile) {
         if (StringUtils.isNotEmpty(mobile)) {
             this.atMobiles.add(mobile);
         }
     }
 
-    public void addMobiles(List<String> mobiles) {
+    public void addAtMobiles(List<String> mobiles) {
         if (CollectionUtils.isNotEmpty(mobiles)) {
             this.atMobiles.addAll(mobiles);
         }

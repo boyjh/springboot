@@ -30,16 +30,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 说明: 测试控制层
+ * 说明: mock控制层
  * 项目名称: boot-module-pro
  * 创建时间: 2017/5/5 9:21
  * 作者:  xiangwb
  */
 @Slf4j
-@Api(tags = "testApi", description = "测试相关接口")
+@Api(tags = "testApi", description = "mock接口")
 @RestController
-@RequestMapping("/test/")
-public class TestControl {
+@RequestMapping("/mock/")
+public class MockControl {
     @Resource
     private QRCodeZipService qrCodeZipService;
     @Resource
@@ -127,7 +127,7 @@ public class TestControl {
         message.addItem(MarkdownMessage.getImageText("https://gw.alicdn.com/tfs/TB1ut3xxbsrBKNjSZFpXXcXhFXa-846-786.png"));
         message.addItem(MarkdownMessage.getLinkText("天气", "https://www.seniverse.com"));
         message.setAtAll(atAll);
-        message.addMobiles(atMobiles);
+        message.addAtMobiles(atMobiles);
         aliYunLog.sendMarkdownMessage(message);
     }
 }

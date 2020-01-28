@@ -38,8 +38,8 @@ public class DingTalkClient {
      * @throws IOException
      */
     public SendResult send(String webHook, String secret, Message message) throws IOException {
-        String dingTalkUrl = dingTalkUrl(webHook, secret);
         SendResult sendResult = new SendResult();
+        String dingTalkUrl = dingTalkUrl(webHook, secret);
         if (dingTalkUrl != null) {
             HttpPost httppost = new HttpPost(dingTalkUrl);
             httppost.addHeader("Content-Type", "application/json; charset=utf-8");

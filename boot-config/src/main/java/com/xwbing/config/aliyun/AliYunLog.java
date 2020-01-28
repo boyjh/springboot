@@ -78,7 +78,7 @@ public class AliYunLog {
         }
         try {
             TextMessage textMessage = new TextMessage(content.toString());
-            textMessage.addMobiles(atMobiles);
+            textMessage.addAtMobiles(atMobiles);
             textMessage.setAtAll(atAll);
             SendResult send = dingTalkClient.send(webHook, secret, textMessage);
             if (!send.isSuccess()) {

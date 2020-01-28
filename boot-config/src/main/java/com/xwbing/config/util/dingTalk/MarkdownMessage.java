@@ -49,13 +49,13 @@ public class MarkdownMessage implements Message {
         this.isAtAll = atAll;
     }
 
-    public void addMobile(String mobile) {
+    public void addAtMobile(String mobile) {
         if (StringUtils.isNotEmpty(mobile)) {
             this.atMobiles.add(mobile);
         }
     }
 
-    public void addMobiles(List<String> mobiles) {
+    public void addAtMobiles(List<String> mobiles) {
         if (CollectionUtils.isNotEmpty(mobiles)) {
             this.atMobiles.addAll(mobiles);
         }
@@ -185,14 +185,6 @@ public class MarkdownMessage implements Message {
         Map<String, Object> items = new HashMap<>();
         //msgtype
         items.put("msgtype", "markdown");
-        //at
-        Map<String, Object> atItems = new HashMap<>();
-        if (this.isAtAll) {
-            atItems.put("isAtAll", true);
-        } else if (!this.atMobiles.isEmpty()) {
-            atItems.put("atMobiles", this.atMobiles);
-        }
-        items.put("at", atItems);
         //markdown
         Map<String, Object> markdown = new HashMap<>();
         markdown.put("title", this.title);
@@ -200,12 +192,16 @@ public class MarkdownMessage implements Message {
         for (Object item : this.items) {
             markdownText.append(item).append("\n\n");
         }
-        //text添加@信息，否则@不起作用
+        //at(text添加@信息，否则@不起作用)
+        Map<String, Object> atItems = new HashMap<>();
         if (this.isAtAll) {
+            atItems.put("isAtAll", true);
             markdownText.append("@所有人");
         } else if (!this.atMobiles.isEmpty()) {
+            atItems.put("atMobiles", this.atMobiles);
             atMobiles.forEach(mobile -> markdownText.append("@").append(mobile).append("\n"));
         }
+        items.put("at", atItems);
         markdown.put("text", markdownText.toString());
         items.put("markdown", markdown);
         return JSON.toJSONString(items);
