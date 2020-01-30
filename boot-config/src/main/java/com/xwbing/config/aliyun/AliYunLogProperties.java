@@ -53,7 +53,7 @@ public class AliYunLogProperties {
          */
         private String webHook;
         /**
-         * 钉钉消息安全设置:加签
+         * 钉钉消息安全设置:加签(选填)
          */
         private String secret;
     }

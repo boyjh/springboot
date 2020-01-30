@@ -1,6 +1,7 @@
 package com.xwbing.config.util.dingTalk;
 
 import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
@@ -39,23 +40,25 @@ public class DingTalkClient {
      */
     public SendResult send(String webHook, String secret, Message message) throws IOException {
         SendResult sendResult = new SendResult();
-        String dingTalkUrl = dingTalkUrl(webHook, secret);
-        if (dingTalkUrl != null) {
-            HttpPost httppost = new HttpPost(dingTalkUrl);
-            httppost.addHeader("Content-Type", "application/json; charset=utf-8");
-            httppost.setEntity(new StringEntity(message.toJsonString(), "utf-8"));
-            HttpResponse response = this.httpclient.execute(httppost);
-            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                String entity = EntityUtils.toString(response.getEntity());
-                JSONObject result = JSONObject.parseObject(entity);
-                Integer errCode = result.getInteger("errcode");
-                sendResult.setErrorCode(errCode);
-                sendResult.setSuccess(errCode.equals(0));
-                sendResult.setErrorMsg(result.getString("errmsg"));
+        if (StringUtils.isNotEmpty(secret)) {
+            webHook = dingTalkUrl(webHook, secret);
+            if (webHook == null) {
+                sendResult.setSuccess(false);
+                sendResult.setErrorMsg("加签失败");
+                return sendResult;
             }
-        } else {
-            sendResult.setSuccess(false);
-            sendResult.setErrorMsg("加签失败");
+        }
+        HttpPost httppost = new HttpPost(webHook);
+        httppost.addHeader("Content-Type", "application/json; charset=utf-8");
+        httppost.setEntity(new StringEntity(message.toJsonString(), "utf-8"));
+        HttpResponse response = this.httpclient.execute(httppost);
+        if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+            String entity = EntityUtils.toString(response.getEntity());
+            JSONObject result = JSONObject.parseObject(entity);
+            Integer errCode = result.getInteger("errcode");
+            sendResult.setErrorCode(errCode);
+            sendResult.setSuccess(errCode.equals(0));
+            sendResult.setErrorMsg(result.getString("errmsg"));
         }
         return sendResult;
     }
