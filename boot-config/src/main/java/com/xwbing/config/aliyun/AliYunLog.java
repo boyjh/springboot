@@ -42,27 +42,25 @@ public class AliYunLog {
     }
 
     /**
-     * 打印log
+     * 打印info
      *
      * @param source
      * @param key
      * @param value
      */
-    public void write(String source, String key, String value) {
-        if (StringUtils.isEmpty(key)) {
-            key = "default";
-        }
-        Vector<LogItem> logGroup = new Vector<>();
-        LogItem logItem = new LogItem((int) ((new Date()).getTime() / 1000L));
-        logItem.PushBack(key, HOST + "_: " + value);
-        logGroup.add(logItem);
-        PutLogsRequest putLogsRequest = new PutLogsRequest(project, logStore, topic, source, logGroup);
-        try {
-            client.PutLogs(putLogsRequest);
-            log.info("{} - {} - {}", source, key, value);
-        } catch (Exception e) {
-            log.error("{} - {}", key, ExceptionUtils.getStackTrace(e));
-        }
+    public void info(String source, String key, String value) {
+        write(source, key, value, true);
+    }
+
+    /**
+     * 打印error
+     *
+     * @param source
+     * @param key
+     * @param value
+     */
+    public void error(String source, String key, String value) {
+        write(source, key, value, false);
     }
 
     /**
@@ -108,6 +106,34 @@ public class AliYunLog {
             }
         } catch (Exception e) {
             log.error("{} - {}", markdownMessage.getTitle(), ExceptionUtils.getStackTrace(e));
+        }
+    }
+
+    /**
+     * 打印log
+     *
+     * @param source
+     * @param key
+     * @param value
+     */
+    private void write(String source, String key, String value, boolean info) {
+        if (StringUtils.isEmpty(key)) {
+            key = "default";
+        }
+        Vector<LogItem> logGroup = new Vector<>();
+        LogItem logItem = new LogItem((int) ((new Date()).getTime() / 1000L));
+        logItem.PushBack(key, HOST + "_: " + value);
+        logGroup.add(logItem);
+        PutLogsRequest putLogsRequest = new PutLogsRequest(project, logStore, topic, source, logGroup);
+        try {
+            client.PutLogs(putLogsRequest);
+            if (info) {
+                log.info("{} - {} - {}", source, key, value);
+            } else {
+                log.error("{} - {} - {}", source, key, value);
+            }
+        } catch (Exception e) {
+            log.error("{} - {}", key, ExceptionUtils.getStackTrace(e));
         }
     }
 }
