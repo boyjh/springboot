@@ -28,7 +28,9 @@ public class AspectAutoConfiguration {
     @ConditionalOnExpression("!'${aspect.service-pointcut:}'.empty")
     public AspectJExpressionPointcutAdvisor throwsAdvisor() {
         AspectJExpressionPointcutAdvisor advisor = new AspectJExpressionPointcutAdvisor();
+        //切入点表达式
         advisor.setExpression(aspectProperties.getServicePointcut());
+        //通知
         advisor.setAdvice(new ExceptionLogAdvice());
         return advisor;
     }
