@@ -70,7 +70,6 @@ boot:
       project: jimi-api
       topic: boot_moddule
 
-pointcut:
-  service: execution(public * com.xwbing.service..*.*(..))
-
-
+#切面自动配置参数
+aspect:
+  service-pointcut: execution(public * com.xwbing.service..*.*(..))

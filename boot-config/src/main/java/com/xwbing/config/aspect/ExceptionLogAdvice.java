@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 /**
  * @author xiangwb
  * 异常记录通知
- * 适用于rpc远程调用中台服务异常记录(GlobalExceptionHandler无法捕捉异常)
+ * rpc调用中台服务异常日志记录,便于排查问题(GlobalExceptionHandler无法捕捉异常)
  */
 @Slf4j
 public class ExceptionLogAdvice implements MethodInterceptor {

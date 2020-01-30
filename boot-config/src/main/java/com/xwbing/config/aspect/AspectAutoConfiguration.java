@@ -1,20 +1,23 @@
 package com.xwbing.config.aspect;
 
 import org.springframework.aop.aspectj.AspectJExpressionPointcutAdvisor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import javax.annotation.Resource;
 
 /**
  * @author xiangwb
  * 切面自动配置类
  */
 @Configuration
+@EnableConfigurationProperties(AspectProperties.class)
 public class AspectAutoConfiguration {
-    @Value("${pointcut.service}")
-    private String servicePointcut;
+    @Resource
+    private AspectProperties aspectProperties;
 
     /**
      * service异常日志切面
@@ -22,10 +25,10 @@ public class AspectAutoConfiguration {
      * @return
      */
     @Bean
-    @ConditionalOnExpression("!'${pointcut.service}'.empty && !'${pointcut.service:null}'.equals('null')")
+    @ConditionalOnExpression("!'${aspect.service-pointcut}'.empty && !'${aspect.service-pointcut:null}'.equals('null')")
     public AspectJExpressionPointcutAdvisor afterThrowingAdvice() {
         AspectJExpressionPointcutAdvisor advisor = new AspectJExpressionPointcutAdvisor();
-        advisor.setExpression(servicePointcut);
+        advisor.setExpression(aspectProperties.getServicePointcut());
         advisor.setAdvice(new ExceptionLogAdvice());
         return advisor;
     }
