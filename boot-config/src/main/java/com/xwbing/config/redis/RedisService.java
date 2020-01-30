@@ -456,7 +456,7 @@ public class RedisService {
         } catch (ConfigException ex) {//获取jedis客户端失败
             return "";
         } catch (Exception ex) {//ping失败
-            log.error("redis连接失败=================================");
+            log.error("redis连接失败================================");
             return "";
         } finally {
             returnJedis(jedis);
