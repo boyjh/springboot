@@ -1,6 +1,7 @@
 package com.xwbing.handler;
 
 import com.alibaba.fastjson.JSONObject;
+import com.xwbing.config.aliyun.AliYunLog;
 import com.xwbing.exception.BusinessException;
 import com.xwbing.exception.PayException;
 import com.xwbing.exception.UtilException;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -33,6 +35,9 @@ import java.util.stream.Collectors;
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
+    @Resource
+    private AliYunLog aliYunLog;
+
     /**
      * 自定义业务异常
      *
@@ -137,7 +142,7 @@ public class GlobalExceptionHandler {
     public JSONObject handlerException(Exception ex) {
         String stackTrace = ExceptionUtils.getStackTrace(ex);
         log.error(stackTrace);
-//        aliYunLog.sendTextMessage("业务流程异常", true, null, stackTrace);
+        aliYunLog.sendTextMessage("业务流程异常", true, null, stackTrace);
         return JsonResult.toJSONObj("系统异常,请联系管理员");
     }
 }

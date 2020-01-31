@@ -2,6 +2,7 @@ package com.xwbing.controller.rest;
 
 import com.alibaba.fastjson.JSONObject;
 import com.xwbing.annotation.LogInfo;
+import com.xwbing.config.aliyun.AliYunLog;
 import com.xwbing.config.redis.RedisService;
 import com.xwbing.config.util.dingTalk.MarkdownMessage;
 import com.xwbing.domain.entity.rest.FilesUpload;
@@ -47,6 +48,8 @@ public class MockControl {
     private UploadService uploadService;
     @Resource
     private RedisService redisService;
+    @Resource
+    private AliYunLog aliYunLog;
 
     @LogInfo("导出zip")
     @GetMapping("batchGetImage")
@@ -100,7 +103,7 @@ public class MockControl {
     @LogInfo("sendTextMessage")
     @GetMapping("sendTextMessage")
     public void sendTextMessage(@RequestParam boolean atAll, @RequestParam List<String> atMobiles) {
-//        aliYunLog.sendTextMessage("测试,请忽略", atAll, atMobiles, "test");
+        aliYunLog.sendTextMessage("我是一个文本", atAll, atMobiles, "test");
     }
 
     @LogInfo("sendMarkdownMessage")
@@ -125,7 +128,7 @@ public class MockControl {
         message.addItem(MarkdownMessage.getLinkText("天气", "https://www.seniverse.com"));
         message.setAtAll(atAll);
         message.addAtMobiles(atMobiles);
-//        aliYunLog.sendMarkdownMessage(message);
+        aliYunLog.sendMarkdownMessage(message);
     }
 }
 
