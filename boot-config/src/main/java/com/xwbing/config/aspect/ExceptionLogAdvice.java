@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 /**
  * @author xiangwb
+ * 微服务场景下
  * rpc调用中台服务异常日志记录,便于排查问题(GlobalExceptionHandler无法捕捉异常)
  */
 @Slf4j

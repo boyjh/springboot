@@ -70,7 +70,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.xwbing.Application</mainClass>
+                    <mainClass>com.xwbing.BootApplication</mainClass>
                     <fork>true</fork>
                     <!-- 本地jar打进jar -->
                     <includeSystemScope>true</includeSystemScope>

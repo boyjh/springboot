@@ -12,7 +12,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class AliYunLogProperties {
     public static final String PREFIX = "boot.aliYun";
     /**
-     * 开启自动配置
+     * 开启aliYunLog
      */
     private Boolean enabled;
     /**
@@ -53,7 +53,7 @@ public class AliYunLogProperties {
          */
         private String webHook;
         /**
-         * 钉钉消息安全设置:加签
+         * 钉钉消息安全设置:加签(选填)
          */
         private String secret;
     }

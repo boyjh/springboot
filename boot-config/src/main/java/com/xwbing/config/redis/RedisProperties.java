@@ -12,6 +12,14 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class RedisProperties {
     public static final String PREFIX = "boot.redis";
     /**
+     * 开启redis
+     */
+    private Boolean enabled;
+    /**
+     * 本项目缓存前缀
+     */
+    private String prefix;
+    /**
      * 最大连接数
      */
     private Integer maxTotal;
@@ -39,12 +47,4 @@ public class RedisProperties {
      * 密码
      */
     private String password;
-    /**
-     * 本项目缓存前缀
-     */
-    private String prefix;
-    /**
-     * 开启自动配置
-     */
-    private Boolean enabled;
 }

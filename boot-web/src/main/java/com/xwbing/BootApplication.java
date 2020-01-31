@@ -14,8 +14,8 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 @EnableRedis
 @ServletComponentScan
 @SpringBootApplication
-public class Application {
+public class BootApplication {
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication.run(BootApplication.class, args);
     }
 }
