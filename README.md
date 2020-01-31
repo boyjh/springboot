@@ -36,6 +36,7 @@
 * com.xwbing.config.aspect.OptimisticLockRetryAspect -乐观锁异常重试机制
 * com.xwbing.config.redis -redis自动配置
 * com.xwbing.config.aliyun -aliYunLog和dingTalk自动配置
+* com.xwbing.config.xxljob -xxljob自动配置
 ##### boot-service
 * com.xwbing.service.sys -用户角色权限服务层
 * com.xwbing.datasource-(JpaDataSourceConfig,MybatisDataSourceConfig)  
