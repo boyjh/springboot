@@ -48,7 +48,7 @@ public class XxlJobProperties {
     private String executorLogPath;
     /**
      * 执行器日志保存天数(选填)
-     * >=3时生效，启用执行器Log文件定期清理功能，否则不生效
+     * 大于等于3生效，启用执行器Log文件定期清理功能，否则不生效
      */
     private int executorLogRetentionDays;
 }
