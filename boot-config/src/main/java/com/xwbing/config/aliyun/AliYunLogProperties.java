@@ -14,7 +14,7 @@ public class AliYunLogProperties {
     /**
      * 开启自动配置
      */
-    private String enabled;
+    private Boolean enabled;
     /**
      * 阿里云日志
      */

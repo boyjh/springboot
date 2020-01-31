@@ -46,5 +46,5 @@ public class RedisProperties {
     /**
      * 开启自动配置
      */
-    private String enabled;
+    private Boolean enabled;
 }
