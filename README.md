@@ -15,6 +15,7 @@
 3. redis
 4. rabbitmq
 5. lombok插件
+6. xxl-job
 ### 启动说明
 * xxl-job <br>
 1.数据库执行ddl:xxl-job/doc/db/tables_xxl_job.sql 2.修改数据库配置:xxl-job-admin/resources/application.properties 3.构建xxl-job 4.启动XxlJobAdminApplication
