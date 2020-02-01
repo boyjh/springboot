@@ -20,7 +20,7 @@
 7. mybatis-generator-core
 ### 启动说明
 * xxl-job<br>
-1.数据库执行ddl:xxl-job/doc/db/tables_xxl_job.sql<br>2.修改数据库配置:xxl-job-admin/resources/application.properties<br>3.构建xxl-job<br>4.启动XxlJobAdminApplication<br>5.访问http://127.0.0.1:7777/xxl-job-admin (账号:admin 密码:123456)<br>6.执行器管理-新增执行器-(AppName:boot,名称:boot执行器,机器地址:27.0.0.1:8001)<br>7.任务管理-新增-(执行器:boot执行器,路由策略:轮训,JobHandler:bootWebHandler)
+1.数据库执行ddl:xxl-job/doc/db/tables_xxl_job.sql<br>2.修改数据库配置:xxl-job-admin/resources/application.properties<br>3.构建xxl-job<br>4.启动XxlJobAdminApplication<br>5.访问 http://127.0.0.1:7777/xxl-job-admin (账号:admin 密码:123456)<br>6.执行器管理-新增执行器-(AppName:boot,名称:boot执行器,机器地址:127.0.0.1:8001)<br>7.任务管理-新增-(执行器:boot执行器,路由策略:轮训,JobHandler:bootWebHandler)
 
 * 构建mybatis-generator-core
 
