@@ -29,7 +29,6 @@
     <groupId>org.mybatis.generator</groupId>
     <artifactId>mybatis-generator-core</artifactId>
     <version>1.3.7-cover</version>
-    <name>MyBatis Generator Core</name>
     <description>MyBatis Generator - a code generator for MyBatis.</description>
     <inceptionYear>2006</inceptionYear>
 
