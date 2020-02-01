@@ -6,9 +6,9 @@
 本项目适合3年以内工作经验的同学学习和借鉴，有不足之处，请大家指出，互相学习！
 ### 软件架构
 * 主体结构
->boot-module-pro(boot-config boot-service boot-web)
+>boot(boot-config boot-service boot-web)
 * 外部项目
->xxl-job
+>xxl-job <br>
 >mybatis-generator-core
 ### 启动环境
 1. jdk1.8
