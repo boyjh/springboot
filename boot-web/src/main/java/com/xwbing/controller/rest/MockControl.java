@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.xwbing.annotation.LogInfo;
 import com.xwbing.config.aliyun.AliYunLog;
 import com.xwbing.config.redis.RedisService;
+import com.xwbing.config.spring.ApplicationContextHelper;
 import com.xwbing.config.util.dingTalk.MarkdownMessage;
 import com.xwbing.domain.entity.rest.FilesUpload;
 import com.xwbing.service.rest.CookieSessionService;
@@ -100,13 +101,13 @@ public class MockControl {
         return JsonResult.toJSONObj(redisService.get(kv), "redis success");
     }
 
-    @LogInfo("sendTextMessage")
+    @LogInfo("钉钉群发送文本信息")
     @GetMapping("sendTextMessage")
     public void sendTextMessage(@RequestParam boolean atAll, @RequestParam List<String> atMobiles) {
         aliYunLog.sendTextMessage("我是一个文本", atAll, atMobiles, "test");
     }
 
-    @LogInfo("sendMarkdownMessage")
+    @LogInfo("钉钉群发送markdown信息")
     @GetMapping("sendMarkdownMessage")
     public void sendMarkdownMessage(@RequestParam boolean atAll, @RequestParam List<String> atMobiles) {
         MarkdownMessage message = new MarkdownMessage();
@@ -129,6 +130,13 @@ public class MockControl {
         message.setAtAll(atAll);
         message.addAtMobiles(atMobiles);
         aliYunLog.sendMarkdownMessage(message);
+    }
+
+    @LogInfo("spring上下文")
+    @GetMapping("applicationContext")
+    public void applicationContext() {
+        String port = ApplicationContextHelper.getProperty("server.port", String.class);
+        MockControl bean = ApplicationContextHelper.getBean(MockControl.class);
     }
 }
 

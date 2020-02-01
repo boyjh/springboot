@@ -1,10 +1,10 @@
-package com.xwbing.handler;
+package com.xwbing.config.spring;
 
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 
 import java.lang.annotation.Annotation;
 import java.util.Map;
@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * @author xiangwb
  * @date 20/2/1 15:51
- * spring content
+ * spring上下文信息管理
  */
 @Configuration
 public class ApplicationContextHelper implements ApplicationContextAware {
@@ -27,6 +27,14 @@ public class ApplicationContextHelper implements ApplicationContextAware {
         return applicationContext;
     }
 
+    public static Environment getEnvironment() {
+        return applicationContext.getEnvironment();
+    }
+
+    public static <T> T getProperty(String key, Class<T> clazz) {
+        return applicationContext.getEnvironment().getProperty(key, clazz);
+    }
+
     public static Object getBean(String name) {
         return applicationContext.getBean(name);
     }
@@ -39,9 +47,12 @@ public class ApplicationContextHelper implements ApplicationContextAware {
         return applicationContext.getBean(name, clazz);
     }
 
-    @SuppressWarnings("unchecked")
-    public static <T> T getBeansWithAnnotation(Class<T> clazz) {
-        Map<String, Object> beansWithAnnotation = applicationContext.getBeansWithAnnotation((Class<? extends Annotation>) clazz);
-        return (T) applicationContext.getBeansOfType(clazz);
+    public static <T> Map<String, T> getBeansOfType(Class<T> clazz) {
+        return applicationContext.getBeansOfType(clazz);
+    }
+
+
+    public static Map<String, Object> getBeansWithAnnotation(Class<? extends Annotation> annotation) {
+        return applicationContext.getBeansWithAnnotation(annotation);
     }
 }
