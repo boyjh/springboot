@@ -79,4 +79,4 @@ boot-web/config.properties 里面可以开启登录拦截器和权限拦截器.<
 如果开启权限拦截器,得在权限接口里对相应用户添加权限(url形式),否则一些接口无法访问
 * /common/getSign 获取签名,用于所有@Idempotent接口,防止表单重复提交
 * /user/login 登录接口,登录时会返回token,如果开启登录拦截器,所有接口必须有token请求头才可以访问
-* /doc swagger文档映射地址
+* /doc swagger接口文档映射地址
