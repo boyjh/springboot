@@ -1,7 +1,7 @@
 # springboot多模块项目
 **邮箱:xiangwbs@163.com**
 ### 介绍
-本项目集成springboot，jpa，mybatis(pagehelper，mybatis-generator)，redis，shiro(shiro分支)，druid，RabbitMQ，log4j2，swagger2，email，用户角色权限功能，rsa加密，基于注解接口幂等设计，基于注解接口限流，全局异常处理，乐观锁异常重试机制，基于redis分布式锁，xxl-job，分布式全局id雪花算法，二维码，验证码，防盗链，文件上传，阿里支付，微信支付，快递鸟快递查询，阿里云log，钉钉机器人等。一些常用util。一些常用类的api使用demo！
+本项目集成springboot，jpa，mybatis(pagehelper，mybatis-generator(修改过源码))，redis，shiro(shiro分支)，druid，RabbitMQ，log4j2，swagger2，email，用户角色权限功能，rsa加密，基于注解接口幂等设计，基于注解接口限流，全局异常处理，乐观锁异常重试机制，基于redis分布式锁，xxl-job，分布式全局id雪花算法，二维码，验证码，防盗链，文件上传，阿里支付，微信支付，快递鸟快递查询，阿里云log，钉钉机器人等。一些常用util。一些常用类的api使用demo！
 
 本项目适合3年以内工作经验的同学学习和借鉴，有不足之处，请大家指出，互相学习！
 ### 软件架构
@@ -9,6 +9,7 @@
 >boot-module-pro(boot-config boot-service boot-web)
 * 外部项目
 >xxl-job
+>mybatis-generator-core
 ### 启动环境
 1. jdk1.8
 2. maven
@@ -16,9 +17,12 @@
 4. rabbitmq
 5. lombok插件
 6. xxl-job
+7. mybatis-generator-core
 ### 启动说明
 * xxl-job <br>
 1.数据库执行ddl:xxl-job/doc/db/tables_xxl_job.sql 2.修改数据库配置:xxl-job-admin/resources/application.properties 3.构建xxl-job 4.启动XxlJobAdminApplication
+
+* 构建mybatis-generator-core
 
 * rabbitmq <br>
 1.安装rabbitmq并启动 2.修改rabbitmq配置:boot-web/resources/application-dev.yml|application-prod.yml

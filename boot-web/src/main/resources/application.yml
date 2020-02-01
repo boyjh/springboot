@@ -77,7 +77,5 @@ aspect:
 xxl:
   job:
     enabled: true
-    admin-addresses: http://127.0.0.1:7777/xxl-job-admin
-    access-token: jONbBlnX12MU0okBDXZs6HEy8DP37T
     executor-app-name: boot
     executor-log-path: logs/jobhandler

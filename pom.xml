@@ -73,6 +73,7 @@
         <mybatis-boot-start.version>1.3.1</mybatis-boot-start.version>
         <pagehelper-boot-start.version>1.2.3</pagehelper-boot-start.version>
         <mybatis-generator-maven-plugin.vsrsion>1.3.7</mybatis-generator-maven-plugin.vsrsion>
+        <mybatis-generator-core.version>1.3.7-cover</mybatis-generator-core.version>
         <aliyun-log.version>0.6.6</aliyun-log.version>
         <xxl-job.version>1.0</xxl-job.version>
     </properties>
