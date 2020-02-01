@@ -19,19 +19,19 @@
 6. xxl-job
 7. mybatis-generator-core
 ### 启动说明
-* xxl-job <br>
-1.数据库执行ddl:xxl-job/doc/db/tables_xxl_job.sql 2.修改数据库配置:xxl-job-admin/resources/application.properties 3.构建xxl-job 4.启动XxlJobAdminApplication
+* xxl-job<br>
+1.数据库执行ddl:xxl-job/doc/db/tables_xxl_job.sql<br>2.修改数据库配置:xxl-job-admin/resources/application.properties<br>3.构建xxl-job<br>4.启动XxlJobAdminApplication
 
 * 构建mybatis-generator-core
 
-* rabbitmq <br>
-1.安装rabbitmq并启动 2.修改rabbitmq配置:boot-web/resources/application-dev.yml|application-prod.yml
+* rabbitmq<br>
+1.安装rabbitmq并启动<br>2.修改rabbitmq配置:boot-web/resources/application-dev.yml|application-prod.yml
 
-* redis <br>
-1.安装redis并启动 2.修改redis配置:boot-web/resources/application-dev.yml|application-prod.yml
+* redis<br>
+1.安装redis并启动<br>2.修改redis配置:boot-web/resources/application-dev.yml|application-prod.yml
 
-* boot-web <br>
-1.数据库执行ddl:boot-service/resources/data/boot_module_ddl.sql 2.修改数据库配置:boot-service/resources/druid.properties 4.启动BootApplication
+* boot-web<br>
+1.数据库执行ddl:boot-service/resources/data/boot_module_ddl.sql<br>2.修改数据库配置:boot-service/resources/druid.properties<br>3.启动BootApplication
 ### 项目说明
 ##### boot-config(自动配置)
 * com.xwbing.config.aspect.ExceptionLogAdvice service异常日志记录
@@ -74,7 +74,7 @@
 * com.xwbing.handler.WebLogAspect -基于注解日志切面
 * log4j2.xml -log4j2配置
 ### 接口说明
-boot-web/config.properties 里面可以开启登录拦截器和权限拦截器。<br>
+boot-web/config.properties 里面可以开启登录拦截器和权限拦截器.<br>
 如果开启权限拦截器,得在权限接口里对相应用户添加权限(url形式),否则一些接口无法访问
 * /common/getSign 获取签名,用于所有@Idempotent接口,防止表单重复提交
 * /user/login 登录接口,登录时会返回token,如果开启登录拦截器,所有接口必须有token请求头才可以访问
