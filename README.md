@@ -20,7 +20,7 @@
 7. mybatis-generator-core
 ### 启动说明
 * xxl-job<br>
-1.数据库执行ddl:xxl-job/doc/db/tables_xxl_job.sql<br>2.修改数据库配置:xxl-job-admin/resources/application.properties<br>3.构建xxl-job<br>4.启动XxlJobAdminApplication
+1.数据库执行ddl:xxl-job/doc/db/tables_xxl_job.sql<br>2.修改数据库配置:xxl-job-admin/resources/application.properties<br>3.构建xxl-job<br>4.启动XxlJobAdminApplication<br>5.访问http://127.0.0.1:7777/xxl-job-admin(账号:admin 密码:123456)<br>6.
 
 * 构建mybatis-generator-core
 
@@ -72,6 +72,7 @@
 * com.xwbing.handler.LoginInterceptor -登录拦截器
 * com.xwbing.handler.UrlPermissionsInterceptor -权限拦截器
 * com.xwbing.handler.WebLogAspect -基于注解日志切面
+* com.xwbing.handler.XxlJobHandler -xxljob定时任务示例
 * log4j2.xml -log4j2配置
 ### 接口说明
 boot-web/config.properties 里面可以开启登录拦截器和权限拦截器.<br>
