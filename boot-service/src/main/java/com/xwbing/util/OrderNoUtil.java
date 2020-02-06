@@ -40,8 +40,8 @@ public class OrderNoUtil {
         if (flag) {
             redisService.decrBy("order-sequence", Base.ORDER_MAX_SEQ);
         }
-        String sequence = new DecimalFormat("000000").format(seq);
-        String date = DateUtil2.dateToStr(new Date(), DateUtil2.YYYYMMDD);
+        String sequence = new DecimalFormat("00000").format(seq);
+        String date = DateUtil2.dateToStr(new Date(), "yyMMddHHmm");
         return businessType + date + sequence;
     }
 }
