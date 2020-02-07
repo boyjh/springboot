@@ -11,7 +11,7 @@
  Target Server Version : 80011
  File Encoding         : 65001
 
- Date: 25/07/2018 20:20:40
+ Date: 07/02/2020 21:58:32
 */
 
 SET NAMES utf8mb4;
@@ -46,6 +46,20 @@ INSERT INTO `data_dict` VALUES ('4cdaef01159a4a57adc38f4c5f5daccf', '2018-02-26 
 COMMIT;
 
 -- ----------------------------
+-- Table structure for demo
+-- ----------------------------
+DROP TABLE IF EXISTS `demo`;
+CREATE TABLE `demo` (
+  `id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `modified_time` datetime DEFAULT NULL,
+  `data` text COLLATE utf8mb4_general_ci,
+  `meat` longblob,
+  `blob` blob,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- ----------------------------
 -- Table structure for file_upload
 -- ----------------------------
 DROP TABLE IF EXISTS `file_upload`;
@@ -61,6 +75,13 @@ CREATE TABLE `file_upload` (
   PRIMARY KEY (`id`) USING BTREE,
   KEY `idx_name` (`name`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='文件上传';
+
+-- ----------------------------
+-- Records of file_upload
+-- ----------------------------
+BEGIN;
+INSERT INTO `file_upload` VALUES ('d1087274f97911e882ad2442df9757ee', '2018-12-07 01:10:23', NULL, NULL, NULL, 'iVBORw0KGgoAAAANSUhEUgAAASwAAAEsAQAAAABRBrPYAAABDUlEQVR42u3aOxKDIBCAYaw8hkeFo3KElFYQYXk5k8Q0rJPMT+Go+6XagV0wJn4zHgYGg8FgsJ9iuyljOx5cvpQXC0yPyVMSQYLZtgBMiblz0G0pgRvsNuYN7F5Wg7BbWF240mW/Xt9gE1gr4pKn5arWwyawPrJYL/te2ByWg65kJ/Q1C6bG6hyxeaXy6c6vsa5eMD12rt/Wt1/BtFjeXQdJUfTrcZff+zXC1JkxnfV+CqbDhiJeWijbLEyLDQ2tkYw5KeIwTTZu7qSIxzaDYHqsHzf1rtZ+OnqFzWPSRdXZ4t8lCzablc8Qr2o9bDIbDv3KNq+lDabE+ofRIEFXWtsIU2P8HQIGg8Fgf8Oe5z6mKnRIhbgAAAAASUVORK5CYII=', 'QRCode.png', 'png');
+COMMIT;
 
 -- ----------------------------
 -- Table structure for sys_authority
@@ -133,6 +154,7 @@ INSERT INTO `sys_role` VALUES ('72a50656b534436f89665bcb6cfdd620', '2017-11-14 1
 INSERT INTO `sys_role` VALUES ('76ff321b45404849ac2f04ce710b2e25', '2017-11-14 11:31:14', NULL, NULL, NULL, 'protector', '安保人员', '安保人员', 'Y');
 INSERT INTO `sys_role` VALUES ('c71040053f6a4728805f7a163b65129d', '2017-11-14 11:33:14', NULL, NULL, NULL, 'cleanner', '保洁人员', '保洁人员', 'Y');
 INSERT INTO `sys_role` VALUES ('e6cd98be7f384eba946a8895ece97d96', '2017-11-14 11:32:08', NULL, NULL, NULL, 'maintenance', '维修人员', '维修人员', 'Y');
+INSERT INTO `sys_role` VALUES ('f0ce3798109811e982ad2442df9757ee', '2019-01-05 11:21:07', NULL, NULL, NULL, 'test1', 'string', 'string', 'Y');
 COMMIT;
 
 -- ----------------------------
