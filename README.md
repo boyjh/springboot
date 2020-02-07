@@ -4,7 +4,7 @@
 本项目集成springboot，jpa，mybatis(pagehelper，mybatis-generator(修改过源码))，redis，shiro(shiro分支)，druid，RabbitMQ，log4j2，swagger2，email，用户角色权限功能，rsa加密，基于注解接口幂等设计，基于注解接口限流，全局异常处理，乐观锁异常重试机制，基于redis分布式锁，xxl-job，分布式全局id雪花算法，二维码，验证码，防盗链，文件上传，阿里支付，微信支付，快递鸟快递查询，阿里云log，钉钉机器人等。一些常用util。一些常用类的api使用demo！
 
 本项目适合3年以内工作经验的同学学习和借鉴，有不足之处，请大家指出，互相学习！
-### 软件架构
+### 项目架构
 * 主体结构
 >boot(boot-config boot-service boot-web)
 * 外部项目
@@ -13,14 +13,18 @@
 ### 启动环境
 1. jdk1.8
 2. maven
-3. redis
-4. rabbitmq
-5. lombok插件
-6. xxl-job
-7. mybatis-generator-core
+3. mysql
+4. redis
+5. rabbitmq
+6. lombok插件
+7. xxl-job
+8. mybatis-generator-core
 ### 启动说明
+* mysql<br>
+1.安装mysql并启动<br>2.创建数据库boot并执行ddl:xxl-job/doc/db/tables_xxl_job.sql<br>3.创建数据库xxl并执行ddl:boot-service/resources/data/boot_module_ddl.sql
+
 * xxl-job<br>
-1.数据库执行ddl:xxl-job/doc/db/tables_xxl_job.sql<br>2.修改数据库配置:xxl-job-admin/resources/application.properties<br>3.构建xxl-job<br>4.启动XxlJobAdminApplication<br>5.访问 http://127.0.0.1:7777/xxl-job-admin (账号:admin 密码:123456)<br>6.执行器管理-新增执行器-(AppName:boot,名称:boot执行器,机器地址:127.0.0.1:8001)<br>7.任务管理-新增-(执行器:boot执行器,路由策略:轮训,JobHandler:bootWebHandler)
+1.修改数据库配置:xxl-job-admin/resources/application.properties<br>2.构建xxl-job<br>3.启动XxlJobAdminApplication<br>4.访问 http://127.0.0.1:7777/xxl-job-admin (账号:admin 密码:123456)<br>5.执行器管理-新增执行器-(AppName:boot,名称:boot执行器,机器地址:127.0.0.1:8001)<br>6.任务管理-新增-(执行器:boot执行器,路由策略:轮训,JobHandler:bootWebHandler)
 
 * 构建mybatis-generator-core
 
@@ -31,7 +35,7 @@
 1.安装redis并启动<br>2.修改redis配置:boot-web/resources/application-dev.yml|application-prod.yml
 
 * boot-web<br>
-1.数据库执行ddl:boot-service/resources/data/boot_module_ddl.sql<br>2.修改数据库配置:boot-service/resources/druid.properties<br>3.启动BootApplication
+1.修改数据库配置:boot-service/resources/druid.properties<br>2.启动BootApplication
 ### 项目说明
 ##### boot-config(自动配置)
 * com.xwbing.config.aspect.ExceptionLogAdvice service异常日志记录

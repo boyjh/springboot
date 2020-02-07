@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 /**
@@ -38,19 +39,18 @@ public class EncodeUtil {
         }
     }
 
+    public static void main(String[] args) {
+        String a = "Will Smit威尔·史密斯";
+        String s1 = base64Encode(a.getBytes(StandardCharsets.UTF_8));
+        String s = new String(base64Decode(s1), StandardCharsets.UTF_8);
+        System.out.println(s);
+    }
+
     /**
      * Base64编码.
      */
     public static String base64Encode(byte[] input) {
         return Base64.getEncoder().encodeToString(input);
-    }
-
-
-    /**
-     * Base64编码, URL安全(将Base64中的URL非法字符如+,/=转为其他字符, 见RFC3548).
-     */
-    public static String base64UrlSafeEncode(byte[] input) {
-        return Base64.getUrlEncoder().encodeToString(input);
     }
 
     /**
@@ -59,6 +59,22 @@ public class EncodeUtil {
     public static byte[] base64Decode(String input) {
         return Base64.getDecoder().decode(input);
     }
+
+    /**
+     * Base64编码, URL安全
+     * 其中将不使用'= \n \r'填充，并且将标准Base64的'+'和'/'字符分别替换为'-'和'_'
+     */
+    public static String base64UrlSafeEncode(byte[] input) {
+        return Base64.getUrlEncoder().encodeToString(input);
+    }
+
+    /**
+     * Base64解码, URL安全
+     */
+    public static byte[] base64UrlDecode(String input) {
+        return Base64.getUrlDecoder().decode(input);
+    }
+
 
     /**
      * URL 编码, Encode默认为UTF-8.
