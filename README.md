@@ -21,7 +21,7 @@
 8. mybatis-generator-core
 ### 启动说明
 * mysql<br>
-1.安装mysql并启动<br>2.创建数据库boot并执行ddl:xxl-job/doc/db/tables_xxl_job.sql<br>3.创建数据库xxl-job并执行ddl:boot-service/resources/data/boot_ddl.sql
+1.安装mysql并启动<br>2.创建数据库boot并执行ddl:boot-service/resources/data/boot_ddl.sql<br>3.创建数据库xxl-job并执行ddl:xxl-job/doc/db/tables_xxl_job.sql
 
 * xxl-job<br>
 1.修改数据库配置:xxl-job-admin/resources/application.properties<br>2.构建xxl-job<br>3.启动XxlJobAdminApplication<br>4.访问 http://127.0.0.1:7777/xxl-job-admin (账号:admin 密码:123456)<br>5.执行器管理-新增执行器-(AppName:boot,名称:boot执行器,机器地址:127.0.0.1:8001)<br>6.任务管理-新增-(执行器:boot执行器,路由策略:轮训,JobHandler:bootWebHandler)
