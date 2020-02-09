@@ -22,8 +22,4 @@ public class AliPayBaseResult {
      * 错误码
      */
     private String code;
-    /**
-     * 签名信息
-     */
-    private String sign;
 }

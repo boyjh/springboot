@@ -10,9 +10,9 @@ import lombok.Data;
  * 作者:  xiangwb
  */
 @Data
-public class AliPayRefundParam {
+public class AliPayTradeRefundParam {
     /**
-     * 本系统订单号  订单号和支付宝交易号2选1
+     * 商户订单号  订单号和支付宝交易号2选1
      */
     @JSONField(name = "out_trade_no")
     private String outTradeNo;
@@ -22,29 +22,29 @@ public class AliPayRefundParam {
     @JSONField(name = "trade_no")
     private String tradeNo;
     /**
-     * 退款请求号
-     */
-    @JSONField(name = "out_request_no")
-    private String outRequestNo;
-    /**
      * 退款金额
      */
     @JSONField(name = "refund_amount")
     private float refundAmount;
     /**
-     * 退款的原因说明  可选
+     * 退款请求号(部分退款，此参数必传)
+     */
+    @JSONField(name = "out_request_no")
+    private String outRequestNo;
+    /**
+     * 退款的原因说明
      */
     @JSONField(name = "refund_reason")
     private String refundReason;
 
-    public AliPayRefundParam(String outRequestNo, String outTradeNo, float refundAmount, String refundReason) {
+    public AliPayTradeRefundParam(String outRequestNo, String outTradeNo, float refundAmount, String refundReason) {
         this.outRequestNo = outRequestNo;
         this.outTradeNo = outTradeNo;
         this.refundAmount = refundAmount;
         this.refundReason = refundReason;
     }
 
-    public AliPayRefundParam(String outRequestNo, String tradeNo, String refundReason, float refundAmount) {
+    public AliPayTradeRefundParam(String outRequestNo, String tradeNo, String refundReason, float refundAmount) {
         this.outRequestNo = outRequestNo;
         this.tradeNo = tradeNo;
         this.refundAmount = refundAmount;

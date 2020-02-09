@@ -8,16 +8,14 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * 说明: 条形码支付结果
+ * 说明: 统一收单交易支付结果
  * 项目名称: boot-module-pro
  * 创建时间: 2017/5/10 17:36
  * 作者:  xiangwb
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class AliPayBarCodePayResult extends AliPayBaseResult {
-    public static final String HASPAYED = "ACQ.TRADE_HAS_SUCCESS";
-
+public class AliPayTradePayResult extends AliPayBaseResult {
     /**
      * 支付宝交易号
      */
@@ -50,18 +48,8 @@ public class AliPayBarCodePayResult extends AliPayBaseResult {
      * 买家在支付宝的用户id
      */
     private String buyerUserId;
-    /**
-     * 本次交易支付所使用的单品券优惠的商品优惠信息
-     */
-    private String discountGoodsDetail;
 
-    public AliPayBarCodePayResult(boolean isSuccess) {
+    public AliPayTradePayResult(boolean isSuccess) {
         this.setSuccess(isSuccess);
-    }
-
-    @Override
-    public boolean isSuccess() {
-        //如果已支付过也认为是成功
-        return "10000".equals(super.getCode());
     }
 }

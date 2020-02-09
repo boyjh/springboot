@@ -14,7 +14,7 @@ import java.util.Date;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class AliPayRefundResult extends AliPayBaseResult {
+public class AliPayTradeRefundResult extends AliPayBaseResult {
     /**
      * 支付宝交易号
      */
@@ -51,7 +51,7 @@ public class AliPayRefundResult extends AliPayBaseResult {
     @JSONField(name = "buyer_user_id")
     private String buyerUserId;
 
-    public AliPayRefundResult(boolean isSuccess) {
+    public AliPayTradeRefundResult(boolean isSuccess) {
         this.setSuccess(isSuccess);
     }
 }
