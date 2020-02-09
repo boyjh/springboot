@@ -1,8 +1,11 @@
 package com.xwbing.service.rest;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
-import com.xwbing.domain.entity.pay.alipay.AlipayTradePayNotifyRequest;
+import com.xwbing.domain.entity.pay.alipay.AliPayTradeStatusEnum;
+import com.xwbing.domain.entity.pay.alipay.AliPayTradePayNotifyRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -10,8 +13,11 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author xiangwb
@@ -29,7 +35,7 @@ public class AliPayNotifyService {
      *
      * @param aliPayTradePayNotifyRequest
      */
-    public void verifyTradePayParams(AlipayTradePayNotifyRequest aliPayTradePayNotifyRequest) {
+    public void verifyTradePayParam(AliPayTradePayNotifyRequest aliPayTradePayNotifyRequest) {
         String outTradeNo = aliPayTradePayNotifyRequest.getOut_trade_no();
         try {
             Map<String, String> params = new HashMap<>();
@@ -70,6 +76,33 @@ public class AliPayNotifyService {
             }
         } catch (AlipayApiException e) {
             log.error("verifyTradeCreateParams {} exception:{}", outTradeNo, ExceptionUtils.getStackTrace(e));
+        }
+    }
+
+    /**
+     * 支付成功业务处理
+     *
+     * @param aliPayTradePayNotifyRequest
+     */
+    public void generalTradePay(AliPayTradePayNotifyRequest aliPayTradePayNotifyRequest) {
+        String tradeStatus = aliPayTradePayNotifyRequest.getTrade_status();
+        if (AliPayTradeStatusEnum.TRADE_SUCCESS.getCode().equals(tradeStatus)) {
+            //判断流水是否为最终状态(入账成功或退款),避免重复回调 return
+            //获取商户优惠券信息
+            String fundBillList = aliPayTradePayNotifyRequest.getFund_bill_list();
+            if (StringUtils.isNotEmpty(fundBillList)) {
+                JSONArray.parseArray(fundBillList).stream().map(o -> JSONObject.parseObject(JSONObject.toJSONString(o)))
+                        .filter(object -> "MDISCOUNT".equals(object.getString("fundChannel"))).findFirst()
+                        .ifPresent(object -> {
+                            //用于流水和订单入账金额减免
+                            String discount = object.getString("amount");
+                        });
+
+            }
+            //更新流水
+            //检查总成功流水金额是否大于订单金额,重复支付提醒
+            //更新订单
+            //后续业务处理
         }
     }
 

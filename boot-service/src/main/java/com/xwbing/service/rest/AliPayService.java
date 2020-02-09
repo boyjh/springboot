@@ -70,9 +70,9 @@ public class AliPayService {
      */
     public AliPayTradePayResult tradePay(AliPayTradePayParam param) {
         AliPayTradePayResult result = new AliPayTradePayResult(false);
-        String checkArgument = checkTradePayArgument(param);
-        if (StringUtils.isNotEmpty(checkArgument)) {
-            result.setMessage(checkArgument);
+        String checkResult = checkTradePayParam(param);
+        if (StringUtils.isNotEmpty(checkResult)) {
+            result.setMessage(checkResult);
             return result;
         }
         AlipayTradePayRequest request = new AlipayTradePayRequest();
@@ -237,7 +237,7 @@ public class AliPayService {
      *
      * @return
      */
-    private String checkTradePayArgument(AliPayTradePayParam param) {
+    private String checkTradePayParam(AliPayTradePayParam param) {
         String message;
         if (StringUtils.isEmpty(param.getOutTradeNo())) {
             message = "商户订单号为空";
@@ -248,7 +248,7 @@ public class AliPayService {
         } else if (0 >= param.getTotalAmount()) {
             message = "金额必须大于0";
         } else if (StringUtils.isEmpty(param.getScene())) {
-            message = "支付方式场景为空";
+            message = "支付场景为空";
         } else {
             message = StringUtils.EMPTY;
         }
