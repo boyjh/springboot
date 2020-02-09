@@ -49,7 +49,7 @@ public class AliPayTradePayResult extends AliPayBaseResult {
      */
     private String buyerUserId;
 
-    public AliPayTradePayResult(boolean isSuccess) {
-        this.setSuccess(isSuccess);
+    public AliPayTradePayResult(boolean success) {
+        this.setSuccess(success);
     }
 }

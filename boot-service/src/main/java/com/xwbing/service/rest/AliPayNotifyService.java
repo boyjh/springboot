@@ -4,8 +4,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
-import com.xwbing.domain.entity.pay.alipay.AliPayTradeStatusEnum;
 import com.xwbing.domain.entity.pay.alipay.AliPayTradePayNotifyRequest;
+import com.xwbing.domain.entity.pay.alipay.AliPayTradeStatusEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -13,11 +13,8 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author xiangwb
@@ -94,7 +91,7 @@ public class AliPayNotifyService {
                 JSONArray.parseArray(fundBillList).stream().map(o -> JSONObject.parseObject(JSONObject.toJSONString(o)))
                         .filter(object -> "MDISCOUNT".equals(object.getString("fundChannel"))).findFirst()
                         .ifPresent(object -> {
-                            //用于流水和订单入账金额减免
+                            //用于流水和订单金额减免
                             String discount = object.getString("amount");
                         });
 

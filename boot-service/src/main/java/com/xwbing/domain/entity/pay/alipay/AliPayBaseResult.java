@@ -13,7 +13,7 @@ public class AliPayBaseResult {
     /**
      * 是否成功
      */
-    private boolean isSuccess;
+    private boolean success;
     /**
      * 错误信息
      */

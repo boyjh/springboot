@@ -51,8 +51,8 @@ public class AliPayTradeRefundResult extends AliPayBaseResult {
     @JSONField(name = "buyer_user_id")
     private String buyerUserId;
 
-    public AliPayTradeRefundResult(boolean isSuccess) {
-        this.setSuccess(isSuccess);
+    public AliPayTradeRefundResult(boolean success) {
+        this.setSuccess(success);
     }
 }
 
