@@ -39,12 +39,6 @@ public class EncodeUtil {
         }
     }
 
-    public static void main(String[] args) {
-        String a = "Will Smit威尔·史密斯";
-        String s1 = base64Encode(a.getBytes(StandardCharsets.UTF_8));
-        String s = new String(base64Decode(s1), StandardCharsets.UTF_8);
-        System.out.println(s);
-    }
 
     /**
      * Base64编码.
@@ -58,6 +52,16 @@ public class EncodeUtil {
      */
     public static byte[] base64Decode(String input) {
         return Base64.getDecoder().decode(input);
+    }
+
+    /**
+     * 是否被base编码过
+     *
+     * @param base64
+     * @return
+     */
+    public static boolean isBase64(String base64) {
+        return org.apache.commons.codec.binary.Base64.isBase64(base64);
     }
 
     /**
