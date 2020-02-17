@@ -1,5 +1,6 @@
 package com.xwbing.handler;
 
+import com.xwbing.annotation.UrlRateLimiter;
 import com.xwbing.config.redis.RedisService;
 import com.xwbing.exception.BusinessException;
 import lombok.extern.slf4j.Slf4j;
@@ -16,36 +17,41 @@ import javax.annotation.Resource;
 /**
  * @author xiangwb
  * @date 20/2/17 15:51
- * controller层操作频率校验
+ * 操作频率校验
  */
 @Slf4j
 @Aspect
 @Component
-public class LimitAspect {
+public class UrlRateLimiterAspect {
     @Resource
     private RedisService redisService;
 
-    @Pointcut("within(com.xwbing.controller..*)")
-    public void pointCut() {
+
+    @Pointcut("@annotation(urlRateLimiter)")
+    public void beforePointCut(UrlRateLimiter urlRateLimiter) {
+    }
+
+    @Pointcut("@annotation(com.xwbing.annotation.UrlRateLimiter)")
+    public void afterPointCut() {
     }
 
     /**
      * 添加操作频率缓存
      */
-    @Before("pointCut()")
-    public void before() {
+    @Before(value = "beforePointCut(urlRateLimiter)", argNames = "urlRateLimiter")
+    public void before(UrlRateLimiter urlRateLimiter) {
         String key = getKey();
         Long num = redisService.incr(key);
         if (num > 1) {
             throw new BusinessException("操作过于频繁，请稍后再试");
         }
-        redisService.expire(key, 60);
+        redisService.expire(key, urlRateLimiter.liveTime());
     }
 
     /**
      * 删除操作频率缓存
      */
-    @After("pointCut()")
+    @After("afterPointCut()")
     public void after() {
         String key = getKey();
         redisService.del(key);

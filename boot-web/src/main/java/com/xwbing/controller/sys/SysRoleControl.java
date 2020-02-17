@@ -1,8 +1,9 @@
 package com.xwbing.controller.sys;
 
 import com.alibaba.fastjson.JSONObject;
-import com.xwbing.config.annotation.Idempotent;
 import com.xwbing.annotation.LogInfo;
+import com.xwbing.annotation.UrlRateLimiter;
+import com.xwbing.config.annotation.Idempotent;
 import com.xwbing.domain.entity.sys.SysAuthority;
 import com.xwbing.domain.entity.sys.SysRole;
 import com.xwbing.domain.entity.sys.SysRoleAuthority;
@@ -117,6 +118,7 @@ public class SysRoleControl {
         return JsonResult.toJSONObj(authoritys, "");
     }
 
+    @UrlRateLimiter
     @LogInfo("保存角色权限")
     @ApiOperation(value = "保存角色权限", response = RestMessageVo.class)
     @PostMapping("saveAuthority")
