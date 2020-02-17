@@ -16,7 +16,7 @@ import javax.annotation.Resource;
 /**
  * @author xiangwb
  * @date 20/2/17 15:51
- * controller层频率校验
+ * controller层操作频率校验
  */
 @Slf4j
 @Aspect
