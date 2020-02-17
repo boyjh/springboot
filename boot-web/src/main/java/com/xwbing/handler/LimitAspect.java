@@ -30,7 +30,7 @@ public class LimitAspect {
     }
 
     /**
-     * 添加频率缓存
+     * 添加操作频率缓存
      */
     @Before("pointCut()")
     public void before() {
@@ -43,7 +43,7 @@ public class LimitAspect {
     }
 
     /**
-     * 删除频率缓存
+     * 删除操作频率缓存
      */
     @After("pointCut()")
     public void after() {
