@@ -7,6 +7,7 @@ import com.xwbing.constant.CommonConstant;
 import com.xwbing.constant.CommonEnum;
 import com.xwbing.domain.entity.dto.UserDto;
 import com.xwbing.domain.entity.model.EmailModel;
+import com.xwbing.domain.entity.model.LoginInfo;
 import com.xwbing.domain.entity.sys.*;
 import com.xwbing.domain.mapper.sys.SysUserMapper;
 import com.xwbing.exception.BusinessException;
@@ -277,8 +278,11 @@ public class SysUserService extends BaseService<SysUserMapper, SysUser> {
         //保存登录数据
         String token = EncodeUtil.urlEncode(RSAUtil.encrypt(userName + "_" + ip));//rsa加密后密文是多行的,所以再次url编码
         CommonDataUtil.setData(token, userName, CommonDataUtil.DAY);
+        LoginInfo loginInfo = new LoginInfo();
+        loginInfo.setToken(token);
+        loginInfo.setUserId(user.getId());
+        restMessage.setData(loginInfo);
         restMessage.setSuccess(true);
-        restMessage.setData(token);
         restMessage.setMessage("登录成功");
         return restMessage;
     }

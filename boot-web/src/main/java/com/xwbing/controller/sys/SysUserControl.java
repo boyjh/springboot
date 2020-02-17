@@ -107,7 +107,7 @@ public class SysUserControl {
     }
 
     @LogInfo("登录")
-    @ApiOperation(value = "登录", response = RestMessageVo.class)
+    @ApiOperation(value = "登录", response = LoginInfoVo.class)
     @PostMapping("login")
     public JSONObject login(HttpServletRequest request, @RequestParam String userName, @RequestParam String passWord, @RequestParam String checkCode) {
         if (StringUtils.isEmpty(userName) || StringUtils.isEmpty(passWord)) {
